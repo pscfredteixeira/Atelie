@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 0.2 — protótipo navegável de seis telas, sem login real, banco ou salvamento remoto. **Ainda não é** a plataforma de aulas definitiva.
+> **Estado atual:** Sprint 0.3 — arquitetura de conteúdo e comportamento documentada, com três arquivos JSON de demonstração. O protótipo navegável ainda **não é** a plataforma de aulas definitiva.
 
 ## Abrir a demonstração
 
@@ -21,6 +21,14 @@ A publicação pode levar alguns minutos após o commit. Se a página não apare
 - [Mapa de navegação e jornada dos três ambientes](ARQUITETURA_ATELIER.md).
 - Página inicial responsiva com apresentação da arquitetura para colaboradores.
 - Alternância visual entre os ambientes Aluno, Professor e Administrador, sem autenticação real.
+
+## Especificações da etapa 0.3
+
+- [Contrato JSON: cursos, módulos, aulas, blocos e armazenamento](docs/CONTRATO_CONTEUDO.md).
+- [Rotas, estados editoriais, aprendizagem e tratamento de erros](docs/ROTAS_E_ESTADOS.md).
+- JSON de demonstração: [catálogo](docs/exemplos/catalogo.v1.json) → [curso](docs/exemplos/curso-fundamentos.v1.json) → [aula](docs/exemplos/aula-recalque.v1.json).
+
+Os exemplos são propostas documentais verificadas quanto à sintaxe e às referências básicas, **não estão conectados ao motor de aulas**. A validação formal virá no Sprint 2.
 
 ## Decisões do protótipo
 
@@ -53,6 +61,4 @@ A publicação pode levar alguns minutos após o commit. Se a página não apare
 
 ## Próxima etapa
 
-**Sprint 0.3 — Especificação detalhada dos contratos de conteúdo e estados de interface.**
-
-Validar as seis telas com professores e alunos de teste antes da implementação definitiva.
+**Sprint 0.4 — Revisão e fechamento da fundação arquitetural**, reunindo decisões de UX, armazenamento e critérios de pronto do Sprint 0. Depois começaremos o Sprint 1 (Design System e UX responsiva).
