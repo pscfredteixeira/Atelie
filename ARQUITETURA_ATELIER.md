@@ -280,3 +280,13 @@ O protótipo inicial poderá começar como HTML/CSS/JS puro, sem instalar depend
 - [Especificação de UX, fluxos e critérios de aceite](WIREFRAMES_ATELIER.md)
 
 A etapa 0.2 apresenta o percurso do aluno e do professor com dados fictícios e composição temporária de blocos no Estúdio. Não implementa autenticação, persistência ou publicação.
+
+## 14. Etapa 0.3 — Contratos e estados documentados
+
+- [Especificação de conteúdo e blocos (JSON)](docs/CONTRATO_CONTEUDO.md)
+- [Rotas, estados de interface e comportamento de erro](docs/ROTAS_E_ESTADOS.md)
+- [Exemplos portáveis de catálogo, curso e aula](docs/exemplos/catalogo.v1.json)
+
+Esta etapa define o formato de dados e o comportamento esperado sem implementar o motor nem conectar banco de dados. O esquema executável e os adaptadores serão construídos nos sprints posteriores.
+
+**Próxima etapa: Sprint 0.4 — revisão e fechamento do Sprint 0.**
