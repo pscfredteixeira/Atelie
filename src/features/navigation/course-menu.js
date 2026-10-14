@@ -81,7 +81,7 @@ export function selectedModuleId(hash){
   const query=String(hash||"").split("?")[1]||"";
   const item=query.split("&").find(part=>part.startsWith("modulo="));
   if(!item)return "";
-  try{return decodeURIComponent(item.slice("modulo=".length).replace(/\\+/g,"%20"));}
+  try{return decodeURIComponent(item.slice("modulo=".length).split("+").join("%20"));}
   catch{return "";}
 }
 export function courseOutline(area,course,hash=""){
