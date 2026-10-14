@@ -2,17 +2,31 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 0 **concluído na documentação** (etapas 0.1–0.4). Arquitetura e wireframes prontos para iniciar o Sprint 1. O protótipo ainda **não é** a plataforma de aulas definitiva; testes reais de usabilidade e dispositivos continuam pendentes.
+> **Estado atual:** Sprint 1 com interface modular e navegação demonstrativa implementadas. QA visual no site publicado e testes em dispositivos reais pendentes. Dados são fictícios; sem autenticação, dados remotos ou salvamento de aulas.
 
-## Abrir a demonstração
+## Abrir o Atelier
 
-GitHub Pages configurado em **main / (root)**:
-
+Site principal (GitHub Pages em `main/(root)`):
 https://pscfredteixeira.github.io/Atelie/
 
-**Protótipo das seis telas:** https://pscfredteixeira.github.io/Atelie/wireframes.html
+Rotas de demonstração:
+- Aluno: https://pscfredteixeira.github.io/Atelie/#/aluno
+- Professor: https://pscfredteixeira.github.io/Atelie/#/professor
+- Administrador: https://pscfredteixeira.github.io/Atelie/#/admin
+- Biblioteca visual: https://pscfredteixeira.github.io/Atelie/#/admin/identidade
 
-A publicação pode levar alguns minutos após o commit. Se a página não aparecer, verificar em Settings → Pages o status do deploy.
+Protótipos anteriores preservados:
+- https://pscfredteixeira.github.io/Atelie/arquitetura.html
+- https://pscfredteixeira.github.io/Atelie/wireframes.html
+
+O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
+
+## Sprint 1 — Implementação
+
+- [Relatório das telas, componentes, testes e pendências](docs/SPRINT_1_RESULTADO.md).
+- [Design System e interface responsiva](src/styles/atelier.css) e [tokens de identidade](src/styles/tokens.css).
+- [Navegação modular](src/app/main.js), [telas](src/app/views.js), [componentes](src/ui/components.js).
+- Dados fictícios em [`src/app/data.js`](src/app/data.js); não são os JSON definitivos.
 
 ## O que já existe
 
@@ -51,8 +65,8 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | Sprint | Objetivo |
 |---|---|
 | 0 | Arquitetura, mapa, jornadas e decisões — **documentação concluída** |
-| 1 | Design system e UX responsiva — **próximo** |
-| 2 | Estrutura JSON e repositórios locais |
+| 1 | Design system, shells e rotas — **implementado; QA visual pendente** |
+| 2 | Estrutura JSON e repositórios locais — **próximo** |
 | 3 | Motor de aulas por blocos |
 | 4 | Catálogo, cursos e jornada de estudo |
 | 5 | Gestão de cursos e módulos |
@@ -67,4 +81,6 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 ## Próxima etapa
 
-**Sprint 1 — Implementar o Design System e as estruturas de navegação.** Os entregáveis, limitações e critérios de aceite estão descritos em [docs/SPRINT_1_BRIEF.md](docs/SPRINT_1_BRIEF.md). Nenhum recurso de banco de dados será usado nesta etapa.
+**Sprint 2 — Conteúdo JSON executável e adaptadores de leitura/escrita local.** Trocar dados fictícios de `src/app/data.js` por leitura de JSON publicados; adicionar validação, fontes locais e preparação de backups.
+
+Antes de homologar a experiência visual, testar o site no celular e em um navegador desktop. A documentação contém os testes já executados e os que faltam.
