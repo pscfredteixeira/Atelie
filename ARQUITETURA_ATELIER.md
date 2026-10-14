@@ -329,3 +329,13 @@ O aluno já acessa o conteúdo da aula diretamente por JSON, enquanto o professo
 A Sala do Aluno e a prévia de autoria utilizam o **mesmo motor**. O índice permite localizar blocos e tem foco acessível. Existem 14 tipos registrados; quizzes não são corrigidos nesta fase e os laboratórios ainda não executam uma experiência interativa.
 
 **Próximo:** Sprint 4 — jornada e navegação do aluno. Não há backend, autenticação real, cobrança ou Supabase.
+
+## 19. Sprint 4 — Jornada contínua do aluno
+
+- [Relatório completo e testes do Sprint 4](docs/SPRINT_4_RESULTADO.md).
+- [Motor de sequência didática](src/features/learning/journey.js).
+- [Manifesto de curso com três aulas publicadas](content/courses/fundamentos/curso.json).
+
+O aluno visualiza a ordem do percurso e usa controles **Aula anterior** e **Próxima aula**, derivados de `position` no manifesto JSON. A página do curso mostra objetivos, títulos, resumos e tempo estimado. Ainda **não há registro de conclusão/progresso** nem certificados.
+
+**Próximo:** Sprint 5 — autoria de cursos e módulos com rascunhos locais, sem Supabase.
