@@ -232,7 +232,7 @@ document.addEventListener("change",async ev=>{
   if(ev.target.id!=="draft-import-file")return;
   const file=ev.target.files?.[0];
   if(!file)return;
-  const path=route(),match=path.match(/^\\/professor\\/cursos\\/([\\w-]+)\\/aulas\\/([\\w-]+)\\/editar$/);
+  const path=route(),match=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/editar$/);
   if(!match)return;
   try{
     if(file.size>2_000_000)throw new Error("Arquivo muito grande para uma aula (limite: 2 MB).");
@@ -259,6 +259,6 @@ document.addEventListener("keydown",ev=>{
     (i+(ev.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;
   ev.preventDefault();tabs[j].focus();tabs[j].click();
 });
-window.addEventListener("hashchange",()=>{isMenuOpen=false;closeDialog();render(true)});
+window.addEventListener("hashchange",()=>{if(isMenuOpen)setMenu(false);closeDialog();render(true)});
 render(false);
 showToast("Sprint 2: cursos publicados em JSON e rascunhos salvos somente neste navegador.");
