@@ -61,7 +61,7 @@ function sidebar(path) {
   '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
   navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+'</div>').join('')+
-  '</nav><div class="sidebar-foot">Sprint 6 · Estúdio Visual de Aulas.<br>Sem conta real, banco ou progresso salvo.<br>'+
+  '</nav><div class="sidebar-foot">Atelier · Beta local em JSON.<br>Sem login real ou sincronização entre aparelhos.<br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
 function bottomMenu(path) {
