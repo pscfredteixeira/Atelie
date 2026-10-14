@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "kind": "course",
+  "id": "curso-fundamentos",
+  "slug": "fundamentos-da-psicanalise",
+  "revision": 1,
+  "status": "published",
+  "title": "Fundamentos da Psicanálise",
+  "subtitle": "Introdução às principais perguntas da psicanálise",
+  "description": "Percurso pedagógico fictício criado exclusivamente para validar a arquitetura do Atelier.",
+  "objectives": [
+    "Distinguir conceitos teóricos de exemplos clínicos",
+    "Identificar perguntas iniciais sobre conflito psíquico"
+  ],
+  "estimatedMinutes": 18,
+  "authorIds": [
+    "professor-demo"
+  ],
+  "modules": [
+    {
+      "id": "modulo-conflito",
+      "title": "Conflito e defesa",
+      "description": "Primeiras questões conceituais sobre o conflito psíquico.",
+      "position": 1,
+      "lessons": [
+        {
+          "id": "aula-recalque",
+          "path": "./aula-recalque.v1.json",
+          "position": 1
+        }
+      ]
+    }
+  ]
+}
