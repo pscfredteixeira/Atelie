@@ -30,12 +30,12 @@ function shift(items,index,direction){
  [items[index],items[next]]=[items[next],items[index]];
  integerPositions(items);
 }
-export function createCourse(title="Novo curso"){
+export function createCourse(title="Novo curso",symbol="ψ"){
  const name=requireText(title,"Título do curso");
  const nowId=id("curso");
  const draft={
   schemaVersion:1,kind:"course",id:nowId,slug:slugify(name)+"-"+nowId.slice(-8),
-  revision:1,status:"draft",title:name,subtitle:"",description:"",objectives:[],
+  revision:1,status:"draft",title:name,icon:Array.from(clean(symbol)||"ψ").slice(0,3).join(""),subtitle:"",description:"",objectives:[],
   authorIds:["professor-demo"],modules:[]
  };
  validateCourse(draft);
@@ -55,6 +55,7 @@ export function applyCourseChange(course,action,params={}){
  switch(action){
  case "info":{
   draft.title=requireText(params.title,"Título do curso");
+  draft.icon=Array.from(clean(params.icon)||"ψ").slice(0,3).join("");
   draft.subtitle=clean(params.subtitle).slice(0,260);
   draft.description=clean(params.description).slice(0,3500);
   draft.objectives=clean(params.objectives).split("\n").map(s=>s.trim()).filter(Boolean).slice(0,20);
@@ -99,7 +100,7 @@ export function applyCourseChange(course,action,params={}){
 }
 export function createCatalogEntry(course){
  validateCourse(course);
- return {id:course.id,title:course.title,slug:course.slug,
+ return {id:course.id,title:course.title,icon:course.icon||"ψ",slug:course.slug,
    summary:course.description||course.subtitle||"",manifest:"./courses/"+course.slug+"/curso.json",status:"draft"};
 }
 export function exportManifest(course){
