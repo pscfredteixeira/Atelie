@@ -51,6 +51,13 @@
           },
           "summary": {
             "type": "string"
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "demo": {
+            "type": "boolean"
           }
         }
       }
