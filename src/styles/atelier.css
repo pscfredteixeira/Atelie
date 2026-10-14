@@ -250,3 +250,50 @@ textarea.field{min-height:110px;resize:vertical}
 .lesson-jump-no{font-weight:750;letter-spacing:.05em;color:var(--accent);font-size:11px;padding-top:1px}
 @media(max-width:1100px){.lesson-sidebar{position:static}}
 @media(max-width:740px){.lesson-block{scroll-margin-top:88px}.reader-objectives{padding:15px}.lesson-timeline li{grid-template-columns:1fr;gap:4px}.lesson-comparison table{min-width:460px}.lesson-comparison{margin:0 -3px}}
+
+/* Sprint 4 — jornada do aluno: módulos, metas e navegação sequencial */
+.course-eyebrow{color:var(--ink-muted);font-size:12px;letter-spacing:.02em;margin:-5px 0 24px}
+.course-start{display:flex;justify-content:space-between;align-items:center;gap:22px;margin:22px 0;background:linear-gradient(120deg,#342842,#42313a);border:1px solid #705774;padding:22px 27px;border-radius:var(--radius-md)}
+.course-start h2{font:400 25px/1.2 var(--font-editorial);margin:6px 0 5px}
+.course-start p{font-size:13px;color:var(--ink-subtle);margin:0}
+.course-start .button{flex:none}
+.course-goals{margin:19px 0 6px}
+.course-goals ul{line-height:1.9;padding-left:20px;margin:13px 0 0;color:var(--ink-subtle);font-size:14px}
+.module-description{font-size:12px;color:var(--ink-muted);margin:4px 0 0;line-height:1.6;max-width:700px}
+.journey-row{padding:17px 19px;gap:18px}
+.journey-row.current{background:#765c8520;border-left:3px solid var(--accent)}
+.journey-entry{display:flex;align-items:flex-start;gap:13px;flex:1;min-width:0}
+.journey-entry strong{font-size:14px;font-weight:700;display:block;line-height:1.4}
+.journey-entry p{margin:5px 0 0;color:var(--ink-muted);font-size:12px;line-height:1.6}
+.journey-number{font:400 26px/1 var(--font-editorial);color:var(--accent);flex:none;min-width:33px}
+.journey-meta{display:block;color:var(--ink-dim);font-size:11px;line-height:1.6;margin-top:7px}
+.journey-breadcrumb{display:flex;align-items:center;gap:5px;margin:-15px 0 24px;flex-wrap:wrap;font-size:12px;color:var(--ink-muted)}
+.journey-breadcrumb .button{min-height:35px}
+.lesson-header-info{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.lesson-header-info .page-title{margin-bottom:10px}
+.lesson-header-info .lead{margin-bottom:12px}
+.lesson-header-info>.tag{margin-top:11px}
+.journey-pager{margin:30px 0;display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.journey-pager-link,.journey-pager-end{min-height:120px;border-radius:var(--radius-md);border:1px solid var(--stroke);background:var(--surface);padding:20px;min-width:0}
+.journey-pager-link{display:flex;flex-direction:column;gap:8px;text-decoration:none;position:relative;padding-right:48px}
+.journey-pager-link:hover{border-color:var(--accent);background:var(--surface-hover)}
+.journey-pager-link strong{font:400 21px/1.3 var(--font-editorial);overflow-wrap:anywhere}
+.journey-pager-arrow{position:absolute;right:20px;top:18px;font-size:21px;color:var(--action)}
+.journey-pager-end p{font-size:13px;color:var(--ink-muted);line-height:1.6;margin:9px 0 0}
+.journey-course-drawer{margin:26px 0 30px;border:1px solid var(--stroke);padding:14px 19px 3px;border-radius:var(--radius-md);background:#ffffff04}
+.journey-course-drawer>summary{list-style:none;cursor:pointer;padding:7px 0 16px;color:var(--accent);font-weight:700;font-size:13px}
+.journey-course-drawer>summary::-webkit-details-marker{display:none}
+.journey-course-drawer>summary::before{content:"+";font-weight:800;margin-right:10px}
+.journey-course-drawer[open]>summary::before{content:"−"}
+@media(max-width:740px){
+  .course-start{align-items:flex-start;flex-direction:column;padding:19px;gap:14px}
+  .course-start .button{width:100%}
+  .journey-row{align-items:stretch;flex-direction:column;padding:15px 13px;gap:12px}
+  .journey-row .button{margin-left:46px;justify-content:center}
+  .journey-entry{gap:10px}
+  .journey-number{font-size:23px;min-width:28px}
+  .journey-pager{grid-template-columns:1fr}
+  .journey-pager-link,.journey-pager-end{min-height:100px}
+  .journey-breadcrumb{margin-top:-10px}
+}
+@media(prefers-reduced-motion:reduce){.journey-pager-link{transition:none}}
