@@ -86,18 +86,29 @@ export async function exportLearningStates(){
  return {format:"atelier-learning-backup",schemaVersion:1,exportedAt:new Date().toISOString(),
   profiles:DEMO_PROFILES,states:await operate("readonly",s=>s.getAll())};
 }
-export async function importLearningStates(data){
+export function validateLearningBackup(data){
  if(data?.format!=="atelier-learning-backup"||data.schemaVersion!==1||!Array.isArray(data.states))
    throw Error("Arquivo não é um backup de aprendizagem compatível.");
  if(data.states.length>25000)throw Error("Backup de aprendizagem excessivamente grande.");
  const records=data.states.map(x=>{
-  if(!DEMO_PROFILES.some(p=>p.id===x.profileId)||
-    typeof x.courseId!=="string"||!/^[\w-]+$/.test(x.courseId)||
-    typeof x.lessonId!=="string"||!/^[\w-]+$/.test(x.lessonId)||
-    typeof x.note!=="string"||x.note.length>20000||typeof x.answers!=="object"||x.answers===null)
+  if(!x||!DEMO_PROFILES.some(p=>p.id===x.profileId)||
+    typeof x.courseId!=="string"||!(/^[\\w-]+$/).test(x.courseId)||
+    typeof x.lessonId!=="string"||!(/^[\\w-]+$/).test(x.lessonId)||
+    typeof x.note!=="string"||x.note.length>20000||
+    typeof x.answers!=="object"||x.answers===null||Array.isArray(x.answers)||
+    Object.keys(x.answers).length>2000)
     throw Error("Registro de aprendizagem inválido no backup.");
+  for(const [blockId,answer] of Object.entries(x.answers)){
+    if(!(/^[\\w-]+$/).test(blockId)||!answer||typeof answer.selection!=="string"||
+      answer.selection.length>1000||typeof answer.correct!=="boolean")
+      throw Error("Resposta inválida no backup de aprendizagem.");
+  }
   return {...x,key:key(x.profileId,x.courseId,x.lessonId),completed:x.completed===true};
  });
+ return records;
+}
+export async function importLearningStates(data){
+ const records=validateLearningBackup(data);
  const db=await openDB();
  await new Promise((resolve,reject)=>{
   const tx=db.transaction(STORE,"readwrite"),s=tx.objectStore(STORE);
