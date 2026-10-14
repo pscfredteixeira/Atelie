@@ -206,7 +206,7 @@ function moduleEditor(course,mod,index){
     '<button class="button small" type="button" data-course-op="move-lesson"'+courseAttr+modAttr+
       ' data-lesson-id="'+e(l.id)+'" data-direction="1"'+(li===lessons.length-1?' disabled':'')+
       ' aria-label="Mover aula '+e(l.title||l.id)+' para baixo">↓</button>'+
-    (course.id==="curso-fundamentos"?action("Editar aula →",routeEdit(course.id,l.id),"small"):'')+
+    action("Editar aula →",routeEdit(course.id,l.id),"small")+
     '</div></div>').join("")+'</div>':
    '<p class="authoring-empty">Ainda não há aulas neste módulo. A criação visual de aulas chegará no Sprint 6.</p>')+
   '</section>';
@@ -215,10 +215,8 @@ async function courseStructure(cid){
  let local=null,publicCourse=null,warning="";
  try{local=await getCourseDraft(cid);}
  catch(err){warning="Armazenamento local não disponível: "+err.message;}
- if(!local){
-   try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
-   catch(err){if(!warning||err.code!=="not_found")throw err;}
- }
+ try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
+ catch(err){if(err.code!=="not_found")throw err;}
  if(!local&&!publicCourse)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
  const course=local?.course||publicCourse;
  const modulesSorted=[...course.modules].sort((a,b)=>a.position-b.position);
@@ -246,7 +244,7 @@ async function courseStructure(cid){
  pageHead("Professor / Gestão",e(course.title),
  "Organize as etapas e a sequência das aulas sem escrever JSON. Alterações são guardadas apenas neste navegador.")+
  (warning?'<div class="notice" role="alert">'+e(warning)+'</div>':'')+
- '<div id="course-authoring-status" role="status" aria-live="polite" class="tiny">Nenhuma alteração desta tela foi salva automaticamente.</div>'+
+ '<div id="course-authoring-status" tabindex="-1" role="status" aria-live="polite" class="tiny">Nenhuma alteração desta tela foi salva automaticamente.</div>'+
  '<div class="authoring-layout"><div class="authoring-primary">'+form+
  sectionHead("Módulos do curso",badge(modulesSorted.length+" módulo(s)"))+
  (modulesSorted.length?modulesSorted.map((m,i)=>moduleEditor(course,m,i)).join(""):
