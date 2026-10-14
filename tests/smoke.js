@@ -1,7 +1,7 @@
 import {contentRepository} from "../src/repositories/content-repository.js";
 import {validateLesson,validateLessonLink} from "../src/repositories/validators.js";
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
-import {renderLessonBlocks} from "../src/lesson-engine/basic-renderer.js";
+import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -47,6 +47,39 @@ async function run(){
    try{validateLesson(invalid);}
    catch{return;}
    throw new Error("O validador aceitou gabarito inexistente.");
+ });
+ await check("Biblioteca de componentes pedagógicos v1",async()=>{
+   const types=listRegisteredBlocks();
+   if(types.length<14)throw new Error("Biblioteca incompleta: "+types.length+" tipos.");
+   for(const required of ["question","rich_text","concept","comparison","timeline","multiple_choice","interactive_lab"]){
+     if(!types.some(x=>x.type===required&&x.version===1))throw new Error("Tipo indisponível: "+required);
+   }
+ });
+ await check("Índice de blocos com destinos acessíveis",async()=>{
+   if(!lesson)throw new Error("Aula não foi carregada.");
+   const outline=getLessonOutline(lesson);
+   const html=renderLessonBlocks(lesson);
+   if(outline.length!==lesson.blocks.length)throw new Error("O índice não corresponde à ordem de blocos.");
+   if(!outline.every(x=>html.includes('id="'+x.id+'"')))throw new Error("Um destino do índice não existe na aula.");
+   if(!html.includes('tabindex="-1"'))throw new Error("As seções não recebem foco pelo teclado.");
+ });
+ await check("Erro em um bloco não interrompe os demais",async()=>{
+   if(!lesson)throw new Error("Aula não foi carregada.");
+   const broken=structuredClone(lesson);
+   broken.blocks.splice(1,0,{id:"falha-smoke",type:"rich_text",version:1,data:null,settings:{}});
+   const html=renderLessonBlocks(broken);
+   if(!html.includes("Componente indisponível")||!html.includes('id="bloco-referencias-001"'))
+     throw new Error("Falha na renderização isolada.");
+ });
+ await check("Texto HTML externo não é interpretado como conteúdo executável",async()=>{
+   if(!lesson)throw new Error("Aula não foi carregada.");
+   const malicious=structuredClone(lesson);
+   malicious.blocks=[{id:"texto-teste",type:"rich_text",version:1,
+      data:{title:"<script>alert(1)</script>",paragraphs:["<img src=x onerror=alert(1)>"]},
+      settings:{}}];
+   const html=renderLessonBlocks(malicious);
+   if(html.includes("<script>")||html.includes("<img src=x")||!html.includes("&lt;script&gt;"))
+      throw new Error("O conteúdo não foi codificado como texto seguro.");
  });
  await check("Gravação, recuperação e exclusão no IndexedDB",async()=>{
    if(!lesson)throw new Error("Aula não foi carregada.");
