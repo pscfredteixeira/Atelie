@@ -7,6 +7,9 @@ import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest} from "../features/authoring/course-editor.js";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
+import {checkQuiz,exploreLab} from "../features/learning/activities.js";
+import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
+import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
@@ -32,6 +35,7 @@ let opener = null;
 let toastTimer;
 let activeRender=0;
 const unsavedForms=new Set();
+let unsavedNote=false;
 function route() {
   let path = window.location.hash.slice(1) || "/aluno";
   path = path.split("?")[0].replace(/\/+$/,"") || "/";
@@ -88,6 +92,7 @@ async function render(moveFocus) {
   if(call!==activeRender)return;
   unmountStudio();
   unsavedForms.clear();
+  unsavedNote=false;
   let chosen = path.startsWith("/professor") ? "#/professor" : path.startsWith("/admin") ? "#/admin" : "#/aluno";
   const topbar = '<header class="topbar"><div class="top-start">'+
     '<button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="'+String(isMenuOpen)+'">☰</button>'+
@@ -239,7 +244,7 @@ document.addEventListener("input",ev=>{
   if(region){region.textContent="Você tem alterações não salvas nesta tela.";region.style.color="var(--action)";}
 });
 window.addEventListener("beforeunload",ev=>{
-  if(!unsavedForms.size&&!isStudioDirty())return;
+  if(!unsavedForms.size&&!isStudioDirty()&&!unsavedNote)return;
   ev.preventDefault();ev.returnValue="";
 });
 function authoringStatus(message,error=false){
@@ -326,7 +331,64 @@ async function onCourseOperation(button){
     document.getElementById("course-authoring-status")?.focus({preventScroll:true});
   }catch(err){authoringStatus(err?.message||"Operação de curso não concluída.",true);}
 }
+/* Atividades, anotações e backup funcionam sem servidor. */
+function currentLessonRoute(){
+ const match=route().match(/^\/cursos\/([\w-]+)\/aulas\/([\w-]+)$/);
+ return match?{courseId:match[1],lessonId:match[2]}:null;
+}
+document.addEventListener("input",ev=>{
+ if(ev.target.closest('form[data-learning-form="note"]'))unsavedNote=true;
+});
+function learningNotice(text,error=false){
+ const node=document.querySelector("[data-learning-status]");
+ if(node){node.textContent=text;node.style.color=error?"var(--danger)":"var(--good)";}
+ showToast(text);
+}
+async function doBackupCommand(command){
+ try{
+  if(command==="download-backup"){
+   const counts=await downloadLocalBackup();
+   showToast("Backup JSON baixado: "+counts.courses+" cursos, "+counts.lessons+" aulas e "+counts.progress+" históricos.");
+  }else if(command==="import-backup"){
+   document.getElementById("atelier-backup-import")?.click();
+  }
+ }catch(err){showToast("Backup: "+(err?.message||"Operação não concluída."));}
+}
+async function saveLearningNote(form){
+ const current=currentLessonRoute();
+ if(!current)return;
+ const text=form.querySelector('[name="note"]')?.value??"";
+ try{
+  await updateLearningState(current.courseId,current.lessonId,{note:text});
+  unsavedNote=false;learningNotice("Anotação salva neste dispositivo.");
+ }catch(err){learningNotice("Não foi possível salvar: "+err.message,true);}
+}
+async function toggleLearningComplete(button){
+ const data=button.closest("[data-course-id][data-lesson-id]");
+ if(!data)return;
+ const {getLearningState}=await import("../repositories/learning-repository.js");
+ try{
+  const prev=await getLearningState(data.dataset.courseId,data.dataset.lessonId);
+  await updateLearningState(data.dataset.courseId,data.dataset.lessonId,{completed:!prev.completed});
+  unsavedNote=false;
+  await render(false);
+  showToast(prev.completed?"Conclusão desmarcada neste dispositivo.":"Aula marcada como concluída neste dispositivo.");
+ }catch(err){learningNotice(err.message,true);}
+}
+async function saveQuizAnswer(form,result){
+ if(!result.answered)return;
+ const target=currentLessonRoute();
+ const section=form.closest(".lesson-block");
+ if(!target||!section)return; // Prévia e editor não registram notas.
+ try{await updateLearningState(target.courseId,target.lessonId,
+  {answer:{blockId:section.dataset.blockId,selection:result.selection,correct:result.correct}});}
+ catch(err){showToast("Feedback exibido, mas a resposta não foi salva: "+err.message);}
+}
 document.addEventListener("submit",ev=>{
+  const quiz=ev.target.closest('form[data-activity="quiz"]');
+  if(quiz){ev.preventDefault();saveQuizAnswer(quiz,checkQuiz(quiz));return;}
+  const note=ev.target.closest('form[data-learning-form="note"]');
+  if(note){ev.preventDefault();saveLearningNote(note);return;}
   const form=ev.target.closest('form[data-authoring-form]');
   if(!form)return;
   ev.preventDefault();
@@ -335,6 +397,12 @@ document.addEventListener("submit",ev=>{
   onCourseForm(form).finally(()=>{if(form.isConnected)delete form.dataset.busy;});
 });
 document.addEventListener("click",ev=>{
+  const lab=ev.target.closest('[data-branch]');
+  if(lab){exploreLab(lab);return;}
+  const mark=ev.target.closest('[data-learning-action="complete"]');
+  if(mark){toggleLearningComplete(mark);return;}
+  const backupButton=ev.target.closest('[data-backup]');
+  if(backupButton){doBackupCommand(backupButton.dataset.backup);return;}
   const tab=ev.target.closest('[role="tab"][aria-controls]');
   if(tab){
     const group=tab.closest('[role="tablist"]');
@@ -371,6 +439,7 @@ document.addEventListener("click",ev=>{
   const dest=ev.target.closest('a[href^="#/"]');
   if(dest&&unsavedForms.size&&!confirmUnsaved()){ev.preventDefault();return;}
   if(dest&&isStudioDirty()&&!confirmStudioLeave()){ev.preventDefault();return;}
+  if(dest&&unsavedNote&&!window.confirm("Sua anotação não foi salva. Descartar a alteração?")){ev.preventDefault();return;}
   const link=ev.target.closest('a[href^="#/"]');
   if(link&&isMenuOpen){
     setMenu(false);
@@ -378,9 +447,29 @@ document.addEventListener("click",ev=>{
   }
 });
 document.addEventListener("change",async ev=>{
+  if(ev.target.id==="demo-profile"){
+    if(unsavedNote&&!window.confirm("Anotação não salva. Trocar de perfil e descartá-la?"))return;
+    try{setDemoProfile(ev.target.value);await render(false);}
+    catch(err){showToast(err.message);}
+    return;
+  }
+  if(ev.target.id==="atelier-backup-import"){
+    const file=ev.target.files?.[0];if(!file)return;
+    try{
+      if(file.size>15_000_000)throw Error("O backup excede 15 MB.");
+      const data=JSON.parse(await file.text());
+      if(!window.confirm("Restaurar este backup? Registros com os mesmos IDs serão substituídos neste navegador."))return;
+      const count=await importLocalBackup(data);
+      await render(false);
+      showToast("Backup restaurado: "+count.courses+" cursos, "+count.lessons+" aulas e "+count.states+" históricos.");
+    }catch(err){showToast("Não foi possível restaurar: "+err.message);}
+    finally{ev.target.value="";}
+    return;
+  }
   if(ev.target.id==="switch-role"){
     if(unsavedForms.size&&!confirmUnsaved()){ev.target.value=route().startsWith("/professor")?"#/professor":route().startsWith("/admin")?"#/admin":"#/aluno";return;}
     if(isStudioDirty()&&!confirmStudioLeave()){ev.target.value="#/professor";return;}
+    if(unsavedNote&&!window.confirm("Anotação não salva. Deseja mudar de ambiente?"))return;
     window.location.hash=ev.target.value;return;
   }
   if(ev.target.id!=="draft-import-file")return;
@@ -415,4 +504,4 @@ document.addEventListener("keydown",ev=>{
 });
 window.addEventListener("hashchange",()=>{if(isMenuOpen)setMenu(false);closeDialog();render(true)});
 render(false);
-showToast("Sprint 6: aulas e blocos são editados visualmente, com salvamento local.");
+showToast("Atelier beta: aulas, atividades e histórico locais. Sem login real.");
