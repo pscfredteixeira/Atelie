@@ -39,7 +39,7 @@ export function renderLessonBlocks(lesson,{sourceURL}={}){
     }
     const featured=b.settings?.emphasis==="featured";
     return '<section class="lesson-block'+(featured?' lesson-featured':'')+
-      '" id="bloco-'+e(b.id)+'" data-block-type="'+e(b.type)+'" data-block-id="'+e(b.id)+'">'+
+      '" id="bloco-'+e(b.id)+'" data-block-type="'+e(b.type)+'" data-block-id="'+e(b.id)+'" tabindex="-1">'+
       '<span class="block-kicker">'+label+' · '+e(definition?.label||"Bloco indisponível")+'</span>'+inside+'</section>';
   }).join("");
 }
