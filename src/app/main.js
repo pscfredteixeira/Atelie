@@ -26,8 +26,8 @@ const navGroups = [
  ]},
  {name:"Criar",links:[
   {href:"#/professor",name:"Painel do professor",icon:"✧"},
-  {href:"#/professor/cursos/curso-fundamentos",name:"Estrutura do curso",icon:"☷"},
-  {href:"#/professor/cursos/curso-fundamentos/aulas/aula-recalque/editar",name:"Estúdio de criação",icon:"⊕"}
+  {href:"#/professor/cursos/curso-introducao-psicanalise",name:"Introdução à Psicanálise",icon:"ψ"},
+  {href:"#/professor/cursos/curso-formacao-freudiana",name:"Formação Freudiana",icon:"✦"}
  ]},
  {name:"Organizar",links:[{href:"#/admin",name:"Administração",icon:"▦"},{href:"#/admin/identidade",name:"Biblioteca visual",icon:"◈"},
   {href:"#/admin/blocos",name:"Blocos pedagógicos",icon:"▧"},
@@ -49,8 +49,9 @@ function route() {
 function selectedNav(path) {
   if(path==="/")return "#/aluno";
   if(path.startsWith("/cursos/"))return "#/cursos";
-  if(path.startsWith("/professor/cursos/") && (path.endsWith("/editar")||path.endsWith("/previa")))return "#/professor/cursos/curso-fundamentos/aulas/aula-recalque/editar";
-  if(path.startsWith("/professor/cursos/"))return "#/professor/cursos/curso-fundamentos";
+  if(path.startsWith("/professor/cursos/curso-introducao-psicanalise"))return "#/professor/cursos/curso-introducao-psicanalise";
+  if(path.startsWith("/professor/cursos/curso-formacao-freudiana"))return "#/professor/cursos/curso-formacao-freudiana";
+  if(path.startsWith("/professor/cursos/"))return "#/professor";
   return "#"+path;
 }
 function anchor(item, selected) {
