@@ -1,6 +1,6 @@
 import {contentRepository} from "../repositories/content-repository.js";
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
-import {renderLessonBlocks,getLessonOutline} from "../lesson-engine/engine.js";
+import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -162,10 +162,31 @@ async function admin(){
  sectionHead("Ferramentas de apresentação","")+
  '<div class="grid two">'+card("Design System","Biblioteca visual","Conheça as peças de interface, estados e cores reutilizáveis.",
   action("Abrir biblioteca →","#/admin/identidade","small"))+
+ card("Biblioteca pedagógica","Blocos reutilizáveis","Veja todos os tipos de conteúdo disponíveis para compor uma aula.",
+ action("Ver os blocos →","#/admin/blocos","small"))+
  card("Verificações","Diagnóstico do JSON","Teste o carregamento do catálogo, a validação de aulas e a gravação local de um registro temporário.",
   '<a class="button small" href="./tests/smoke.html">Executar diagnóstico →</a>')+
  card("Arquitetura","Documentos do projeto","Consulte as decisões e as etapas de desenvolvimento.",
   '<a class="button small" href="./arquitetura.html">Mapa anterior ↗</a>')+'</div>'+info();
+}
+async function pedagogicalBlocks(){
+ const all=listRegisteredBlocks();
+ const {lesson}=await contentRepository.getPublishedLesson("curso-fundamentos","aula-recalque");
+ const examples=new Set(lesson.blocks.map(b=>b.type));
+ return pageHead("Administrar / Biblioteca pedagógica","Blocos para <em>pensar e experimentar.</em>",
+  "Uma biblioteca versionada de componentes reutilizáveis. Não precisamos programar uma nova tela toda vez que criamos uma aula.")+
+  '<div class="metrics"><div class="metric"><strong>'+all.length+'</strong><span>Tipos registrados</span></div>'+
+  '<div class="metric"><strong>'+examples.size+'</strong><span>Tipos demonstrados na aula</span></div>'+
+  '<div class="metric"><strong>v1</strong><span>Versão de componentes</span></div></div>'+
+  sectionHead("Componentes disponíveis",badge("Motor compartilhado","purple"))+
+  '<div class="grid">'+all.map(x=>{
+    const shown=examples.has(x.type);
+    const description=shown?"Já aparece na aula sobre o recalque.":"O motor reconhece o componente; aguarda conteúdo de exemplo.";
+    return card(x.label,x.type+" · v"+x.version,description,
+      shown?action("Ver na aula →","#/cursos/curso-fundamentos/aulas/aula-recalque","small"):
+      '<span class="tag purple" style="margin-top:17px">Aguardando exemplo</span>');
+  }).join("")+'</div>'+
+  note('<strong>Distinção importante:</strong> um componente registrado não significa que todas as suas atividades estejam completas. O quiz ainda não corrige respostas e o laboratório interativo será desenvolvido no Sprint 8.');
 }
 function visualLibrary(){
  return pageHead("Atelier / Identidade","As peças do <em>Atelier.</em>",
@@ -189,6 +210,7 @@ export async function routeView(path){
  if(path==="/professor")return {title:"Painel do professor",area:"Professor",html:await teacherHome()};
  if(path==="/admin")return {title:"Administração",area:"Administrador",html:await admin()};
  if(path==="/admin/identidade")return {title:"Biblioteca visual",area:"Administrador",html:visualLibrary()};
+ if(path==="/admin/blocos")return {title:"Blocos pedagógicos",area:"Administrador",html:await pedagogicalBlocks()};
  let m=path.match(/^\/cursos\/([\w-]+)$/);
  if(m)return {title:"Curso",area:"Aluno",html:await coursePage(m[1])};
  m=path.match(/^\/cursos\/([\w-]+)\/aulas\/([\w-]+)$/);
