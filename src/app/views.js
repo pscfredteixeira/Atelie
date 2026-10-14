@@ -331,7 +331,9 @@ async function admin(){
  "Esta área oferece uma visão editorial demonstrativa e acesso às especificações e componentes.")+
  metrics([[courses.length,"Cursos públicos"],["JSON","Fonte dos conteúdos"],["0","Contas reais cadastradas"]])+
  sectionHead("Ferramentas de apresentação","")+
- '<div class="grid two">'+card("Design System","Biblioteca visual","Conheça as peças de interface, estados e cores reutilizáveis.",
+ '<div class="grid two">'+card("Criação de cursos","Criar um novo curso","Monte cursos, módulos e aulas inteiramente pela plataforma e disponibilize-os no catálogo do aluno deste dispositivo.",
+ action("Criar ou organizar cursos →","#/professor","action small"))+
+ card("Design System","Biblioteca visual","Conheça as peças de interface, estados e cores reutilizáveis.",
   action("Abrir biblioteca →","#/admin/identidade","small"))+
  card("Biblioteca pedagógica","Blocos reutilizáveis","Veja todos os tipos de conteúdo disponíveis para compor uma aula.",
  action("Ver os blocos →","#/admin/blocos","small"))+
