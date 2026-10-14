@@ -308,3 +308,14 @@ A documentação de arquitetura está **consolidada**; os protótipos continuam 
 - [Design System](src/styles/atelier.css) e [tokens](src/styles/tokens.css).
 
 Telas de aluno, professor e administrador estão conectadas por rotas hash. O conteúdo exibido é fictício; a aplicação ainda **não** usa os JSON de referência do Sprint 0. O próximo sprint implementará a camada de leitura e validação. A homologação mobile e dos estados interativos em navegador real permanece pendente.
+
+## 17. Sprint 2 — Conteúdo JSON publicado e rascunhos no dispositivo
+
+- [Relatório de implementação, limitações e testes](docs/SPRINT_2_RESULTADO.md).
+- [Catálogo real da demonstração](content/catalogo.json), [curso](content/courses/fundamentos/curso.json) e [aula JSON](content/courses/fundamentos/aulas/recalque.json).
+- [Validador](src/repositories/validators.js), [leitor de conteúdo](src/repositories/content-repository.js) e [IndexedDB](src/repositories/draft-repository.js).
+- [Renderizador básico](src/lesson-engine/basic-renderer.js) e [diagnóstico](tests/smoke.html).
+
+O aluno já acessa o conteúdo da aula diretamente por JSON, enquanto o professor consegue editar um **rascunho técnico local** e visualizá-lo. **Nenhuma gravação modifica o repositório do GitHub automaticamente.** A implantação no Pages e o IndexedDB ainda precisam de confirmação por teste real no navegador.
+
+**Próxima etapa: Sprint 3 — motor pedagógico de blocos reutilizáveis.**
