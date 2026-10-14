@@ -128,3 +128,7 @@ Ao finalizar o Sprint 1, registrar:
 - bugs não resolvidos, se houver.
 
 **Documento de referência:** [Fechamento do Sprint 0](SPRINT_0_FECHAMENTO.md).
+
+## 9. Execução e acompanhamento
+
+A implementação do Design System e dos shells demonstrativos encontra-se em [SPRINT_1_RESULTADO.md](SPRINT_1_RESULTADO.md). Os checklists originais acima continuam preservados como requisitos; a conclusão formal dos critérios de UX depende de teste em navegador, largura de tela e dispositivo reais, além de revisão humana.
