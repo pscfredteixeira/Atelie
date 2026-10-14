@@ -319,3 +319,13 @@ Telas de aluno, professor e administrador estão conectadas por rotas hash. O co
 O aluno já acessa o conteúdo da aula diretamente por JSON, enquanto o professor consegue editar um **rascunho técnico local** e visualizá-lo. **Nenhuma gravação modifica o repositório do GitHub automaticamente.** A implantação no Pages e o IndexedDB ainda precisam de confirmação por teste real no navegador.
 
 **Próxima etapa: Sprint 3 — motor pedagógico de blocos reutilizáveis.**
+
+## 18. Sprint 3 — Motor pedagógico versionado
+
+- [Relatório e pendências do Sprint 3](docs/SPRINT_3_RESULTADO.md).
+- [Registro de componentes](src/lesson-engine/block-registry.js), [biblioteca de renderizadores](src/lesson-engine/block-renderers.js) e [motor único](src/lesson-engine/engine.js).
+- [Exemplo de nove blocos](content/courses/fundamentos/aulas/recalque.json).
+
+A Sala do Aluno e a prévia de autoria utilizam o **mesmo motor**. O índice permite localizar blocos e tem foco acessível. Existem 14 tipos registrados; quizzes não são corrigidos nesta fase e os laboratórios ainda não executam uma experiência interativa.
+
+**Próximo:** Sprint 4 — jornada e navegação do aluno. Não há backend, autenticação real, cobrança ou Supabase.
