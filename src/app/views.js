@@ -5,6 +5,7 @@ import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/lea
 import {getCourseDraft,listCourseDrafts} from "../repositories/course-draft-repository.js";
 import {LESSON_TEMPLATES} from "../features/authoring/lesson-templates.js";
 import {lessonNotebook,notebookPage,progressPage} from "../features/learning/learning-ui.js";
+import {renderBeta} from "../features/administration/beta-ui.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -313,6 +314,14 @@ async function admin(){
  action("Ver os blocos →","#/admin/blocos","small"))+
  card("Verificações","Diagnóstico do JSON","Teste o carregamento do catálogo, a validação de aulas e a gravação local de um registro temporário.",
   '<a class="button small" href="./tests/smoke.html">Executar diagnóstico →</a>')+
+ card("Backups","Exportar ou restaurar seus dados","Guarde uma cópia dos rascunhos de cursos, aulas e histórico local; nenhuma mídia é incluída.",
+  '<div class="button-row"><button class="button small" type="button" data-backup="download-backup">Baixar backup</button>'+
+  '<button class="button small" type="button" data-backup="import-backup">Restaurar backup</button>'+
+  '<input type="file" hidden id="atelier-backup-import" accept=".json,application/json"></div>')+
+ card("Beta com convidados","Roteiro de testes da plataforma","Conferir tarefas de aluno, professor, mobile e acessibilidade e exportar feedback sem coleta automática.",
+  action("Abrir roteiro do beta →","#/admin/beta","small"))+
+ card("Qualidade","Diagnóstico técnico e acessibilidade","Execução de testes do navegador e checklist de experiência móvel.",
+  '<a class="button small" href="./tests/quality.html">Abrir verificação técnica →</a>')+
  card("Arquitetura","Documentos do projeto","Consulte as decisões e as etapas de desenvolvimento.",
   '<a class="button small" href="./arquitetura.html">Mapa anterior ↗</a>')+'</div>'+info();
 }
@@ -357,6 +366,7 @@ export async function routeView(path){
  if(path==="/professor")return {title:"Painel do professor",area:"Professor",html:await teacherHome()};
  if(path==="/admin")return {title:"Administração",area:"Administrador",html:await admin()};
  if(path==="/admin/identidade")return {title:"Biblioteca visual",area:"Administrador",html:visualLibrary()};
+ if(path==="/admin/beta")return {title:"Beta com convidados",area:"Administrador",html:renderBeta()};
  if(path==="/admin/blocos")return {title:"Blocos pedagógicos",area:"Administrador",html:await pedagogicalBlocks()};
  let m=path.match(/^\/cursos\/([\w-]+)$/);
  if(m)return {title:"Curso",area:"Aluno",html:await coursePage(m[1])};
