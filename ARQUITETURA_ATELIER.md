@@ -299,3 +299,12 @@ A documentação de arquitetura está **consolidada**; os protótipos continuam 
 - [Brief do Sprint 1: UI, navegação, responsividade e critérios de aceite](docs/SPRINT_1_BRIEF.md)
 
 **Próximo sprint:** começar a implementação de design system, componentes-base e shells de Aluno, Professor e Administrador. Testes em dispositivos reais e feedback humano continuam pendentes.
+
+## 16. Sprint 1 — Primeira implementação da interface
+
+- [Registro de implementação e testes pendentes](docs/SPRINT_1_RESULTADO.md).
+- [Página principal do Atelier](index.html) — SPA demonstrativa em JavaScript modular.
+- [Mapa anterior preservado](arquitetura.html) e [wireframes](wireframes.html).
+- [Design System](src/styles/atelier.css) e [tokens](src/styles/tokens.css).
+
+Telas de aluno, professor e administrador estão conectadas por rotas hash. O conteúdo exibido é fictício; a aplicação ainda **não** usa os JSON de referência do Sprint 0. O próximo sprint implementará a camada de leitura e validação. A homologação mobile e dos estados interativos em navegador real permanece pendente.
