@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#121218">
+<title>Atelier · Verificação de inicialização</title>
+<link rel="stylesheet" href="../src/styles/atelier.css">
+</head>
+<body>
+<main class="main" style="max-width:800px;margin:auto" id="main-content">
+<p class="overline">Atelier / Diagnóstico</p>
+<h1 class="page-title">Verificação de inicialização.</h1>
+<p class="lead">Confira se os módulos essenciais carregam corretamente neste navegador. Nenhum rascunho é alterado por este teste.</p>
+<section class="card"><h2 class="section-title">Resultado</h2><div id="results" aria-live="polite" role="status">Verificando…</div></section>
+<div class="button-row" style="margin-top:20px">
+<a class="button action" href="../#/cursos">Abrir meus cursos →</a>
+<button class="button" id="retry" type="button">Testar novamente</button>
+</div>
+</main>
+<script type="module">
+const results=document.getElementById("results");
+const modules=[
+  ["Interface do aluno e professor","../src/app/views.js"],
+  ["Publicação local","../src/features/authoring/local-publication.js?bootfix=20261014"],
+  ["Editor visual","../src/features/authoring/studio-controller.js?bootfix=20261014"],
+  ["Catálogo dos cursos","../src/repositories/learner-content-repository.js"]
+];
+async function run(){
+ const lines=[];
+ for(const [name,path] of modules){
+   try{await import(path);lines.push({ok:true,name,message:"Arquivo carregado."});}
+   catch(error){lines.push({ok:false,name,message:error?.message||String(error)});}
+ }
+ results.replaceChildren();
+ for(const line of lines){
+   const item=document.createElement("p");
+   item.style.lineHeight="1.75";
+   item.textContent=(line.ok?"✓ ":"✗ ")+line.name+": "+line.message;
+   results.append(item);
+ }
+ const summary=document.createElement("p");
+ summary.style.fontWeight="700";
+ summary.textContent=lines.every(x=>x.ok)?
+  "Os módulos essenciais carregaram. Se a aplicação ainda estiver travada, atualize a página principal.":
+  "Ainda há uma falha de carregamento. Copie a mensagem acima para o suporte.";
+ results.prepend(summary);
+}
+document.getElementById("retry").addEventListener("click",run);
+run();
+</script>
+</body>
+</html>
