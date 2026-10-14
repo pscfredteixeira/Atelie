@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 3 implementado: motor pedagógico de blocos reutilizáveis e versionados, com biblioteca de tipos e prévia compartilhada. O conteúdo permanece em JSON e os rascunhos no navegador. Testes em dispositivos reais e homologação do Pages continuam pendentes.
+> **Estado atual:** Sprint 4 implementado: catálogo, sequência de três aulas JSON e navegação anterior/próxima para o aluno. O motor pedagógico e os rascunhos locais continuam ativos. O site e os testes em dispositivos reais ainda precisam de homologação.
 
 ## Abrir o Atelier
 
@@ -20,6 +20,16 @@ Protótipos anteriores preservados:
 - https://pscfredteixeira.github.io/Atelie/wireframes.html
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
+
+## Sprint 4 — Jornada de aprendizagem
+
+- [Relatório de implementação e testes do Sprint 4](docs/SPRINT_4_RESULTADO.md).
+- [Motor de sequência, aula anterior e próxima](src/features/learning/journey.js), independente dos IDs fixos de aulas.
+- Curso [Fundamentos da Psicanálise](content/courses/fundamentos/curso.json) com três aulas em sequência: [Conflito psíquico](content/courses/fundamentos/aulas/conflito.json), [Recalque](content/courses/fundamentos/aulas/recalque.json) e [Retorno do recalcado](content/courses/fundamentos/aulas/retorno.json).
+- Navegação do aluno: `https://pscfredteixeira.github.io/Atelie/#/cursos/curso-fundamentos`.
+- [Diagnóstico no navegador](tests/smoke.html) atualizado para testar o novo percurso.
+
+**Importante:** navegar não significa concluir uma aula. Progresso real e histórico individual continuam previstos para o Sprint 10.
 
 ## Sprint 3 — Motor pedagógico de blocos
 
@@ -87,8 +97,8 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | 1 | Design system, shells e rotas — **implementado; QA visual pendente** |
 | 2 | JSON publicado, leitura, validação e rascunhos locais — **implementado; testes de navegador pendentes** |
 | 3 | Motor de 14 blocos reutilizáveis — **implementado; QA em navegador pendente** |
-| 4 | Jornada de estudo e experiência do aluno — **próximo** |
-| 5 | Gestão de cursos e módulos |
+| 4 | Jornada de estudo e navegação em três aulas — **implementado; QA visual pendente** |
+| 5 | Gestão de cursos e módulos — **próximo** |
 | 6 | Editor visual de aulas |
 | 7 | Modelos pedagógicos |
 | 8 | Biblioteca de interatividades |
@@ -100,6 +110,6 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 ## Próxima etapa
 
-**Sprint 4 — Jornada de estudo:** organizar a experiência do aluno, desenvolver uma navegação contínua entre aulas, aperfeiçoar o programa do curso, objetivo e estados de interface. O motor já usa os blocos JSON.
+**Sprint 5 — Gestão de cursos e módulos:** criar, reorganizar e salvar estruturas de cursos pelo ambiente do professor, inicialmente no navegador, com exportação para publicação manual no GitHub.
 
 Testes de dispositivos reais, Pages, UX e acessibilidade permanecem necessários antes de homologar a versão piloto.
