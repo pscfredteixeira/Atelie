@@ -10,6 +10,7 @@ import {validateLessonLink} from "../repositories/validators.js";
 import {checkQuiz,exploreLab} from "../features/learning/activities.js";
 import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
+import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
@@ -106,7 +107,7 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Sprint 6 · Editor Visual</span><span>'+
+    '<footer class="footer"><span>Atelier. · Beta JSON · Sprints 0–13</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
@@ -385,6 +386,16 @@ async function saveQuizAnswer(form,result){
  catch(err){showToast("Feedback exibido, mas a resposta não foi salva: "+err.message);}
 }
 document.addEventListener("submit",ev=>{
+  const beta=ev.target.closest('form[data-beta-feedback]');
+  if(beta){
+    ev.preventDefault();
+    try{
+      downloadJSON(betaReport(Object.fromEntries(new FormData(beta))),
+        "atelier-feedback-beta-"+new Date().toISOString().slice(0,10)+".json");
+      showToast("Relatório de teste baixado. Nenhum dado foi enviado automaticamente.");
+    }catch(err){showToast("Falha ao gerar o relatório: "+err.message);}
+    return;
+  }
   const quiz=ev.target.closest('form[data-activity="quiz"]');
   if(quiz){ev.preventDefault();saveQuizAnswer(quiz,checkQuiz(quiz));return;}
   const note=ev.target.closest('form[data-learning-form="note"]');
@@ -447,6 +458,12 @@ document.addEventListener("click",ev=>{
   }
 });
 document.addEventListener("change",async ev=>{
+  if(ev.target.matches("[data-beta-check]")){
+    try{setBetaCheck(ev.target.dataset.betaCheck,ev.target.checked);}
+    catch(err){showToast(err.message);}
+    return;
+  }
+
   if(ev.target.id==="demo-profile"){
     if(unsavedNote&&!window.confirm("Anotação não salva. Trocar de perfil e descartá-la?"))return;
     try{setDemoProfile(ev.target.value);await render(false);}
