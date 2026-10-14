@@ -8,6 +8,7 @@ import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositor
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse,validateLocalSnapshot} from "../src/repositories/local-catalog-repository.js";
 import {learnerContentRepository} from "../src/repositories/learner-content-repository.js";
+import {loadCourseMenu,currentCourseChoice,coursePicker} from "../src/features/navigation/course-menu.js";
 import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
@@ -29,6 +30,18 @@ async function run(){
  await check("Catálogo publicado por arquivo JSON",async()=>{
    const items=await contentRepository.listPublishedCourses();
    if(!items.some(x=>x.id==="curso-fundamentos"))throw new Error("Curso de exemplo ausente.");
+ });
+ await check("Seletor do menu oferece os dois cursos e acompanha a rota",async()=>{
+   const menu=await loadCourseMenu();
+   for(const id of ["curso-introducao-psicanalise","curso-formacao-freudiana"]){
+     if(!menu.student.some(c=>c.id===id)||!menu.teacher.some(c=>c.id===id))
+       throw new Error("Curso indisponível no seletor: "+id);
+   }
+   if(menu.student.some(c=>c.id==="curso-fundamentos"))throw new Error("Demonstração técnica apareceu no menu.");
+   const html=coursePicker("student","/cursos/curso-formacao-freudiana",menu.student,"sidebar");
+   if(!html.includes('value="#/cursos/curso-formacao-freudiana" selected')||
+     currentCourseChoice("/professor/cursos/curso-introducao-psicanalise","teacher")!=="curso-introducao-psicanalise")
+     throw new Error("A seleção não acompanha a navegação.");
  });
  await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
    const list=await learnerContentRepository.listPublishedCourses();
