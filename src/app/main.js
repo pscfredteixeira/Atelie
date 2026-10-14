@@ -13,7 +13,7 @@ import {checkQuiz,exploreLab} from "../features/learning/activities.js";
 import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
-import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js";
+import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=course-outline-20261014";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
