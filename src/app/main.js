@@ -48,8 +48,6 @@ function route() {
 function selectedNav(path) {
   if(path==="/")return "#/aluno";
   if(path.startsWith("/cursos/"))return "#/cursos";
-  if(path.startsWith("/professor/cursos/curso-introducao-psicanalise"))return "#/professor/cursos/curso-introducao-psicanalise";
-  if(path.startsWith("/professor/cursos/curso-formacao-freudiana"))return "#/professor/cursos/curso-formacao-freudiana";
   if(path.startsWith("/professor/cursos/"))return "#/professor";
   return "#"+path;
 }
