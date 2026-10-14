@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 0.3 — arquitetura de conteúdo e comportamento documentada, com três arquivos JSON de demonstração. O protótipo navegável ainda **não é** a plataforma de aulas definitiva.
+> **Estado atual:** Sprint 0 **concluído na documentação** (etapas 0.1–0.4). Arquitetura e wireframes prontos para iniciar o Sprint 1. O protótipo ainda **não é** a plataforma de aulas definitiva; testes reais de usabilidade e dispositivos continuam pendentes.
 
 ## Abrir a demonstração
 
@@ -21,6 +21,12 @@ A publicação pode levar alguns minutos após o commit. Se a página não apare
 - [Mapa de navegação e jornada dos três ambientes](ARQUITETURA_ATELIER.md).
 - Página inicial responsiva com apresentação da arquitetura para colaboradores.
 - Alternância visual entre os ambientes Aluno, Professor e Administrador, sem autenticação real.
+
+## Fechamento da arquitetura e próximo desenvolvimento
+
+- [Sprint 0.4 — Decisões finais, riscos e critérios de qualidade](docs/SPRINT_0_FECHAMENTO.md).
+- [Sprint 1 — Brief do design system e navegação responsiva](docs/SPRINT_1_BRIEF.md).
+- [Mapa mestre](ARQUITETURA_ATELIER.md) e [wireframes navegáveis](wireframes.html).
 
 ## Especificações da etapa 0.3
 
@@ -44,8 +50,8 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 | Sprint | Objetivo |
 |---|---|
-| 0 | Arquitetura, mapa e jornadas |
-| 1 | Design system e UX responsiva |
+| 0 | Arquitetura, mapa, jornadas e decisões — **documentação concluída** |
+| 1 | Design system e UX responsiva — **próximo** |
 | 2 | Estrutura JSON e repositórios locais |
 | 3 | Motor de aulas por blocos |
 | 4 | Catálogo, cursos e jornada de estudo |
@@ -61,4 +67,4 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 ## Próxima etapa
 
-**Sprint 0.4 — Revisão e fechamento da fundação arquitetural**, reunindo decisões de UX, armazenamento e critérios de pronto do Sprint 0. Depois começaremos o Sprint 1 (Design System e UX responsiva).
+**Sprint 1 — Implementar o Design System e as estruturas de navegação.** Os entregáveis, limitações e critérios de aceite estão descritos em [docs/SPRINT_1_BRIEF.md](docs/SPRINT_1_BRIEF.md). Nenhum recurso de banco de dados será usado nesta etapa.
