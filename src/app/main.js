@@ -278,6 +278,8 @@ async function onCourseForm(form){
     if(kind==="new-course"){
       const course=createCourse(data.title);
       await saveCourseDraft(course);
+      // O formulário de criação não está pendente depois do salvamento.
+      unsavedForms.clear();
       showToast("Curso criado e salvo apenas neste navegador.");
       window.location.hash="#/professor/cursos/"+course.id;
       return;
