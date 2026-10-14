@@ -272,3 +272,11 @@ O protótipo inicial poderá começar como HTML/CSS/JS puro, sem instalar depend
 5. Para preservar conteúdo editado, exportar rascunhos e versioná-los antes de publicar novos pacotes.
 6. O desenho de autorização e matrícula comercial fica para a infraestrutura de produção.
 7. Confirmar formato definitivo dos esquemas, estratégia de mídia e framework apenas após as primeiras provas de conceito.
+
+
+## 13. Protótipo navegável da etapa 0.2
+
+- [Wireframes das seis telas](wireframes.html)
+- [Especificação de UX, fluxos e critérios de aceite](WIREFRAMES_ATELIER.md)
+
+A etapa 0.2 apresenta o percurso do aluno e do professor com dados fictícios e composição temporária de blocos no Estúdio. Não implementa autenticação, persistência ou publicação.
