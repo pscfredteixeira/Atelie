@@ -2,6 +2,7 @@ import {routeView} from "./views.js";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
 import {createLesson} from "../features/authoring/lesson-editor.js";
+import {useLessonTemplate} from "../features/authoring/lesson-templates.js";
 import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "../features/authoring/studio-controller.js";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest} from "../features/authoring/course-editor.js";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
@@ -257,6 +258,7 @@ async function onCourseForm(form){
       if(!cid||!form.dataset.moduleId)throw Error("Escolha um módulo para a nova aula.");
       const base=await editableCourse(cid);
       const created=createLesson(base,form.dataset.moduleId,data.title);
+      created.lesson=useLessonTemplate(created.lesson,data.templateId||"blank");
       await saveDraft(cid,created.lesson);
       try{await saveCourseDraft(created.course);}
       catch(err){await deleteDraft(cid,created.lesson.id);throw err;}
