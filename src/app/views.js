@@ -1,6 +1,6 @@
 import {contentRepository} from "../repositories/content-repository.js";
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
-import {renderLessonBlocks} from "../lesson-engine/basic-renderer.js";
+import {renderLessonBlocks,getLessonOutline} from "../lesson-engine/engine.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -58,22 +58,29 @@ async function coursePage(id){
  course.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></section>':'')+
  sectionHead("Programa do curso",badge("Conteúdo JSON","purple"))+modules(course)+info();
 }
-function reader(lesson,{isPreview=false,hasDraft=false}={}){
- const html=renderLessonBlocks(lesson);
+function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
+ const html=renderLessonBlocks(lesson,{sourceURL});
+ const outline=getLessonOutline(lesson);
  const description=lesson.summary||"Uma aula com textos e experiências pedagógicas estruturadas em JSON.";
  const inner='<article class="reader"><div class="reader-inner"><span class="overline">Aula · '+(isPreview?'Prévia do professor':'Conteúdo publicado')+'</span>'+
   '<h2>'+e(lesson.title)+'</h2><p>'+e(description)+'</p>'+
+  (lesson.objectives?.length?'<div class="reader-objectives"><strong>Ao final desta aula</strong><ul>'+
+   lesson.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></div>':'')+
   (html||'<p>Esta aula ainda não possui blocos.</p>')+'</div></article>';
- const sidebar='<aside class="sidepanel"><span class="overline">Percurso da aula</span><h3>'+e(lesson.blocks.length)+' blocos</h3>'+
-  '<p class="hint">Os blocos são montados pelo mesmo renderizador básico no aluno e na prévia do professor.</p>'+
+ const links=outline.map((x,i)=>'<li><button type="button" class="lesson-jump" data-scroll-block="'+e(x.id)+'">'+
+   '<span class="lesson-jump-no">'+String(i+1).padStart(2,"0")+'</span><span>'+e(x.label)+'</span></button></li>').join("");
+ const sidebar='<aside class="sidepanel lesson-sidebar"><span class="overline">Índice da aula</span><h3>'+e(lesson.blocks.length)+' momentos de estudo</h3>'+
+  (outline.length?'<nav aria-label="Etapas desta aula"><ol class="lesson-outline">'+links+'</ol></nav>':
+   '<p class="hint">Aula sem blocos de estudo.</p>')+
+  '<div class="rule"></div><p class="hint">O índice leva à seção correspondente. Ele não representa conclusão ou avaliação.</p>'+
   '<div class="rule"></div><div>'+badge(hasDraft?"Rascunho salvo localmente":isPreview?"Prévia do publicado":"JSON publicado","purple")+'</div>'+
   '<div class="rule"></div>'+action(isPreview?"Voltar ao editor →":"Voltar ao curso →",
      isPreview?routeEdit(lesson.courseId,lesson.id):routeCourse(lesson.courseId),"small")+'</aside>';
  return '<div class="reading-layout">'+inner+sidebar+'</div>';
 }
 async function lessonPage(cid,lid){
- const {course,lesson}=await contentRepository.getPublishedLesson(cid,lid);
- return pageHead(e(course.title)+" / Aula",e(lesson.title),lesson.summary)+reader(lesson)+
+ const {course,lesson,contentURL}=await contentRepository.getPublishedLesson(cid,lid);
+ return pageHead(e(course.title)+" / Aula",e(lesson.title),lesson.summary)+reader(lesson,{sourceURL:contentURL})+
  note("<strong>Conteúdo publicado em JSON:</strong> esta leitura é carregada dos arquivos de conteúdo. Os quizzes são apenas apresentados; a avaliação interativa virá no Sprint 9.");
 }
 function caderno(){
@@ -136,7 +143,7 @@ async function editor(cid,lid){
  note('<strong>Importante:</strong> “Salvar” grava exclusivamente no IndexedDB deste navegador. “Exportar” baixa um arquivo JSON. Nenhuma dessas ações publica no site ou sincroniza com outro aparelho. Evite dados pessoais e casos clínicos reais.');
 }
 async function preview(cid,lid){
- const {lesson}=await contentRepository.getPublishedLesson(cid,lid);
+ const {lesson,contentURL}=await contentRepository.getPublishedLesson(cid,lid);
  let record=null,storageError="";
  try{record=await getDraft(cid,lid);}catch(err){storageError=e(err.message)}
  const target=record?.lesson||lesson;
@@ -144,7 +151,7 @@ async function preview(cid,lid){
  "A prévia usa o mesmo renderizador do aluno, mas recebe explicitamente o rascunho local, quando existe.")+
  (storageError?'<div class="notice" role="alert">'+storageError+'</div>':'')+
  (!record?'<div class="notice"><strong>Nenhum rascunho salvo.</strong> Mostrando a versão publicada. Para pré-visualizar alterações, primeiro salve o JSON no editor.</div>':'')+
- reader(target,{isPreview:true,hasDraft:!!record})+
+ reader(target,{isPreview:true,hasDraft:!!record,sourceURL:contentURL})+
  note("<strong>Prévia privada apenas por convenção:</strong> sem login real, a plataforma não possui controle de acesso. Rascunhos estão somente neste navegador.");
 }
 async function admin(){
