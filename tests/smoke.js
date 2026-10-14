@@ -30,6 +30,19 @@ async function run(){
    const items=await contentRepository.listPublishedCourses();
    if(!items.some(x=>x.id==="curso-fundamentos"))throw new Error("Curso de exemplo ausente.");
  });
+ await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
+   const list=await learnerContentRepository.listPublishedCourses();
+   const ids=["curso-introducao-psicanalise","curso-formacao-freudiana"];
+   if(!ids.every(id=>list.some(c=>c.id===id)))
+     throw new Error("Os dois cursos iniciais não aparecem na biblioteca.");
+   const manifests=await Promise.all(ids.map(id=>learnerContentRepository.getPublishedCourse(id)));
+   if(manifests[0].course.modules.length!==8||manifests[1].course.modules.length!==10)
+     throw new Error("Módulos dos cursos iniciais não correspondem ao esperado.");
+   if(manifests.some(x=>x.course.modules.some(m=>m.lessons.length)))
+     throw new Error("Há aulas marcadas como prontas antes de terem sido criadas.");
+   if(list.some(c=>c.id==="curso-fundamentos"&&!c.local))
+     throw new Error("O curso técnico aparece indevidamente no catálogo principal.");
+ });
  await check("Manifesto de curso e módulos",async()=>{
    const r=await contentRepository.getPublishedCourse("curso-fundamentos");manifest=r.course;
    if(!manifest.modules?.length)throw new Error("Curso sem módulos.");
