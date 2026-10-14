@@ -5,10 +5,10 @@
   "courseId": "curso-fundamentos",
   "moduleId": "modulo-conflito",
   "slug": "recalque-em-freud",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "O recalque em Freud",
-  "summary": "Uma introdução ao recalque como conceito teórico.",
+  "summary": "Entenda por que o recalque não é sinônimo de esquecer e como uma hipótese teórica exige investigação.",
   "estimatedMinutes": 18,
   "objectives": [
     "Diferenciar recalque de esquecimento cotidiano",
@@ -41,6 +41,49 @@
       "settings": {}
     },
     {
+      "id": "conceito-001",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Recalque",
+        "definition": "Na teoria freudiana, o recalque designa uma operação psíquica relacionada ao afastamento de certas representações da consciência, em condições de conflito.",
+        "example": "Alguém não se lembrar de algo não basta, por si só, para demonstrar que o recalque esteja em jogo."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "comparacao-001",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Distinguir observação e hipótese",
+        "caption": "Comparação didática de níveis de descrição e interpretação",
+        "columns": [
+          "O que é possível observar",
+          "O que requer investigação"
+        ],
+        "rows": [
+          {
+            "criterion": "Relato",
+            "values": [
+              "A pessoa diz que não se recorda de um acontecimento.",
+              "Que condições participam desse esquecimento?"
+            ]
+          },
+          {
+            "criterion": "Conceito",
+            "values": [
+              "A existência de uma lacuna na lembrança.",
+              "A pertinência de formular uma hipótese de recalque."
+            ]
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
       "id": "caso-001",
       "type": "clinical_vignette",
       "version": 1,
@@ -49,6 +92,40 @@
         "narrative": "Um personagem relata que não se recorda de uma conversa importante e se pergunta por quê.",
         "reflection": "Que outras explicações e perguntas deveriam ser consideradas antes de concluir que existe recalque?",
         "disclaimer": "Esta vinheta é inteiramente fictícia e não constitui diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "percurso-1915",
+      "type": "timeline",
+      "version": 1,
+      "data": {
+        "title": "Do problema clínico à elaboração teórica",
+        "events": [
+          {
+            "date": "1895",
+            "title": "Estudos sobre a histeria",
+            "description": "Freud e Breuer investigam experiências clínicas que alimentariam novas perguntas sobre os sintomas."
+          },
+          {
+            "date": "1915",
+            "title": "O recalque",
+            "description": "Freud publica um ensaio dedicado à formulação metapsicológica do conceito."
+          }
+        ]
+      },
+      "settings": {
+        "showInOutline": true
+      }
+    },
+    {
+      "id": "nota-editorial-001",
+      "type": "quote",
+      "version": 1,
+      "data": {
+        "title": "Um cuidado de leitura",
+        "text": "Um fenômeno relatado não fornece, sozinho, sua interpretação.",
+        "attribution": "Atelier — síntese didática, não citação de Freud"
       },
       "settings": {}
     },
