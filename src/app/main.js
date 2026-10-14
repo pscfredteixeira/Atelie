@@ -280,7 +280,7 @@ async function onCourseForm(form){
       return;
     }
     if(kind==="new-course"){
-      const course=createCourse(data.title);
+      const course=createCourse(data.title,data.icon||"ψ");
       await saveCourseDraft(course);
       // O formulário de criação não está pendente depois do salvamento.
       unsavedForms.clear();
