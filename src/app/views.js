@@ -1,6 +1,7 @@
 import {contentRepository} from "../repositories/content-repository.js";
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
+import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/learning/journey.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -10,24 +11,36 @@ const routePreview=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)
 const info=()=>note("<strong>Protótipo sem banco de dados:</strong> cursos e aulas publicados vêm de arquivos JSON do GitHub. Rascunhos ficam somente neste navegador. Perfis são demonstrativos, sem login e sem controle de acesso real.");
 function metrics(items){return '<div class="metrics">'+items.map(([count,title])=>'<div class="metric"><strong>'+e(count)+'</strong><span>'+e(title)+'</span></div>').join('')+'</div>';}
 function courseCard(item){
-  return card("Curso publicado",item.title,"Abra a ementa e as aulas disponíveis.",
-    action("Ver curso →",routeCourse(item.id),"small"));
+  return card("Percurso disponível",item.title,
+    item.summary||"Abra a apresentação, conheça os objetivos e percorra as aulas na ordem proposta.",
+    action("Explorar o curso →",routeCourse(item.id),"small"));
 }
 function courseHeader(course){
  return pageHead("Curso / Formação",e(course.title),course.subtitle||course.description||"Percurso de estudo e pesquisa.");
 }
-function modules(course,teacher=false){
+function modules(course,teacher=false,currentLessonId=null){
+ const sequence=getCourseJourney(course),order=new Map(sequence.map(x=>[x.id,x]));
  const ms=[...course.modules].sort((a,b)=>a.position-b.position);
  if(!ms.length)return emptyState("Curso em preparação","Este curso ainda não possui módulos.");
  return ms.map((m,i)=>{
-  const rows=[...m.lessons].sort((a,b)=>a.position-b.position);
-  return '<details class="module" '+(i===0?'open':'')+'><summary>'+
+  const rows=[...m.lessons].sort((a,b)=>a.position-b.position).filter(l=>l.status===undefined||l.status==="published");
+  const active=!!currentLessonId&&rows.some(l=>l.id===currentLessonId);
+  return '<details class="module" '+(active||i===0?'open':'')+'><summary>'+
   '<div><div class="overline">Módulo '+String(i+1).padStart(2,"0")+' · '+rows.length+' aula(s)</div>'+
-  '<h3>'+e(m.title)+'</h3></div><span class="chevron" aria-hidden="true">+</span></summary>'+
-  (rows.length?rows.map((l,j)=>'<div class="lesson-item"><div><span class="number">'+String(j+1).padStart(2,"0")+'</span>'+
-    e(l.id==="aula-recalque"?"O recalque em Freud":l.id)+'</div>'+
-    action(teacher?"Editar →":"Estudar →",teacher?routeEdit(course.id,l.id):routeLesson(course.id,l.id),"small")+'</div>').join(''):
-    '<div class="lesson-item">Nenhuma aula publicada neste módulo.</div>')+'</details>';
+  '<h3>'+e(m.title)+'</h3>'+(m.description?'<p class="module-description">'+e(m.description)+'</p>':'')+
+  '</div><span class="chevron" aria-hidden="true">+</span></summary>'+
+  (rows.length?rows.map(l=>{
+     const indexed=order.get(l.id),isCurrent=currentLessonId===l.id;
+     const title=indexed?.title||l.title||l.id,minutes=indexed?.estimatedMinutes;
+     return '<div class="lesson-item journey-row'+(isCurrent?' current':'')+'"><div class="journey-entry">'+
+      '<span class="journey-number" aria-hidden="true">'+String(indexed?.number||1).padStart(2,"0")+'</span>'+
+      '<div><strong>'+e(title)+'</strong>'+
+      (l.summary?'<p>'+e(l.summary)+'</p>':'')+
+      '<span class="journey-meta">'+(minutes!==null&&minutes!==undefined?e(minutes)+' min · ':'')+
+      (isCurrent?'Aula atual':'Leitura disponível')+'</span></div></div>'+
+      action(teacher?"Editar →":isCurrent?"Retomar leitura →":"Abrir aula →",
+       teacher?routeEdit(course.id,l.id):routeLesson(course.id,l.id),"small")+'</div>';
+   }).join(''):'<div class="lesson-item">Nenhuma aula disponível neste módulo.</div>')+'</details>';
  }).join("");
 }
 async function studentHome(){
@@ -52,11 +65,20 @@ async function catalog(){
 }
 async function coursePage(id){
  const {course}=await contentRepository.getPublishedCourse(id);
- const lessonCount=course.modules.reduce((t,m)=>t+m.lessons.length,0);
- return courseHeader(course)+metrics([[course.modules.length,"Módulos"],[lessonCount,"Aulas publicadas no percurso"],[course.estimatedMinutes||"—","Minutos estimados"]])+
- (course.objectives?.length?'<section class="card" style="margin-top:21px"><div class="card-label">Objetivos de aprendizagem</div><ul class="muted" style="line-height:2">'+
+ const sequence=getCourseJourney(course),stats=summarizeCourse(course);
+ return courseHeader(course)+
+ '<div class="course-eyebrow">Um percurso de aprendizagem · do primeiro conceito ao último</div>'+
+ metrics([[stats.moduleCount,stats.moduleCount===1?"Módulo":"Módulos"],
+   [stats.lessonCount,stats.lessonCount===1?"Aula":"Aulas"],
+   [stats.durationMinutes===null?"—":stats.durationMinutes+" min","Tempo estimado"]])+
+ (sequence.length?'<section class="course-start"><div><span class="overline">Seu ponto de partida</span>'+
+ '<h2>Comece pela primeira aula</h2><p>'+e(sequence[0].title)+'</p></div>'+
+ action("Começar a estudar →",routeLesson(course.id,sequence[0].id),"action")+'</section>':'')+
+ (course.objectives?.length?'<section class="card course-goals"><div class="card-label">O que você poderá compreender</div><ul>'+
  course.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></section>':'')+
- sectionHead("Programa do curso",badge("Conteúdo JSON","purple"))+modules(course)+info();
+ sectionHead("Programa de estudos",badge("Sequência sugerida","purple"))+
+ (sequence.length?modules(course):emptyState("Nenhuma aula publicada","Os módulos deste curso ainda estão sendo preparados."))+
+ note("<strong>Sobre este percurso:</strong> as aulas seguem uma ordem didática, mas você pode revisitá-las livremente. O sistema ainda não registra aulas concluídas; acompanhamento individual virá no Sprint 10.")+info();
 }
 function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
  const html=renderLessonBlocks(lesson,{sourceURL});
@@ -78,10 +100,35 @@ function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
      isPreview?routeEdit(lesson.courseId,lesson.id):routeCourse(lesson.courseId),"small")+'</aside>';
  return '<div class="reading-layout">'+inner+sidebar+'</div>';
 }
+function lessonPager(course,ctx){
+ const cardLink=(entry,label)=>{
+   return '<a class="journey-pager-link" href="'+e(routeLesson(course.id,entry.id))+'">'+
+   '<span class="overline">'+e(label)+'</span><strong>'+e(entry.title)+'</strong>'+
+   '<span class="journey-pager-arrow" aria-hidden="true">'+(label==="Aula anterior"?"←":"→")+'</span></a>';
+ };
+ return '<nav class="journey-pager" aria-label="Navegação entre aulas">'+
+ (ctx.previous?cardLink(ctx.previous,"Aula anterior"):
+  '<div class="journey-pager-end"><span class="overline">Início do percurso</span><p>Esta é a primeira aula.</p></div>')+
+ (ctx.next?cardLink(ctx.next,"Próxima aula"):
+  '<div class="journey-pager-end"><span class="overline">Fim do percurso</span><p>Você chegou à última aula disponível. Isso não registra conclusão automaticamente.</p></div>')+
+ '</nav>';
+}
 async function lessonPage(cid,lid){
  const {course,lesson,contentURL}=await contentRepository.getPublishedLesson(cid,lid);
- return pageHead(e(course.title)+" / Aula",e(lesson.title),lesson.summary)+reader(lesson,{sourceURL:contentURL})+
- note("<strong>Conteúdo publicado em JSON:</strong> esta leitura é carregada dos arquivos de conteúdo. Os quizzes são apenas apresentados; a avaliação interativa virá no Sprint 9.");
+ const context=getLessonContext(course,lid);
+ const breadcrumb='<nav class="journey-breadcrumb" aria-label="Localização no curso">'+
+ action("Todos os cursos","#/cursos","quiet small")+'<span aria-hidden="true">/</span>'+
+ action(e(course.title),routeCourse(cid),"quiet small")+
+ '<span aria-hidden="true">/</span><span aria-current="page">Aula '+(context.index+1)+'</span></nav>';
+ return breadcrumb+
+ '<div class="lesson-header-info"><div><span class="overline">'+e(context.current?.moduleTitle||"Módulo")+
+ ' · Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
+ pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
+ (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
+ reader(lesson,{sourceURL:contentURL})+
+ lessonPager(course,context)+
+ '<details class="journey-course-drawer"><summary>Consultar programa do curso</summary>'+modules(course,false,lid)+'</details>'+
+ note("<strong>Navegação, não avaliação:</strong> anterior e próxima permitem percorrer as aulas, mas não registram presença, conclusão ou progresso. Os exercícios avaliativos completos entram no Sprint 9.");
 }
 function caderno(){
  return pageHead("Aprender / Meu caderno","Seu espaço de <em>anotações.</em>",
