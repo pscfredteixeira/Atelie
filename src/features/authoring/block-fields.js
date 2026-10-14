@@ -26,8 +26,11 @@ export const FIELD_DEFINITIONS={
   def("transcript","Transcrição do áudio","textarea")],
  video:[def("title","Título do vídeo"),def("src","Arquivo relativo (./media/video.mp4)"),
   def("captions","Legenda em VTT (./media/legenda.vtt)"),def("transcript","Transcrição","textarea")],
- interactive_lab:[def("title","Nome do laboratório"),def("engineId","Identificador técnico do motor"),
-  def("description","Apresentação","textarea"),def("alternative","Alternativa de estudo enquanto o laboratório não está ativo","textarea")]
+ interactive_lab:[def("title","Nome do laboratório"),def("engineId","Identificador do laboratório"),
+  def("description","Apresentação","textarea"),def("prompt","Pergunta de investigação","textarea"),
+  def("choices","Caminhos: identificação | escolha | devolutiva pedagógica","textarea",
+     "Um caminho por linha, separando ID, escolha e devolutiva por |."),
+  def("alternative","Alternativa textual para estudar","textarea")]
 };
 const text=x=>String(x??"");
 function valueFor(block,name){
@@ -40,6 +43,7 @@ function valueFor(block,name){
   case "columnB":return d.columns?.[1]||"";
   case "rows":return (d.rows||[]).map(r=>[r.criterion,...r.values].join(" | ")).join("\n");
   case "events":return (d.events||[]).map(ev=>[ev.date,ev.title,ev.description||""].join(" | ")).join("\n");
+  case "choices":return (d.choices||[]).map(c=>[c.id,c.label,c.feedback].join(" | ")).join("\n");
   default:return d[name]??"";
  }
 }
@@ -94,6 +98,9 @@ export function readBlockFields(block,form){
   }
   if(name==="events"){
     d.events=columns(splitLines(val),3,"Linha do tempo").map(c=>({date:c[0],title:c[1],description:c[2]}));continue;
+  }
+  if(name==="choices"){
+    d.choices=columns(splitLines(val),3,"Laboratório").map(c=>({id:c[0],label:c[1],feedback:c[2]}));continue;
   }
   d[name]=val.trim();
  }
