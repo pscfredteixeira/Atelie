@@ -143,8 +143,9 @@ async function lessonPage(cid,lid){
 async function caderno(){return notebookPage(learnerContentRepository);}
 async function progresso(){return progressPage(learnerContentRepository);}
 async function teacherHome(){
- const publicCourses=await contentRepository.listPublishedCourses();
- let courseDrafts=[],lessonDrafts=[],localAvailable=[],warnings=[];
+ let publicCourses=[],courseDrafts=[],lessonDrafts=[],localAvailable=[],warnings=[];
+ try{publicCourses=await contentRepository.listPublishedCourses();}
+ catch(err){warnings.push("Catálogo remoto indisponível: "+err.message);}
  try{courseDrafts=await listCourseDrafts();}
  catch(err){warnings.push(err.message);}
  try{localAvailable=await listLocalAvailableCourses();}
@@ -229,7 +230,8 @@ async function courseStructure(cid){
  try{local=await getCourseDraft(cid);}
  catch(err){warning="Armazenamento local não disponível: "+err.message;}
  try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
- catch(err){if(err.code!=="not_found")throw err;}
+ catch(err){if(err.code!=="not_found"&&!local)throw err;
+  if(err.code!=="not_found"&&local)warning=warning||"Catálogo remoto temporariamente indisponível."; }
  try{available=await getLocalAvailableCourse(cid);}
  catch(err){warning=warning||"Catálogo deste dispositivo indisponível: "+err.message;}
  if(!local&&!publicCourse&&!available)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
