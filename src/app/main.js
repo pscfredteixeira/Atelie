@@ -28,6 +28,7 @@ let currentDialog = null;
 let opener = null;
 let toastTimer;
 let activeRender=0;
+const unsavedForms=new Set();
 function route() {
   let path = window.location.hash.slice(1) || "/aluno";
   path = path.split("?")[0].replace(/\/+$/,"") || "/";
@@ -82,6 +83,7 @@ async function render(moveFocus) {
       '<a class="button" href="#/cursos">Voltar ao catálogo →</a></div></div>'};
   }
   if(call!==activeRender)return;
+  unsavedForms.clear();
   let chosen = path.startsWith("/professor") ? "#/professor" : path.startsWith("/admin") ? "#/admin" : "#/aluno";
   const topbar = '<header class="topbar"><div class="top-start">'+
     '<button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="'+String(isMenuOpen)+'">☰</button>'+
@@ -210,6 +212,24 @@ async function editableCourse(cid){
   const published=await getPublishedCourse(cid);
   return startCourseDraft(published.course);
 }
+function authoringFormKey(form){
+  return form.dataset.authoringForm+":"+(form.dataset.courseId||"")+":"+(form.dataset.moduleId||"");
+}
+function confirmUnsaved(otherThan=null){
+  const changed=[...unsavedForms].filter(x=>x!==otherThan);
+  return !changed.length||window.confirm("Existem alterações digitadas que ainda não foram salvas. Continuar irá descartá-las. Deseja prosseguir?");
+}
+document.addEventListener("input",ev=>{
+  const form=ev.target.closest('form[data-authoring-form]');
+  if(!form)return;
+  unsavedForms.add(authoringFormKey(form));
+  const region=document.getElementById("course-authoring-status");
+  if(region){region.textContent="Você tem alterações não salvas nesta tela.";region.style.color="var(--action)";}
+});
+window.addEventListener("beforeunload",ev=>{
+  if(!unsavedForms.size)return;
+  ev.preventDefault();ev.returnValue="";
+});
 function authoringStatus(message,error=false){
   const region=document.getElementById("course-authoring-status");
   if(region){region.textContent=message;region.style.color=error?"var(--danger)":"var(--good)";}
@@ -217,6 +237,7 @@ function authoringStatus(message,error=false){
 }
 async function onCourseForm(form){
   const kind=form.dataset.authoringForm;
+  if(!confirmUnsaved(authoringFormKey(form)))return;
   const data=Object.fromEntries(new FormData(form));
   const cid=form.dataset.courseId;
   try{
@@ -243,6 +264,7 @@ async function onCourseForm(form){
 async function onCourseOperation(button){
   const op=button.dataset.courseOp,cid=button.dataset.courseId;
   if(!op||!cid)return;
+  if(unsavedForms.size&&!confirmUnsaved())return;
   try{
     const local=await getCourseDraft(cid);
     if(op==="discard-course"){
@@ -320,6 +342,8 @@ document.addEventListener("click",ev=>{
   if(editorAction){onEditorAction(editorAction);return}
   const info=ev.target.closest("[data-info]");
   if(info){showDemoInfo(info.dataset.info,info);return}
+  const dest=ev.target.closest('a[href^="#/"]');
+  if(dest&&unsavedForms.size&&!confirmUnsaved()){ev.preventDefault();return;}
   const link=ev.target.closest('a[href^="#/"]');
   if(link&&isMenuOpen){
     setMenu(false);
@@ -327,7 +351,10 @@ document.addEventListener("click",ev=>{
   }
 });
 document.addEventListener("change",async ev=>{
-  if(ev.target.id==="switch-role"){window.location.hash=ev.target.value;return;}
+  if(ev.target.id==="switch-role"){
+    if(unsavedForms.size&&!confirmUnsaved()){ev.target.value=route().startsWith("/professor")?"#/professor":route().startsWith("/admin")?"#/admin":"#/aluno";return;}
+    window.location.hash=ev.target.value;return;
+  }
   if(ev.target.id!=="draft-import-file")return;
   const file=ev.target.files?.[0];
   if(!file)return;
