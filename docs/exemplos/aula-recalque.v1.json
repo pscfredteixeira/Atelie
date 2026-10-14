@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-recalque",
+  "courseId": "curso-fundamentos",
+  "moduleId": "modulo-conflito",
+  "slug": "recalque-em-freud",
+  "revision": 1,
+  "status": "published",
+  "title": "O recalque em Freud",
+  "summary": "Uma introdução ao recalque como conceito teórico.",
+  "estimatedMinutes": 18,
+  "objectives": [
+    "Diferenciar recalque de esquecimento cotidiano",
+    "Examinar o limite de inferências feitas a partir de exemplos"
+  ],
+  "blocks": [
+    {
+      "id": "abertura-001",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Esquecer alguma coisa é sempre recalcar?",
+        "hint": "Antes de responder, pense na diferença entre uma descrição e uma hipótese."
+      },
+      "settings": {
+        "isRequired": false
+      }
+    },
+    {
+      "id": "texto-001",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Um conceito, não uma tradução automática",
+        "paragraphs": [
+          "Na psicanálise freudiana, o recalque é um conceito relacionado ao conflito psíquico.",
+          "Nem todo esquecimento permite concluir que um recalque ocorreu. A hipótese depende do contexto teórico e da investigação do caso."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "caso-001",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Um exemplo fictício",
+        "narrative": "Um personagem relata que não se recorda de uma conversa importante e se pergunta por quê.",
+        "reflection": "Que outras explicações e perguntas deveriam ser consideradas antes de concluir que existe recalque?",
+        "disclaimer": "Esta vinheta é inteiramente fictícia e não constitui diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "quiz-001",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Qual formulação evita reduzir o recalque a qualquer esquecimento?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Todo esquecimento é necessariamente um recalque."
+          },
+          {
+            "id": "b",
+            "text": "O recalque é uma hipótese teórica que não pode ser presumida de qualquer esquecimento."
+          },
+          {
+            "id": "c",
+            "text": "A memória consciente fornece acesso completo às causas do conflito."
+          }
+        ],
+        "correctOptionId": "b",
+        "feedbackCorrect": "Correto: a distinção conceitual exige contexto e não permite inferência automática.",
+        "feedbackIncorrect": "Releia a diferença entre o fenômeno observado e a interpretação teórica."
+      },
+      "settings": {
+        "attempts": "unlimited",
+        "isRequired": false
+      }
+    },
+    {
+      "id": "referencias-001",
+      "type": "references",
+      "version": 1,
+      "data": {
+        "referenceIds": [
+          "ref-freud-recalque"
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [
+    {
+      "id": "ref-freud-recalque",
+      "author": "Freud, Sigmund",
+      "title": "O recalque (Die Verdrängung)",
+      "year": 1915,
+      "note": "Consultar a edição/tradução efetivamente utilizada antes de publicar uma aula definitiva."
+    }
+  ],
+  "metadata": {
+    "demo": true,
+    "readingLevel": "introducao",
+    "tags": [
+      "freud",
+      "recalque",
+      "defesa"
+    ]
+  }
+}
