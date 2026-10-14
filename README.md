@@ -123,7 +123,7 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | 3 | Motor de 14 blocos reutilizáveis — **implementado; QA em navegador pendente** |
 | 4 | Jornada de estudo e navegação em três aulas — **implementado; QA visual pendente** |
 | 5 | Estúdio de cursos e módulos — **implementado; QA em navegador pendente** |
-| 6 | Editor visual de aulas — **próximo** |
+| 6 | Editor visual de aulas — **código implementado; QA em navegador pendente** |
 | 7 | Modelos pedagógicos — **código implementado; QA em navegador pendente** |
 | 8 | Biblioteca de interatividades — **código implementado; QA em navegador pendente** |
 | 9 | Avaliações — **código implementado; QA em navegador pendente** |
