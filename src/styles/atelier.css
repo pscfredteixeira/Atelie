@@ -297,3 +297,51 @@ textarea.field{min-height:110px;resize:vertical}
   .journey-breadcrumb{margin-top:-10px}
 }
 @media(prefers-reduced-motion:reduce){.journey-pager-link{transition:none}}
+
+/* Sprint 5 — Estúdio de cursos e módulos */
+.authoring-creation{margin:25px 0 30px;border-color:#7d607f;background:linear-gradient(120deg,#2f253b,#292330)}
+.authoring-creation h2{margin:8px 0 10px}
+.authoring-creation>p{max-width:60ch;margin-bottom:16px}
+.authoring-quick-form{margin-top:17px}
+.authoring-inline{display:flex;gap:12px;align-items:stretch}
+.authoring-inline .field{flex:1;min-width:0}
+.authoring-inline>.button{flex:none}
+.authoring-layout{display:grid;grid-template-columns:minmax(0,1fr) 266px;gap:21px;align-items:start;margin:20px 0}
+.authoring-primary{display:grid;gap:17px;min-width:0}
+.authoring-primary>.section-header{margin:15px 0 0}
+.authoring-fields{display:grid;gap:10px;min-width:0}
+.authoring-fields .field{min-width:0;width:100%;margin:0}
+.authoring-fields .field-label{margin:8px 0 0}
+.authoring-fields .button-row{margin:9px 0 0}
+.authoring-fields .section-title{margin:5px 0 9px}
+.authoring-fields textarea.field{min-height:70px}
+.authoring-fields input:focus-visible,.authoring-fields textarea:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.course-module-editor{padding:21px}
+.course-module-editor .topline{margin-bottom:15px}
+.authoring-controls{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.course-module-editor>.authoring-controls{padding-top:15px;margin-top:16px;border-top:1px solid var(--stroke-soft)}
+.authoring-controls .button{padding:9px 11px;min-height:37px}
+.authoring-lesson-list{border-top:1px solid var(--stroke-soft);margin-top:16px;padding-top:17px}
+.authoring-lesson-list .overline{margin-bottom:12px}
+.authoring-lesson{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-top:1px solid var(--stroke-soft)}
+.authoring-lesson:first-of-type{border-top:0}
+.authoring-lesson-title{display:flex;align-items:center;gap:12px;min-width:0;line-height:1.45;font-size:13px;font-weight:600}
+.authoring-lesson-title .journey-number{color:var(--accent)}
+.authoring-empty{font-size:13px;color:var(--ink-muted);background:var(--surface-raised);border-radius:9px;padding:14px;margin:19px 0 0;line-height:1.7}
+.authoring-downloads{display:grid;gap:10px;margin-top:19px}
+.authoring-downloads .button{justify-content:center;text-align:center}
+.authoring-side{position:sticky;top:94px}
+#course-authoring-status{border-left:3px solid var(--accent);padding:10px 15px;color:var(--ink-muted);margin:13px 0 5px;line-height:1.6}
+@media(max-width:1140px){.authoring-layout{grid-template-columns:minmax(0,1fr)}.authoring-side{position:static;order:-1}.authoring-downloads{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:740px){
+ .authoring-inline{display:grid;gap:10px}
+ .authoring-inline .button{width:100%}
+ .authoring-layout{display:flex;flex-direction:column;gap:16px}
+ .authoring-layout>.authoring-side{width:100%;order:-1}
+ .authoring-layout>.authoring-primary{width:100%}
+ .authoring-downloads{grid-template-columns:1fr}
+ .authoring-lesson{align-items:stretch;flex-direction:column}
+ .authoring-lesson .authoring-controls{justify-content:flex-start;padding-left:40px}
+ .course-module-editor{padding:17px}
+ .course-module-editor>.authoring-controls .button{flex:1;min-width:100px}
+}
