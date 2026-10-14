@@ -155,6 +155,8 @@ async function admin(){
  sectionHead("Ferramentas de apresentação","")+
  '<div class="grid two">'+card("Design System","Biblioteca visual","Conheça as peças de interface, estados e cores reutilizáveis.",
   action("Abrir biblioteca →","#/admin/identidade","small"))+
+ card("Verificações","Diagnóstico do JSON","Teste o carregamento do catálogo, a validação de aulas e a gravação local de um registro temporário.",
+  '<a class="button small" href="./tests/smoke.html">Executar diagnóstico →</a>')+
  card("Arquitetura","Documentos do projeto","Consulte as decisões e as etapas de desenvolvimento.",
   '<a class="button small" href="./arquitetura.html">Mapa anterior ↗</a>')+'</div>'+info();
 }
