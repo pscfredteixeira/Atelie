@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 0 — definição da arquitetura. A página inicial é um mapa interativo do produto; **ainda não é** a plataforma de aulas funcionando.
+> **Estado atual:** Sprint 0.2 — protótipo navegável de seis telas, sem login real, banco ou salvamento remoto. **Ainda não é** a plataforma de aulas definitiva.
 
 ## Abrir a demonstração
 
@@ -10,9 +10,13 @@ GitHub Pages configurado em **main / (root)**:
 
 https://pscfredteixeira.github.io/Atelie/
 
+**Protótipo das seis telas:** https://pscfredteixeira.github.io/Atelie/wireframes.html
+
 A publicação pode levar alguns minutos após o commit. Se a página não aparecer, verificar em Settings → Pages o status do deploy.
 
 ## O que já existe
+
+- [Protótipo navegável das seis telas](wireframes.html) e sua [especificação de UX](WIREFRAMES_ATELIER.md).
 
 - [Mapa de navegação e jornada dos três ambientes](ARQUITETURA_ATELIER.md).
 - Página inicial responsiva com apresentação da arquitetura para colaboradores.
@@ -49,6 +53,6 @@ A publicação pode levar alguns minutos após o commit. Se a página não apare
 
 ## Próxima etapa
 
-**Sprint 0.2 — Wireframes das telas prioritárias:** Início do Aluno, Curso, Sala de Aula, Painel do Professor, Estrutura de Curso e Estúdio da Aula.
+**Sprint 0.3 — Especificação detalhada dos contratos de conteúdo e estados de interface.**
 
-Aprovar os fluxos antes de programar o editor visual.
+Validar as seis telas com professores e alunos de teste antes da implementação definitiva.
