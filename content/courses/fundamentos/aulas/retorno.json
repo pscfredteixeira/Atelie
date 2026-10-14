@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-retorno",
+  "courseId": "curso-fundamentos",
+  "moduleId": "modulo-conflito",
+  "slug": "retorno-do-recalcado",
+  "revision": 1,
+  "status": "published",
+  "title": "O retorno do recalcado",
+  "summary": "Uma introdução cuidadosa à ideia de que o recalque não elimina simplesmente o conflito.",
+  "estimatedMinutes": 18,
+  "objectives": [
+    "Compreender o retorno do recalcado como formulação teórica",
+    "Evitar interpretar manifestações cotidianas de forma automática"
+  ],
+  "blocks": [
+    {
+      "id": "retorno-abertura",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Se uma representação foi recalcada, isso significa que ela deixou de produzir efeitos?",
+        "hint": "Retome a distinção entre não estar consciente e ter sido eliminado."
+      },
+      "settings": {}
+    },
+    {
+      "id": "retorno-texto",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O que significa 'retorno'?",
+        "paragraphs": [
+          "Na elaboração freudiana, o recalque não equivale a apagar uma experiência como se ela nunca tivesse existido. O conflito e seus efeitos permanecem como questões para a investigação psicanalítica.",
+          "A expressão “retorno do recalcado” remete à possibilidade de manifestações indiretas, deslocadas ou transformadas daquilo que foi recalcado. O modo como isso é pensado varia ao longo dos textos de Freud.",
+          "Não se deve concluir que todo lapso, sonho ou sintoma tenha uma interpretação evidente. A singularidade da experiência e os limites da hipótese precisam ser respeitados."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "retorno-comparacao",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Três ideias para não confundir",
+        "caption": "Quadro didático de distinções conceituais",
+        "columns": [
+          "O que a frase sugere",
+          "Como pensar com cautela"
+        ],
+        "rows": [
+          {
+            "criterion": "Esquecer",
+            "values": [
+              "Não recordar algo.",
+              "Não basta para concluir que houve recalque."
+            ]
+          },
+          {
+            "criterion": "Recalcar",
+            "values": [
+              "Operação teórica ligada a conflito.",
+              "Seu uso exige trabalho conceitual e investigação."
+            ]
+          },
+          {
+            "criterion": "Retorno do recalcado",
+            "values": [
+              "Possível manifestação indireta do recalcado.",
+              "Não produz uma fórmula automática de interpretação."
+            ]
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "retorno-caso",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Uma pergunta, não uma conclusão",
+        "narrative": "Uma personagem fictícia percebe que um mesmo tema reaparece em diferentes relatos. Ela ainda não sabe o que isso significa.",
+        "reflection": "Que perguntas poderiam abrir uma investigação sem transformar a repetição em prova de uma hipótese específica?",
+        "disclaimer": "Vinheta didática fictícia. Não descreve paciente real e não constitui diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "retorno-fechamento",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Para continuar a estudar",
+        "paragraphs": [
+          "Ao encerrar este pequeno percurso, retome os conceitos em sua sequência: conflito psíquico, recalque e retorno do recalcado.",
+          "Uma aprendizagem rigorosa em psicanálise não reduz os fenômenos a definições rápidas; ela sustenta perguntas e considera os limites de cada interpretação."
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [],
+  "metadata": {
+    "demo": true,
+    "readingLevel": "introducao",
+    "tags": [
+      "freud",
+      "conceitos",
+      "formacao"
+    ]
+  }
+}
