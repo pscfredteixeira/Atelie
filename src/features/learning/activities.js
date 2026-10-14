@@ -10,7 +10,8 @@ export function checkQuiz(form){
  const selected=form.querySelector('input[type="radio"]:checked');
  if(!selected)return {answered:false,correct:false};
  const right=selected.value===form.dataset.correct;
- const message=form.querySelector(right?"[data-feedback-correct]":"[data-feedback-incorrect]")?.textContent||
+ const source=form.querySelector(right?"[data-feedback-correct]":"[data-feedback-incorrect]");
+ const message=(source?.content?.textContent||source?.textContent)||
   (right?"Boa reflexão.":"Revise as ideias e tente novamente.");
  activityFeedback(form,right,message);
  form.querySelectorAll(".learning-option").forEach(label=>{
@@ -24,7 +25,7 @@ export function exploreLab(button){
  if(!fieldset)return false;
  const outcome=[...fieldset.querySelectorAll("[data-outcome]")].find(x=>x.dataset.outcome===button.dataset.branch);
  if(!outcome)return false;
- activityFeedback(fieldset,true,outcome.textContent);
+ activityFeedback(fieldset,true,outcome.content?.textContent||outcome.textContent||"Reflita sobre essa escolha.");
  fieldset.querySelectorAll("[data-branch]").forEach(x=>x.classList.toggle("is-chosen",x===button));
  return true;
 }
