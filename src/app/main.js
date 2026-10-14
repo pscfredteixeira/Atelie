@@ -1,6 +1,8 @@
 import {routeView} from "./views.js";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
+import {getLocalAvailableCourse,removeLocalAvailableCourse} from "../repositories/local-catalog-repository.js";
+import {makeCourseAvailableOnDevice} from "../features/authoring/local-publication.js";
 import {createLesson} from "../features/authoring/lesson-editor.js";
 import {useLessonTemplate} from "../features/authoring/lesson-templates.js";
 import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "../features/authoring/studio-controller.js";
@@ -229,6 +231,8 @@ async function onEditorAction(button){
 async function editableCourse(cid){
   const found=await getCourseDraft(cid);
   if(found)return found.course;
+  const available=await getLocalAvailableCourse(cid);
+  if(available)return startCourseDraft(available.course);
   const published=await getPublishedCourse(cid);
   return startCourseDraft(published.course);
 }
@@ -303,8 +307,24 @@ async function onCourseOperation(button){
   if(unsavedForms.size&&!confirmUnsaved())return;
   try{
     const local=await getCourseDraft(cid);
+    if(op==="make-available"){
+      if(unsavedForms.size)throw Error("Salve as alterações dos formulários antes de disponibilizar o curso.");
+      const published=await makeCourseAvailableOnDevice(cid);
+      await render(false);
+      authoringStatus("Curso “"+published.title+"” disponível na área do aluno deste navegador ("+published.lessonCount+" aulas).");
+      return;
+    }
+    if(op==="make-unavailable"){
+      if(!window.confirm("Retirar este curso da área do aluno deste navegador? O rascunho e as anotações permanecem salvos."))return;
+      await removeLocalAvailableCourse(cid);
+      await render(false);
+      authoringStatus("Curso retirado da área do aluno deste dispositivo. Seu rascunho continua salvo.");
+      return;
+    }
     if(op==="discard-course"){
       if(!local)throw new Error("Nenhum rascunho local para descartar.");
+      const publishedLocally=await getLocalAvailableCourse(cid);
+      if(publishedLocally)throw new Error("Retire primeiro o curso da área do aluno antes de excluir seu rascunho.");
       if(!window.confirm("Descartar este curso ou revisão local? Esta ação apaga as alterações que não foram exportadas."))return;
       await deleteCourseDraft(cid);
       let published=false;
