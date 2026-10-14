@@ -38,6 +38,7 @@ let toastTimer;
 let activeRender=0;
 const unsavedForms=new Set();
 let unsavedNote=false;
+let approvedNavigationHash=null;
 function route() {
   let path = window.location.hash.slice(1) || "/aluno";
   path = path.split("?")[0].replace(/\/+$/,"") || "/";
@@ -457,6 +458,7 @@ document.addEventListener("click",ev=>{
   if(dest&&unsavedForms.size&&!confirmUnsaved()){ev.preventDefault();return;}
   if(dest&&isStudioDirty()&&!confirmStudioLeave()){ev.preventDefault();return;}
   if(dest&&unsavedNote&&!window.confirm("Sua anotação não foi salva. Descartar a alteração?")){ev.preventDefault();return;}
+  if(dest&&(unsavedForms.size||isStudioDirty()||unsavedNote))approvedNavigationHash=dest.getAttribute("href");
   const link=ev.target.closest('a[href^="#/"]');
   if(link&&isMenuOpen){
     setMenu(false);
@@ -493,6 +495,7 @@ document.addEventListener("change",async ev=>{
     if(unsavedForms.size&&!confirmUnsaved()){ev.target.value=route().startsWith("/professor")?"#/professor":route().startsWith("/admin")?"#/admin":"#/aluno";return;}
     if(isStudioDirty()&&!confirmStudioLeave()){ev.target.value="#/professor";return;}
     if(unsavedNote&&!window.confirm("Anotação não salva. Deseja mudar de ambiente?"))return;
+    if(unsavedForms.size||isStudioDirty()||unsavedNote)approvedNavigationHash=ev.target.value;
     window.location.hash=ev.target.value;return;
   }
   if(ev.target.id!=="draft-import-file")return;
@@ -530,7 +533,9 @@ window.addEventListener("hashchange",event=>{
   // A mudança de hash já ocorreu; se for cancelada, restaure sem novo hashchange.
   const previousHash=new URL(event.oldURL).hash||"#/aluno";
   const leaving=previousHash!==(window.location.hash||"#/aluno");
-  if(leaving && (unsavedForms.size||isStudioDirty()||unsavedNote)){
+  const alreadyApproved=approvedNavigationHash===window.location.hash;
+  approvedNavigationHash=null;
+  if(leaving && !alreadyApproved && (unsavedForms.size||isStudioDirty()||unsavedNote)){
     let permitted=true;
     if(unsavedForms.size&&!confirmUnsaved())permitted=false;
     if(permitted&&isStudioDirty()&&!confirmStudioLeave())permitted=false;
