@@ -349,3 +349,9 @@ O aluno visualiza a ordem do percurso e usa controles **Aula anterior** e **Pró
 O professor pode criar um curso, editar apresentação e objetivos, criar e ordenar módulos, reorganizar aulas dentro de um módulo e exportar manifestos JSON. **Nada é publicado automaticamente**. A versão do aluno permanece independente e a criação de aulas por blocos chega no Sprint 6.
 
 **Próximo:** Sprint 6 — editor visual de aulas com blocos reutilizáveis. Não há Supabase nem autenticação real.
+
+## 21. Sprints 6–13 — Estrutura final do piloto JSON
+
+Os recursos de autoria visual, templates, laboratório por caminhos, avaliação formativa, anotações, conclusão, perfis fictícios, backup local e roteiro de teste beta estão integrados ao código do novo `Atelie`. Consulte [o status e as pendências dos Sprints 6–13](docs/SPRINTS_6_13_STATUS.md).
+
+**Critério essencial:** testes sintéticos e verificações de sintaxe não são homologação de interface. Ainda é preciso executar os diagnósticos no GitHub Pages, testar iPhone/Android, verificar teclado/leitor de tela e obter avaliação real de alunos e professores convidados. Não há autenticação, Supabase ou servidor próprio.
