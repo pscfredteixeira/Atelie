@@ -371,7 +371,7 @@ export async function routeView(path){
  if(m)return {title:"Estrutura do curso",area:"Professor",html:await courseStructure(m[1])};
  m=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/editar$/);
  if(m)return {title:"Estúdio Visual de Aula",area:"Professor",html:await visualEditor(m[1],m[2])};
- m=path.match(/^\\/professor\\/cursos\\/([\\w-]+)\\/aulas\\/([\\w-]+)\\/json$/);
+ m=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/json$/);
  if(m)return {title:"Editor JSON avançado",area:"Professor",html:await editor(m[1],m[2])};
  m=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/previa$/);
  if(m)return {title:"Prévia",area:"Professor",html:await preview(m[1],m[2])};
