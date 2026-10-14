@@ -185,7 +185,7 @@ async function run(){
    const quiz=blockTemplate("multiple_choice");
    const form=document.createElement("form");
    form.innerHTML=renderBlockFields(quiz,{references:[]});
-   form.querySelector('[name="options"]').value="Primeira alternativa\\nSegunda alternativa\\nTerceira alternativa";
+   form.querySelector('[name="options"]').value="Primeira alternativa\nSegunda alternativa\nTerceira alternativa";
    form.querySelector('[name="correctIndex"]').value="3";
    const result=readBlockFields(quiz,form);
    if(result.options.length!==3||result.correctOptionId!==result.options[2].id)
