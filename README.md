@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 4 implementado: catálogo, sequência de três aulas JSON e navegação anterior/próxima para o aluno. O motor pedagógico e os rascunhos locais continuam ativos. O site e os testes em dispositivos reais ainda precisam de homologação.
+> **Estado atual:** Sprint 5 implementado: criação e organização visual de cursos e módulos, revisões locais em IndexedDB e exportação JSON. Sem banco de dados externo. Testes de navegador e homologação visual continuam pendentes.
 
 ## Abrir o Atelier
 
@@ -20,6 +20,16 @@ Protótipos anteriores preservados:
 - https://pscfredteixeira.github.io/Atelie/wireframes.html
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
+
+## Sprint 5 — Estúdio de Criação: cursos e módulos
+
+- [Resultado, roteiro de teste e limitações do Sprint 5](docs/SPRINT_5_RESULTADO.md).
+- [Formulários de criação, informações do curso, módulos e reordenação](src/app/views.js).
+- [Operações de edição preservando IDs](src/features/authoring/course-editor.js).
+- [Persistência IndexedDB exclusivamente local](src/repositories/course-draft-repository.js).
+- Testes técnicos na [página de diagnóstico](tests/smoke.html).
+
+Abra `https://pscfredteixeira.github.io/Atelie/#/professor` para **criar um curso local**, adicionar e organizar módulos e exportar o manifesto para uma futura publicação manual. A área do aluno continua acessando **apenas JSON publicado no GitHub**, não os seus rascunhos. A criação visual das aulas ocorrerá no Sprint 6.
 
 ## Sprint 4 — Jornada de aprendizagem
 
@@ -98,8 +108,8 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | 2 | JSON publicado, leitura, validação e rascunhos locais — **implementado; testes de navegador pendentes** |
 | 3 | Motor de 14 blocos reutilizáveis — **implementado; QA em navegador pendente** |
 | 4 | Jornada de estudo e navegação em três aulas — **implementado; QA visual pendente** |
-| 5 | Gestão de cursos e módulos — **próximo** |
-| 6 | Editor visual de aulas |
+| 5 | Estúdio de cursos e módulos — **implementado; QA em navegador pendente** |
+| 6 | Editor visual de aulas — **próximo** |
 | 7 | Modelos pedagógicos |
 | 8 | Biblioteca de interatividades |
 | 9 | Avaliações |
@@ -110,6 +120,6 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 ## Próxima etapa
 
-**Sprint 5 — Gestão de cursos e módulos:** criar, reorganizar e salvar estruturas de cursos pelo ambiente do professor, inicialmente no navegador, com exportação para publicação manual no GitHub.
+**Sprint 6 — Editor visual de aulas:** criar blocos didáticos, configurá-los, reorganizá-los e pré-visualizar como aluno, sem escrever JSON manualmente. Rascunhos continuarão locais e exigirão exportação e publicação separadas.
 
-Testes de dispositivos reais, Pages, UX e acessibilidade permanecem necessários antes de homologar a versão piloto.
+**QA pendente:** abrir e testar a plataforma publicada em navegadores e dispositivos reais, especialmente o IndexedDB e os downloads.
