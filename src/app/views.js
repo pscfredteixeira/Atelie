@@ -1,4 +1,6 @@
 import {contentRepository} from "../repositories/content-repository.js";
+import {learnerContentRepository} from "../repositories/learner-content-repository.js";
+import {getLocalAvailableCourse,listLocalAvailableCourses} from "../repositories/local-catalog-repository.js";
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/learning/journey.js";
@@ -12,11 +14,12 @@ const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
 const routeManage=id=>"#/professor/cursos/"+encodeURIComponent(id);
 const routeEdit=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)+"/editar";
 const routePreview=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)+"/previa";
-const info=()=>note("<strong>Protótipo sem banco de dados:</strong> cursos e aulas publicados vêm de arquivos JSON do GitHub. Rascunhos ficam somente neste navegador. Perfis são demonstrativos, sem login e sem controle de acesso real.");
+const info=()=>note("<strong>Como os cursos funcionam:</strong> os cursos do GitHub são públicos; os cursos criados e disponibilizados nesta plataforma aparecem somente neste navegador. Não há contas reais nem sincronização entre dispositivos.");
 function metrics(items){return '<div class="metrics">'+items.map(([count,title])=>'<div class="metric"><strong>'+e(count)+'</strong><span>'+e(title)+'</span></div>').join('')+'</div>';}
 function courseCard(item){
-  return card("Percurso disponível",item.title,
-    item.summary||"Abra a apresentação, conheça os objetivos e percorra as aulas na ordem proposta.",
+  return card(item.local?"Criado neste dispositivo":"Curso do catálogo público",item.title,
+    (item.summary||"Abra a apresentação e percorra as aulas na ordem proposta.")+
+    (item.local?" · Disponível somente neste navegador.":""),
     action("Explorar o curso →",routeCourse(item.id),"small"));
 }
 function courseHeader(course){
@@ -48,7 +51,7 @@ function modules(course,teacher=false,currentLessonId=null){
  }).join("");
 }
 async function studentHome(){
- const list=await contentRepository.listPublishedCourses();
+ const list=await learnerContentRepository.listPublishedCourses();
  return pageHead("Atelier · Aprender","Um laboratório de <em>ideias.</em>",
  "Cada percurso une leitura, investigação e reflexão. Estamos construindo uma plataforma para aprender psicanálise com profundidade.")+
  (list.length?'<section class="illustrated"><div><div class="overline">Comece pelo primeiro curso</div><h2>'+e(list[0].title)+'</h2>'+
@@ -62,15 +65,16 @@ async function studentHome(){
 async function catalog(){
  const list=await contentRepository.listPublishedCourses();
  return pageHead("Aprender / Cursos","O que você deseja <em>investigar?</em>",
- "Os cursos desta biblioteca são carregados diretamente dos arquivos JSON publicados.")+
+ "Explore tanto os cursos públicos quanto os cursos que você criou e disponibilizou neste dispositivo.")+
  (list.length?'<div class="grid">'+list.map(courseCard).join('')+'</div>':
  emptyState("Nenhum curso disponível","A biblioteca ainda está sendo preparada.",
  action("Voltar ao início →","#/aluno","action")))+info();
 }
 async function coursePage(id){
- const {course}=await contentRepository.getPublishedCourse(id);
+ const {course,local}=await learnerContentRepository.getPublishedCourse(id);
  const sequence=getCourseJourney(course),stats=summarizeCourse(course);
  return courseHeader(course)+
+ (local?'<p class="notice" role="note"><strong>Curso deste dispositivo.</strong> Este percurso foi disponibilizado somente neste navegador. Outros usuários ainda não o veem pela internet.</p>':'')+
  '<div class="course-eyebrow">Um percurso de aprendizagem · do primeiro conceito ao último</div>'+
  metrics([[stats.moduleCount,stats.moduleCount===1?"Módulo":"Módulos"],
    [stats.lessonCount,stats.lessonCount===1?"Aula":"Aulas"],
@@ -118,13 +122,14 @@ function lessonPager(course,ctx){
  '</nav>';
 }
 async function lessonPage(cid,lid){
- const {course,lesson,contentURL}=await contentRepository.getPublishedLesson(cid,lid);
+ const {course,lesson,contentURL,local}=await learnerContentRepository.getPublishedLesson(cid,lid);
  const context=getLessonContext(course,lid);
  const breadcrumb='<nav class="journey-breadcrumb" aria-label="Localização no curso">'+
  action("Todos os cursos","#/cursos","quiet small")+'<span aria-hidden="true">/</span>'+
  action(e(course.title),routeCourse(cid),"quiet small")+
  '<span aria-hidden="true">/</span><span aria-current="page">Aula '+(context.index+1)+'</span></nav>';
  return breadcrumb+
+ (local?'<p class="notice" role="note">Aula disponibilizada somente neste dispositivo.</p>':'')+
  '<div class="lesson-header-info"><div><span class="overline">'+e(context.current?.moduleTitle||"Módulo")+
  ' · Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
@@ -135,13 +140,15 @@ async function lessonPage(cid,lid){
  '<details class="journey-course-drawer"><summary>Consultar programa do curso</summary>'+modules(course,false,lid)+'</details>'+
  note("<strong>Estudo local:</strong> marcar uma aula como concluída e responder a questões registra apenas seu histórico neste navegador, no perfil de teste selecionado. A marcação é voluntária, não certifica aprendizagem.");
 }
-async function caderno(){return notebookPage(contentRepository);}
-async function progresso(){return progressPage(contentRepository);}
+async function caderno(){return notebookPage(learnerContentRepository);}
+async function progresso(){return progressPage(learnerContentRepository);}
 async function teacherHome(){
  const publicCourses=await contentRepository.listPublishedCourses();
- let courseDrafts=[],lessonDrafts=[],warnings=[];
+ let courseDrafts=[],lessonDrafts=[],localAvailable=[],warnings=[];
  try{courseDrafts=await listCourseDrafts();}
  catch(err){warnings.push(err.message);}
+ try{localAvailable=await listLocalAvailableCourses();}
+ catch(err){warnings.push("Catálogo deste dispositivo: "+err.message);}
  try{lessonDrafts=await listDrafts();}
  catch(err){warnings.push("Rascunhos de aula: "+err.message);}
  const modifiedIds=new Set(courseDrafts.map(x=>x.id));
@@ -153,9 +160,9 @@ async function teacherHome(){
   '<button class="button action" type="submit">Criar curso local →</button></div>'+
   '</form></section>';
  return pageHead("Atelier / Criar","Organize seu <em>ensino.</em>",
- "Crie cursos e módulos pelo navegador. As alterações são locais e não aparecem para os alunos até serem exportadas e publicadas manualmente.")+
+ "Crie cursos, módulos e aulas pela interface. Depois, disponibilize o curso na área do aluno deste mesmo navegador, sem precisar editar JSON.")+
  (warnings.length?'<div class="notice" role="alert">'+warnings.map(e).join(" · ")+'</div>':'')+
- metrics([[publicCourses.length,"Cursos publicados"],[courseDrafts.length,"Rascunhos de curso no dispositivo"],[lessonDrafts.length,"Rascunhos locais de aula"]])+
+ metrics([[publicCourses.length,"Cursos públicos"],[localAvailable.length,"Cursos disponíveis neste dispositivo"],[courseDrafts.length,"Cursos em edição"]])+
  create+sectionHead("Meus rascunhos de cursos",badge("Somente neste navegador","purple"))+
  (courseDrafts.length?'<div class="course-list">'+courseDrafts.map(d=>
    '<article class="card course-line"><span aria-hidden="true">✧</span><div><h3>'+e(d.course.title)+'</h3>'+
@@ -168,6 +175,11 @@ async function teacherHome(){
    '<p>'+ (modifiedIds.has(c.id)?"Você também tem uma revisão local deste curso.":"Disponível no catálogo público; pode criar uma revisão local.")+'</p></div>'+
    action(modifiedIds.has(c.id)?"Abrir revisão →":"Preparar edição →",routeManage(c.id),"small")+'</article>').join("")+'</div>':
   emptyState("Nenhum curso publicado","Novos cursos poderão ser incluídos no catálogo após exportação e commit."))+
+ (localAvailable.length?sectionHead("Disponíveis neste dispositivo",badge("Catálogo local","purple"))+
+ '<div class="course-list">'+localAvailable.map(c=>
+ '<article class="card course-line"><span aria-hidden="true">◈</span><div><h3>'+e(c.title)+'</h3>'+
+ '<p>Este curso aparece no ambiente Aluno deste navegador. Não está publicado para outras pessoas.</p></div>'+
+ action("Gerenciar curso →",routeManage(c.id),"small")+'</article>').join("")+'</div>':'')+
  (lessonDrafts.length?sectionHead("Rascunhos técnicos de aulas","")+
  '<div class="course-list">'+lessonDrafts.map(d=>'<article class="card"><div class="card-label">Rascunho local de aula</div>'+
  '<h3>'+e(d.lesson.title)+'</h3>'+action("Editar JSON →",routeEdit(d.courseId,d.lessonId),"small")+'</article>').join("")+'</div>':'')+info();
@@ -213,16 +225,18 @@ function moduleEditor(course,mod,index){
   '</section>';
 }
 async function courseStructure(cid){
- let local=null,publicCourse=null,warning="";
+ let local=null,publicCourse=null,available=null,warning="";
  try{local=await getCourseDraft(cid);}
  catch(err){warning="Armazenamento local não disponível: "+err.message;}
  try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
  catch(err){if(err.code!=="not_found")throw err;}
- if(!local&&!publicCourse)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
- const course=local?.course||publicCourse;
+ try{available=await getLocalAvailableCourse(cid);}
+ catch(err){warning=warning||"Catálogo deste dispositivo indisponível: "+err.message;}
+ if(!local&&!publicCourse&&!available)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
+ const course=local?.course||publicCourse||available.course;
  const modulesSorted=[...course.modules].sort((a,b)=>a.position-b.position);
  const courseAttr=' data-course-id="'+e(course.id)+'"';
- const status=local?"Rascunho salvo neste navegador":"Curso publicado — ainda sem revisão local";
+ const status=available?"Disponível na área do aluno deste dispositivo":local?"Rascunho salvo neste navegador":"Curso público — ainda sem revisão local";
  const form='<form data-authoring-form="course-info"'+courseAttr+' class="card authoring-fields">'+
  '<div class="card-label">Informações do curso</div>'+
  '<label class="field-label" for="authoring-course-title">Título</label>'+
@@ -243,17 +257,21 @@ async function courseStructure(cid){
  '<div class="button-row"><button class="button action" type="submit">+ Adicionar módulo</button></div></form>';
  return '<div class="topline"><span class="overline">Estúdio / Estrutura de curso</span>'+badge(status,"purple")+'</div>'+
  pageHead("Professor / Gestão",e(course.title),
- "Organize as etapas e a sequência das aulas sem escrever JSON. Alterações são guardadas apenas neste navegador.")+
+ "Organize cursos, módulos e aulas pela interface. Quando tudo estiver pronto, disponibilize o percurso para estudo neste mesmo dispositivo.")+
  (warning?'<div class="notice" role="alert">'+e(warning)+'</div>':'')+
  '<div id="course-authoring-status" tabindex="-1" role="status" aria-live="polite" class="tiny">Nenhuma alteração desta tela foi salva automaticamente.</div>'+
  '<div class="authoring-layout"><div class="authoring-primary">'+form+
  sectionHead("Módulos do curso",badge(modulesSorted.length+" módulo(s)"))+
  (modulesSorted.length?modulesSorted.map((m,i)=>moduleEditor(course,m,i)).join(""):
- emptyState("Comece pelo primeiro módulo","Divida o curso em etapas pedagógicas. As aulas poderão ser criadas visualmente no próximo sprint."))+
+ emptyState("Comece pelo primeiro módulo","Divida o curso em etapas pedagógicas. Em seguida, crie as aulas visualmente."))+
  add+'</div><aside class="sidepanel authoring-side"><div class="overline">Publicação e backup</div><h3>O rascunho fica com você.</h3>'+
- '<p class="hint">Clique em Salvar para gravar no IndexedDB do dispositivo. Nada é publicado automaticamente.</p>'+
+ '<p class="hint">Salve primeiro cada aula e as informações do curso. Depois, use “Disponibilizar” para vê-lo na área do aluno deste navegador.</p>'+
  '<div class="authoring-downloads">'+
- '<button type="button" class="button action" data-course-op="export-manifest"'+courseAttr+'>Baixar manifesto JSON</button>'+
+ '<button type="button" class="button action" data-course-op="make-available"'+courseAttr+'>'+
+ (available?"Atualizar curso na área do aluno":"Disponibilizar na área do aluno")+'</button>'+
+ (available?'<button type="button" class="button quiet" data-course-op="make-unavailable"'+courseAttr+'>Retirar da área do aluno</button>':'')+
+ (available?action("Ver como aluno →",routeCourse(cid),"small"):'')+
+ '<button type="button" class="button" data-course-op="export-manifest"'+courseAttr+'>Baixar manifesto JSON</button>'+
  (!publicCourse&&local?'<button type="button" class="button" data-course-op="export-catalog"'+courseAttr+'>Baixar entrada do catálogo</button>':'')+
  '<button type="button" class="button quiet" data-course-op="discard-course"'+courseAttr+'>'+
  (publicCourse?"Descartar revisão local":"Excluir curso local")+'</button></div>'+
