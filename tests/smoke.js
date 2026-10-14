@@ -2,6 +2,7 @@ import {contentRepository} from "../src/repositories/content-repository.js";
 import {validateLesson,validateLessonLink} from "../src/repositories/validators.js";
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
+import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -80,6 +81,32 @@ async function run(){
    const html=renderLessonBlocks(malicious);
    if(html.includes("<script>")||html.includes("<img src=x")||!html.includes("&lt;script&gt;"))
       throw new Error("O conteúdo não foi codificado como texto seguro.");
+ });
+ await check("Sequência de aulas por posição e identificação estável",async()=>{
+   if(!manifest)throw new Error("Manifesto não carregado.");
+   const items=getCourseJourney(manifest);
+   if(items.length!==3||items.map(x=>x.id).join(",")!=="aula-conflito,aula-recalque,aula-retorno")
+     throw new Error("O percurso JSON não está na sequência prevista.");
+   const totals=summarizeCourse(manifest);
+   if(totals.durationMinutes!==52)throw new Error("Soma de durações divergente.");
+ });
+ await check("Aula anterior, próxima e limites do percurso",async()=>{
+   if(!manifest)throw new Error("Manifesto não carregado.");
+   const first=getLessonContext(manifest,"aula-conflito");
+   const middle=getLessonContext(manifest,"aula-recalque");
+   const last=getLessonContext(manifest,"aula-retorno");
+   if(first.previous||first.next?.id!=="aula-recalque"||
+      middle.previous?.id!=="aula-conflito"||middle.next?.id!=="aula-retorno"||
+      last.next||last.previous?.id!=="aula-recalque")
+     throw new Error("Os controles de anterior/próxima estão inconsistentes.");
+ });
+ await check("Leitura das três aulas publicadas por JSON",async()=>{
+   for(const id of ["aula-conflito","aula-recalque","aula-retorno"]){
+     const r=await contentRepository.getPublishedLesson("curso-fundamentos",id);
+     if(!r.lesson?.blocks?.length||r.lesson.id!==id)throw new Error("Aula não carregada: "+id);
+     const html=renderLessonBlocks(r.lesson,{sourceURL:r.contentURL});
+     if(!html.includes("lesson-block"))throw new Error("Motor indisponível na aula "+id);
+   }
  });
  await check("Gravação, recuperação e exclusão no IndexedDB",async()=>{
    if(!lesson)throw new Error("Aula não foi carregada.");
