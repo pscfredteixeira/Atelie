@@ -3,6 +3,7 @@ import {getDraft,listDrafts} from "../repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/learning/journey.js";
 import {getCourseDraft,listCourseDrafts} from "../repositories/course-draft-repository.js";
+import {LESSON_TEMPLATES} from "../features/authoring/lesson-templates.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -210,7 +211,9 @@ function moduleEditor(course,mod,index){
     '</div></div>').join("")+'</div>':
    '<p class="authoring-empty">Este módulo ainda não possui aulas. Crie a primeira abaixo.</p>')+
   '<form class="studio-new-lesson" data-authoring-form="new-lesson"'+courseAttr+modAttr+'>'+
-  '<label class="field-label" for="new-lesson-'+e(mod.id)+'">Nova aula neste módulo</label>'+
+  '<label class="field-label" for="new-lesson-'+e(mod.id)+'">Nova aula neste módulo</label>'<label class="field-label" for="lesson-template-'+e(mod.id)+'">Modelo pedagógico</label>'+
+ '<select class="field" name="templateId" id="lesson-template-'+e(mod.id)+'">'+LESSON_TEMPLATES.map(t=>
+ '<option value="'+e(t.id)+'">'+e(t.title)+' — '+e(t.description)+'</option>').join("")+'</select>'+'+
   '<div class="authoring-inline"><input class="field" id="new-lesson-'+e(mod.id)+'" name="title" maxlength="160" required placeholder="Ex.: Introdução ao inconsciente">'+
   '<button class="button action" type="submit">+ Criar aula</button></div></form>'+
   '</section>';
