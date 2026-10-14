@@ -92,14 +92,14 @@ export function validateLearningBackup(data){
  if(data.states.length>25000)throw Error("Backup de aprendizagem excessivamente grande.");
  const records=data.states.map(x=>{
   if(!x||!DEMO_PROFILES.some(p=>p.id===x.profileId)||
-    typeof x.courseId!=="string"||!(/^[\\w-]+$/).test(x.courseId)||
-    typeof x.lessonId!=="string"||!(/^[\\w-]+$/).test(x.lessonId)||
+    typeof x.courseId!=="string"||!(/^[A-Za-z0-9_-]+$/).test(x.courseId)||
+    typeof x.lessonId!=="string"||!(/^[A-Za-z0-9_-]+$/).test(x.lessonId)||
     typeof x.note!=="string"||x.note.length>20000||
     typeof x.answers!=="object"||x.answers===null||Array.isArray(x.answers)||
     Object.keys(x.answers).length>2000)
     throw Error("Registro de aprendizagem inválido no backup.");
   for(const [blockId,answer] of Object.entries(x.answers)){
-    if(!(/^[\\w-]+$/).test(blockId)||!answer||typeof answer.selection!=="string"||
+    if(!(/^[A-Za-z0-9_-]+$/).test(blockId)||!answer||typeof answer.selection!=="string"||
       answer.selection.length>1000||typeof answer.correct!=="boolean")
       throw Error("Resposta inválida no backup de aprendizagem.");
   }
