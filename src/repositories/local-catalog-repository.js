@@ -30,6 +30,28 @@ async function transact(mode,callback){
   catch(err){try{tx.abort()}catch{}reject(err)}
  });
 }
+export function validateLocalSnapshot(record){
+ if(!record||record.formatVersion!==1||!record.course||
+   !record.lessons||typeof record.lessons!=="object"||Array.isArray(record.lessons))
+   throw Error("Registro de catálogo local inválido.");
+ validateCourse(record.course);
+ if(record.course.status!=="published"||record.id!==record.course.id)
+   throw Error("Registro de curso local inconsistente.");
+ const entries=record.course.modules.flatMap(m=>m.lessons.map(l=>({l,moduleId:m.id})));
+ const keys=Object.keys(record.lessons);
+ if(keys.length!==entries.length)throw Error("Curso local possui aulas extras ou faltando.");
+ for(const {l,moduleId} of entries){
+   const lesson=record.lessons[l.id];
+   if(!lesson||lesson.id!==l.id||lesson.status!=="published")
+     throw Error("Aula indisponível no registro local: "+l.id);
+   validateLessonLink(lesson,record.course,moduleId);
+ }
+ return record;
+}
+export async function listLocalAvailableSnapshots(){
+ const records=await transact("readonly",store=>store.getAll());
+ return clone(records||[]);
+}
 export async function listLocalAvailableCourses(){
  const records=await transact("readonly",store=>store.getAll());
  return (records||[]).map(({id,course,availableAt})=>({
@@ -62,6 +84,7 @@ export async function publishLocalSnapshot(course,lessons){
    throw new Error("Faltam aulas para disponibilizar o curso. Salve cada aula antes de continuar.");
  const record={id:normalized.id,course:normalized,
    lessons:Object.fromEntries(map),availableAt:new Date().toISOString(),formatVersion:1};
+ validateLocalSnapshot(record);
  await transact("readwrite",store=>store.put(record));
  return {id:record.id,title:record.course.title,lessonCount:entries.length,availableAt:record.availableAt};
 }
