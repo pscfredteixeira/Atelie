@@ -470,3 +470,23 @@ textarea.field{min-height:110px;resize:vertical}
 @media(max-width:740px){.learning-notebook{padding:18px}.learning-profile-select{width:100%}.learning-lab{padding:12px}
  .learning-profile-row{align-items:stretch;flex-direction:column}.beta-task{padding:12px}}
 @media(prefers-reduced-motion:reduce){.learning-quiz *, .learning-lab *, .beta-form *{transition:none!important;animation:none!important}}
+
+/* Seletor de curso, compartilhado pelo menu Aluno e pelo Estúdio Professor. */
+.course-picker{display:grid;gap:7px;padding:13px 10px 12px;margin:5px 0 9px;
+  border:1px solid var(--stroke-soft);border-radius:var(--radius-sm);background:#a28bb00d;min-width:0}
+.course-picker-label{font-size:11px;color:var(--ink-muted);font-weight:650;line-height:1.35}
+.course-picker-select{display:block;width:100%;max-width:100%;min-width:0;min-height:44px;
+  background:var(--surface);color:var(--ink);border:1px solid var(--stroke);
+  border-radius:var(--radius-sm);padding:9px 27px 9px 10px;font-size:12px;text-overflow:ellipsis;cursor:pointer}
+.course-picker-select:hover{border-color:#ac8cbd}
+.course-picker-header{display:none}
+@media(max-width:740px){
+  .topbar{flex-wrap:wrap}
+  .top-start{flex:1 1 auto;min-width:0}
+  .top-actions{display:contents}
+  .top-actions .view-toggle{order:2;flex:0 0 auto}
+  .course-picker-header{display:grid;order:3;flex:1 0 100%;width:100%;
+    margin:5px 0 0;padding:0;border:0;background:transparent}
+  .course-picker-header .course-picker-label{font-size:10px;letter-spacing:.02em}
+  .course-picker-header .course-picker-select{min-height:44px;font-size:13px}
+}
