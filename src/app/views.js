@@ -144,6 +144,47 @@ function admin() {
       demoAction('Validação futura','Os validadores serão implementados no Sprint 2.','small')) +
     '</div>' + demoWarning();
 }
+function designSystem() {
+  return pageHead('Admin / Biblioteca visual','As peças do <em>Atelier.</em>',
+    'Uma pequena vitrine dos componentes reutilizáveis. O Design System será refinado a partir dos testes com alunos e professores.') +
+    '<div class="tabs" role="tablist" aria-label="Categorias de componentes">'+
+      '<button type="button" class="tab" role="tab" id="ui-tab-components" aria-controls="ui-panel-components" aria-selected="true" tabindex="0">Componentes</button>'+
+      '<button type="button" class="tab" role="tab" id="ui-tab-states" aria-controls="ui-panel-states" aria-selected="false" tabindex="-1">Estados</button>'+
+    '</div>'+
+    '<section role="tabpanel" id="ui-panel-components" aria-labelledby="ui-tab-components" tabindex="0">'+
+      '<div class="grid two">'+
+        '<section class="card"><div class="card-label">Botões e ações</div><h3>Hierarquia visual</h3>'+
+          '<p>A ação principal usa laranja quente. A navegação de apoio é discreta e consistente.</p>'+
+          '<div class="button-row" style="margin-top:15px">'+demoAction('Ação principal','Este botão é apenas um exemplo do Design System.','action')+
+          demoAction('Ação secundária','Este botão é apenas um exemplo do Design System.','')+'</div></section>'+
+        '<section class="card"><div class="card-label">Campos</div><h3>Editor amigável</h3>'+
+          '<label class="field-label" for="ui-title">Título de exemplo</label>'+
+          '<input class="field" id="ui-title" type="text" value="O recalque em Freud" aria-describedby="ui-help">'+
+          '<p id="ui-help" style="margin-top:9px">Campo não persistente. As regras de salvamento entram nos sprints de autoria.</p></section>'+
+        '<section class="card"><div class="card-label">Sinalização</div><h3>Estados identificáveis</h3>'+
+          badge('Rascunho local','purple')+' '+badge('Publicado')+' '+badge('Concluído','green')+
+          '<p style="margin-top:15px">As etiquetas precisam ser compreensíveis sem depender apenas das cores.</p></section>'+
+        '<section class="card"><div class="card-label">Indicadores</div><h3>Progresso demonstrativo</h3>'+
+          '<div class="progress-label"><span>Exemplo fictício</span><span>38%</span></div>'+
+          '<div class="progress" role="img" aria-label="Progresso fictício de trinta e oito por cento"><span style="width:38%"></span></div>'+
+          '<p style="margin-top:15px">Até haver persistência, este número permanece identificado como demonstração.</p></section>'+
+      '</div>'+
+    '</section>'+
+    '<section role="tabpanel" id="ui-panel-states" aria-labelledby="ui-tab-states" tabindex="0" hidden>'+
+      '<div class="grid two">'+
+       '<section class="card" role="status"><div class="card-label">Carregando</div><h3>Preparando conteúdo</h3>'+
+         '<p>Indicadores de carregamento devem explicar o que está acontecendo, sem uma tela vazia.</p></section>'+
+       '<section class="card" role="alert"><div class="card-label">Erro recuperável</div><h3>Conteúdo indisponível</h3>'+
+         '<p>Mostrar causa compreensível e uma ação para voltar ou tentar novamente.</p>'+
+         action('Voltar ao catálogo →','#/cursos','small')+'</section>'+
+       '<section class="card"><div class="card-label">Estado vazio</div><h3>Nenhuma aula criada</h3>'+
+         '<p>Apresentar uma primeira ação concreta e acessível em vez de uma área silenciosa.</p></section>'+
+       '<section class="card"><div class="card-label">Aviso</div><h3>Salvo neste dispositivo</h3>'+
+         '<p>No futuro, este aviso só aparecerá depois de uma gravação local confirmada.</p></section>'+
+      '</div>'+
+    '</section>'+
+    demoWarning();
+}
 export function routeView(path) {
   if (path === '/aluno' || path === '/') return {title:'Início do aluno',area:'Aluno',html:home()};
   if (path === '/cursos') return {title:'Catálogo',area:'Aluno',html:catalog()};
@@ -156,5 +197,6 @@ export function routeView(path) {
   if (path === '/professor/cursos/'+COURSE_ID+'/aulas/'+LESSON_ID+'/editar') return {title:'Estúdio de criação',area:'Professor',html:studio()};
   if (path === '/professor/cursos/'+COURSE_ID+'/aulas/'+LESSON_ID+'/previa') return {title:'Prévia como aluno',area:'Professor',html:lesson(true)};
   if (path === '/admin') return {title:'Administração',area:'Administrador',html:admin()};
+  if (path === '/admin/identidade') return {title:'Biblioteca visual',area:'Administrador',html:designSystem()};
   return {title:'Página não encontrada',area:'Atelier',html:notFound()};
 }
