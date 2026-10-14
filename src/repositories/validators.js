@@ -38,6 +38,7 @@ export function validateCatalog(x) {
     if(!obj(item))fail(p,"esperado objeto.");
     identifier(item.id,p+" / id");
     if(!str(item.title)||!str(item.manifest))fail(p,"título e endereço do manifesto são obrigatórios.");
+    if(item.summary!==undefined&&typeof item.summary!=="string")fail(p,"resumo deve ser texto.");
     status(item.status,p);
   });
   uniqueIds(x.courses,"Catálogo");
@@ -61,6 +62,9 @@ export function validateCourse(x) {
       if(!obj(l))fail(lp,"esperado objeto.");
       identifier(l.id,lp);
       if(!str(l.path)||!Number.isInteger(l.position)||l.position<1)fail(lp,"path e position válidos são obrigatórios.");
+      if(l.title!==undefined&&!str(l.title))fail(lp,"title deve ser texto não vazio.");
+      if(l.summary!==undefined&&typeof l.summary!=="string")fail(lp,"summary deve ser texto.");
+      if(l.estimatedMinutes!==undefined&&(!Number.isInteger(l.estimatedMinutes)||l.estimatedMinutes<1))fail(lp,"estimatedMinutes deve ser inteiro positivo.");
     });
     uniqueIds(m.lessons,p);
     if(new Set(m.lessons.map(l=>l.position)).size!==m.lessons.length)fail(p,"posição repetida entre aulas.");
