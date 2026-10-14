@@ -132,6 +132,10 @@
           }
         }
       }
+    },
+    "icon": {
+      "type": "string",
+      "maxLength": 8
     }
   }
 }
