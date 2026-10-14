@@ -15,7 +15,7 @@ const navGroups = [
   {href:"#/professor/cursos/curso-fundamentos",name:"Estrutura do curso",icon:"☷"},
   {href:"#/professor/cursos/curso-fundamentos/aulas/aula-recalque/editar",name:"Estúdio de criação",icon:"⊕"}
  ]},
- {name:"Organizar",links:[{href:"#/admin",name:"Administração",icon:"▦"}]}
+ {name:"Organizar",links:[{href:"#/admin",name:"Administração",icon:"▦"},{href:"#/admin/identidade",name:"Biblioteca visual",icon:"◈"}]}
 ];
 let isMenuOpen = false;
 let currentDialog = null;
@@ -128,8 +128,22 @@ function showDemoInfo(message,source) {
   back.addEventListener("click",ev=>{if(ev.target===back||ev.target.closest("#dialog-close"))closeDialog()});
 }
 document.addEventListener("click",ev=>{
+  const tab=ev.target.closest('[role="tab"][aria-controls]');
+  if(tab){
+    const group=tab.closest('[role="tablist"]');
+    if(group){
+      group.querySelectorAll('[role="tab"]').forEach(b=>{
+        const active=b===tab;
+        b.setAttribute("aria-selected",String(active));
+        b.tabIndex=active?0:-1;
+        const panel=document.getElementById(b.getAttribute("aria-controls"));
+        if(panel)panel.hidden=!active;
+      });
+    }
+    return;
+  }
   const menu=ev.target.closest("#menu-toggle");
-  if(menu){isMenuOpen=!isMenuOpen;render(false);const target=document.getElementById(isMenuOpen?"sidebar-shade":"menu-toggle");if(target)target.focus();return}
+  if(menu){isMenuOpen=!isMenuOpen;render(false);const target=isMenuOpen?document.querySelector("#sidebar .nav-link"):document.getElementById("menu-toggle");if(target)target.focus();return}
   if(ev.target.closest("#sidebar-shade")){isMenuOpen=false;render(false);document.getElementById("menu-toggle")?.focus();return}
   const info=ev.target.closest("[data-info]");
   if(info){showDemoInfo(info.dataset.info,info);return}
@@ -141,6 +155,18 @@ document.addEventListener("click",ev=>{
 });
 document.addEventListener("change",ev=>{
   if(ev.target.id==="switch-role"){window.location.hash=ev.target.value}
+});
+document.addEventListener("keydown",ev=>{
+  if(ev.key==="Escape" && isMenuOpen && !currentDialog){
+    isMenuOpen=false;render(false);document.getElementById("menu-toggle")?.focus();return;
+  }
+  const tab=ev.target.closest('[role="tab"][aria-controls]');
+  if(!tab||!["ArrowLeft","ArrowRight","Home","End"].includes(ev.key))return;
+  const group=tab.closest('[role="tablist"]');if(!group)return;
+  const tabs=[...group.querySelectorAll('[role="tab"]')];const i=tabs.indexOf(tab);
+  const j=ev.key==="Home"?0:ev.key==="End"?tabs.length-1:
+    (i+(ev.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;
+  ev.preventDefault();tabs[j].focus();tabs[j].click();
 });
 window.addEventListener("hashchange",()=>{isMenuOpen=false;closeDialog();render(true)});
 render(false);
