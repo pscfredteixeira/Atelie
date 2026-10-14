@@ -5,7 +5,7 @@
   "courseId": "curso-fundamentos",
   "moduleId": "modulo-conflito",
   "slug": "retorno-do-recalcado",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "O retorno do recalcado",
   "summary": "Uma introdução cuidadosa à ideia de que o recalque não elimina simplesmente o conflito.",
@@ -73,6 +73,36 @@
             ]
           }
         ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "laboratorio-investigacao",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Como sustentar uma pergunta?",
+        "description": "Uma situação ficcional pode abrir interpretações diferentes. Escolha um caminho para investigar sem concluir imediatamente.",
+        "prompt": "O que fazer diante de uma repetição relatada por alguém?",
+        "choices": [
+          {
+            "id": "investigar",
+            "label": "Perguntar pelo contexto da repetição",
+            "feedback": "A investigação mantém a pergunta aberta e respeita a singularidade do relato."
+          },
+          {
+            "id": "diagnosticar",
+            "label": "Afirmar que a repetição prova o recalque",
+            "feedback": "A repetição, isoladamente, não comprova um mecanismo psíquico. A interpretação exige trabalho e contexto."
+          },
+          {
+            "id": "explorar",
+            "label": "Considerar outros sentidos possíveis",
+            "feedback": "Explorar alternativas pode ampliar a escuta e reduzir conclusões apressadas."
+          }
+        ],
+        "alternative": "Escreva duas perguntas que permitiriam conhecer melhor a experiência da personagem fictícia."
       },
       "settings": {}
     },
