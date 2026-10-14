@@ -48,6 +48,9 @@
               "published",
               "archived"
             ]
+          },
+          "summary": {
+            "type": "string"
           }
         }
       }
