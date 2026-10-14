@@ -611,7 +611,7 @@
                 "properties": {
                   "src": {
                     "type": "string",
-                    "pattern": "^\\\\?\\./"
+                    "pattern": "^\\./"
                   },
                   "alt": {
                     "type": "string"
