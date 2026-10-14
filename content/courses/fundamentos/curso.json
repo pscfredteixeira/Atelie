@@ -3,16 +3,17 @@
   "kind": "course",
   "id": "curso-fundamentos",
   "slug": "fundamentos-da-psicanalise",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "Fundamentos da Psicanálise",
   "subtitle": "Introdução às principais perguntas da psicanálise",
-  "description": "Percurso pedagógico fictício criado exclusivamente para validar a arquitetura do Atelier.",
+  "description": "Três aulas demonstrativas em sequência sobre conflito psíquico, recalque e retorno do recalcado. Material introdutório de teste, ainda sujeito a revisão editorial e bibliográfica.",
   "objectives": [
-    "Distinguir conceitos teóricos de exemplos clínicos",
-    "Identificar perguntas iniciais sobre conflito psíquico"
+    "Reconhecer o conflito psíquico como um problema teórico",
+    "Diferenciar recalque de esquecimento cotidiano",
+    "Entender por que o retorno do recalcado não equivale a uma interpretação automática"
   ],
-  "estimatedMinutes": 18,
+  "estimatedMinutes": 52,
   "authorIds": [
     "professor-demo"
   ],
@@ -20,13 +21,32 @@
     {
       "id": "modulo-conflito",
       "title": "Conflito e defesa",
-      "description": "Primeiras questões conceituais sobre o conflito psíquico.",
+      "description": "Percurso demonstrativo progressivo: perguntas sobre conflito, o conceito de recalque e a questão de seus efeitos.",
       "position": 1,
       "lessons": [
         {
+          "id": "aula-conflito",
+          "path": "./aulas/conflito.json",
+          "position": 1,
+          "title": "O conflito psíquico: uma pergunta inicial",
+          "summary": "Comece pelas tensões e perguntas que o conceito de conflito permite formular.",
+          "estimatedMinutes": 16
+        },
+        {
           "id": "aula-recalque",
           "path": "./aulas/recalque.json",
-          "position": 1
+          "position": 2,
+          "title": "O recalque em Freud",
+          "summary": "Diferencie um esquecimento observado de uma hipótese sobre o recalque.",
+          "estimatedMinutes": 18
+        },
+        {
+          "id": "aula-retorno",
+          "path": "./aulas/retorno.json",
+          "position": 3,
+          "title": "O retorno do recalcado",
+          "summary": "Explore por que o recalque não equivale a apagar um conflito.",
+          "estimatedMinutes": 18
         }
       ]
     }
