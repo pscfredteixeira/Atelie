@@ -75,6 +75,9 @@ export async function updateLearningState(courseId,lessonId,change,profileId=get
  await operate("readwrite",s=>s.put(next));
  return next;
 }
+export async function deleteLearningState(courseId,lessonId,profileId=getDemoProfile()){
+ await operate("readwrite",s=>s.delete(key(profileId,courseId,lessonId)));
+}
 export async function listLearningStates(profileId=getDemoProfile()){
  const all=await operate("readonly",s=>s.getAll());
  return (all||[]).filter(x=>x.profileId===profileId);
