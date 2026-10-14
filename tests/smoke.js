@@ -8,7 +8,7 @@ import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositor
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse,validateLocalSnapshot} from "../src/repositories/local-catalog-repository.js";
 import {learnerContentRepository} from "../src/repositories/learner-content-repository.js";
-import {loadCourseMenu,currentCourseChoice,coursePicker} from "../src/features/navigation/course-menu.js";
+import {loadCourseMenu,currentCourseChoice,coursePicker,courseOutline,loadCourseOutline,selectedModuleId,selectedCourseId} from "../src/features/navigation/course-menu.js";
 import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
@@ -42,6 +42,29 @@ async function run(){
    if(!html.includes('value="#/cursos/curso-formacao-freudiana" selected')||
      currentCourseChoice("/professor/cursos/curso-introducao-psicanalise","teacher")!=="curso-introducao-psicanalise")
      throw new Error("A seleção não acompanha a navegação.");
+ });
+ await check("Selecionar curso abre módulos no menu lateral",async()=>{
+   const introId="curso-introducao-psicanalise";
+   const freudId="curso-formacao-freudiana";
+   const intro=await loadCourseOutline("student",introId);
+   const freud=await loadCourseOutline("teacher",freudId);
+   if(intro?.modules.length!==8||freud?.modules.length!==10)
+     throw new Error("Sumários dos dois cursos não foram carregados.");
+   const activeModule=intro.modules[1].id;
+   const introHtml=courseOutline("student",intro,"#/cursos/"+introId+"?modulo="+activeModule);
+   const freudHtml=courseOutline("teacher",freud,"#/professor/cursos/"+freudId);
+   if((introHtml.match(/class="course-tree-module"/g)||[]).length!==8||
+      (freudHtml.match(/class="course-tree-module"/g)||[]).length!==10)
+      throw new Error("Nem todos os módulos apareceram no menu.");
+   if(!introHtml.includes('href="#/cursos/'+introId+'?modulo='+activeModule+'" aria-current="location"'))
+      throw new Error("O módulo selecionado não foi destacado.");
+   if(!freudHtml.includes('href="#/professor/cursos/'+freudId+'?modulo='+freud.modules[0].id+'"'))
+      throw new Error("Módulos não apontam para o editor do professor.");
+   if(selectedModuleId("#/cursos/"+introId+"?modulo="+activeModule)!==activeModule)
+      throw new Error("Não foi possível interpretar o módulo da rota.");
+   const available=await loadCourseMenu();
+   if(selectedCourseId("student","/cursos/"+introId,available.student)!==introId)
+      throw new Error("O curso escolhido não ficou selecionado.");
  });
  await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
    const list=await learnerContentRepository.listPublishedCourses();
