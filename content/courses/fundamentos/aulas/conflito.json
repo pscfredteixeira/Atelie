@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-conflito",
+  "courseId": "curso-fundamentos",
+  "moduleId": "modulo-conflito",
+  "slug": "conflito-psiquico",
+  "revision": 1,
+  "status": "published",
+  "title": "O conflito psíquico: uma pergunta inicial",
+  "summary": "O que a ideia de conflito acrescenta à maneira de compreender a vida psíquica?",
+  "estimatedMinutes": 16,
+  "objectives": [
+    "Reconhecer o conflito psíquico como problema teórico",
+    "Distinguir um exemplo cotidiano de uma hipótese clínica"
+  ],
+  "blocks": [
+    {
+      "id": "conflito-inicio",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Podemos desejar uma coisa e, ao mesmo tempo, temer suas consequências?",
+        "hint": "Pense na tensão entre tendências diferentes sem transformar o exemplo em diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "conflito-leitura",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma vida psíquica que não é inteiramente transparente",
+        "paragraphs": [
+          "A psicanálise freudiana parte de perguntas sobre experiências nas quais pensamentos, afetos e ações parecem entrar em contradição.",
+          "A noção de conflito psíquico permite investigar tensões entre desejos, exigências e defesas. É uma construção teórica, não um rótulo que possa ser aplicado a qualquer indecisão.",
+          "Na leitura de Freud, os conceitos precisam ser situados nos textos e nos problemas que procuravam responder. A aula seguinte apresentará o recalque como uma das formulações relacionadas ao conflito."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "conflito-conceito",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Conflito psíquico",
+        "definition": "Hipótese teórica de que diferentes tendências ou exigências podem se opor na vida psíquica, contribuindo para formações e impasses que exigem investigação.",
+        "example": "Hesitar diante de uma decisão pode suscitar perguntas sobre conflitos, mas não demonstra, por si só, um mecanismo inconsciente específico."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "conflito-vinheta",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Uma escolha difícil",
+        "narrative": "Uma personagem fictícia deseja aceitar um convite importante, mas encontra razões sucessivas para adiar sua resposta.",
+        "reflection": "O que podemos observar? O que precisaria ser escutado antes de interpretar a situação?",
+        "disclaimer": "Exemplo inteiramente fictício, sem valor diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "conflito-ponte",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Próxima questão",
+        "paragraphs": [
+          "Se existem conflitos psíquicos, como pensar o destino de representações que encontram resistência? Essa é uma das portas de entrada para estudar o recalque, tema da próxima aula."
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [],
+  "metadata": {
+    "demo": true,
+    "readingLevel": "introducao",
+    "tags": [
+      "freud",
+      "conceitos",
+      "formacao"
+    ]
+  }
+}
