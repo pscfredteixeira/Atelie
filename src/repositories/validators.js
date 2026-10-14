@@ -97,6 +97,33 @@ export function validateLesson(x) {
     if(!obj(b.data))fail(p,"data precisa ser um objeto.");
     if(b.settings!==undefined&&!obj(b.settings))fail(p,"settings precisa ser objeto.");
     const d=b.data;
+    // O motor permite tipos/versões futuros e exibe fallback legível.
+    // Validamos regras específicas somente dos componentes v1 conhecidos.
+    if(b.version!==1)return;
+    if(b.type==="heading"&&!str(d.text))fail(p,"heading exige text.");
+    if(b.type==="concept"&&(!str(d.term)||!str(d.definition)))fail(p,"concept exige term e definition.");
+    if(b.type==="quote"&&(!str(d.text)||!str(d.attribution)))fail(p,"quote exige text e attribution.");
+    if(b.type==="comparison"){
+      if(!str(d.title)||!list(d.columns)||d.columns.length!==2||!d.columns.every(str))
+        fail(p,"comparison exige título e duas colunas.");
+      if(!list(d.rows)||!d.rows.length||!d.rows.every(row=>obj(row)&&str(row.criterion)&&list(row.values)&&row.values.length===2&&row.values.every(str)))
+        fail(p,"comparison exige linhas com critério e dois valores.");
+    }
+    if(b.type==="timeline"){
+      if(!str(d.title)||!list(d.events)||!d.events.length||
+        !d.events.every(ev=>obj(ev)&&str(ev.date)&&str(ev.title)))
+        fail(p,"timeline exige título e eventos com data e título.");
+    }
+    if(b.type==="image"){
+      if(!str(d.src)||!d.src.startsWith("./"))fail(p,"image exige caminho relativo ./.");
+      if(d.decorative!==true&&!str(d.alt))fail(p,"imagem informativa exige alt.");
+    }
+    if(b.type==="audio"||b.type==="video"){
+      if(!str(d.src)||!d.src.startsWith("./"))fail(p,"mídia exige caminho relativo ./.");
+      if(!str(d.transcript))fail(p,"mídia exige transcrição textual.");
+    }
+    if(b.type==="interactive_lab"&&(!str(d.engineId)||!str(d.title)||!str(d.alternative)))
+      fail(p,"interactive_lab exige engineId, title e alternativa pedagógica.");
     if(b.type==="rich_text") {
       if(!list(d.paragraphs)||!d.paragraphs.every(s=>typeof s==="string"))fail(p,"rich_text exige paragraphs de texto.");
     }
