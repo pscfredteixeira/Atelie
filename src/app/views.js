@@ -82,7 +82,7 @@ async function coursePage(id){
  course.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></section>':'')+
  sectionHead("Programa de estudos",badge("Sequência sugerida","purple"))+
  (sequence.length?modules(course):emptyState("Nenhuma aula publicada","Os módulos deste curso ainda estão sendo preparados."))+
- note("<strong>Sobre este percurso:</strong> as aulas seguem uma ordem didática, mas você pode revisitá-las livremente. O sistema ainda não registra aulas concluídas; acompanhamento individual virá no Sprint 10.")+info();
+ note("<strong>Seu percurso:</strong> você pode revisitar qualquer aula e marcá-la como concluída no caderno ao final da leitura. O acompanhamento fica somente neste navegador, no perfil fictício selecionado.")+info();
 }
 function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
  const html=renderLessonBlocks(lesson,{sourceURL});
@@ -343,7 +343,7 @@ async function pedagogicalBlocks(){
       shown?action("Ver na aula →","#/cursos/curso-fundamentos/aulas/aula-recalque","small"):
       '<span class="tag purple" style="margin-top:17px">Aguardando exemplo</span>');
   }).join("")+'</div>'+
-  note('<strong>Distinção importante:</strong> um componente registrado não significa que todas as suas atividades estejam completas. O quiz ainda não corrige respostas e o laboratório interativo será desenvolvido no Sprint 8.');
+  note('<strong>Distinção importante:</strong> os quizzes já oferecem feedback formativo e laboratórios de escolhas já podem funcionar. Eles não substituem avaliação humana, supervisão pedagógica ou um sistema de provas certificadoras.');
 }
 function visualLibrary(){
  return pageHead("Atelier / Identidade","As peças do <em>Atelier.</em>",
