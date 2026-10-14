@@ -70,7 +70,7 @@ function inspector(state){
  if(!b)return '<section class="studio-inspector"><div class="overline">Configuração</div><h3>Escolha um bloco</h3>'+
  '<p class="muted">Selecione um bloco na sequência ou adicione um novo formato pela biblioteca.</p></section>';
  return '<section class="studio-inspector" aria-labelledby="studio-inspector-title"><span class="overline">Configuração do bloco</span>'+
- '<h3 id="studio-inspector-title">'+e(getBlockLabel(b.type,b.version))+'</h3>'+
+ '<h3 id="studio-inspector-title" tabindex="-1">'+e(getBlockLabel(b.type,b.version))+'</h3>'+
  '<form data-studio-form="block" class="studio-form">'+renderBlockFields(b,l)+
  '<label class="studio-check"><input type="checkbox" name="showInOutline"'+(b.settings?.showInOutline!==false?' checked':'')+
  '><span>Mostrar no índice da aula</span></label>'+
@@ -105,6 +105,7 @@ function draw(state){
  '<button type="button" class="button" data-studio="toggle-preview">'+(state.preview?'Voltar a editar':'Visualizar como aluno')+'</button>'+
  '<button type="button" class="button action" data-studio="save">Salvar no dispositivo</button>'+
  '<button type="button" class="button" data-studio="export">Exportar JSON</button>'+
+ (state.sourceURL?'<a class="button quiet" href="'+lessonLocation(l.courseId,l.id)+'/json">Modo JSON</a>':"")+
  '<a class="button quiet" href="#/professor/cursos/'+e(l.courseId)+'">Voltar ao curso</a></div></div>'+
  '<div class="studio-alert" role="status" aria-live="polite" data-studio-status>'+e(state.message||"Tudo pronto para editar. Os dados não são salvos automaticamente.")+'</div>';
  if(state.preview){
