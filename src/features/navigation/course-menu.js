@@ -53,7 +53,7 @@ export function rememberCourseChoice(area,courseId){
   try{window.sessionStorage.setItem(STORAGE_PREFIX+area,courseId)}catch{/* In private mode, remember in memory */}
 }
 export function selectedCourseId(area,path,courses=[]){
-  const current=chosenCourse||selectedCourseId(area,path,courses);
+  const current=currentCourseChoice(path,area);
   if(current){rememberCourseChoice(area,current);return current;}
   let stored=inMemory[area]||"";
   if(!stored){try{stored=window.sessionStorage.getItem(STORAGE_PREFIX+area)||""}catch{}}
@@ -114,7 +114,7 @@ export function courseOutline(area,course,hash=""){
 }
 export function coursePicker(area,path,courses=[],placement="sidebar",chosenCourse=""){
   const teacher=area==="teacher",id="course-picker-"+area+"-"+placement;
-  const current=currentCourseChoice(path,area);
+  const current=chosenCourse||selectedCourseId(area,path,courses);
   const label=teacher?"Selecionar curso para editar":"Selecionar curso para estudar";
   const target=teacher?"#/professor/cursos/":"#/cursos/";
   const known=courses.some(c=>c.id===current);
