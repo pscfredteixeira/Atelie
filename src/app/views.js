@@ -32,7 +32,7 @@ function modules(course,teacher=false,currentLessonId=null){
  return ms.map((m,i)=>{
   const rows=[...m.lessons].sort((a,b)=>a.position-b.position).filter(l=>l.status===undefined||l.status==="published");
   const active=!!currentLessonId&&rows.some(l=>l.id===currentLessonId);
-  return '<details class="module" '+(active||i===0?'open':'')+'><summary>'+
+  return '<details class="module" id="course-module-'+e(m.id)+'" tabindex="-1" '+(active||i===0?'open':'')+'><summary>'+
   '<div><div class="overline">Módulo '+String(i+1).padStart(2,"0")+' · '+rows.length+' aula(s)</div>'+
   '<h3>'+e(m.title)+'</h3>'+(m.description?'<p class="module-description">'+e(m.description)+'</p>':'')+
   '</div><span class="chevron" aria-hidden="true">+</span></summary>'+
@@ -201,7 +201,7 @@ function moduleEditor(course,mod,index){
   '<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+' data-direction="-1"'+(index===0?' disabled':'')+'>↑ Mover módulo</button>'+
   '<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+' data-direction="1"'+(index===sortedModules.length-1?' disabled':'')+'>↓ Mover módulo</button>'+
   '<button type="button" class="button small quiet" data-course-op="remove-module"'+courseAttr+modAttr+(lessons.length?' disabled title="Não é possível remover um módulo que possui aulas."':'')+'>Excluir módulo vazio</button></div>';
- return '<section class="card course-module-editor"><div class="topline"><span class="overline">Módulo '+String(index+1).padStart(2,"0")+'</span>'+
+ return '<section class="card course-module-editor" id="course-module-'+e(mod.id)+'" tabindex="-1"><div class="topline"><span class="overline">Módulo '+String(index+1).padStart(2,"0")+'</span>'+
   badge(lessons.length+" aula(s)","purple")+'</div>'+
   '<form data-authoring-form="module-info"'+courseAttr+modAttr+' class="authoring-fields">'+
   '<label class="field-label" for="module-title-'+e(mod.id)+'">Nome do módulo</label>'+
