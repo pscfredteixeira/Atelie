@@ -366,6 +366,11 @@ async function saveLearningNote(form){
  }catch(err){learningNotice("Não foi possível salvar: "+err.message,true);}
 }
 async function toggleLearningComplete(button){
+ if(unsavedNote){
+   learningNotice("Salve a anotação antes de alterar a conclusão da aula.",true);
+   document.getElementById("lesson-note")?.focus();
+   return;
+ }
  const data=button.closest("[data-course-id][data-lesson-id]");
  if(!data)return;
  const {getLearningState}=await import("../repositories/learning-repository.js");
@@ -520,6 +525,24 @@ document.addEventListener("keydown",ev=>{
     (i+(ev.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;
   ev.preventDefault();tabs[j].focus();tabs[j].click();
 });
-window.addEventListener("hashchange",()=>{if(isMenuOpen)setMenu(false);closeDialog();render(true)});
+window.addEventListener("hashchange",event=>{
+  // Também protege o botão Voltar/Avançar, que não dispara o clique dos links.
+  // A mudança de hash já ocorreu; se for cancelada, restaure sem novo hashchange.
+  const previousHash=new URL(event.oldURL).hash||"#/aluno";
+  const leaving=previousHash!==(window.location.hash||"#/aluno");
+  if(leaving && (unsavedForms.size||isStudioDirty()||unsavedNote)){
+    let permitted=true;
+    if(unsavedForms.size&&!confirmUnsaved())permitted=false;
+    if(permitted&&isStudioDirty()&&!confirmStudioLeave())permitted=false;
+    if(permitted&&unsavedNote&&!window.confirm("Anotação não salva. Deseja descartá-la e continuar?"))permitted=false;
+    if(!permitted){
+      window.history.replaceState(null,"",previousHash);
+      return;
+    }
+  }
+  if(isMenuOpen)setMenu(false);
+  closeDialog();
+  render(true);
+});
 render(false);
 showToast("Atelier beta: aulas, atividades e histórico locais. Sem login real.");
