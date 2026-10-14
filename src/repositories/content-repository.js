@@ -32,7 +32,7 @@ export function resetContentCache(){cache.clear();}
 export async function listPublishedCourses(){
   const index=await readJSON(CATALOG,validateCatalog);
   return index.courses.filter(c=>c.status==="published").map(c=>({
-    id:c.id,title:c.title,slug:c.slug,summary:c.summary||"",manifest:c.manifest,status:c.status
+    id:c.id,title:c.title,icon:c.icon||"ψ",demo:c.demo===true,slug:c.slug,summary:c.summary||"",manifest:c.manifest,status:c.status
   }));
 }
 export async function getPublishedCourse(courseId) {
