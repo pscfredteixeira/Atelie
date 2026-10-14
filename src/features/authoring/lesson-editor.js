@@ -51,7 +51,10 @@ export function blockTemplate(type){
   image:{src:"./media/imagem.jpg",alt:"Descrição objetiva da imagem",caption:"",credit:""},
   audio:{title:"Escuta guiada",src:"./media/audio.mp3",transcript:"Transcrição do áudio."},
   video:{title:"Vídeo de estudo",src:"./media/video.mp4",captions:"./media/legendas.vtt",transcript:"Transcrição do vídeo."},
-  interactive_lab:{engineId:"laboratorio-exemplo",title:"Laboratório de reflexão",description:"Experiência a desenvolver.",alternative:"Escreva uma pergunta para reflexão enquanto o laboratório não está disponível."}
+  interactive_lab:{engineId:"choice-reflection-v1",title:"Laboratório de reflexão",description:"Escolha um caminho de investigação e compare possibilidades.",prompt:"Qual pergunta abriria melhor a investigação?",choices:[
+   {id:"caminho-1",label:"Investigar o contexto",feedback:"Uma pergunta sobre o contexto ajuda a ampliar a investigação sem antecipar conclusões."},
+   {id:"caminho-2",label:"Aplicar uma interpretação imediata",feedback:"Uma conclusão imediata pode fechar a escuta. O que ainda precisaria ser investigado?"}
+ ],alternative:"Escreva duas perguntas possíveis e compare o que cada uma permite investigar."}
  };
  if(!Object.hasOwn(defaults,type))throw Error("Tipo de bloco não suportado.");
  return {id:stableId("bloco"),type,version:1,data:clone(defaults[type]),settings:{}};
