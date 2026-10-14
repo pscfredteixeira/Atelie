@@ -17,7 +17,7 @@ const routePreview=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)
 const info=()=>note("<strong>Como os cursos funcionam:</strong> os cursos do GitHub são públicos; os cursos criados e disponibilizados nesta plataforma aparecem somente neste navegador. Não há contas reais nem sincronização entre dispositivos.");
 function metrics(items){return '<div class="metrics">'+items.map(([count,title])=>'<div class="metric"><strong>'+e(count)+'</strong><span>'+e(title)+'</span></div>').join('')+'</div>';}
 function courseCard(item){
-  return card(item.local?"Criado neste dispositivo":"Curso do catálogo público",item.title,
+  return card((item.icon?item.icon+" · ":"")+(item.local?"Criado neste dispositivo":"Curso do catálogo público"),item.title,
     (item.summary||"Abra a apresentação e percorra as aulas na ordem proposta.")+
     (item.local?" · Disponível somente neste navegador.":""),
     action("Explorar o curso →",routeCourse(item.id),"small"));
@@ -157,7 +157,7 @@ async function teacherHome(){
   '<h2 class="section-title">Comece com um título.</h2><p>O Atelier criará a estrutura local para organizar módulos e aulas. Você não precisa escrever JSON.</p>'+
   '<form data-authoring-form="new-course" class="authoring-quick-form">'+
   '<label class="field-label" for="create-course-title">Nome do curso</label>'+
-  '<div class="authoring-inline"><input class="field" id="create-course-title" name="title" required maxlength="160" placeholder="Ex.: Introdução à clínica psicanalítica">'+
+  '<div class="authoring-inline"><input class="field" name="icon" maxlength="8" value="ψ" aria-label="Símbolo do curso" title="Símbolo do curso" style="max-width:70px;flex:0 0 70px" placeholder="📚"><input class="field" id="create-course-title" name="title" required maxlength="160" placeholder="Ex.: Introdução à clínica psicanalítica">'+
   '<button class="button action" type="submit">Criar curso local →</button></div>'+
   '</form></section>';
  return pageHead("Atelier / Criar","Organize seu <em>ensino.</em>",
@@ -243,6 +243,8 @@ async function courseStructure(cid){
  '<div class="card-label">Informações do curso</div>'+
  '<label class="field-label" for="authoring-course-title">Título</label>'+
  '<input class="field" id="authoring-course-title" name="title" required maxlength="160" value="'+e(course.title)+'">'+
+ '<label class="field-label" for="authoring-course-icon">Símbolo do curso (opcional)</label>'+
+ '<input class="field" id="authoring-course-icon" name="icon" maxlength="8" value="'+e(course.icon||"ψ")+'" placeholder="📚">'+
  '<label class="field-label" for="authoring-course-subtitle">Subtítulo</label>'+
  '<input class="field" id="authoring-course-subtitle" name="subtitle" maxlength="260" value="'+e(course.subtitle||"")+'">'+
  '<label class="field-label" for="authoring-course-description">Apresentação</label>'+
