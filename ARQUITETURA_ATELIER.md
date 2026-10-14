@@ -339,3 +339,13 @@ A Sala do Aluno e a prévia de autoria utilizam o **mesmo motor**. O índice per
 O aluno visualiza a ordem do percurso e usa controles **Aula anterior** e **Próxima aula**, derivados de `position` no manifesto JSON. A página do curso mostra objetivos, títulos, resumos e tempo estimado. Ainda **não há registro de conclusão/progresso** nem certificados.
 
 **Próximo:** Sprint 5 — autoria de cursos e módulos com rascunhos locais, sem Supabase.
+
+## 20. Sprint 5 — Criação e organização visual de cursos
+
+- [Relatório do Sprint 5](docs/SPRINT_5_RESULTADO.md).
+- [Edição de cursos e módulos por operações reutilizáveis](src/features/authoring/course-editor.js).
+- [Rascunhos de cursos salvos localmente em IndexedDB](src/repositories/course-draft-repository.js).
+
+O professor pode criar um curso, editar apresentação e objetivos, criar e ordenar módulos, reorganizar aulas dentro de um módulo e exportar manifestos JSON. **Nada é publicado automaticamente**. A versão do aluno permanece independente e a criação de aulas por blocos chega no Sprint 6.
+
+**Próximo:** Sprint 6 — editor visual de aulas com blocos reutilizáveis. Não há Supabase nem autenticação real.
