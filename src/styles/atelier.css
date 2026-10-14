@@ -178,3 +178,8 @@ textarea.field{min-height:110px;resize:vertical}
 }
 @media(max-width:380px){.main{padding-left:15px;padding-right:15px}.topbar{padding-left:11px;padding-right:11px}.view-toggle{max-width:108px}.page-title{font-size:36px}.button-row .button{width:100%}.course-line{align-items:flex-start}.card{padding:18px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}
+.tab{background:var(--surface);border:1px solid var(--stroke);color:var(--ink-muted);padding:11px 17px;border-radius:var(--radius-sm);font-weight:650;font-size:13px;min-height:44px}
+.tab:hover{background:var(--surface-hover)}
+.tab[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
