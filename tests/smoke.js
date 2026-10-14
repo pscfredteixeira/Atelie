@@ -7,6 +7,11 @@ import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
+import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
+import {checkQuiz,exploreLab} from "../src/features/learning/activities.js";
+import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} from "../src/repositories/learning-repository.js";
+import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
+import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -210,6 +215,65 @@ async function run(){
      if(lessonStored)await deleteDraft(created.course.id,created.lesson.id);
      if(courseStored)await deleteCourseDraft(created.course.id);
    }
+ });
+ await check("Seis modelos pedagógicos criam blocos editáveis",async()=>{
+   if(LESSON_TEMPLATES.length!==6)throw new Error("Modelos didáticos incompletos.");
+   const original=createCourse("Curso fictício");
+   const module=applyCourseChange(original,"add-module",{title:"Módulo"});
+   const created=createLesson(module,module.modules[0].id,"Aula de teste");
+   const templated=useLessonTemplate(created.lesson,"deep-reading");
+   validateLesson(templated);
+   if(templated.blocks.length!==5||templated.id!==created.lesson.id)
+     throw new Error("Template não gerou os cinco blocos esperados.");
+ });
+ await check("Laboratório interativo tem múltiplos caminhos com devolutivas",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-fundamentos","aula-retorno");
+   const block=lesson.blocks.find(b=>b.type==="interactive_lab");
+   if(!block?.data.choices||block.data.choices.length<2)throw new Error("Laboratório de exemplo incompleto.");
+   const html=renderLessonBlocks(lesson);
+   if(!html.includes('data-activity="lab"')||!html.includes('data-branch="investigar"'))
+      throw new Error("Componente interativo não foi renderizado.");
+   const div=document.createElement("div");
+   div.innerHTML=html;
+   const button=div.querySelector('[data-branch="investigar"]');
+   if(!exploreLab(button)||div.querySelector(".learning-feedback").hidden)
+     throw new Error("Laboratório não mostrou devolutiva.");
+ });
+ await check("Quiz recebe resposta e mostra feedback adequado",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-fundamentos","aula-recalque");
+   const html=renderLessonBlocks(lesson);
+   const div=document.createElement("div");div.innerHTML=html;
+   const quiz=div.querySelector('form[data-activity="quiz"]');
+   if(!quiz)throw new Error("Quiz não encontrado na aula.");
+   const correct=quiz.querySelector('input[value="'+quiz.dataset.correct+'"]');
+   if(!correct)throw new Error("Gabarito não corresponde às alternativas.");
+   correct.checked=true;
+   const result=checkQuiz(quiz);
+   if(!result.correct||quiz.querySelector(".learning-feedback").hidden)throw new Error("Feedback do quiz não apareceu.");
+ });
+ await check("Progresso, nota e conclusão são isolados por perfil",async()=>{
+   const id="smoke-"+Date.now();
+   let written=false;
+   try{
+     await updateLearningState(id,"aula-teste",{note:"Nota fictícia",completed:true,answer:{
+       blockId:"quiz-teste",selection:"opcao-a",correct:true}},DEMO_PROFILES[0].id);
+     written=true;
+     const a=await getLearningState(id,"aula-teste",DEMO_PROFILES[0].id);
+     const b=await getLearningState(id,"aula-teste",DEMO_PROFILES[1].id);
+     if(!a.completed||a.note!=="Nota fictícia"||b.completed||b.note)
+       throw new Error("Dados não estão isolados por perfil.");
+   }finally{if(written)await deleteLearningState(id,"aula-teste",DEMO_PROFILES[0].id);}
+ });
+ await check("Backup local tem formato validado sem publicação",async()=>{
+   const backup=await buildLocalBackup(),result=validateLocalBackup(backup);
+   if(backup.format!=="atelier-local-backup"||result.courses!==backup.courseDrafts.length)
+     throw new Error("Backup local inválido.");
+ });
+ await check("Roteiro do beta prepara feedback voluntário",async()=>{
+   if(BETA_TASKS.length<8)throw new Error("Checklist do beta incompleto.");
+   const data=betaReport({device:"teste",browser:"teste",role:"Aluno"});
+   if(data.checks.length!==BETA_TASKS.length||!data.warning)
+     throw new Error("Relatório do beta não pode ser exportado.");
  });
  await check("IndexedDB de cursos salva, recupera e exclui registro temporário",async()=>{
    const draft=createCourse("Smoke test local");
