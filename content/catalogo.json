@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "catalog",
+  "courses": [
+    {
+      "id": "curso-fundamentos",
+      "title": "Fundamentos da Psicanálise",
+      "slug": "fundamentos-da-psicanalise",
+      "manifest": "./courses/fundamentos/curso.json",
+      "status": "published"
+    }
+  ]
+}
