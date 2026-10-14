@@ -345,3 +345,84 @@ textarea.field{min-height:110px;resize:vertical}
  .course-module-editor{padding:17px}
  .course-module-editor>.authoring-controls .button{flex:1;min-width:100px}
 }
+
+/* Sprint 6 — Estúdio visual de aulas (sem editores JSON obrigatórios) */
+.studio-shell{min-width:0}
+.studio-toolbar{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:23px 25px;
+  background:linear-gradient(105deg,#35273e,#292331 75%);border:1px solid #765980;border-radius:var(--radius-lg)}
+.studio-toolbar h2{font:400 clamp(27px,3vw,38px)/1.2 var(--font-editorial);letter-spacing:-.5px;margin:7px 0}
+.studio-subtitle{font-size:12px;color:var(--ink-muted);line-height:1.7}
+.studio-subtitle strong{color:var(--action)}
+.studio-toolbar-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.studio-toolbar-actions .button{min-height:41px}
+.studio-alert{border-left:3px solid var(--accent);padding:11px 15px;background:#a68bb00f;font-size:12px;
+  color:var(--ink-subtle);margin:17px 0 21px;line-height:1.6;border-radius:0 7px 7px 0}
+.studio-alert.is-error{border-color:var(--danger);background:#d8817a1c;color:var(--danger)}
+.studio-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,355px);gap:22px;align-items:start}
+.studio-canvas,.studio-inspector{min-width:0}
+.studio-details{border:1px solid var(--stroke);background:var(--surface);border-radius:var(--radius-md);padding:0 22px;margin-bottom:17px}
+.studio-details summary{cursor:pointer;list-style:none;font-size:14px;font-weight:750;color:var(--ink);padding:18px 0}
+.studio-details summary::-webkit-details-marker{display:none}
+.studio-details summary::after{content:"＋";float:right;color:var(--accent)}
+.studio-details[open] summary::after{content:"−"}
+.studio-form{display:grid;gap:12px;padding:9px 0 22px}
+.studio-form .field-label{margin:0}
+.studio-form .field{width:100%;min-width:0}
+.studio-form .button{justify-self:start}
+.studio-form textarea.field{min-height:100px;font-size:13px;line-height:1.75}
+.studio-form .field-label{line-height:1.45}
+.studio-section-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:10px;margin:23px 0 12px}
+.studio-section-head h3,.studio-library h3{font:400 25px var(--font-editorial);margin:0}
+.studio-item-list{display:grid;gap:9px}
+.studio-item{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--stroke);border-radius:11px;padding:9px}
+.studio-item.is-selected{border-color:#c8a9e2;background:#3d3046;box-shadow:inset 3px 0 #c8a9e2}
+.studio-select{border:0;display:flex;gap:13px;text-align:left;align-items:center;min-width:0;flex:1;
+  padding:7px 5px;color:var(--ink);background:transparent;border-radius:7px}
+.studio-select>span:last-child{min-width:0}
+.studio-select strong{display:block;overflow-wrap:anywhere;line-height:1.45;font-size:13px;font-weight:650}
+.studio-select small{display:block;color:var(--ink-muted);font-size:11px;line-height:1.6;margin-top:2px}
+.studio-item-no{color:var(--accent);font:400 23px var(--font-editorial);min-width:31px}
+.studio-item-tools{display:flex;gap:4px;flex-wrap:nowrap}
+.studio-item-tools button{width:35px;height:35px;border:1px solid #66566d;border-radius:7px;background:#221d29;
+ color:var(--ink-subtle);font-size:15px}
+.studio-item-tools button:hover:not(:disabled){background:#58455f;color:var(--ink)}
+.studio-item-tools button:disabled{opacity:.3}
+.studio-library{margin:21px 0;border:1px dashed #81688b;padding:21px;border-radius:var(--radius-md);background:#c6a8e70b}
+.studio-library p{font-size:12px;color:var(--ink-muted);line-height:1.7;margin:7px 0 17px}
+.studio-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.studio-library-grid button{border:1px solid var(--stroke);background:var(--surface);border-radius:9px;padding:11px 12px;
+ display:flex;gap:9px;align-items:center;color:var(--ink);text-align:left;min-height:48px;font-size:12px;line-height:1.5}
+.studio-library-grid button span{color:var(--action);font-size:19px}
+.studio-library-grid button:hover{border-color:#ad8ac1;background:var(--surface-hover)}
+.studio-inspector{position:sticky;top:95px;border:1px solid #65566f;border-radius:var(--radius-lg);padding:21px;background:var(--surface)}
+.studio-inspector h3{font:400 27px var(--font-editorial);margin:8px 0 19px}
+.studio-field{display:grid;gap:7px}
+.studio-help{font-size:11px;color:var(--ink-muted);line-height:1.6}
+.studio-check{display:flex;gap:10px;align-items:flex-start;color:var(--ink-subtle);line-height:1.6;font-size:12px}
+.studio-check input{width:17px;height:17px;accent-color:#b69aca;margin-top:2px;flex:none}
+.studio-reference-field{border:1px solid var(--stroke);padding:14px;border-radius:8px;display:grid;gap:10px;min-width:0}
+.studio-reference-field legend{font-size:12px;color:var(--ink);font-weight:650}
+.studio-empty{padding:27px;background:var(--surface);border-radius:var(--radius-md);color:var(--ink-muted);line-height:1.7}
+.studio-preview .reader{max-width:850px;margin:16px auto 20px}
+.studio-preview .overline{display:block;margin:23px 0 15px}
+.studio-preview .tiny{text-align:center}
+.studio-new-lesson{border-top:1px solid var(--stroke-soft);padding-top:17px;margin-top:17px}
+.studio-new-lesson .authoring-inline{margin-top:8px}
+@media(max-width:1120px){
+ .studio-board{grid-template-columns:minmax(0,1fr)}
+ .studio-inspector{position:static;order:-1}
+ .studio-toolbar{flex-direction:column}
+ .studio-toolbar-actions{justify-content:flex-start}
+}
+@media(max-width:740px){
+ .studio-toolbar{padding:21px 16px}
+ .studio-toolbar-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+ .studio-toolbar-actions .button{padding:10px 9px;font-size:12px}
+ .studio-library-grid{grid-template-columns:1fr 1fr}
+ .studio-item{flex-wrap:wrap}
+ .studio-item-tools{margin-left:40px}
+ .studio-canvas,.studio-inspector{width:100%}
+ .studio-inspector{padding:18px}
+ .studio-library{padding:16px}
+}
+@media(max-width:375px){.studio-library-grid{grid-template-columns:1fr}.studio-toolbar-actions{grid-template-columns:1fr}}
