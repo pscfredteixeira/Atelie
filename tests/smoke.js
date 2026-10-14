@@ -3,6 +3,8 @@ import {validateLesson,validateLessonLink} from "../src/repositories/validators.
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from "../src/features/authoring/course-editor.js";
+import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -106,6 +108,50 @@ async function run(){
      if(!r.lesson?.blocks?.length||r.lesson.id!==id)throw new Error("Aula não carregada: "+id);
      const html=renderLessonBlocks(r.lesson,{sourceURL:r.contentURL});
      if(!html.includes("lesson-block"))throw new Error("Motor indisponível na aula "+id);
+   }
+ });
+ await check("Criação de curso e validação de módulos por formulário",async()=>{
+   const initial=createCourse("Curso de teste local");
+   const one=applyCourseChange(initial,"add-module",{title:"Primeiro módulo",description:"Pergunta inicial"});
+   const two=applyCourseChange(one,"add-module",{title:"Segundo módulo",description:"Outra etapa"});
+   const moved=applyCourseChange(two,"move-module",{moduleId:two.modules[1].id,direction:-1});
+   if(initial.modules.length||two.modules.length!==2||moved.modules[0].id!==two.modules[1].id)
+     throw new Error("A organização não respeitou a sequência.");
+   const changed=applyCourseChange(moved,"edit-module",{moduleId:moved.modules[0].id,title:"Revisado"});
+   if(changed.modules[0].title!=="Revisado")throw new Error("O título editado não foi aplicado.");
+ });
+ await check("Revisão local não modifica curso publicado",async()=>{
+   if(!manifest)throw new Error("Manifesto não carregado.");
+   const base=JSON.stringify(manifest);
+   const draft=startCourseDraft(manifest);
+   const moved=applyCourseChange(draft,"move-lesson",{
+     moduleId:draft.modules[0].id,lessonId:"aula-conflito",direction:1
+   });
+   if(manifest.status!=="published"||draft.status!=="draft"||
+      JSON.stringify(manifest)!==base||moved.modules[0].lessons[1].id!=="aula-conflito")
+     throw new Error("A versão publicada ou os IDs foram alterados incorretamente.");
+   try{applyCourseChange(draft,"remove-module",{moduleId:draft.modules[0].id});}
+   catch{return;}
+   throw new Error("O aplicativo deixou excluir um módulo que contém aulas.");
+ });
+ await check("Entrada de catálogo exportável de um curso novo",async()=>{
+   const draft=createCourse("Percurso local fictício");
+   const entry=createCatalogEntry(draft);
+   if(entry.status!=="draft"||entry.id!==draft.id||
+      entry.manifest!=="./courses/"+draft.slug+"/curso.json")
+     throw new Error("A entrada não corresponde ao manifesto.");
+ });
+ await check("IndexedDB de cursos salva, recupera e exclui registro temporário",async()=>{
+   const draft=createCourse("Smoke test local");
+   let wrote=false;
+   try{
+     const saved=await saveCourseDraft(draft);
+     wrote=true;
+     const fetched=await getCourseDraft(draft.id);
+     if(!fetched||fetched.id!==draft.id||fetched.course.title!=="Smoke test local")
+       throw new Error("O rascunho de curso não foi recuperado.");
+   }finally{
+     if(wrote)await deleteCourseDraft(draft.id);
    }
  });
  await check("Gravação, recuperação e exclusão no IndexedDB",async()=>{
