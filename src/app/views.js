@@ -4,6 +4,7 @@ import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesso
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/learning/journey.js";
 import {getCourseDraft,listCourseDrafts} from "../repositories/course-draft-repository.js";
 import {LESSON_TEMPLATES} from "../features/authoring/lesson-templates.js";
+import {lessonNotebook,notebookPage,progressPage} from "../features/learning/learning-ui.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
 const routeLesson=(cid,lid)=>routeCourse(cid)+"/aulas/"+encodeURIComponent(lid);
@@ -128,22 +129,13 @@ async function lessonPage(cid,lid){
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
  (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
  reader(lesson,{sourceURL:contentURL})+
+ await lessonNotebook(cid,lid)+
  lessonPager(course,context)+
  '<details class="journey-course-drawer"><summary>Consultar programa do curso</summary>'+modules(course,false,lid)+'</details>'+
- note("<strong>Navegação, não avaliação:</strong> anterior e próxima permitem percorrer as aulas, mas não registram presença, conclusão ou progresso. Os exercícios avaliativos completos entram no Sprint 9.");
+ note("<strong>Estudo local:</strong> marcar uma aula como concluída e responder a questões registra apenas seu histórico neste navegador, no perfil de teste selecionado. A marcação é voluntária, não certifica aprendizagem.");
 }
-function caderno(){
- return pageHead("Aprender / Meu caderno","Seu espaço de <em>anotações.</em>",
- "O caderno pessoal e o acompanhamento de estudos serão implementados no Sprint 10.")+
- emptyState("Ainda não há anotações","As futuras anotações ficarão neste navegador e poderão ser exportadas. Não insira dados clínicos ou pessoais reais aqui.",
- action("Explorar cursos →","#/cursos","action"))+info();
-}
-function progresso(){
- return pageHead("Aprender / Meu progresso","Aprender exige <em>tempo.</em>",
- "O progresso individual ainda não está ativo. Esta tela deixará de ser um modelo quando adicionarmos acompanhamento local no Sprint 10.")+
- emptyState("Nenhuma atividade registrada","Nesta etapa não registramos a conclusão de aulas nem notas.",
- action("Conhecer os cursos →","#/cursos","action"))+info();
-}
+async function caderno(){return notebookPage(contentRepository);}
+async function progresso(){return progressPage(contentRepository);}
 async function teacherHome(){
  const publicCourses=await contentRepository.listPublishedCourses();
  let courseDrafts=[],lessonDrafts=[],warnings=[];
@@ -360,8 +352,8 @@ function visualLibrary(){
 export async function routeView(path){
  if(path==="/"||path==="/aluno")return {title:"Início do aluno",area:"Aluno",html:await studentHome()};
  if(path==="/cursos")return {title:"Catálogo",area:"Aluno",html:await catalog()};
- if(path==="/aluno/caderno")return {title:"Meu caderno",area:"Aluno",html:caderno()};
- if(path==="/aluno/progresso")return {title:"Meu progresso",area:"Aluno",html:progresso()};
+ if(path==="/aluno/caderno")return {title:"Meu caderno",area:"Aluno",html:await caderno()};
+ if(path==="/aluno/progresso")return {title:"Meu progresso",area:"Aluno",html:await progresso()};
  if(path==="/professor")return {title:"Painel do professor",area:"Professor",html:await teacherHome()};
  if(path==="/admin")return {title:"Administração",area:"Administrador",html:await admin()};
  if(path==="/admin/identidade")return {title:"Biblioteca visual",area:"Administrador",html:visualLibrary()};
