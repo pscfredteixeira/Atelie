@@ -54,16 +54,16 @@ async function studentHome(){
  const list=await learnerContentRepository.listPublishedCourses();
  return pageHead("Atelier · Aprender","Um laboratório de <em>ideias.</em>",
  "Cada percurso une leitura, investigação e reflexão. Estamos construindo uma plataforma para aprender psicanálise com profundidade.")+
- (list.length?'<section class="illustrated"><div><div class="overline">Comece pelo primeiro curso</div><h2>'+e(list[0].title)+'</h2>'+
-   '<p>Conheça o percurso inicial, com conteúdo publicado em JSON independente da interface.</p>'+
+ (list.length?'<section class="illustrated"><div><div class="overline">Conheça o primeiro percurso</div><h2>'+e(list[0].title)+'</h2>'+
+   '<p>Conheça os módulos previstos para esta formação. As aulas serão preparadas no Estúdio do professor.</p>'+
    action("Conhecer o curso →",routeCourse(list[0].id),"action")+
    '</div><div class="illustrated-symbol" aria-hidden="true">ψ</div></section>':
    emptyState("Ainda não há cursos publicados","O catálogo receberá cursos conforme forem revisados e publicados."))+
- sectionHead("Biblioteca de cursos",badge(list.length+" publicado(s)","purple"))+
+ sectionHead("Biblioteca de cursos",badge(list.length+" curso(s)","purple"))+
  (list.length?'<div class="grid">'+list.map(courseCard).join('')+'</div>':'')+info();
 }
 async function catalog(){
- const list=await contentRepository.listPublishedCourses();
+ const list=await learnerContentRepository.listPublishedCourses();
  return pageHead("Aprender / Cursos","O que você deseja <em>investigar?</em>",
  "Explore tanto os cursos públicos quanto os cursos que você criou e disponibilizou neste dispositivo.")+
  (list.length?'<div class="grid">'+list.map(courseCard).join('')+'</div>':
@@ -144,8 +144,12 @@ async function lessonPage(cid,lid){
 async function caderno(){return notebookPage(learnerContentRepository);}
 async function progresso(){return progressPage(learnerContentRepository);}
 async function teacherHome(){
- let publicCourses=[],courseDrafts=[],lessonDrafts=[],localAvailable=[],warnings=[];
- try{publicCourses=await contentRepository.listPublishedCourses();}
+ let publicCourses=[],technicalCourses=[],courseDrafts=[],lessonDrafts=[],localAvailable=[],warnings=[];
+ try{
+   const all=await contentRepository.listPublishedCourses();
+   publicCourses=all.filter(c=>!c.demo);
+   technicalCourses=all.filter(c=>c.demo);
+ }
  catch(err){warnings.push("Catálogo remoto indisponível: "+err.message);}
  try{courseDrafts=await listCourseDrafts();}
  catch(err){warnings.push(err.message);}
@@ -177,6 +181,8 @@ async function teacherHome(){
    '<p>'+ (modifiedIds.has(c.id)?"Você também tem uma revisão local deste curso.":"Disponível no catálogo público; pode criar uma revisão local.")+'</p></div>'+
    action(modifiedIds.has(c.id)?"Abrir revisão →":"Preparar edição →",routeManage(c.id),"small")+'</article>').join("")+'</div>':
   emptyState("Nenhum curso publicado","Novos cursos poderão ser incluídos no catálogo após exportação e commit."))+
+ (technicalCourses.length?'<details class="module"><summary><span class="overline">Ferramentas internas</span><strong>Material de demonstração</strong></summary>'+
+ '<div class="lesson-item">'+technicalCourses.map(c=>'<div><strong>'+e(c.title)+'</strong> · '+action("Editar demonstração →",routeManage(c.id),"small")+'</div>').join("")+'</div></details>':'')+
  (localAvailable.length?sectionHead("Disponíveis neste dispositivo",badge("Catálogo local","purple"))+
  '<div class="course-list">'+localAvailable.map(c=>
  '<article class="card course-line"><span aria-hidden="true">◈</span><div><h3>'+e(c.title)+'</h3>'+
