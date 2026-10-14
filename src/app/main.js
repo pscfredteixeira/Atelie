@@ -13,6 +13,7 @@ import {checkQuiz,exploreLab} from "../features/learning/activities.js";
 import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
+import {loadCourseMenu,coursePicker,currentCourseChoice} from "../features/navigation/course-menu.js";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
@@ -25,9 +26,7 @@ const navGroups = [
   {href:"#/aluno/progresso",name:"Meu progresso",icon:"◷"}
  ]},
  {name:"Criar",links:[
-  {href:"#/professor",name:"Painel do professor",icon:"✧"},
-  {href:"#/professor/cursos/curso-introducao-psicanalise",name:"Introdução à Psicanálise",icon:"ψ"},
-  {href:"#/professor/cursos/curso-formacao-freudiana",name:"Formação Freudiana",icon:"✦"}
+  {href:"#/professor",name:"Painel do professor",icon:"✧"}
  ]},
  {name:"Organizar",links:[{href:"#/admin",name:"Administração",icon:"▦"},{href:"#/admin/identidade",name:"Biblioteca visual",icon:"◈"},
   {href:"#/admin/blocos",name:"Blocos pedagógicos",icon:"▧"},
@@ -58,12 +57,15 @@ function anchor(item, selected) {
   const active = item.href === selected;
   return '<a class="nav-link" href="'+e(item.href)+'"'+(active?' aria-current="page"':'')+'><span class="nav-icon" aria-hidden="true">'+e(item.icon)+'</span><span>'+e(item.name)+'</span></a>';
 }
-function sidebar(path) {
+function sidebar(path,menus) {
   const active = selectedNav(path);
   return '<aside class="sidebar'+(isMenuOpen?' is-open':'')+'" id="sidebar" aria-label="Navegação principal">'+
   '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
-  navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+'</div>').join('')+
+  navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+
+    (g.name==="Aprender"?coursePicker("student",path,menus.student,"sidebar"):
+     g.name==="Criar"?coursePicker("teacher",path,menus.teacher,"sidebar"):"")+
+    '</div>').join('')+
   '</nav><div class="sidebar-foot">Atelier · Beta local em JSON.<br>Sem login real ou sincronização entre aparelhos.<br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
@@ -82,6 +84,12 @@ function bottomMenu(path) {
 async function render(moveFocus) {
   const call=++activeRender;
   const path=route();
+  // A lista do menu é independente da página: problemas no catálogo local
+  // não devem impedir que a tela principal seja exibida.
+  const menusPromise=loadCourseMenu().catch(error=>{
+    console.warn("Atelier: seletor de cursos indisponível",error);
+    return {student:[],teacher:[]};
+  });
   let page;
   try{
     page=await routeView(path);
@@ -96,6 +104,8 @@ async function render(moveFocus) {
       '<a class="button" href="#/cursos">Voltar ao catálogo →</a></div></div>'};
   }
   if(call!==activeRender)return;
+  const menus=await menusPromise;
+  if(call!==activeRender)return;
   unmountStudio();
   unsavedForms.clear();
   unsavedNote=false;
@@ -104,12 +114,14 @@ async function render(moveFocus) {
     '<button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="'+String(isMenuOpen)+'">☰</button>'+
     '<div class="breadcrumb">ATELIER / '+e(page.area)+' / <strong>'+e(page.title)+'</strong></div></div>'+
     '<div class="top-actions"><span class="mode-chip">Protótipo</span>'+
+    (chosen==="#/admin"?"":coursePicker(chosen==="#/professor"?"teacher":"student",path,
+      chosen==="#/professor"?menus.teacher:menus.student,"header"))+
     '<label for="switch-role" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Trocar ambiente</label>'+
     '<select class="view-toggle" id="switch-role" aria-label="Trocar ambiente demonstrativo">'+
     '<option value="#/aluno"'+(chosen==="#/aluno"?' selected':'')+'>Aluno</option>'+
     '<option value="#/professor"'+(chosen==="#/professor"?' selected':'')+'>Professor</option>'+
     '<option value="#/admin"'+(chosen==="#/admin"?' selected':'')+'>Admin</option></select></div></header>';
-  app.innerHTML = '<div class="shell">'+sidebar(path)+
+  app.innerHTML = '<div class="shell">'+sidebar(path,menus)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
     '<footer class="footer"><span>Atelier. · Beta JSON · Sprints 0–13</span><span>'+
@@ -489,6 +501,27 @@ document.addEventListener("click",ev=>{
   }
 });
 document.addEventListener("change",async ev=>{
+  const picker=ev.target.closest("[data-course-picker]");
+  if(picker){
+    const next=picker.value,kind=picker.dataset.coursePicker;
+    if(!next)return;
+    const previousId=currentCourseChoice(route(),kind);
+    const previous=previousId?(kind==="teacher"?"#/professor/cursos/":"#/cursos/")+previousId:"";
+    const restore=()=>{picker.value=previous;};
+    if(unsavedForms.size&&!confirmUnsaved()){restore();return;}
+    if(isStudioDirty()&&!confirmStudioLeave()){restore();return;}
+    if(unsavedNote&&!window.confirm("Há uma anotação não salva. Descartá-la e mudar de curso?")){
+      restore();return;
+    }
+    if(window.location.hash===next){
+      if(isMenuOpen)setMenu(false);
+      return;
+    }
+    if(unsavedForms.size||isStudioDirty()||unsavedNote)approvedNavigationHash=next;
+    if(isMenuOpen)setMenu(false);
+    window.location.hash=next;
+    return;
+  }
   if(ev.target.matches("[data-beta-check]")){
     try{setBetaCheck(ev.target.dataset.betaCheck,ev.target.checked);}
     catch(err){showToast(err.message);}
