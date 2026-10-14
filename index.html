@@ -1,142 +1,25 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#131218">
-<meta name="description" content="Atelier — arquitetura inicial da plataforma de ensino de psicanálise.">
-<title>Atelier. — Mapa da plataforma</title>
-<style>
-:root{color-scheme:dark;--bg:#131218;--surface:#1c1a22;--surface2:#24212d;--line:#36313e;--text:#f3f0ed;--muted:#b4adba;--quiet:#89828f;--purple:#b29cde;--orange:#e9a879;--green:#9fc6ac;--radius:17px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 70% 34% at 74% -13%,#423150 0%,transparent 90%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
-a{color:inherit}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid var(--orange);outline-offset:3px}button:disabled{cursor:default}::selection{background:#66517d}
-.shell{max-width:1260px;margin:auto;padding:0 28px}
-header{border-bottom:1px solid #ffffff13}.head{min-height:80px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.brand{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:31px;letter-spacing:-1.3px;text-decoration:none}.brand span{color:var(--orange)}
-.head-right{display:flex;align-items:center;gap:22px;font-size:13px}.head-right a{text-decoration:none;color:var(--muted)}.head-right a:hover{color:var(--text)}
-.status{padding:7px 11px;border:1px solid #806849;background:#e9a87914;border-radius:30px;color:#eab78e;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:60px;align-items:center;padding:82px 0 70px}
-.eyebrow{color:var(--orange);font-size:11px;letter-spacing:.19em;font-weight:750;text-transform:uppercase}.hero h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-2.6px;font-size:clamp(50px,6vw,86px);line-height:1.06;margin:18px 0 25px}.hero h1 em{font-weight:400;color:var(--purple)}
-.lead{color:#cbc4cd;font-size:17px;max-width:640px;line-height:1.85;margin:0 0 28px}.actions{display:flex;gap:12px;flex-wrap:wrap}
-.primary,.secondary{padding:13px 18px;border-radius:9px;font-size:13px;font-weight:650;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:45px}
-.primary{background:var(--orange);color:#211a19;border:1px solid var(--orange)}.primary:hover{background:#f6bb90}
-.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.secondary:hover{background:#ffffff0b}
-.vision{border:1px solid #51465c;background:linear-gradient(145deg,#2b2435,#1b1923 80%);border-radius:22px;padding:29px;box-shadow:0 23px 70px #00000040;min-width:0}.vision-top{display:flex;justify-content:space-between;gap:10px;align-items:center;padding-bottom:20px;border-bottom:1px solid #ffffff1b}.micro{font-size:10px;color:#cbb6d8;letter-spacing:.15em;text-transform:uppercase}.dotset{display:flex;gap:6px}.dotset i{width:7px;height:7px;border-radius:50%;background:#786780}.vision h2{font-family:Georgia,serif;font-size:25px;font-weight:400;margin:22px 0 19px}.tree{display:grid;gap:10px}.tree-row{border-radius:10px;background:#ffffff0a;border:1px solid #ffffff12;padding:13px 15px;display:flex;gap:13px;align-items:center}.tree-row b{font-size:13px}.tree-row small{display:block;color:#ada5b1;font-size:11px;margin-top:3px}.tree-ico{width:34px;height:34px;display:grid;place-items:center;color:var(--orange);font-family:Georgia,serif;font-size:20px;border-radius:9px;background:#e9a87917}.tree-foot{margin-top:20px;color:#a5a0a9;font-size:12px}
-.section{padding:40px 0 92px;border-top:1px solid #ffffff14}.section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:27px}.section-head h2{font:400 clamp(31px,4vw,46px)/1.14 Georgia,serif;letter-spacing:-1px;margin:8px 0}.section-head p{color:var(--muted);max-width:435px;font-size:14px;margin:0;line-height:1.8}
-.kicker{font-size:11px;color:var(--orange);letter-spacing:.16em;text-transform:uppercase;font-weight:700}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{background:var(--surface);color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:12px 17px;transition:background .16s,border-color .16s}.tab[aria-selected=true]{background:#3a2b43;color:#faf4ff;border-color:#82669c}
-.stage{border:1px solid var(--line);border-radius:18px;background:var(--surface);display:grid;grid-template-columns:260px minmax(0,1fr);min-height:370px;overflow:hidden}.stage[hidden]{display:none}.sidenav{border-right:1px solid var(--line);background:#19171e;padding:24px 16px}.sidenav .micro{display:block;padding:0 13px 13px;color:var(--quiet)}.route{font-size:13px;display:block;width:100%;background:none;border:0;color:var(--muted);padding:12px 13px;text-align:left;border-radius:8px}.route.active,.route:hover{background:#ffffff11;color:var(--text)}.route.active{box-shadow:inset 3px 0 var(--orange)}.stage-main{padding:32px 37px 33px;min-width:0}.path{font-size:11px;letter-spacing:.06em;color:var(--quiet);margin-bottom:20px;text-transform:uppercase}.stage-main h3{font:400 34px/1.18 Georgia,serif;margin:0 0 13px;letter-spacing:-.5px}.stage-desc{font-size:15px;color:var(--muted);max-width:590px;line-height:1.85}.mini-head{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--orange);margin:27px 0 12px}.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.feature{background:var(--surface2);border:1px solid #ffffff0d;border-radius:10px;padding:14px}.feature strong{font-size:13px;font-weight:600;display:block}.feature small{color:var(--quiet);font-size:12px;line-height:1.65;display:block;margin-top:5px}
-.diagram{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}.diagram-item{padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:13px}.diagram-item b{color:var(--orange);font-size:12px}.diagram-item h3{font-size:16px;font-weight:600;margin:11px 0 7px}.diagram-item p{font-size:13px;color:var(--muted);margin:0;line-height:1.7}
-.notes{border:1px solid #715d48;background:#3a2b231f;border-radius:13px;margin-top:23px;padding:17px 20px;line-height:1.75;font-size:13px;color:#d7c9ba}
-footer{border-top:1px solid #ffffff13;padding:27px 0 36px;color:var(--quiet);font-size:12px}.foot{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.foot a{color:var(--purple)}
-@media(max-width:900px){.hero{gap:30px;grid-template-columns:1fr}.vision{max-width:650px}.diagram{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.shell{padding:0 18px}.head{min-height:71px}.brand{font-size:27px}.head-right{gap:10px}.head-right a{display:none}.status{font-size:9px}.hero{padding:52px 0 48px;gap:34px}.hero h1{letter-spacing:-1.2px;font-size:clamp(42px,11vw,60px)}.lead{font-size:15px;line-height:1.75}.vision{padding:20px}.section{padding:32px 0 70px}.section-head{display:block}.section-head p{margin-top:12px}.stage{display:block}.sidenav{border-right:0;border-bottom:1px solid var(--line);padding:15px}.sidenav .micro{padding:4px 8px 10px}.routes{display:flex;overflow-x:auto;gap:5px}.route{white-space:nowrap;width:auto;flex:none;padding:9px 12px}.route.active{box-shadow:inset 0 -3px var(--orange)}.stage-main{padding:25px 19px 28px}.stage-main h3{font-size:29px}.feature-grid,.diagram{grid-template-columns:1fr}.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tab{padding:11px 8px;font-size:12px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#121218">
+  <meta name="description" content="Atelier — plataforma em desenvolvimento para aprender e ensinar psicanálise. Demonstração de UX do Sprint 1.">
+  <title>Atelier. · Laboratório de Psicanálise</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23121218'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia' font-size='46' fill='%23f0b283'%3E%CF%88%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./src/styles/atelier.css">
 </head>
 <body>
-<header><div class="shell head">
-  <a class="brand" href="#inicio" aria-label="Atelier, início">Atelier<span>.</span></a>
-  <div class="head-right"><span class="status">Sprint 0 · Arquitetura definida</span><a href="https://github.com/pscfredteixeira/Atelie/blob/main/ARQUITETURA_ATELIER.md" target="_blank" rel="noopener noreferrer">Documento mestre ↗</a></div>
-</div></header>
-<main id="inicio">
-<section class="shell hero" aria-labelledby="heroTitle">
-  <div><div class="eyebrow">Atelier / laboratório de psicanálise</div>
-    <h1 id="heroTitle">Uma nova forma de <em>aprender.</em></h1>
-    <p class="lead">Estamos desenhando uma plataforma para ensinar, estudar e experimentar a psicanálise. Primeiro a arquitetura: uma base flexível para cursos, aulas e experiências interativas.</p>
-    <div class="actions"><a class="primary" href="./wireframes.html">Explorar as 6 telas <span aria-hidden="true">→</span></a><a class="secondary" href="#ambientes">Ver o mapa geral ↓</a><a class="secondary" href="https://github.com/pscfredteixeira/Atelie/blob/main/docs/CONTRATO_CONTEUDO.md" target="_blank" rel="noopener noreferrer">Estrutura das aulas ↗</a><a class="secondary" href="https://github.com/pscfredteixeira/Atelie/blob/main/docs/SPRINT_1_BRIEF.md" target="_blank" rel="noopener noreferrer">Plano do Sprint 1 ↗</a><a class="secondary" href="https://github.com/pscfredteixeira/Atelie/blob/main/ARQUITETURA_ATELIER.md" target="_blank" rel="noopener noreferrer">Ler arquitetura ↗</a></div>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <div id="app">
+    <main class="main" id="main-content" tabindex="-1">
+      <p class="overline">Atelier · Carregando</p>
+      <h1 class="page-title">Preparando sua experiência.</h1>
+      <p class="lead">Se esta mensagem permanecer, confira a conexão e a disponibilidade dos arquivos JavaScript.</p>
+    </main>
   </div>
-  <aside class="vision" aria-label="Estrutura conceitual do Atelier">
-    <div class="vision-top"><span class="micro">Mapa do produto / v0.1</span><span class="dotset" aria-hidden="true"><i></i><i></i><i></i></span></div>
-    <h2>Três ambientes.<br>Uma plataforma.</h2>
-    <div class="tree"><div class="tree-row"><span class="tree-ico">α</span><div><b>Aprender</b><small>Cursos, salas de aula, atividades e progresso</small></div></div>
-    <div class="tree-row"><span class="tree-ico">β</span><div><b>Criar</b><small>Estúdio visual, módulos e blocos pedagógicos</small></div></div>
-    <div class="tree-row"><span class="tree-ico">γ</span><div><b>Organizar</b><small>Revisão, estrutura e qualidade dos conteúdos</small></div></div></div>
-    <div class="tree-foot">Nesta etapa, estamos validando as jornadas e a arquitetura — ainda não o aplicativo completo.</div>
-  </aside>
-</section>
-<section class="section" id="ambientes"><div class="shell">
-  <div class="section-head"><div><div class="kicker">Experiência / mapa de navegação</div><h2>Um Atelier, diferentes jornadas.</h2></div><p>Selecione um perfil e explore as telas previstas para cada ambiente. Esta é uma apresentação navegável do projeto, não um sistema de login.</p></div>
-  <div class="tabs" role="tablist" aria-label="Ambientes do Atelier">
-    <button class="tab" id="tab-aluno" data-profile="aluno" role="tab" aria-selected="true" aria-controls="stage-aluno">01 · Aluno</button>
-    <button class="tab" id="tab-professor" data-profile="professor" role="tab" aria-selected="false" aria-controls="stage-professor">02 · Professor</button>
-    <button class="tab" id="tab-admin" data-profile="admin" role="tab" aria-selected="false" aria-controls="stage-admin">03 · Admin</button>
-  </div>
-  <section class="stage" id="stage-aluno" role="tabpanel" aria-labelledby="tab-aluno">
-    <nav class="sidenav" aria-label="Mapa do aluno"><span class="micro">Aprender / navegação</span><div class="routes">
-      <button class="route active" data-title="Início do aluno" data-desc="Reúne cursos em andamento, último ponto de leitura e um caminho claro para continuar estudando." data-features="Retomar aula|Voltar ao ponto de estudo;Panorama|Progresso armazenado neste navegador;Cursos recentes|Acesso rápido ao conteúdo;Preferências|Fonte e acessibilidade">Início</button>
-      <button class="route" data-title="Catálogo de cursos" data-desc="Apresenta cursos disponíveis com proposta de formação, ementa, módulos e objetivos pedagógicos." data-features="Explorar|Cursos com identidade editorial;Filtrar|Localizar tema e autor;Conhecer|Ver objetivos do curso;Abrir|Começar pela ementa">Catálogo</button>
-      <button class="route" data-title="Sala de aula" data-desc="Percurso por blocos: texto, mídia, reflexão, exercícios e laboratórios reutilizáveis, com foco na compreensão." data-features="Ler|Texto confortável e responsivo;Experimentar|Atividades e laboratórios;Anotar|Caderno junto à aula;Continuar|Avançar e registrar progresso">Sala de aula</button>
-      <button class="route" data-title="Meu caderno" data-desc="Organiza anotações pessoais por curso e aula. Na fase de teste, tudo fica salvo apenas no navegador." data-features="Anotações|Escrita livre por aula;Conceitos|Revisitar ideias-chave;Exportar|Baixar arquivo de backup;Importar|Restaurar em outro navegador">Meu caderno</button>
-      <button class="route" data-title="Meu progresso" data-desc="Mostra o percurso individual sem depender de um servidor. Não oferece comparação entre alunos nessa fase." data-features="Concluídas|Aulas finalizadas;Em andamento|Retomada dos estudos;Revisão|Temas que merecem atenção;Backup|Preservar estado local">Meu progresso</button>
-    </div></nav>
-    <div class="stage-main"><div class="path">Atelier / Aluno / Visão geral</div><h3 class="dynamic-title">Início do aluno</h3><p class="stage-desc dynamic-desc">Reúne cursos em andamento, último ponto de leitura e um caminho claro para continuar estudando.</p><div class="mini-head">Elementos principais da tela</div><div class="feature-grid"></div></div>
-  </section>
-  <section class="stage" id="stage-professor" role="tabpanel" aria-labelledby="tab-professor" hidden>
-    <nav class="sidenav" aria-label="Mapa do professor"><span class="micro">Criar / navegação</span><div class="routes">
-      <button class="route active" data-title="Painel do professor" data-desc="Ponto de partida para construir um curso e encontrar suas aulas e rascunhos recentes." data-features="Novo curso|Iniciar um programa;Nova aula|Criar um rascunho;Atalhos|Retomar a edição;Status|Ver o que falta revisar">Painel</button>
-      <button class="route" data-title="Estrutura do curso" data-desc="Organização visual de cursos, módulos e aulas, com identidade e ordem independentes." data-features="Módulos|Criar e editar seções;Aulas|Organizar a sequência;Reordenar|Mover sem perder IDs;Revisar|Ver estados editoriais">Estrutura de cursos</button>
-      <button class="route" data-title="Estúdio de criação" data-desc="Editor visual baseado em blocos: permite configurar, reordenar, salvar localmente e pré-visualizar aulas." data-features="Blocos|Texto, imagem e atividades;Modelos|Começar por um percurso;Prévia|Ver como o aluno verá;Rascunho|Salvamento local">Estúdio de aula</button>
-      <button class="route" data-title="Biblioteca de experiências" data-desc="Atividades reutilizáveis que não dependem do nome ou identificador de uma aula específica." data-features="Laboratórios|Simulações conceituais;Quizzes|Feedback pedagógico;Casos|Vinhetas fictícias;Comparações|Perspectivas teóricas">Biblioteca</button>
-      <button class="route" data-title="Revisão e exportação" data-desc="Verificação de conteúdo, compatibilidade e referências antes de exportar um pacote JSON para publicar manualmente." data-features="Validar|Encontrar campos ausentes;Revisar|Checar referências;Exportar|Gerar pacote JSON;Publicar|Etapa manual no GitHub">Revisão e exportação</button>
-    </div></nav>
-    <div class="stage-main"><div class="path">Atelier / Professor / Visão geral</div><h3 class="dynamic-title">Painel do professor</h3><p class="stage-desc dynamic-desc">Ponto de partida para construir um curso e encontrar suas aulas e rascunhos recentes.</p><div class="mini-head">Elementos principais da tela</div><div class="feature-grid"></div></div>
-  </section>
-  <section class="stage" id="stage-admin" role="tabpanel" aria-labelledby="tab-admin" hidden>
-    <nav class="sidenav" aria-label="Mapa do administrador"><span class="micro">Organizar / navegação</span><div class="routes">
-      <button class="route active" data-title="Painel de organização" data-desc="Visão geral da estrutura de cursos e dos estados editoriais disponíveis no protótipo." data-features="Visão geral|Cursos e módulos;Status|Rascunho e revisão;Organização|Categorias e ordem;Pendências|Problemas de conteúdo">Painel geral</button>
-      <button class="route" data-title="Organização de conteúdo" data-desc="Central de organização do material pedagógico e dos autores de demonstração." data-features="Cursos|Catálogo central;Autores|Perfis fictícios;Categorias|Classificar conteúdos;Ordem|Organizar percursos">Organização</button>
-      <button class="route" data-title="Qualidade e validação" data-desc="Verificações de estrutura dos arquivos antes da distribuição pública da demonstração." data-features="JSON|Validar esquema;Identificadores|Detectar duplicações;Mídia|Conferir caminhos;Referências|Alertar campos ausentes">Qualidade</button>
-      <button class="route" data-title="Configurações do protótipo" data-desc="Exportação, importação e troca de perfis fictícios. Permissões e credenciais reais virão apenas com servidor." data-features="Perfis|Somente demonstração;Exportação|Pacotes de conteúdo;Backup|Dados locais;Futuro|Troca por serviços reais">Configurações</button>
-    </div></nav>
-    <div class="stage-main"><div class="path">Atelier / Admin / Visão geral</div><h3 class="dynamic-title">Painel de organização</h3><p class="stage-desc dynamic-desc">Visão geral da estrutura de cursos e dos estados editoriais disponíveis no protótipo.</p><div class="mini-head">Elementos principais da tela</div><div class="feature-grid"></div></div>
-  </section>
-  <div class="notes"><strong>Importante:</strong> o site atual é um mapa navegável da arquitetura, não a implementação do Estúdio ou da área do aluno. Não existe login real nem salvamento de aulas nesta página. Essas funções entram nos próximos sprints.</div>
-</div></section>
-<section class="section"><div class="shell">
- <div class="section-head"><div><div class="kicker">Infraestrutura da demonstração</div><h2>Começar leve. Crescer sem refazer.</h2></div><p>O protótipo separará as aulas do código, para que a infraestrutura possa ser substituída no futuro.</p></div>
- <div class="diagram">
-   <div class="diagram-item"><b>01 / Interface</b><h3>Experiência</h3><p>Navegação, design system, estúdio de autoria e sala de aula.</p></div>
-   <div class="diagram-item"><b>02 / Motor</b><h3>Blocos de aula</h3><p>Renderizadores reutilizáveis para diferentes experiências pedagógicas.</p></div>
-   <div class="diagram-item"><b>03 / Agora</b><h3>JSON e navegador</h3><p>Conteúdo em JSON; rascunhos e progresso salvos localmente.</p></div>
-   <div class="diagram-item"><b>04 / Futuro</b><h3>Servidor e banco</h3><p>Adaptação posterior sem reescrever toda a interface.</p></div>
- </div>
-</div></section>
-</main>
-<footer><div class="shell foot"><span>Atelier. · Arquitetura documentada · Sprint 0</span><a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Ver repositório no GitHub ↗</a></div></footer>
-<script>
-(function(){
- "use strict";
- const tabs=Array.from(document.querySelectorAll(".tab"));
- function renderRoute(stage,button){
-   stage.querySelectorAll(".route").forEach(function(b){b.classList.toggle("active",b===button)});
-   stage.querySelector(".dynamic-title").textContent=button.dataset.title;
-   stage.querySelector(".dynamic-desc").textContent=button.dataset.desc;
-   stage.querySelector(".path").textContent="Atelier / "+({aluno:"Aluno",professor:"Professor",admin:"Admin"}[stage.id.slice(6)]||"Ambiente")+" / "+button.textContent.trim();
-   const holder=stage.querySelector(".feature-grid");holder.replaceChildren();
-   const chunks=(button.dataset.features||"").split(";");
-   chunks.forEach(function(chunk){
-     const pair=chunk.split("|");const card=document.createElement("div");card.className="feature";
-     const strong=document.createElement("strong");strong.textContent=pair[0]||"";
-     const small=document.createElement("small");small.textContent=pair[1]||"";
-     card.append(strong,small);holder.appendChild(card);
-   });
- }
- document.querySelectorAll(".stage").forEach(function(stage){
-   stage.querySelectorAll(".route").forEach(function(route){route.addEventListener("click",function(){renderRoute(stage,route)})});
-   renderRoute(stage,stage.querySelector(".route.active"));
- });
- tabs.forEach(function(tab){
-   tab.addEventListener("click",function(){
-     tabs.forEach(function(other){const active=other===tab;other.setAttribute("aria-selected",String(active));other.tabIndex=active?0:-1;document.getElementById("stage-"+other.dataset.profile).hidden=!active});
-   });
-   tab.addEventListener("keydown",function(e){
-     if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
-     e.preventDefault();const i=tabs.indexOf(tab);const next=tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length];next.focus();next.click();
-   });
- });
- tabs.forEach(function(tab){tab.tabIndex=tab.dataset.profile==="aluno"?0:-1});
-})();
-</script>
+  <div class="toast-zone" id="toast-host" aria-live="polite" role="status"></div>
+  <noscript><p style="padding:24px;color:#f5f0ef;background:#121218">O Atelier precisa de JavaScript para exibir seus ambientes demonstrativos.</p></noscript>
+  <script type="module" src="./src/app/main.js"></script>
 </body>
 </html>
