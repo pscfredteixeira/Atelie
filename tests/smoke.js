@@ -269,6 +269,16 @@ async function run(){
    if(backup.format!=="atelier-local-backup"||result.courses!==backup.courseDrafts.length)
      throw new Error("Backup local inválido.");
  });
+ await check("Backup malformado é rejeitado antes da restauração",async()=>{
+   const backup=await buildLocalBackup();
+   backup.learning.states.push({
+     profileId:"teste-a",courseId:"curso-testes",lessonId:"aula-testes",
+     note:"Anotação fictícia",completed:false,
+     answers:{"quiz-teste":{selection:"opcao-a",correct:"não é booleano"}}
+   });
+   try{validateLocalBackup(backup);}catch{return;}
+   throw new Error("O backup com resposta inválida foi aceito.");
+ });
  await check("Roteiro do beta prepara feedback voluntário",async()=>{
    if(BETA_TASKS.length<8)throw new Error("Checklist do beta incompleto.");
    const data=betaReport({device:"teste",browser:"teste",role:"Aluno"});
