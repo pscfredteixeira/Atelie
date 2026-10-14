@@ -3,6 +3,8 @@
 import {contentRepository} from "../../repositories/content-repository.js";
 import {getDraft,saveDraft,deleteDraft,downloadJSON} from "../../repositories/draft-repository.js";
 import {getCourseDraft,saveCourseDraft} from "../../repositories/course-draft-repository.js";
+import {getLocalAvailableCourse} from "../../repositories/local-catalog-repository.js";
+import {makeCourseAvailableOnDevice} from "./local-publication.js";
 import {startCourseDraft} from "./course-editor.js";
 import {startLessonDraft,updateLesson,syncLessonManifest,BLOCK_TYPES} from "./lesson-editor.js";
 import {renderBlockFields,readBlockFields,formatReferences,parseReferences} from "./block-fields.js";
@@ -104,6 +106,8 @@ function draw(state){
  '<div class="studio-toolbar-actions">'+
  '<button type="button" class="button" data-studio="toggle-preview">'+(state.preview?'Voltar a editar':'Visualizar como aluno')+'</button>'+
  '<button type="button" class="button action" data-studio="save">Salvar no dispositivo</button>'+
+ '<button type="button" class="button" data-studio="publish">Disponibilizar curso</button>'+
+ (state.isAvailable?'<a class="button" href="#/cursos/'+e(l.courseId)+'/aulas/'+e(l.id)+'">Abrir como aluno</a>':'')+
  '<button type="button" class="button" data-studio="export">Exportar JSON</button>'+
  (state.sourceURL?'<a class="button quiet" href="'+lessonLocation(l.courseId,l.id)+'/json">Modo JSON</a>':"")+
  '<a class="button quiet" href="#/professor/cursos/'+e(l.courseId)+'">Voltar ao curso</a></div></div>'+
@@ -124,20 +128,22 @@ async function loadState(root){
  const cid=root.dataset.courseId,lid=root.dataset.lessonId;
  const saved=await getDraft(cid,lid).catch(err=>{throw Error("Não foi possível consultar os rascunhos locais: "+err.message)});
  const localCourse=await getCourseDraft(cid).catch(err=>{throw Error("Não foi possível consultar o curso local: "+err.message)});
- let published=null,publishedCourse=null;
+ let published=null,publishedCourse=null,available=null;
+ try{available=await getLocalAvailableCourse(cid);}catch(err){console.warn("Catálogo local indisponível:",err);}
  try{published=await contentRepository.getPublishedLesson(cid,lid);}
  catch(err){if(err.code!=="not_found")throw err;}
  if(!localCourse){
    try{publishedCourse=(await contentRepository.getPublishedCourse(cid)).course;}
    catch(err){if(err.code!=="not_found")throw err;}
  }
- const course=localCourse?.course||published?.course||publishedCourse;
+ const course=localCourse?.course||published?.course||publishedCourse||available?.course;
  if(!course)throw Error("Curso não encontrado no navegador nem no catálogo.");
- const lesson=saved?.lesson||(published?startLessonDraft(published.lesson):null);
+ const original=published?.lesson||available?.lessons?.[lid]||null;
+ const lesson=saved?.lesson||(original?startLessonDraft(original):null);
  if(!lesson)throw Error("Aula não encontrada no armazenamento local nem no catálogo publicado.");
  validateLessonLink(lesson,course,lesson.moduleId);
  return {root,cid,lid,lesson,course,sourceURL:published?.contentURL,
-   selected:lesson.blocks[0]?.id||null,preview:false,dirty:false,formDirty:false,
+   selected:lesson.blocks[0]?.id||null,preview:false,dirty:false,formDirty:false,isAvailable:!!available,
    message:saved?"Rascunho recuperado deste navegador.":"Editando uma cópia local; a versão publicada permanece intacta.",error:false,busy:false};
 }
 export async function mountVisualStudio(root){
@@ -183,9 +189,20 @@ export async function mountVisualStudio(root){
    if(!btn||state.busy)return;
    const action=btn.dataset.studio;
    try{
-     if(action==="save"||action==="export")ensureApplied(state);
+     if(action==="save"||action==="export"||action==="publish")ensureApplied(state);
      if(action==="select"||action==="add"||action==="duplicate"||action==="move"||
         action==="remove"||action==="toggle-preview")ensureApplied(state);
+     if(action==="publish"){
+       if(state.dirty)throw Error("Salve primeiro as alterações da aula para disponibilizar o curso.");
+       state.busy=true;
+       try{
+         const result=await makeCourseAvailableOnDevice(state.cid);
+         state.isAvailable=true;
+         draw(state);
+         message(state,"Curso “"+result.title+"” disponível para estudo neste navegador ("+result.lessonCount+" aulas).");
+       }finally{state.busy=false;}
+       return;
+     }
      if(action==="save"||action==="export"){
        if(action==="export"){
          const course=state.course.status==="draft"?state.course:
