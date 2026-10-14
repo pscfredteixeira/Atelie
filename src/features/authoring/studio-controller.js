@@ -131,10 +131,10 @@ async function loadState(root){
  let published=null,publishedCourse=null,available=null;
  try{available=await getLocalAvailableCourse(cid);}catch(err){console.warn("Catálogo local indisponível:",err);}
  try{published=await contentRepository.getPublishedLesson(cid,lid);}
- catch(err){if(err.code!=="not_found")throw err;}
+ catch(err){if(err.code!=="not_found"&&!saved&&!available)throw err;}
  if(!localCourse){
    try{publishedCourse=(await contentRepository.getPublishedCourse(cid)).course;}
-   catch(err){if(err.code!=="not_found")throw err;}
+   catch(err){if(err.code!=="not_found"&&!available)throw err;}
  }
  const course=localCourse?.course||published?.course||publishedCourse||available?.course;
  if(!course)throw Error("Curso não encontrado no navegador nem no catálogo.");
