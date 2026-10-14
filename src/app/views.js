@@ -20,7 +20,7 @@ function courseCard(item){
   return card((item.icon?item.icon+" · ":"")+(item.local?"Criado neste dispositivo":"Curso do catálogo público"),item.title,
     (item.summary||"Abra a apresentação e percorra as aulas na ordem proposta.")+
     (item.local?" · Disponível somente neste navegador.":""),
-    action("Explorar o curso →",routeCourse(item.id),"small"));
+    action("Conhecer o curso →",routeCourse(item.id),"small"));
 }
 function courseHeader(course){
  return pageHead("Curso / Formação",e(course.title),course.subtitle||course.description||"Percurso de estudo e pesquisa.");
@@ -85,7 +85,8 @@ async function coursePage(id){
  (course.objectives?.length?'<section class="card course-goals"><div class="card-label">O que você poderá compreender</div><ul>'+
  course.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></section>':'')+
  sectionHead("Programa de estudos",badge("Sequência sugerida","purple"))+
- (sequence.length?modules(course):emptyState("Nenhuma aula publicada","Os módulos deste curso ainda estão sendo preparados."))+
+ (sequence.length?modules(course):
+  '<div class="notice" role="status"><strong>Aulas em preparação.</strong> A estrutura do curso está cadastrada. Você já pode conhecer os módulos; os conteúdos serão produzidos no Estúdio do professor.</div>'+modules(course))+
  note("<strong>Seu percurso:</strong> você pode revisitar qualquer aula e marcá-la como concluída no caderno ao final da leitura. O acompanhamento fica somente neste navegador, no perfil fictício selecionado.")+info();
 }
 function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
