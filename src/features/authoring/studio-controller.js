@@ -4,7 +4,7 @@ import {contentRepository} from "../../repositories/content-repository.js";
 import {getDraft,saveDraft,deleteDraft,downloadJSON} from "../../repositories/draft-repository.js";
 import {getCourseDraft,saveCourseDraft} from "../../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse} from "../../repositories/local-catalog-repository.js";
-import {makeCourseAvailableOnDevice} from "./local-publication.js";
+import {makeCourseAvailableOnDevice} from "./local-publication.js?bootfix=20261014";
 import {startCourseDraft} from "./course-editor.js";
 import {startLessonDraft,updateLesson,syncLessonManifest,BLOCK_TYPES} from "./lesson-editor.js";
 import {renderBlockFields,readBlockFields,formatReferences,parseReferences} from "./block-fields.js";
