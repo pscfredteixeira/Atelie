@@ -384,7 +384,7 @@ document.addEventListener("change",async ev=>{
   if(ev.target.id!=="draft-import-file")return;
   const file=ev.target.files?.[0];
   if(!file)return;
-  const path=route(),match=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/editar$/);
+  const path=route(),match=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/json$/);
   if(!match)return;
   try{
     if(file.size>2_000_000)throw new Error("Arquivo muito grande para uma aula (limite: 2 MB).");
