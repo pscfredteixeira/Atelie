@@ -1,6 +1,8 @@
 import {routeView} from "./views.js";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
+import {createLesson} from "../features/authoring/lesson-editor.js";
+import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "../features/authoring/studio-controller.js";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest} from "../features/authoring/course-editor.js";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
@@ -51,7 +53,7 @@ function sidebar(path) {
   '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
   navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+'</div>').join('')+
-  '</nav><div class="sidebar-foot">Sprint 5 · Estúdio de Criação local.<br>Sem conta real, banco ou progresso salvo.<br>'+
+  '</nav><div class="sidebar-foot">Sprint 6 · Estúdio Visual de Aulas.<br>Sem conta real, banco ou progresso salvo.<br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
 function bottomMenu(path) {
@@ -83,6 +85,7 @@ async function render(moveFocus) {
       '<a class="button" href="#/cursos">Voltar ao catálogo →</a></div></div>'};
   }
   if(call!==activeRender)return;
+  unmountStudio();
   unsavedForms.clear();
   let chosen = path.startsWith("/professor") ? "#/professor" : path.startsWith("/admin") ? "#/admin" : "#/aluno";
   const topbar = '<header class="topbar"><div class="top-start">'+
@@ -97,11 +100,19 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Sprint 5 · Cursos e Módulos</span><span>'+
+    '<footer class="footer"><span>Atelier. · Sprint 6 · Editor Visual</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
   document.title = page.title + " · Atelier";
+  const studioNode=app.querySelector("[data-visual-studio]");
+  if(studioNode){
+    try{await mountVisualStudio(studioNode);}
+    catch(err){
+      studioNode.innerHTML='<section class="info-state" role="alert"><h2>Não foi possível abrir o Estúdio</h2><p>'+e(err?.message||"Falha ao carregar a aula local.")+
+      '</p><a class="button" href="#/professor">Voltar aos cursos →</a></section>';
+    }
+  }
   if(moveFocus){
     window.scrollTo({top:0,behavior:"instant"});
     const main=document.getElementById("main-content");
@@ -227,7 +238,7 @@ document.addEventListener("input",ev=>{
   if(region){region.textContent="Você tem alterações não salvas nesta tela.";region.style.color="var(--action)";}
 });
 window.addEventListener("beforeunload",ev=>{
-  if(!unsavedForms.size)return;
+  if(!unsavedForms.size&&!isStudioDirty())return;
   ev.preventDefault();ev.returnValue="";
 });
 function authoringStatus(message,error=false){
@@ -241,6 +252,19 @@ async function onCourseForm(form){
   const data=Object.fromEntries(new FormData(form));
   const cid=form.dataset.courseId;
   try{
+
+    if(kind==="new-lesson"){
+      if(!cid||!form.dataset.moduleId)throw Error("Escolha um módulo para a nova aula.");
+      const base=await editableCourse(cid);
+      const created=createLesson(base,form.dataset.moduleId,data.title);
+      await saveDraft(cid,created.lesson);
+      try{await saveCourseDraft(created.course);}
+      catch(err){await deleteDraft(cid,created.lesson.id);throw err;}
+      unsavedForms.clear();
+      showToast("Nova aula criada e salva somente neste navegador.");
+      window.location.hash="#/professor/cursos/"+cid+"/aulas/"+created.lesson.id+"/editar";
+      return;
+    }
     if(kind==="new-course"){
       const course=createCourse(data.title);
       await saveCourseDraft(course);
@@ -344,6 +368,7 @@ document.addEventListener("click",ev=>{
   if(info){showDemoInfo(info.dataset.info,info);return}
   const dest=ev.target.closest('a[href^="#/"]');
   if(dest&&unsavedForms.size&&!confirmUnsaved()){ev.preventDefault();return;}
+  if(dest&&isStudioDirty()&&!confirmStudioLeave()){ev.preventDefault();return;}
   const link=ev.target.closest('a[href^="#/"]');
   if(link&&isMenuOpen){
     setMenu(false);
@@ -353,6 +378,7 @@ document.addEventListener("click",ev=>{
 document.addEventListener("change",async ev=>{
   if(ev.target.id==="switch-role"){
     if(unsavedForms.size&&!confirmUnsaved()){ev.target.value=route().startsWith("/professor")?"#/professor":route().startsWith("/admin")?"#/admin":"#/aluno";return;}
+    if(isStudioDirty()&&!confirmStudioLeave()){ev.target.value="#/professor";return;}
     window.location.hash=ev.target.value;return;
   }
   if(ev.target.id!=="draft-import-file")return;
@@ -387,4 +413,4 @@ document.addEventListener("keydown",ev=>{
 });
 window.addEventListener("hashchange",()=>{if(isMenuOpen)setMenu(false);closeDialog();render(true)});
 render(false);
-showToast("Sprint 5: edite cursos e módulos; salve rascunhos somente neste navegador.");
+showToast("Sprint 6: aulas e blocos são editados visualmente, com salvamento local.");
