@@ -33,7 +33,7 @@ async function transact(mode,callback){
 export async function listLocalAvailableCourses(){
  const records=await transact("readonly",store=>store.getAll());
  return (records||[]).map(({id,course,availableAt})=>({
-   id,title:course.title,slug:course.slug,summary:course.description||course.subtitle||"",
+   id,title:course.title,icon:course.icon||"ψ",slug:course.slug,summary:course.description||course.subtitle||"",
    status:"published",local:true,availableAt
  }));
 }
