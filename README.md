@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Implementações do piloto JSON dos Sprints 0–13 presentes no repositório. O Estúdio Visual, modelos didáticos, quizzes/laboratórios, caderno/progresso local, backups e roteiro beta foram integrados. **Não está homologado:** testes de navegador real, acessibilidade completa e participação de alunos convidados continuam pendentes.
+> **Estado atual:** piloto JSON com criação de cursos, módulos e aulas totalmente pela interface e disponibilização imediata **na área do aluno deste navegador**, além de editor visual, interatividades, progresso e backups. **Não está homologado:** testes completos em navegador real, acessibilidade e convidados continuam pendentes.
 
 ## Abrir o Atelier
 
@@ -20,6 +20,18 @@ Protótipos anteriores preservados:
 - https://pscfredteixeira.github.io/Atelie/wireframes.html
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
+
+## Criação de cursos dentro da própria plataforma
+
+**[Abrir o Estúdio do professor](https://pscfredteixeira.github.io/Atelie/#/professor)**
+
+A criação de cursos agora ocorre completamente na interface, seguindo a experiência do Atelier anterior: professor informa **símbolo e título**, cria **módulos**, monta **aulas com blocos visuais**, salva e clica **Disponibilizar na área do aluno**.
+
+Os cursos assim disponibilizados passam a aparecer no **catálogo do aluno do mesmo navegador**, sem abrir o GitHub nem editar JSON. O professor pode atualizar ou retirar o curso da biblioteca do dispositivo. O backup também inclui as versões disponibilizadas.
+
+**Importante:** a disponibilização é local e **não coloca o curso na internet para outros estudantes**. Essa etapa exige uma futura publicação remota segura ou um commit manual no GitHub. Não há login real nem Supabase.
+
+[Documentação do fluxo, limites e testes](docs/CRIACAO_CURSO_DENTRO_DA_PLATAFORMA.md)
 
 ## Sprints 6–13 — Piloto funcional
 
