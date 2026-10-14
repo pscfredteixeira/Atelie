@@ -289,4 +289,13 @@ A etapa 0.2 apresenta o percurso do aluno e do professor com dados fictícios e 
 
 Esta etapa define o formato de dados e o comportamento esperado sem implementar o motor nem conectar banco de dados. O esquema executável e os adaptadores serão construídos nos sprints posteriores.
 
-**Próxima etapa: Sprint 0.4 — revisão e fechamento do Sprint 0.**
+**A etapa 0.4 consolidou estas decisões:** [Fechamento do Sprint 0](docs/SPRINT_0_FECHAMENTO.md).
+
+## 15. Sprint 0.4 — Fechamento e transição
+
+A documentação de arquitetura está **consolidada**; os protótipos continuam sendo demonstrações e não constituem homologação da aplicação. O fechamento definiu as escolhas provisórias de JS modular, IndexedDB, hash routing e publicação manual.
+
+- [Fechamento do Sprint 0: decisões, riscos e definição de pronto](docs/SPRINT_0_FECHAMENTO.md)
+- [Brief do Sprint 1: UI, navegação, responsividade e critérios de aceite](docs/SPRINT_1_BRIEF.md)
+
+**Próximo sprint:** começar a implementação de design system, componentes-base e shells de Aluno, Professor e Administrador. Testes em dispositivos reais e feedback humano continuam pendentes.
