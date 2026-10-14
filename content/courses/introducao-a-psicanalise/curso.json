@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "course",
+  "id": "curso-introducao-psicanalise",
+  "slug": "introducao-a-psicanalise",
+  "revision": 1,
+  "status": "published",
+  "title": "Introdução à Psicanálise",
+  "icon": "ψ",
+  "subtitle": "Primeiros conceitos, perguntas e caminhos de leitura",
+  "description": "Uma porta de entrada para o pensamento psicanalítico, com linguagem acessível e atenção às perguntas que deram origem à teoria e à clínica. Estrutura de módulos cadastrada; aulas ainda em preparação.",
+  "objectives": [
+    "Situar o surgimento da psicanálise e suas perguntas fundamentais",
+    "Compreender, de forma introdutória, inconsciente, conflito, recalque, desejo e sintoma",
+    "Distinguir conceitos psicanalíticos de explicações simplificadas do comportamento",
+    "Reconhecer a importância da escuta, da singularidade e do contexto clínico"
+  ],
+  "authorIds": [
+    "professor-demo"
+  ],
+  "modules": [
+    {
+      "id": "modulo-introducao-a-psicanalise-01",
+      "title": "O que é psicanálise?",
+      "description": "O campo psicanalítico, suas perguntas e diferenças em relação ao senso comum.",
+      "position": 1,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-02",
+      "title": "Freud e o nascimento da psicanálise",
+      "description": "O contexto histórico, a clínica e os problemas que orientaram as primeiras formulações.",
+      "position": 2,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-03",
+      "title": "A descoberta do inconsciente",
+      "description": "O inconsciente como hipótese teórica e suas consequências para pensar o sujeito.",
+      "position": 3,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-04",
+      "title": "Sonhos, lapsos e formações do inconsciente",
+      "description": "Como Freud abriu perguntas sobre sonhos, atos falhos e modos indiretos de expressão.",
+      "position": 4,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-05",
+      "title": "Conflito, defesa e recalque",
+      "description": "Primeiras distinções entre conflito psíquico, mecanismos de defesa e recalque.",
+      "position": 5,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-06",
+      "title": "Sexualidade, pulsão e desejo",
+      "description": "Introdução cuidadosa a conceitos frequentemente confundidos com seus sentidos cotidianos.",
+      "position": 6,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-07",
+      "title": "Sintoma, repetição e transferência",
+      "description": "Questões clínicas introdutórias sem reduzir pessoas a rótulos ou diagnósticos.",
+      "position": 7,
+      "lessons": []
+    },
+    {
+      "id": "modulo-introducao-a-psicanalise-08",
+      "title": "A psicanálise como prática de escuta",
+      "description": "A singularidade de cada caso, a ética da escuta e os limites da interpretação.",
+      "position": 8,
+      "lessons": []
+    }
+  ]
+}
