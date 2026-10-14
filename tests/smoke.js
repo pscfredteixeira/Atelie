@@ -5,6 +5,9 @@ import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/l
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from "../src/features/authoring/course-editor.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
+import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
+import {getLocalAvailableCourse,removeLocalAvailableCourse,validateLocalSnapshot} from "../src/repositories/local-catalog-repository.js";
+import {learnerContentRepository} from "../src/repositories/learner-content-repository.js";
 import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
@@ -284,6 +287,43 @@ async function run(){
    const data=betaReport({device:"teste",browser:"teste",role:"Aluno"});
    if(data.checks.length!==BETA_TASKS.length||!data.warning)
      throw new Error("Relatório do beta não pode ser exportado.");
+ });
+ await check("Curso criado no Estúdio aparece na biblioteca do aluno deste navegador",async()=>{
+   const base=createCourse("Curso temporário do teste do catálogo","📚");
+   const mod=applyCourseChange(base,"add-module",{title:"Módulo fictício"});
+   const created=createLesson(mod,mod.modules[0].id,"Aula de teste");
+   let storedLesson=false,storedCourse=false,available=false;
+   try{
+     await saveDraft(created.course.id,created.lesson);storedLesson=true;
+     await saveCourseDraft(created.course);storedCourse=true;
+     const visible=await makeCourseAvailableOnDevice(created.course.id);available=true;
+     if(visible.lessonCount!==1)throw new Error("A aula não entrou na publicação local.");
+     const list=await learnerContentRepository.listPublishedCourses();
+     if(!list.some(c=>c.id===created.course.id&&c.local))throw new Error("Curso não entrou no catálogo do aluno.");
+     const student=await learnerContentRepository.getPublishedLesson(created.course.id,created.lesson.id);
+     if(student.lesson.title!=="Aula de teste"||!student.local||student.lesson.status!=="published")
+       throw new Error("Aula não está acessível no ambiente do aluno.");
+     const snapshot=await getLocalAvailableCourse(created.course.id);
+     validateLocalSnapshot(snapshot);
+     const backup=await buildLocalBackup();
+     if(!backup.localAvailable.some(x=>x.id===created.course.id))
+       throw new Error("O backup não contém o curso disponível no dispositivo.");
+   }finally{
+     if(available)await removeLocalAvailableCourse(created.course.id);
+     if(storedLesson)await deleteDraft(created.course.id,created.lesson.id);
+     if(storedCourse)await deleteCourseDraft(created.course.id);
+   }
+ });
+ await check("Uma publicação local rejeita aulas que ainda não foram salvas",async()=>{
+   const base=createCourse("Curso incompleto");
+   const mod=applyCourseChange(base,"add-module",{title:"Módulo"});
+   const created=createLesson(mod,mod.modules[0].id,"Aula ainda não salva");
+   let rejected=false;
+   try{
+     validateLocalSnapshot({id:created.course.id,formatVersion:1,
+       course:{...created.course,status:"published"},lessons:{}});
+   }catch{rejected=true;}
+   if(!rejected)throw new Error("Foi aceito um curso publicado sem o conteúdo da aula.");
  });
  await check("IndexedDB de cursos salva, recupera e exclui registro temporário",async()=>{
    const draft=createCourse("Smoke test local");
