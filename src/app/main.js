@@ -1,5 +1,7 @@
 import {routeView} from "./views.js";
-import {getPublishedLesson} from "../repositories/content-repository.js";
+import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
+import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest} from "../features/authoring/course-editor.js";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
 import {escapeHTML as e} from "../ui/components.js";
@@ -48,7 +50,7 @@ function sidebar(path) {
   '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
   navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+'</div>').join('')+
-  '</nav><div class="sidebar-foot">Sprint 3 · Blocos reutilizáveis em JSON.<br>Sem conta real, banco ou progresso salvo.<br>'+
+  '</nav><div class="sidebar-foot">Sprint 5 · Estúdio de Criação local.<br>Sem conta real, banco ou progresso salvo.<br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
 function bottomMenu(path) {
@@ -93,7 +95,7 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Sprint 3 · Motor de Aulas</span><span>'+
+    '<footer class="footer"><span>Atelier. · Sprint 5 · Cursos e Módulos</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
@@ -200,6 +202,90 @@ async function onEditorAction(button){
   }catch(err){statusMessage(err.message||"Operação não concluída.",true);}
 }
 
+
+/* Gestão de cursos (Sprint 5): sempre salvar localmente; nunca publicar. */
+async function editableCourse(cid){
+  const found=await getCourseDraft(cid);
+  if(found)return found.course;
+  const published=await getPublishedCourse(cid);
+  return startCourseDraft(published.course);
+}
+function authoringStatus(message,error=false){
+  const region=document.getElementById("course-authoring-status");
+  if(region){region.textContent=message;region.style.color=error?"var(--danger)":"var(--good)";}
+  showToast(message);
+}
+async function onCourseForm(form){
+  const kind=form.dataset.authoringForm;
+  const data=Object.fromEntries(new FormData(form));
+  const cid=form.dataset.courseId;
+  try{
+    if(kind==="new-course"){
+      const course=createCourse(data.title);
+      await saveCourseDraft(course);
+      showToast("Curso criado e salvo apenas neste navegador.");
+      window.location.hash="#/professor/cursos/"+course.id;
+      return;
+    }
+    if(!cid)throw new Error("Identificador do curso ausente.");
+    const draft=await editableCourse(cid);
+    const op=kind==="course-info"?"info":kind==="module-info"?"edit-module":
+      kind==="add-module"?"add-module":null;
+    if(!op)throw new Error("Formulário de autoria desconhecido.");
+    const changed=applyCourseChange(draft,op,{...data,moduleId:form.dataset.moduleId});
+    await saveCourseDraft(changed);
+    await render(false);
+    authoringStatus(op==="add-module"?"Módulo criado e salvo neste navegador.":
+      "Alterações salvas neste navegador.");
+    document.getElementById("course-authoring-status")?.focus({preventScroll:true});
+  }catch(err){authoringStatus(err?.message||"Não foi possível salvar.",true);}
+}
+async function onCourseOperation(button){
+  const op=button.dataset.courseOp,cid=button.dataset.courseId;
+  if(!op||!cid)return;
+  try{
+    const local=await getCourseDraft(cid);
+    if(op==="discard-course"){
+      if(!local)throw new Error("Nenhum rascunho local para descartar.");
+      if(!window.confirm("Descartar este curso ou revisão local? Esta ação apaga as alterações que não foram exportadas."))return;
+      await deleteCourseDraft(cid);
+      let published=false;
+      try{await getPublishedCourse(cid);published=true;}catch(err){if(err.code!=="not_found")throw err;}
+      if(published){await render(false);authoringStatus("Revisão local descartada. O curso publicado continua intacto.");}
+      else{window.location.hash="#/professor";showToast("Curso local excluído.");}
+      return;
+    }
+    const draft=local?.course || await editableCourse(cid);
+    if(op==="export-manifest"){
+      downloadJSON(exportManifest(draft),draft.slug+"-curso-rascunho.json");
+      authoringStatus("Manifesto JSON baixado. O curso continua sem publicação automática.");
+      return;
+    }
+    if(op==="export-catalog"){
+      if(!local)throw new Error("Salve o curso antes de gerar a entrada do catálogo.");
+      downloadJSON(createCatalogEntry(draft),draft.slug+"-entrada-catalogo.json");
+      authoringStatus("Entrada do catálogo baixada como rascunho, para revisão antes do commit.");
+      return;
+    }
+    if(op==="remove-module"&&!window.confirm("Excluir este módulo vazio do rascunho local?"))return;
+    const changed=applyCourseChange(draft,op,{
+      moduleId:button.dataset.moduleId,lessonId:button.dataset.lessonId,
+      direction:Number(button.dataset.direction)
+    });
+    await saveCourseDraft(changed);
+    await render(false);
+    authoringStatus("Organização do curso atualizada e salva neste navegador.");
+    document.getElementById("course-authoring-status")?.focus({preventScroll:true});
+  }catch(err){authoringStatus(err?.message||"Operação de curso não concluída.",true);}
+}
+document.addEventListener("submit",ev=>{
+  const form=ev.target.closest('form[data-authoring-form]');
+  if(!form)return;
+  ev.preventDefault();
+  if(form.dataset.busy==="true")return;
+  form.dataset.busy="true";
+  onCourseForm(form).finally(()=>{if(form.isConnected)delete form.dataset.busy;});
+});
 document.addEventListener("click",ev=>{
   const tab=ev.target.closest('[role="tab"][aria-controls]');
   if(tab){
@@ -228,6 +314,8 @@ document.addEventListener("click",ev=>{
     }
     return;
   }
+  const courseOperation=ev.target.closest("[data-course-op]");
+  if(courseOperation){onCourseOperation(courseOperation);return}
   const editorAction=ev.target.closest("[data-action]");
   if(editorAction){onEditorAction(editorAction);return}
   const info=ev.target.closest("[data-info]");
@@ -272,4 +360,4 @@ document.addEventListener("keydown",ev=>{
 });
 window.addEventListener("hashchange",()=>{if(isMenuOpen)setMenu(false);closeDialog();render(true)});
 render(false);
-showToast("Sprint 2: cursos publicados em JSON e rascunhos salvos somente neste navegador.");
+showToast("Sprint 5: edite cursos e módulos; salve rascunhos somente neste navegador.");
