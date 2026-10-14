@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 1 com interface modular e navegação demonstrativa implementadas. QA visual no site publicado e testes em dispositivos reais pendentes. Dados são fictícios; sem autenticação, dados remotos ou salvamento de aulas.
+> **Estado atual:** Sprint 2 implementado: cursos e aulas publicados lidos de JSON, com validação, renderização básica e rascunhos locais em IndexedDB. Sem Supabase ou banco de dados. Testes completos em navegador real e dispositivos ainda pendentes.
 
 ## Abrir o Atelier
 
@@ -21,12 +21,21 @@ Protótipos anteriores preservados:
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
 
+## Sprint 2 — Conteúdo JSON e rascunhos locais
+
+- [Relatório, instruções e testes pendentes do Sprint 2](docs/SPRINT_2_RESULTADO.md).
+- [Catálogo público](content/catalogo.json), [manifesto do curso](content/courses/fundamentos/curso.json) e [aula de exemplo](content/courses/fundamentos/aulas/recalque.json).
+- [Leitura dos arquivos JSON](src/repositories/content-repository.js), [validação](src/repositories/validators.js), [salvamento local](src/repositories/draft-repository.js) e [renderização dos blocos](src/lesson-engine/basic-renderer.js).
+- [Diagnóstico executável no navegador](tests/smoke.html): `https://pscfredteixeira.github.io/Atelie/tests/smoke.html`.
+
+A **Sala de Aula** consome JSON publicado. O **Professor** pode editar tecnicamente o JSON, salvá-lo **somente neste navegador**, importar, exportar e visualizar sua prévia. Isso não publica conteúdos no GitHub. O editor visual segue planejado para o Sprint 6.
+
 ## Sprint 1 — Implementação
 
 - [Relatório das telas, componentes, testes e pendências](docs/SPRINT_1_RESULTADO.md).
 - [Design System e interface responsiva](src/styles/atelier.css) e [tokens de identidade](src/styles/tokens.css).
 - [Navegação modular](src/app/main.js), [telas](src/app/views.js), [componentes](src/ui/components.js).
-- Dados fictícios em [`src/app/data.js`](src/app/data.js); não são os JSON definitivos.
+- O arquivo `src/app/data.js` contém dados históricos de demonstração do Sprint 1; as telas atuais usam os pacotes JSON de `content/`.
 
 ## O que já existe
 
@@ -66,8 +75,8 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 |---|---|
 | 0 | Arquitetura, mapa, jornadas e decisões — **documentação concluída** |
 | 1 | Design system, shells e rotas — **implementado; QA visual pendente** |
-| 2 | Estrutura JSON e repositórios locais — **próximo** |
-| 3 | Motor de aulas por blocos |
+| 2 | JSON publicado, leitura, validação e rascunhos locais — **implementado; testes de navegador pendentes** |
+| 3 | Motor pedagógico de aulas por blocos — **próximo** |
 | 4 | Catálogo, cursos e jornada de estudo |
 | 5 | Gestão de cursos e módulos |
 | 6 | Editor visual de aulas |
@@ -81,6 +90,6 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 
 ## Próxima etapa
 
-**Sprint 2 — Conteúdo JSON executável e adaptadores de leitura/escrita local.** Trocar dados fictícios de `src/app/data.js` por leitura de JSON publicados; adicionar validação, fontes locais e preparação de backups.
+**Sprint 3 — Motor de aulas por componentes reutilizáveis.** Evoluir o renderizador básico já conectado ao JSON para um motor extensível por tipo de bloco, com prévia e sala usando exatamente a mesma apresentação.
 
 Antes de homologar a experiência visual, testar o site no celular e em um navegador desktop. A documentação contém os testes já executados e os que faltam.
