@@ -10,7 +10,7 @@ export async function listPublishedCourses(){
  let remote=[];
  try{remote=await contentRepository.listPublishedCourses();}
  catch(err){if(!local.length)throw err;console.warn("Catálogo público indisponível:",err);}
- const all=new Map(remote.map(item=>[item.id,item]));
+ const all=new Map(remote.filter(item=>!item.demo).map(item=>[item.id,item]));
  for(const item of local)all.set(item.id,item);
  return [...all.values()];
 }
