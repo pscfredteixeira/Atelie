@@ -126,8 +126,16 @@ export function validateLesson(x) {
       if(!str(d.src)||!d.src.startsWith("./"))fail(p,"mídia exige caminho relativo ./.");
       if(!str(d.transcript))fail(p,"mídia exige transcrição textual.");
     }
-    if(b.type==="interactive_lab"&&(!str(d.engineId)||!str(d.title)||!str(d.alternative)))
-      fail(p,"interactive_lab exige engineId, title e alternativa pedagógica.");
+    if(b.type==="interactive_lab"){
+      if(!str(d.engineId)||!str(d.title)||!str(d.alternative))
+        fail(p,"laboratório exige engineId, título e alternativa pedagógica.");
+      if(d.choices!==undefined){
+        if(!str(d.prompt)||!list(d.choices)||d.choices.length<2||
+          !d.choices.every(c=>obj(c)&&str(c.id)&&str(c.label)&&str(c.feedback)))
+          fail(p,"laboratório exige pergunta e ao menos dois caminhos com devolutivas.");
+        uniqueIds(d.choices,p+" / caminhos");
+      }
+    }
     if(b.type==="rich_text") {
       if(!list(d.paragraphs)||!d.paragraphs.every(s=>typeof s==="string"))fail(p,"rich_text exige paragraphs de texto.");
     }
