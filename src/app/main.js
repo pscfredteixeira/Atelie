@@ -47,7 +47,7 @@ function sidebar(path) {
   '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
   navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+'</div>').join('')+
-  '</nav><div class="sidebar-foot">Sprint 1 · Interface de demonstração.<br>Sem conta real, banco ou progresso salvo.<br>'+
+  '</nav><div class="sidebar-foot">Sprint 2 · Conteúdo JSON e rascunhos locais.<br>Sem conta real, banco ou progresso salvo.<br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
 function bottomMenu(path) {
@@ -92,7 +92,7 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Sprint 1 · Protótipo</span><span>'+
+    '<footer class="footer"><span>Atelier. · Sprint 2 · Protótipo JSON</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
