@@ -5,6 +5,8 @@ import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/l
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from "../src/features/authoring/course-editor.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
+import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
+import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -140,6 +142,74 @@ async function run(){
    if(entry.status!=="draft"||entry.id!==draft.id||
       entry.manifest!=="./courses/"+draft.slug+"/curso.json")
      throw new Error("A entrada não corresponde ao manifesto.");
+ });
+ await check("Criação de aula visual vinculada ao módulo correto",async()=>{
+   const draft=createCourse("Curso do editor visual");
+   const mod=applyCourseChange(draft,"add-module",{title:"Primeiro módulo"});
+   const created=createLesson(mod,mod.modules[0].id,"Introdução ao conceito");
+   if(created.course.modules[0].lessons.length!==1||created.lesson.courseId!==mod.id||
+      created.lesson.moduleId!==mod.modules[0].id||created.lesson.status!=="draft")
+      throw new Error("A aula não foi vinculada ao módulo.");
+   validateLessonLink(created.lesson,created.course,created.lesson.moduleId);
+ });
+ await check("Biblioteca de quatorze modelos válidos de blocos",async()=>{
+   const draft=createCourse("Biblioteca fictícia");
+   const mod=applyCourseChange(draft,"add-module",{title:"Modelos"});
+   let created=createLesson(mod,mod.modules[0].id,"Aula de componentes");
+   for(const [type] of BLOCK_TYPES){
+     const block=blockTemplate(type);
+     if(block.type!==type||block.version!==1)throw new Error("Modelo incorreto: "+type);
+     created.lesson=updateLesson(created.lesson,"add-block",{type});
+   }
+   validateLesson(created.lesson);
+   if(created.lesson.blocks.length!==BLOCK_TYPES.length+1)
+     throw new Error("Nem todos os tipos foram adicionados.");
+ });
+ await check("Mover, duplicar, editar e remover preserva IDs",async()=>{
+   const base=createCourse("Curso");
+   const mod=applyCourseChange(base,"add-module",{title:"Módulo"});
+   const {lesson}=createLesson(mod,mod.modules[0].id,"Aula");
+   const plus=updateLesson(lesson,"add-block",{type:"question"});
+   const kept=plus.blocks.map(b=>b.id);
+   const moved=updateLesson(plus,"move-block",{blockId:kept[1],direction:-1});
+   if(moved.blocks[0].id!==kept[1])throw new Error("A ordem não foi alterada.");
+   const copied=updateLesson(moved,"duplicate-block",{blockId:kept[1]});
+   if(new Set(copied.blocks.map(b=>b.id)).size!==copied.blocks.length)
+     throw new Error("A duplicação reutilizou ID.");
+   const edited=updateLesson(copied,"edit-block",{blockId:kept[1],data:{prompt:"Pergunta alterada?"}});
+   if(edited.blocks[0].data.prompt!=="Pergunta alterada?")throw new Error("Edição de bloco falhou.");
+   const removed=updateLesson(edited,"remove-block",{blockId:kept[1]});
+   if(removed.blocks.length!==2)throw new Error("Remoção de bloco falhou.");
+ });
+ await check("Formulário visual converte alternativas sem perder o gabarito",async()=>{
+   const quiz=blockTemplate("multiple_choice");
+   const form=document.createElement("form");
+   form.innerHTML=renderBlockFields(quiz,{references:[]});
+   form.querySelector('[name="options"]').value="Primeira alternativa\\nSegunda alternativa\\nTerceira alternativa";
+   form.querySelector('[name="correctIndex"]').value="3";
+   const result=readBlockFields(quiz,form);
+   if(result.options.length!==3||result.correctOptionId!==result.options[2].id)
+     throw new Error("Formulário de quiz não converteu as respostas.");
+ });
+ await check("IndexedDB de aula nova e curso correspondente",async()=>{
+   const base=createCourse("Teste local do Estúdio");
+   const mod=applyCourseChange(base,"add-module",{title:"Módulo de teste"});
+   const created=createLesson(mod,mod.modules[0].id,"Aula teste");
+   let lessonStored=false,courseStored=false;
+   try{
+     await saveDraft(created.course.id,created.lesson);
+     lessonStored=true;
+     await saveCourseDraft(created.course);
+     courseStored=true;
+     const lessonRecord=await getDraft(created.course.id,created.lesson.id);
+     const courseRecord=await getCourseDraft(created.course.id);
+     if(!lessonRecord||!courseRecord||
+       !courseRecord.course.modules[0].lessons.some(l=>l.id===lessonRecord.lesson.id))
+       throw new Error("A aula não corresponde ao manifesto salvo.");
+   }finally{
+     if(lessonStored)await deleteDraft(created.course.id,created.lesson.id);
+     if(courseStored)await deleteCourseDraft(created.course.id);
+   }
  });
  await check("IndexedDB de cursos salva, recupera e exclui registro temporário",async()=>{
    const draft=createCourse("Smoke test local");
