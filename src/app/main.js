@@ -28,7 +28,8 @@ const navGroups = [
   {href:"#/professor/cursos/curso-fundamentos/aulas/aula-recalque/editar",name:"Estúdio de criação",icon:"⊕"}
  ]},
  {name:"Organizar",links:[{href:"#/admin",name:"Administração",icon:"▦"},{href:"#/admin/identidade",name:"Biblioteca visual",icon:"◈"},
-  {href:"#/admin/blocos",name:"Blocos pedagógicos",icon:"▧"}]}
+  {href:"#/admin/blocos",name:"Blocos pedagógicos",icon:"▧"},
+  {href:"#/admin/beta",name:"Roteiro beta",icon:"☑"}]}
 ];
 let isMenuOpen = false;
 let currentDialog = null;
