@@ -21,6 +21,17 @@ Protótipos anteriores preservados:
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
 
+## Navegação por curso no menu
+
+O menu principal foi organizado como no Atelier anterior: primeiro o usuário **seleciona o curso**, e depois aparecem **os módulos e as aulas daquele curso dentro do menu**. Não há uma longa lista fixa de cursos nem atalhos técnicos de demonstração.
+
+- **Aluno:** selecione *Introdução à Psicanálise* ou *Formação Freudiana* e abra um dos 8 ou 10 módulos diretamente pelo menu. As aulas aparecem aninhadas quando forem produzidas e publicadas.
+- **Professor:** use o seletor da área Criar para encontrar os módulos de cada curso e saltar à sua seção de edição; aulas existentes aparecem com link para o Estúdio Visual.
+- **Celular:** o seletor também aparece na barra superior; no menu lateral, trocar o curso mantém o menu aberto para escolher um módulo.
+- **Retomada:** o último curso selecionado em cada ambiente é lembrado durante a sessão no mesmo navegador. Não é uma inscrição ou matrícula.
+
+[Seletor e sumário de cursos](src/features/navigation/course-menu.js) · [Testes funcionais](tests/smoke.html)
+
 ## Criação de cursos dentro da própria plataforma
 
 **[Abrir o Estúdio do professor](https://pscfredteixeira.github.io/Atelie/#/professor)**
