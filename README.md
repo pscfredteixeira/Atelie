@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 5 implementado: criação e organização visual de cursos e módulos, revisões locais em IndexedDB e exportação JSON. Sem banco de dados externo. Testes de navegador e homologação visual continuam pendentes.
+> **Estado atual:** Implementações do piloto JSON dos Sprints 0–13 presentes no repositório. O Estúdio Visual, modelos didáticos, quizzes/laboratórios, caderno/progresso local, backups e roteiro beta foram integrados. **Não está homologado:** testes de navegador real, acessibilidade completa e participação de alunos convidados continuam pendentes.
 
 ## Abrir o Atelier
 
@@ -20,6 +20,20 @@ Protótipos anteriores preservados:
 - https://pscfredteixeira.github.io/Atelie/wireframes.html
 
 O código foi salvo no repositório, mas a publicação do Pages e os testes em dispositivos reais precisam de confirmação.
+
+## Sprints 6–13 — Piloto funcional
+
+- [Resumo de implementação, limitações e testes pendentes](docs/SPRINTS_6_13_STATUS.md).
+- **6 · Estúdio Visual:** [controlador de aula](src/features/authoring/studio-controller.js), [edição de blocos](src/features/authoring/lesson-editor.js) e [campos visuais](src/features/authoring/block-fields.js). Criar aula, organizar blocos, salvar e exportar.
+- **7 · Modelos pedagógicos:** [seis templates editáveis](src/features/authoring/lesson-templates.js), selecionáveis ao criar uma aula.
+- **8 · Interatividades:** escolhas e devolutivas contextualizadas nos [laboratórios](src/lesson-engine/block-renderers.js), exemplificados na [aula sobre o retorno do recalcado](content/courses/fundamentos/aulas/retorno.json).
+- **9 · Avaliações:** múltipla escolha com correção formativa imediata. Ainda não há prova certificadora nem notas centrais.
+- **10 · Progresso, notas e perfis simulados:** [IndexedDB local](src/repositories/learning-repository.js), [caderno e acompanhamento](src/features/learning/learning-ui.js). Dois perfis fictícios, sem senha.
+- **11 · Revisão e backup:** [exportação/importação JSON](src/features/administration/backup.js) dos rascunhos locais e histórico; **não inclui mídia nem conteúdo público sem rascunho**.
+- **12 · Qualidade:** [diagnóstico funcional](tests/smoke.html) e [checagens de navegador](tests/quality.html), com melhorias de foco, toque e movimento reduzido. Auditoria completa pendente.
+- **13 · Beta com convidados:** [roteiro interativo](src/features/administration/beta-ui.js), checklist e download voluntário de feedback. **A etapa de aplicação dos testes com pessoas reais não aconteceu aqui.**
+
+**Rotas para experimentar:** [Estúdio do professor](https://pscfredteixeira.github.io/Atelie/#/professor), [laboratório na aula](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-fundamentos/aulas/aula-retorno), [caderno](https://pscfredteixeira.github.io/Atelie/#/aluno/caderno), [progresso](https://pscfredteixeira.github.io/Atelie/#/aluno/progresso), [administrador e backup](https://pscfredteixeira.github.io/Atelie/#/admin) e [roteiro beta](https://pscfredteixeira.github.io/Atelie/#/admin/beta).
 
 ## Sprint 5 — Estúdio de Criação: cursos e módulos
 
@@ -110,16 +124,16 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | 4 | Jornada de estudo e navegação em três aulas — **implementado; QA visual pendente** |
 | 5 | Estúdio de cursos e módulos — **implementado; QA em navegador pendente** |
 | 6 | Editor visual de aulas — **próximo** |
-| 7 | Modelos pedagógicos |
-| 8 | Biblioteca de interatividades |
-| 9 | Avaliações |
-| 10 | Progresso, notas e perfis simulados |
-| 11 | Revisão, versões e exportação |
-| 12 | Testes, acessibilidade e desempenho |
-| 13 | Beta e testes com convidados |
+| 7 | Modelos pedagógicos — **código implementado; QA em navegador pendente** |
+| 8 | Biblioteca de interatividades — **código implementado; QA em navegador pendente** |
+| 9 | Avaliações — **código implementado; QA em navegador pendente** |
+| 10 | Progresso, notas e perfis simulados — **código implementado; QA em navegador pendente** |
+| 11 | Revisão, versões e exportação — **backup JSON local e validação de versões; publicação ainda manual** |
+| 12 | Testes, acessibilidade e desempenho — **diagnóstico e melhorias de código; QA real pendente** |
+| 13 | Beta e testes com convidados — **roteiro do beta disponível; aplicação com convidados pendente** |
 
-## Próxima etapa
+## Antes de liberar o piloto aos convidados
 
-**Sprint 6 — Editor visual de aulas:** criar blocos didáticos, configurá-los, reorganizá-los e pré-visualizar como aluno, sem escrever JSON manualmente. Rascunhos continuarão locais e exigirão exportação e publicação separadas.
+**Prioridade imediata:** abrir o site publicado, executar `tests/smoke.html` e `tests/quality.html`, criar e salvar um curso e uma aula, conferir atividades e histórico, validar exportação/restauração e revisar o uso em celular. Corrigir qualquer erro encontrado antes de apresentar o sistema a alunos convidados.
 
-**QA pendente:** abrir e testar a plataforma publicada em navegadores e dispositivos reais, especialmente o IndexedDB e os downloads.
+**Limites:** GitHub Pages publica conteúdo sem autenticação. Os perfis A/B são simulações, não login; qualquer pessoa neste navegador pode alternar entre eles. Não inserir informações pessoais, casos clínicos reais ou conteúdo pago restrito. Nenhum projeto Supabase foi utilizado e o repositório antigo `sistema` permanece intocado.
