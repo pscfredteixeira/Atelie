@@ -208,7 +208,11 @@ function moduleEditor(course,mod,index){
       ' aria-label="Mover aula '+e(l.title||l.id)+' para baixo">↓</button>'+
     action("Editar aula →",routeEdit(course.id,l.id),"small")+
     '</div></div>').join("")+'</div>':
-   '<p class="authoring-empty">Ainda não há aulas neste módulo. A criação visual de aulas chegará no Sprint 6.</p>')+
+   '<p class="authoring-empty">Este módulo ainda não possui aulas. Crie a primeira abaixo.</p>')+
+  '<form class="studio-new-lesson" data-authoring-form="new-lesson"'+courseAttr+modAttr+'>'+
+  '<label class="field-label" for="new-lesson-'+e(mod.id)+'">Nova aula neste módulo</label>'+
+  '<div class="authoring-inline"><input class="field" id="new-lesson-'+e(mod.id)+'" name="title" maxlength="160" required placeholder="Ex.: Introdução ao inconsciente">'+
+  '<button class="button action" type="submit">+ Criar aula</button></div></form>'+
   '</section>';
 }
 async function courseStructure(cid){
@@ -261,6 +265,10 @@ async function courseStructure(cid){
  '<div class="rule"></div>'+action("Voltar aos meus cursos →","#/professor","small")+'</aside></div>'+
  info();
 }
+async function visualEditor(cid,lid){
+ return '<div class="studio-shell" data-visual-studio data-course-id="'+e(cid)+'" data-lesson-id="'+e(lid)+'">'+
+  '<div class="card"><h2>Preparando o Estúdio de Aula…</h2><p>Carregando rascunho local e componentes de edição.</p></div></div>';
+}
 async function editor(cid,lid){
  const {lesson,course}=await contentRepository.getPublishedLesson(cid,lid);
  let record=null,storageError="";
@@ -268,9 +276,9 @@ async function editor(cid,lid){
  const draft=record?.lesson||{...lesson,status:"draft",revision:lesson.revision+1};
  const raw=JSON.stringify(draft,null,2);
  return pageHead("Professor / Editor técnico de JSON",e(lesson.title),
- "Primeira etapa de autoria: editar o JSON, validar e salvar um rascunho local. O editor visual de blocos será desenvolvido no Sprint 6.")+
+ "Modo técnico opcional: editar o JSON manualmente. Para montar blocos sem programação, utilize o Estúdio Visual.")+
  '<div class="topline">'+badge(record?"Rascunho local · "+new Date(record.savedAt).toLocaleString("pt-BR"):"Ainda não salvo neste navegador","purple")+
- action("Prévia como aluno →",routePreview(cid,lid),"small")+'</div>'+
+ action("Voltar ao Estúdio Visual →",routeEdit(cid,lid),"small")+'</div>'+
  (storageError?'<div class="notice" role="alert">'+storageError+'</div>':'')+
  '<section class="card" style="margin-top:18px"><label class="field-label" for="lesson-json">Conteúdo da aula em JSON</label>'+
  '<textarea class="field code-field" id="lesson-json" spellcheck="false" autocapitalize="off" autocomplete="off" rows="20">'+e(raw)+'</textarea>'+
@@ -284,10 +292,13 @@ async function editor(cid,lid){
  note('<strong>Importante:</strong> “Salvar” grava exclusivamente no IndexedDB deste navegador. “Exportar” baixa um arquivo JSON. Nenhuma dessas ações publica no site ou sincroniza com outro aparelho. Evite dados pessoais e casos clínicos reais.');
 }
 async function preview(cid,lid){
- const {lesson,contentURL}=await contentRepository.getPublishedLesson(cid,lid);
- let record=null,storageError="";
+ let published=null,record=null,storageError="";
+ try{published=await contentRepository.getPublishedLesson(cid,lid);}
+ catch(err){if(err.code!=="not_found")throw err;}
+ let lesson=published?.lesson||null,contentURL=published?.contentURL||null;
  try{record=await getDraft(cid,lid);}catch(err){storageError=e(err.message)}
  const target=record?.lesson||lesson;
+ if(!target)throw Error("Nenhuma versão salva desta aula foi encontrada para a prévia.");
  return pageHead("Professor / Prévia",e(target.title),
  "A prévia usa o mesmo renderizador do aluno, mas recebe explicitamente o rascunho local, quando existe.")+
  (storageError?'<div class="notice" role="alert">'+storageError+'</div>':'')+
@@ -359,7 +370,9 @@ export async function routeView(path){
  m=path.match(/^\/professor\/cursos\/([\w-]+)$/);
  if(m)return {title:"Estrutura do curso",area:"Professor",html:await courseStructure(m[1])};
  m=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/editar$/);
- if(m)return {title:"Estúdio de JSON",area:"Professor",html:await editor(m[1],m[2])};
+ if(m)return {title:"Estúdio Visual de Aula",area:"Professor",html:await visualEditor(m[1],m[2])};
+ m=path.match(/^\\/professor\\/cursos\\/([\\w-]+)\\/aulas\\/([\\w-]+)\\/json$/);
+ if(m)return {title:"Editor JSON avançado",area:"Professor",html:await editor(m[1],m[2])};
  m=path.match(/^\/professor\/cursos\/([\w-]+)\/aulas\/([\w-]+)\/previa$/);
  if(m)return {title:"Prévia",area:"Professor",html:await preview(m[1],m[2])};
  return {title:"Página não encontrada",area:"Atelier",html:notFound()};
