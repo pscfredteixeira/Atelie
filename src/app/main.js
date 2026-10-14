@@ -1,4 +1,7 @@
 import {routeView} from "./views.js";
+import {getPublishedLesson} from "../repositories/content-repository.js";
+import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
+import {validateLessonLink} from "../repositories/validators.js";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
@@ -21,6 +24,7 @@ let isMenuOpen = false;
 let currentDialog = null;
 let opener = null;
 let toastTimer;
+let activeRender=0;
 function route() {
   let path = window.location.hash.slice(1) || "/aluno";
   path = path.split("?")[0].replace(/\/+$/,"") || "/";
@@ -58,9 +62,23 @@ function bottomMenu(path) {
   return '<nav class="mobile-bar" aria-label="Acesso rápido">'+links.map(x=>'<a href="'+e(x.href)+'"'+(x.href===bottomActive?' aria-current="page"':'')+
     '><span class="mobile-icon" aria-hidden="true">'+e(x.icon)+'</span>'+e(x.name)+'</a>').join('')+'</nav>';
 }
-function render(moveFocus) {
+async function render(moveFocus) {
+  const call=++activeRender;
   const path=route();
-  const page=routeView(path);
+  let page;
+  try{
+    page=await routeView(path);
+  }catch(err){
+    const missing=err.code==="not_found";
+    const title=missing?"Conteúdo não encontrado":"Não foi possível abrir esta página";
+    const detail=err?.message||"Ocorreu um erro ao carregar o conteúdo.";
+    page={title,area:"Atelier",html:'<div class="overline">ATELIER / '+e(missing?"Não encontrado":"Erro de carregamento")+'</div>'+
+      '<h1 class="page-title">'+e(title)+'</h1><div class="info-state" role="alert"><p>'+e(detail)+'</p>'+
+      (err.location?'<p class="tiny">Arquivo: '+e(err.location)+'</p>':'')+
+      '<div class="button-row"><button type="button" class="button action" data-action="retry">Tentar novamente</button>'+
+      '<a class="button" href="#/cursos">Voltar ao catálogo →</a></div></div>'};
+  }
+  if(call!==activeRender)return;
   let chosen = path.startsWith("/professor") ? "#/professor" : path.startsWith("/admin") ? "#/admin" : "#/aluno";
   const topbar = '<header class="topbar"><div class="top-start">'+
     '<button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="'+String(isMenuOpen)+'">☰</button>'+
@@ -127,6 +145,60 @@ function showDemoInfo(message,source) {
   back.querySelector("#dialog-close").focus();
   back.addEventListener("click",ev=>{if(ev.target===back||ev.target.closest("#dialog-close"))closeDialog()});
 }
+function setMenu(open){
+  isMenuOpen=open;
+  const side=document.getElementById("sidebar"),toggle=document.getElementById("menu-toggle");
+  if(side)side.classList.toggle("is-open",open);
+  if(toggle){toggle.setAttribute("aria-expanded",String(open));toggle.setAttribute("aria-label",open?"Fechar navegação":"Abrir navegação");}
+  let shade=document.getElementById("sidebar-shade");
+  if(open&&!shade){shade=document.createElement("button");shade.type="button";shade.className="sidebar-shade";shade.id="sidebar-shade";shade.setAttribute("aria-label","Fechar navegação");document.body.appendChild(shade);}
+  if(!open&&shade)shade.remove();
+  if(open)side?.querySelector(".nav-link")?.focus();
+  else toggle?.focus();
+}
+function statusMessage(message,bad=false){
+  const box=document.getElementById("draft-status");
+  if(box){box.textContent=message;box.style.color=bad?"var(--danger)":"var(--good)";}
+  showToast(message);
+}
+async function candidateFromEditor(cid,lid){
+  const textarea=document.getElementById("lesson-json");
+  if(!textarea)throw new Error("O editor JSON não está aberto.");
+  let lesson;
+  try{lesson=JSON.parse(textarea.value);}
+  catch(err){throw new Error("JSON inválido: "+err.message);}
+  const {course,module}=await getPublishedLesson(cid,lid);
+  if(lesson.id!==lid)throw new Error("O ID da aula não pode ser alterado neste editor.");
+  validateLessonLink(lesson,course,module.id);
+  return {...lesson,status:"draft"};
+}
+async function onEditorAction(button){
+  const command=button.dataset.action;
+  if(command==="retry"){await render(false);return;}
+  if(command==="import-json"){document.getElementById("draft-import-file")?.click();return;}
+  const cid=button.dataset.course,lid=button.dataset.lesson;
+  if(!cid||!lid)return;
+  try{
+    if(command==="delete-draft"){
+      if(!window.confirm("Descartar o rascunho local desta aula? Alterações que não foram exportadas serão perdidas."))return;
+      await deleteDraft(cid,lid);
+      statusMessage("Rascunho removido deste navegador.");
+      await render(false);
+      return;
+    }
+    const lesson=await candidateFromEditor(cid,lid);
+    if(command==="save-draft"){
+      const record=await saveDraft(cid,lesson);
+      const textarea=document.getElementById("lesson-json");
+      if(textarea)textarea.value=JSON.stringify(record.lesson,null,2);
+      statusMessage("Rascunho salvo neste navegador em "+new Date(record.savedAt).toLocaleString("pt-BR")+".");
+    }else if(command==="export-json"){
+      downloadJSON(lesson,lid+"-rascunho.json");
+      statusMessage("JSON exportado. Este arquivo não foi publicado no GitHub.");
+    }
+  }catch(err){statusMessage(err.message||"Operação não concluída.",true);}
+}
+
 document.addEventListener("click",ev=>{
   const tab=ev.target.closest('[role="tab"][aria-controls]');
   if(tab){
@@ -143,22 +215,41 @@ document.addEventListener("click",ev=>{
     return;
   }
   const menu=ev.target.closest("#menu-toggle");
-  if(menu){isMenuOpen=!isMenuOpen;render(false);const target=isMenuOpen?document.querySelector("#sidebar .nav-link"):document.getElementById("menu-toggle");if(target)target.focus();return}
-  if(ev.target.closest("#sidebar-shade")){isMenuOpen=false;render(false);document.getElementById("menu-toggle")?.focus();return}
+  if(menu){setMenu(!isMenuOpen);return}
+  if(ev.target.closest("#sidebar-shade")){setMenu(false);return}
+  const editorAction=ev.target.closest("[data-action]");
+  if(editorAction){onEditorAction(editorAction);return}
   const info=ev.target.closest("[data-info]");
   if(info){showDemoInfo(info.dataset.info,info);return}
   const link=ev.target.closest('a[href^="#/"]');
   if(link&&isMenuOpen){
-    isMenuOpen=false;
+    setMenu(false);
     if(window.location.hash===link.getAttribute("href"))render(false);
   }
 });
-document.addEventListener("change",ev=>{
-  if(ev.target.id==="switch-role"){window.location.hash=ev.target.value}
+document.addEventListener("change",async ev=>{
+  if(ev.target.id==="switch-role"){window.location.hash=ev.target.value;return;}
+  if(ev.target.id!=="draft-import-file")return;
+  const file=ev.target.files?.[0];
+  if(!file)return;
+  const path=route(),match=path.match(/^\\/professor\\/cursos\\/([\\w-]+)\\/aulas\\/([\\w-]+)\\/editar$/);
+  if(!match)return;
+  try{
+    if(file.size>2_000_000)throw new Error("Arquivo muito grande para uma aula (limite: 2 MB).");
+    const content=await file.text();
+    const parsed=JSON.parse(content);
+    const {course,module}=await getPublishedLesson(match[1],match[2]);
+    if(parsed.id!==match[2])throw new Error("O arquivo pertence a outra aula.");
+    validateLessonLink(parsed,course,module.id);
+    const textarea=document.getElementById("lesson-json");
+    if(textarea)textarea.value=JSON.stringify({...parsed,status:"draft"},null,2);
+    statusMessage("Arquivo validado e carregado no editor. Clique em Salvar para guardá-lo neste navegador.");
+  }catch(err){statusMessage("Falha ao importar: "+err.message,true);}
+  ev.target.value="";
 });
 document.addEventListener("keydown",ev=>{
   if(ev.key==="Escape" && isMenuOpen && !currentDialog){
-    isMenuOpen=false;render(false);document.getElementById("menu-toggle")?.focus();return;
+    setMenu(false);return;
   }
   const tab=ev.target.closest('[role="tab"][aria-controls]');
   if(!tab||!["ArrowLeft","ArrowRight","Home","End"].includes(ev.key))return;
@@ -170,4 +261,4 @@ document.addEventListener("keydown",ev=>{
 });
 window.addEventListener("hashchange",()=>{isMenuOpen=false;closeDialog();render(true)});
 render(false);
-showToast("Ambiente demonstrativo: os dados apresentados são fictícios.");
+showToast("Sprint 2: cursos publicados em JSON e rascunhos salvos somente neste navegador.");
