@@ -79,8 +79,10 @@ export async function loadCourseOutline(area,courseId){
 function ordered(items=[]){return [...items].sort((a,b)=>a.position-b.position);}
 export function selectedModuleId(hash){
   const query=String(hash||"").split("?")[1]||"";
-  try{return new URLSearchParams(query).get("modulo")||""}
-  catch{return ""}
+  const item=query.split("&").find(part=>part.startsWith("modulo="));
+  if(!item)return "";
+  try{return decodeURIComponent(item.slice("modulo=".length).replace(/\\+/g,"%20"));}
+  catch{return "";}
 }
 export function courseOutline(area,course,hash=""){
   if(!course||!Array.isArray(course.modules))return "";
