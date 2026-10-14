@@ -373,7 +373,7 @@ async function doBackupCommand(command){
  try{
   if(command==="download-backup"){
    const counts=await downloadLocalBackup();
-   showToast("Backup JSON baixado: "+counts.courses+" cursos, "+counts.lessons+" aulas e "+counts.progress+" históricos.");
+   showToast("Backup baixado: "+counts.courses+" rascunhos de curso, "+counts.available+" cursos disponíveis, "+counts.lessons+" aulas e "+counts.progress+" históricos.");
   }else if(command==="import-backup"){
    document.getElementById("atelier-backup-import")?.click();
   }
@@ -508,7 +508,7 @@ document.addEventListener("change",async ev=>{
       if(!window.confirm("Restaurar este backup? Registros com os mesmos IDs serão substituídos neste navegador."))return;
       const count=await importLocalBackup(data);
       await render(false);
-      showToast("Backup restaurado: "+count.courses+" cursos, "+count.lessons+" aulas e "+count.states+" históricos.");
+      showToast("Backup restaurado: "+count.courses+" rascunhos, "+count.available+" cursos disponíveis, "+count.lessons+" aulas e "+count.states+" históricos.");
     }catch(err){showToast("Não foi possível restaurar: "+err.message);}
     finally{ev.target.value="";}
     return;
