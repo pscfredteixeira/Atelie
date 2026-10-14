@@ -3,7 +3,7 @@
    Não copia mídia binária nem JSON público de cursos não editados. */
 import {listCourseDrafts,saveCourseDraft} from "../../repositories/course-draft-repository.js";
 import {listDrafts,saveDraft,downloadJSON} from "../../repositories/draft-repository.js";
-import {exportLearningStates,importLearningStates} from "../../repositories/learning-repository.js";
+import {exportLearningStates,importLearningStates,validateLearningBackup} from "../../repositories/learning-repository.js";
 import {validateCourse,validateLesson,validateLessonLink} from "../../repositories/validators.js";
 export async function buildLocalBackup(){
  const [courses,lessons,learning]=await Promise.all([listCourseDrafts(),listDrafts(),exportLearningStates()]);
@@ -38,6 +38,9 @@ export function validateLocalBackup(data){
   const related=data.courseDrafts.find(c=>c.id===lesson.courseId);
   if(related)validateLessonLink(lesson,related,lesson.moduleId);
  }
+ // Valide também cada resposta antes de alterar qualquer IndexedDB.
+ // Caso contrário, um backup inválido poderia restaurar cursos e falhar no histórico.
+ validateLearningBackup(data.learning);
  return {courses:data.courseDrafts.length,lessons:data.lessonDrafts.length,states:data.learning.states.length};
 }
 export async function importLocalBackup(data){
