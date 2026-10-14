@@ -20,6 +20,37 @@
   </div>
   <div class="toast-zone" id="toast-host" aria-live="polite" role="status"></div>
   <noscript><p style="padding:24px;color:#f5f0ef;background:#121218">O Atelier precisa de JavaScript para exibir seus ambientes demonstrativos.</p></noscript>
-  <script type="module" src="./src/app/main.js"></script>
+  <script type="module">
+    // Inicialização com diagnóstico visível: um erro de importação não deve
+    // deixar a plataforma eternamente na tela "Preparando sua experiência".
+    const app = document.getElementById("app");
+    function bootError(error) {
+      console.error("Atelier: erro ao inicializar", error);
+      app.replaceChildren();
+      const main = document.createElement("main");
+      main.className = "main";
+      main.id = "main-content";
+      const eyebrow = document.createElement("p");
+      eyebrow.className = "overline";
+      eyebrow.textContent = "Atelier · Inicialização";
+      const title = document.createElement("h1");
+      title.className = "page-title";
+      title.textContent = "Não foi possível iniciar o Atelier.";
+      const explanation = document.createElement("p");
+      explanation.className = "lead";
+      explanation.textContent = "Um arquivo do aplicativo não foi carregado. Atualize a página para tentar novamente. Seus cursos e rascunhos locais não serão apagados.";
+      const detail = document.createElement("p");
+      detail.className = "tiny";
+      detail.textContent = "Detalhe técnico: " + (error?.message || String(error));
+      const retry = document.createElement("button");
+      retry.className = "button action";
+      retry.type = "button";
+      retry.textContent = "Atualizar e tentar novamente";
+      retry.addEventListener("click", () => location.reload());
+      main.append(eyebrow, title, explanation, detail, retry);
+      app.append(main);
+    }
+    import("./src/app/main.js?build=boot-fix-20261014").catch(bootError);
+  </script>
 </body>
 </html>
