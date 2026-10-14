@@ -32,9 +32,14 @@ register("clinical_vignette","Situação fictícia",(d)=>{
     (d.disclaimer?'<small>'+txt(d.disclaimer)+'</small>':"")+'</div>';
 },d=>d.title||"Situação fictícia");
 register("multiple_choice","Questão de revisão",(d)=>{
-  return '<h3>'+txt(d.prompt)+'</h3><ol class="lesson-options">'+
-    d.options.map(o=>'<li>'+txt(o.text)+'</li>').join("")+'</ol>'+
-    note("Questão formativa em modo de leitura. As respostas e o feedback interativo entram no Sprint 9.");
+  const id="quiz-"+Math.random().toString(36).slice(2);
+  return '<form class="learning-quiz" data-activity="quiz" data-correct="'+txt(d.correctOptionId)+'">'+
+    '<fieldset><legend>'+txt(d.prompt)+'</legend>'+
+    d.options.map(o=>'<label class="learning-option"><input type="radio" name="'+id+'" value="'+txt(o.id)+'" required><span>'+txt(o.text)+'</span></label>').join("")+
+    '</fieldset><button class="button action" type="submit">Conferir resposta</button>'+
+    '<p class="learning-feedback" role="status" aria-live="polite" hidden></p>'+
+    '<template data-feedback-correct>'+txt(d.feedbackCorrect)+'</template>'+
+    '<template data-feedback-incorrect>'+txt(d.feedbackIncorrect)+'</template></form>';
 },d=>d.prompt);
 register("references","Referências",(d,ctx)=>{
   const refs=d.referenceIds.map(id=>ctx.lesson.references.find(r=>r.id===id)).filter(Boolean);
@@ -92,8 +97,14 @@ register("video","Vídeo de estudo",(d,ctx)=>{
     (d.transcript?'<details><summary>Ler transcrição</summary><p>'+txt(d.transcript)+'</p></details>':"")+'</div>';
 },d=>d.title||"Vídeo");
 register("interactive_lab","Laboratório pedagógico",(d)=>{
-  return '<div class="lesson-lab"><h3>'+txt(d.title||"Laboratório")+'</h3>'+
-    (d.description?'<p>'+txt(d.description)+'</p>':"")+
-    note("Este laboratório será ativado com o motor de interatividades no Sprint 8; não é uma atividade concluível agora.")+
-    (d.alternative?'<details><summary>Alternativa de estudo</summary><p>'+txt(d.alternative)+'</p></details>':"")+'</div>';
+ const choices=Array.isArray(d.choices)&&d.choices.length>=2?d.choices:null;
+ return '<div class="lesson-lab"><h3>'+txt(d.title||"Laboratório")+'</h3>'+
+   (d.description?'<p>'+txt(d.description)+'</p>':"")+
+   (choices?'<fieldset class="learning-lab" data-activity="lab"><legend>'+txt(d.prompt||"Explore diferentes caminhos de interpretação")+'</legend>'+
+     choices.map(c=>'<button class="learning-path" type="button" data-branch="'+txt(c.id)+'"><strong>'+txt(c.label)+'</strong></button>').join("")+
+     '<p class="learning-feedback" role="status" aria-live="polite" hidden></p>'+
+     choices.map(c=>'<template data-outcome="'+txt(c.id)+'">'+txt(c.feedback)+'</template>').join("")+
+    '</fieldset>':note("Laboratório em preparação: use a alternativa de estudo abaixo."))+
+   (d.alternative?'<details><summary>Alternativa de estudo</summary><p>'+txt(d.alternative)+'</p></details>':"")+
+ '</div>';
 },d=>d.title||"Laboratório");
