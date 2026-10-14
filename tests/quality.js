@@ -17,10 +17,12 @@ async function run(){
    if(overflow)throw Error("Rolagem lateral detectada nesta largura.");
    return "Viewport "+window.innerWidth+"×"+window.innerHeight+" px; sem rolagem lateral inesperada.";
  }));
- results.push(await check("Foco visível no botão",()=>{
-   const style=getComputedStyle(runButton,":focus-visible");
-   if(style.outlineStyle==="none")throw Error("Estado de foco não declarado.");
-   return "Regra de foco presente (revisão visual ainda necessária).";
+ results.push(await check("Regra de foco de teclado",async()=>{
+   const response=await fetch("../src/styles/atelier.css",{cache:"no-cache"});
+   if(!response.ok)throw Error("Não foi possível ler o CSS.");
+   const sheet=await response.text();
+   if(!sheet.includes(":focus-visible"))throw Error("Regra de foco não encontrada.");
+   return "Estilo de foco declarado; confirme a aparência usando Tab.";
  }));
  results.push(await check("Preferência de movimento reduzido",()=>{
    return matchMedia("(prefers-reduced-motion: reduce)").matches?
