@@ -12,6 +12,16 @@ O botão com ícone de **sol/lua** aparece no cabeçalho dos ambientes Aluno, Pr
 
 CSS complementar: `src/styles/theme.css`. Comportamento: `src/features/theme/theme.js`. Os testes de regressão de tema e de remoção do fundo bege estão em `tests/smoke.html`.
 
+## Quiz integrado com avanço horizontal
+
+Todos os blocos JSON v1 `multiple_choice` de uma aula são automaticamente reunidos em **um único quiz de revisão**, apresentado ao final do conteúdo didático e antes das referências bibliográficas. Não há necessidade de alterar os arquivos JSON ou converter perguntas manualmente.
+
+O estudante vê **uma pergunta por vez**. Ao selecionar e usar **Conferir resposta**, recebe explicação no mesmo cartão; em caso de erro, pode **Tentar novamente**. O botão **Continuar** passa para a próxima pergunta com transição horizontal, sem alterar o endereço ou recarregar a aula. Ao terminar, vê um resumo de acertos e pode **Refazer o quiz**.
+
+As respostas continuam armazenadas por aula e perfil fictício no IndexedDB, recuperadas no retorno à aula. Ao refazer, somente as respostas desse quiz são limpas, preservando anotações e conclusão manual. O quiz possui indicador de progresso, controles de teclado, slides inativos fora da navegação e respeito à opção de movimento reduzido. O tema claro/escuro permanece em ambos os modos.
+
+O motor e a prévia do Estúdio usam o mesmo componente. Os testes de agrupamento, progresso, feedback, nova tentativa, retomada e reinício estão em `tests/smoke.html`. Como em qualquer alteração visual, ainda é necessário confirmar o comportamento no navegador real e no iPhone.
+
 ## Primeira aula publicada — O que é psicanálise?
 
 A primeira aula do curso **Introdução à Psicanálise** já está disponível em [`#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise`](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise).
