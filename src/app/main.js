@@ -1,4 +1,4 @@
-import {routeView} from "./views.js?build=aulas-lineares-v1-20261015";
+import {routeView} from "./views.js?build=aula-online-v2-20261015";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse} from "../repositories/local-catalog-repository.js";
@@ -13,7 +13,7 @@ import {checkQuiz,exploreLab} from "../features/learning/activities.js";
 import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
-import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aulas-lineares-v1-20261015";
+import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aula-online-v2-20261015";
 import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js";
 import {escapeHTML as e} from "../ui/components.js";
 
