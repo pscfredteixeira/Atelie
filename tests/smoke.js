@@ -3,6 +3,7 @@ import {validateLesson,validateLessonLink} from "../src/repositories/validators.
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
+import {getCourseEntries} from "../src/features/learning/course-entries.js";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from "../src/features/authoring/course-editor.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
@@ -44,28 +45,37 @@ async function run(){
      currentCourseChoice("/professor/cursos/curso-introducao-psicanalise","teacher")!=="curso-introducao-psicanalise")
      throw new Error("A seleção não acompanha a navegação.");
  });
- await check("Selecionar curso abre módulos no menu lateral",async()=>{
-   const introId="curso-introducao-psicanalise";
-   const freudId="curso-formacao-freudiana";
+ await check("Curso apresenta aulas diretamente no menu lateral",async()=>{
+   const introId="curso-introducao-psicanalise",freudId="curso-formacao-freudiana";
    const intro=await loadCourseOutline("student",introId);
    const freud=await loadCourseOutline("teacher",freudId);
-   if(intro?.modules.length!==8||freud?.modules.length!==10)
-     throw new Error("Sumários dos dois cursos não foram carregados.");
-   const activeModule=intro.modules[1].id;
-   const introHtml=courseOutline("student",intro,"#/cursos/"+introId+"?modulo="+activeModule);
+   if(getCourseEntries(intro).length!==8||getCourseEntries(freud).length!==10)
+     throw new Error("As aulas previstas não correspondem aos cursos.");
+   if(!getCourseEntries(intro).every(item=>item.planned))
+     throw new Error("Uma aula em preparação foi identificada como publicada.");
+   const current=intro.modules[1].id;
+   const introHtml=courseOutline("student",intro,"#/cursos/"+introId+"/aulas/"+current);
    const freudHtml=courseOutline("teacher",freud,"#/professor/cursos/"+freudId);
    if((introHtml.match(/class="course-tree-module"/g)||[]).length!==8||
       (freudHtml.match(/class="course-tree-module"/g)||[]).length!==10)
-      throw new Error("Nem todos os módulos apareceram no menu.");
-   if(!introHtml.includes('href="#/cursos/'+introId+'?modulo='+activeModule+'" aria-current="location"'))
-      throw new Error("O módulo selecionado não foi destacado.");
-   if(!freudHtml.includes('href="#/professor/cursos/'+freudId+'?modulo='+freud.modules[0].id+'"'))
-      throw new Error("Módulos não apontam para o editor do professor.");
-   if(selectedModuleId("#/cursos/"+introId+"?modulo="+activeModule)!==activeModule)
-      throw new Error("Não foi possível interpretar o módulo da rota.");
+     throw new Error("Nem todas as aulas aparecem no menu.");
+   if(!introHtml.includes('href="#/cursos/'+introId+'/aulas/'+current+'" aria-current="page"'))
+     throw new Error("A aula escolhida não abre diretamente sua própria página.");
+   if(!freudHtml.includes('href="#/professor/cursos/'+freudId+'?aula='+freud.modules[0].id+'"'))
+     throw new Error("A aula prevista não aponta para o painel do professor.");
+   if(introHtml.includes("<details")||freudHtml.includes("<details"))
+     throw new Error("O menu ainda está separando aulas em agrupamentos.");
    const available=await loadCourseMenu();
    if(selectedCourseId("student","/cursos/"+introId,available.student)!==introId)
-      throw new Error("O curso escolhido não ficou selecionado.");
+     throw new Error("A seleção do curso não foi preservada.");
+ });
+ await check("Aulas existentes continuam acessíveis sem agrupamentos visuais",async()=>{
+   const {course}=await contentRepository.getPublishedCourse("curso-fundamentos");
+   const rows=getCourseEntries(course);
+   if(rows.length!==3||rows.some(item=>item.planned))throw new Error("As três aulas reais não foram preservadas.");
+   const html=courseOutline("student",course,"#/cursos/curso-fundamentos/aulas/"+rows[1].id);
+   if(!html.includes('href="#/cursos/curso-fundamentos/aulas/'+rows[1].id+'" aria-current="page"'))
+     throw new Error("A navegação direta para aula existente falhou.");
  });
  await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
    const list=await learnerContentRepository.listPublishedCourses();
