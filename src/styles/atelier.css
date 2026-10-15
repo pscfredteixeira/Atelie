@@ -640,3 +640,15 @@ textarea.field{min-height:110px;resize:vertical}
  .access-switch-link{display:none}
 }
 @media(prefers-reduced-motion:reduce){.access-card{transition:none}.access-card:hover{transform:none}}
+
+/* Barra do aplicativo no celular: o seletor completo permanece no menu lateral. */
+@media(max-width:740px){
+ .top-actions .course-picker-header{display:none}
+ .top-actions{flex-shrink:1;min-width:0}
+ .top-start{flex:1;min-width:0}
+ .access-switch-link,.access-logout{min-height:37px}
+}
+@media(max-width:350px){
+ .topbar .breadcrumb{font-size:9px}
+ .access-switch-link{display:none}
+}
