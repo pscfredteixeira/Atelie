@@ -398,3 +398,46 @@ html[data-theme="light"] .sidebar-shade{background:#2a213677}
  .quiz-carousel-track,.quiz-carousel-progress>span,
  .quiz-carousel-slide .learning-option{transition:none}
 }
+
+
+/* Feedback do quiz: acerto verde mesmo dentro do carrossel.
+   Regras posteriores às declarações genéricas para evitar a cor lilás
+   se sobrepor ao data-result no carrossel de questões. */
+.reader .learning-feedback[data-result="correct"],
+.quiz-carousel-slide .learning-feedback[data-result="correct"]{
+  background:#193a2d;
+  border-color:#56b884;
+  color:#d0f7de!important;
+  border-left:4px solid #56b884;
+}
+.reader .learning-feedback[data-result="correct"]::before,
+.quiz-carousel-slide .learning-feedback[data-result="correct"]::before{
+  content:"✓";
+  display:inline-grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  margin-right:10px;
+  border-radius:50%;
+  background:#56b884;
+  color:#122d22;
+  font-weight:800;
+}
+.reader .learning-feedback[data-result="review"],
+.quiz-carousel-slide .learning-feedback[data-result="review"]{
+  background:var(--lesson-review);
+  border-color:var(--action);
+  border-left:4px solid var(--action);
+  color:var(--lesson-ink)!important;
+}
+html[data-theme="light"] .reader .learning-feedback[data-result="correct"],
+html[data-theme="light"] .quiz-carousel-slide .learning-feedback[data-result="correct"]{
+  background:#e5f6eb;
+  border-color:#3c9b68;
+  color:#205437!important;
+}
+html[data-theme="light"] .reader .learning-feedback[data-result="correct"]::before,
+html[data-theme="light"] .quiz-carousel-slide .learning-feedback[data-result="correct"]::before{
+  background:#388a5c;
+  color:#fff;
+}
