@@ -4,6 +4,7 @@ import {learnerContentRepository} from "../../repositories/learner-content-repos
 import {contentRepository} from "../../repositories/content-repository.js";
 import {listCourseDrafts,getCourseDraft} from "../../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse} from "../../repositories/local-catalog-repository.js";
+import {getCourseEntries} from "../learning/course-entries.js";
 import {escapeHTML as e} from "../../ui/components.js";
 
 const BASE_COURSES=[
@@ -85,34 +86,30 @@ export function selectedModuleId(hash){
   catch{return "";}
 }
 export function courseOutline(area,course,hash=""){
-  if(!course||!Array.isArray(course.modules))return "";
-  const isTeacher=area==="teacher";
-  const base=(isTeacher?"#/professor/cursos/":"#/cursos/")+encodeURIComponent(course.id);
-  const chosen=selectedModuleId(hash);
-  const modules=ordered(course.modules);
-  const rows=modules.map((mod,i)=>{
-    const href=base+"?modulo="+encodeURIComponent(mod.id);
-    const lessons=ordered(mod.lessons||[]).filter(l=>isTeacher||!l.status||l.status==="published");
-    const open=chosen===mod.id||(!chosen&&i===0);
-    return '<li class="course-tree-module">'+
-      '<a class="course-tree-link'+(chosen===mod.id?" is-current":"")+'" href="'+e(href)+'"'+
-      (chosen===mod.id?' aria-current="location"':"")+'>'+
-      '<span class="course-tree-number" aria-hidden="true">'+String(i+1).padStart(2,"0")+'</span>'+
-      '<span>'+e(mod.title)+'</span></a>'+
-      (lessons.length?'<details class="course-tree-lessons"'+(open?" open":"")+'>'+
-        '<summary>'+lessons.length+' aula(s)</summary>'+
-        '<ol>'+lessons.map(l=>{
-          const lessonHref=base+"/aulas/"+encodeURIComponent(l.id)+(isTeacher?"/editar":"");
-          return '<li><a href="'+e(lessonHref)+'">'+e(l.title||l.id)+'</a></li>';
-        }).join("")+'</ol></details>':"")+
-      '</li>';
-  }).join("");
-  return '<section class="course-tree" aria-label="Menu do curso selecionado">'+
-    '<div class="course-tree-heading">'+e(isTeacher?"Estrutura do curso":"Conteúdo do curso")+'</div>'+
-    '<a class="course-tree-overview" href="'+e(base)+'">'+e(isTeacher?"Visão geral e edição":"Visão geral do curso")+' →</a>'+
-    (modules.length?'<ol class="course-tree-list">'+rows+'</ol>':
-      '<p class="course-tree-empty">Este curso ainda não tem módulos.</p>')+
-    '</section>';
+ if(!course||!Array.isArray(course.modules))return "";
+ const isTeacher=area==="teacher";
+ const base=(isTeacher?"#/professor/cursos/":"#/cursos/")+encodeURIComponent(course.id);
+ const entries=getCourseEntries(course,{includeDrafts:isTeacher});
+ const active=hash.split("?")[0];
+ const rows=entries.map(item=>{
+   const href=isTeacher?
+     (item.planned?base+"?aula="+encodeURIComponent(item.moduleId):base+"/aulas/"+encodeURIComponent(item.id)+"/editar"):
+     "#/cursos/"+encodeURIComponent(course.id)+"/aulas/"+encodeURIComponent(item.id);
+   const current=active===href||hash===href;
+   return '<li class="course-tree-module">'+
+    '<a class="course-tree-link'+(current?" is-current":"")+'" href="'+e(href)+'"'+
+      (current?' aria-current="page"':'')+'>'+
+    '<span class="course-tree-number" aria-hidden="true">'+String(item.number).padStart(2,"0")+'</span>'+
+    '<span class="course-tree-link-content"><span>'+e(item.title)+'</span>'+
+    (item.planned?'<small class="course-tree-status">Conteúdo em preparação</small>':"")+
+    '</span></a></li>';
+ }).join("");
+ return '<section class="course-tree" aria-label="Aulas do curso selecionado">'+
+   '<div class="course-tree-heading">'+e(isTeacher?"Aulas para preparar e editar":"Aulas do curso")+'</div>'+
+   '<a class="course-tree-overview" href="'+e(base)+'">'+e(isTeacher?"Organização do curso":"Apresentação do curso")+' →</a>'+
+   (entries.length?'<ol class="course-tree-list">'+rows+'</ol>':
+     '<p class="course-tree-empty">Este curso ainda não tem aulas.</p>')+
+   '</section>';
 }
 export function coursePicker(area,path,courses=[],placement="sidebar",chosenCourse=""){
   const teacher=area==="teacher",id="course-picker-"+area+"-"+placement;
