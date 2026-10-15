@@ -4,6 +4,20 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 
 > **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
 
+## Organização pedagógica: curso → aulas
+
+O Atelier apresenta uma **sequência única de aulas dentro de cada curso**, sem subníveis de módulos na navegação ou na criação visual.
+
+- **Introdução à Psicanálise:** oito aulas previstas, ainda em preparação.
+- **Formação Freudiana:** dez aulas previstas, ainda em preparação.
+- **Fundamentos da Psicanálise:** três aulas com conteúdo publicado, preservadas.
+
+Ao clicar numa aula prevista, o estudante visualiza seu título, apresentação e a indicação honesta de que o conteúdo ainda está em preparação. Uma aula com conteúdo abre diretamente a Sala de Aula. No ambiente Professor, **Preparar conteúdo da aula** cria seu rascunho; **Adicionar uma aula ao curso** cria a aula e abre o Estúdio Visual.
+
+**Compatibilidade:** os manifests JSON v1 continuam a armazenar `modules[]` internamente, para preservar os identificadores e os rascunhos já salvos no IndexedDB. A interface interpreta esses registros como aulas de um curso; as novas aulas usam automaticamente um contêiner técnico interno, que não aparece para o usuário. Não foram gerados textos de ensino fictícios para aulas ainda não escritas.
+
+As verificações automáticas de navegação e dados estão em `tests/smoke.html`; conferência visual no navegador continua necessária.
+
 ## Entrada por três perfis demonstrativos (JSON)
 
 Ao abrir a plataforma em um navegador sem perfil selecionado, aparece uma **tela de entrada** com três cartões:
