@@ -1,0 +1,34 @@
+name: Atelie - regressao no navegador
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "content/**"
+      - "tests/**"
+      - "scripts/**"
+      - ".github/workflows/quality.yml"
+      - "index.html"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar navegador de testes
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Testar plataforma localmente
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/atelier-server.log 2>&1 &
+          node scripts/ci-smoke.mjs
