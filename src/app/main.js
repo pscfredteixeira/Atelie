@@ -10,7 +10,7 @@ import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,expor
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
 import {checkQuiz,exploreLab} from "../features/learning/activities.js";
-import {confirmQuizStep,advanceQuiz,restartQuiz,restoreQuizAnswers} from "../features/learning/quiz-flow.js";
+import {confirmQuizStep,advanceQuiz,retryQuizStep,restartQuiz,restoreQuizAnswers} from "../features/learning/quiz-flow.js";
 import {getDemoProfile,setDemoProfile,getLearningState,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
@@ -630,6 +630,15 @@ document.addEventListener("click",ev=>{
     approvedNavigationHash="#/entrar";
     if(window.location.hash==="#/entrar")render(true);
     else window.location.hash="#/entrar";
+    return;
+  }
+  const quizRetry=ev.target.closest("[data-quiz-retry]");
+  if(quizRetry){
+    const id=retryQuizStep(quizRetry);
+    const target=currentLessonRoute();
+    if(target&&id)
+      updateLearningState(target.courseId,target.lessonId,{clearAnswerIds:[id]})
+        .catch(err=>showToast("Nova tentativa liberada, mas o histórico não foi atualizado: "+err.message));
     return;
   }
   const quizNext=ev.target.closest("[data-quiz-next]");
