@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-introducao-psicanalise",
   "slug": "introducao-a-psicanalise",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "Introdução à Psicanálise",
   "icon": "ψ",
   "subtitle": "Primeiros conceitos, perguntas e caminhos de leitura",
-  "description": "Uma porta de entrada para o pensamento psicanalítico, com linguagem acessível e atenção às perguntas que deram origem à teoria e à clínica. O curso reúne oito aulas previstas, cujos conteúdos serão preparados no Estúdio Visual.",
+  "description": "Uma porta de entrada para o pensamento psicanalítico: a primeira aula já está disponível, com leituras, linha do tempo, exercícios de escuta, revisão e referências. As sete aulas seguintes estão em preparação.",
   "objectives": [
     "Situar o surgimento da psicanálise e suas perguntas fundamentais",
     "Compreender, de forma introdutória, inconsciente, conflito, recalque, desejo e sintoma",
@@ -24,7 +24,16 @@
       "title": "O que é psicanálise?",
       "description": "O campo psicanalítico, suas perguntas e diferenças em relação ao senso comum.",
       "position": 1,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "aula-o-que-e-psicanalise",
+          "path": "./aulas/o-que-e-psicanalise.json",
+          "position": 1,
+          "title": "O que é psicanálise?",
+          "summary": "Uma primeira viagem pelas perguntas de Freud: inconsciente, escuta, investigação e os limites das interpretações prontas.",
+          "estimatedMinutes": 35
+        }
+      ]
     },
     {
       "id": "modulo-introducao-a-psicanalise-02",
