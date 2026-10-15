@@ -4,6 +4,12 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 
 > **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
 
+## Primeira aula publicada — O que é psicanálise?
+
+A primeira aula do curso **Introdução à Psicanálise** já está disponível em [`#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise`](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise).
+
+Ela reúne 27 blocos (texto didático, conceitos reveláveis, cronologia, comparação, vinheta fictícia, laboratório de escuta, duas perguntas com correção e bibliografia com links). As outras sete aulas continuam honestamente sinalizadas como em preparação. [Leia o plano de pesquisa, referências e pontos de rigor](docs/AULA_01_O_QUE_E_PSICANALISE.md).
+
 ## Organização pedagógica: curso → aulas
 
 O Atelier apresenta uma **sequência única de aulas dentro de cada curso**, sem subníveis de módulos na navegação ou na criação visual.
