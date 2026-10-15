@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-o-que-e-psicanalise",
+  "courseId": "curso-introducao-psicanalise",
+  "moduleId": "modulo-introducao-a-psicanalise-01",
+  "slug": "o-que-e-psicanalise",
+  "revision": 1,
+  "status": "published",
+  "title": "O que é psicanálise?",
+  "summary": "Uma primeira viagem pelas perguntas de Freud: inconsciente, escuta, investigação e os limites das interpretações prontas.",
+  "estimatedMinutes": 35,
+  "objectives": [
+    "Explicar, em linguagem acessível, as três dimensões da psicanálise apresentadas por Freud.",
+    "Reconhecer o papel do inconsciente, da associação livre e da escuta clínica sem antecipar interpretações.",
+    "Situar momentos importantes das origens históricas da psicanálise.",
+    "Diferenciar psicanálise, psicologia e psiquiatria e identificar equívocos frequentes.",
+    "Avaliar com prudência os limites das teorias e as evidências sobre tratamentos psicodinâmicos."
+  ],
+  "blocks": [
+    {
+      "id": "psicanalise-abertura",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Por que às vezes repetimos atitudes que nós mesmos gostaríamos de mudar?",
+        "hint": "Não tente descobrir uma explicação escondida. Observe apenas que nem sempre compreendemos de imediato tudo o que sentimos, desejamos ou fazemos."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-cena-de-abertura",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Antes de uma definição, uma pergunta",
+        "paragraphs": [
+          "Imagine uma pessoa que deseja se aproximar de alguém, mas se afasta toda vez que a relação começa a ficar importante. Ela diz: “Não sei por que faço isso”. Talvez existam razões que ainda não encontrou palavras para explicar. Talvez existam circunstâncias bem concretas. Só a situação descrita não nos autoriza a concluir nada.",
+          "A psicanálise nasceu do interesse por perguntas como essa: o que acontece quando nossas intenções conscientes não parecem contar a história inteira? O que significam as contradições, os conflitos, os sintomas e as repetições na experiência de alguém?",
+          "Nesta primeira aula, você não precisa memorizar teorias complexas nem interpretar pessoas. O objetivo é conhecer as perguntas que orientam a psicanálise e aprender a formulá-las com cuidado."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-tres-dimensoes",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "1. Afinal, o que é psicanálise?"
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-definicao",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma palavra, três sentidos que se conectam",
+        "paragraphs": [
+          "Em um texto de 1923, Freud apresentou a psicanálise de três maneiras inseparáveis: como um modo de investigar processos psíquicos difíceis de conhecer diretamente; como um método de tratamento desenvolvido a partir dessa investigação; e como um conjunto de conhecimentos e hipóteses sobre o funcionamento psíquico.",
+          "Em linguagem simples: a psicanálise é uma maneira de investigar a experiência humana, uma prática clínica baseada na fala e na escuta e um campo de elaboração teórica. Sua história não se resume a uma técnica de consultório — mas também não é um conjunto de frases prontas para explicar qualquer comportamento."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-comparar-dimensoes",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "As três dimensões da psicanálise",
+        "caption": "Síntese didática da definição apresentada por Freud em 1923",
+        "columns": [
+          "Em palavras simples",
+          "Na prática"
+        ],
+        "rows": [
+          {
+            "criterion": "Investigação",
+            "values": [
+              "Perguntar por sentidos e processos que não estão imediatamente claros.",
+              "Escutar relatos, associações, impasses e sua história sem antecipar conclusões."
+            ]
+          },
+          {
+            "criterion": "Tratamento",
+            "values": [
+              "Um trabalho clínico sustentado pela relação de escuta.",
+              "Investigar, ao longo do processo, maneiras de viver conflitos e sofrimentos."
+            ]
+          },
+          {
+            "criterion": "Teoria",
+            "values": [
+              "Conceitos que procuram compreender a vida psíquica.",
+              "Elaborar e debater hipóteses como inconsciente, defesa, desejo e transferência."
+            ]
+          }
+        ]
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "psicanalise-inconsciente-intro",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma mudança importante no modo de pensar a mente",
+        "paragraphs": [
+          "No cotidiano, costumamos dizer “eu sei por que fiz isso” ou “decidi racionalmente”. A psicanálise introduz uma pergunta incômoda: será que conhecemos inteiramente os motivos de nossos pensamentos, escolhas e sentimentos?",
+          "Para Freud, parte da atividade psíquica não está disponível à consciência imediata. Isso não significa imaginar uma segunda pessoa dentro de nós, nem supor que cada gesto esconda uma mensagem secreta. Significa admitir que nem tudo o que nos move é transparente para nós mesmos."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-conceito-inconsciente",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Inconsciente",
+        "definition": "Na teoria psicanalítica, designa processos, representações e conflitos que não estão diretamente acessíveis à consciência, mas podem participar da vida psíquica. Em Freud, não equivale apenas àquilo de que esquecemos ou ao que ainda não percebemos.",
+        "example": "Não lembrar a senha de um aplicativo é um esquecimento comum. Esse fato isolado não comprova a ação do inconsciente no sentido psicanalítico."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "psicanalise-conceito-conflito",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Conflito psíquico",
+        "definition": "Uma hipótese para pensar tensões entre tendências, desejos, proibições, exigências ou defesas na vida psíquica. Não deve ser confundido automaticamente com qualquer dúvida cotidiana.",
+        "example": "Querer uma mudança e, ao mesmo tempo, temê-la pode abrir perguntas sobre um conflito. O relato, sozinho, não determina sua causa."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "psicanalise-origens",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "2. De onde veio essa maneira de pensar?"
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-historia",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma história que começa com problemas clínicos",
+        "paragraphs": [
+          "No fim do século XIX, Sigmund Freud era médico e se interessava por sofrimentos que nem sempre encontravam explicações satisfatórias nos conhecimentos disponíveis naquele momento. Seu trabalho dialogou com pesquisadores e clínicos como Jean-Martin Charcot e Josef Breuer. Não se tratou de uma descoberta súbita nem de uma criação isolada de todas as influências de sua época.",
+          "A partir da escuta de pacientes e da revisão de suas técnicas, Freud passou a investigar o papel das lembranças, dos afetos, dos conflitos e da fala na formação de sintomas. Aos poucos, distanciou-se do uso da hipnose e desenvolveu procedimentos baseados nas associações feitas durante o tratamento.",
+          "Convém lembrar que as explicações do século XIX não devem ser confundidas com classificações diagnósticas atuais. Ler Freud exige atenção ao contexto histórico e também aos debates e limites de suas formulações."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-marcos",
+      "type": "timeline",
+      "version": 1,
+      "data": {
+        "title": "Um percurso em poucos marcos",
+        "events": [
+          {
+            "date": "1885–1886",
+            "title": "Freud estuda em Paris",
+            "description": "O contato com o trabalho de Charcot participa de sua formação e de seu interesse pelos fenômenos então chamados de histéricos."
+          },
+          {
+            "date": "1895",
+            "title": "Estudos sobre a histeria",
+            "description": "Freud e Josef Breuer publicam um trabalho ligado às primeiras experiências clínicas e técnicas que antecedem a psicanálise madura."
+          },
+          {
+            "date": "1900",
+            "title": "A interpretação dos sonhos",
+            "description": "Freud sistematiza hipóteses sobre sonho, desejo, associações e processos inconscientes."
+          },
+          {
+            "date": "1916–1917",
+            "title": "Conferências introdutórias",
+            "description": "Freud apresenta suas ideias a um público de estudantes e ouvintes, passando por atos falhos, sonhos e sintomas."
+          },
+          {
+            "date": "1923",
+            "title": "Uma definição em três dimensões",
+            "description": "No verbete “Psicanálise”, Freud articula investigação, tratamento e corpo de conhecimentos."
+          },
+          {
+            "date": "Séculos XX e XXI",
+            "title": "Um campo com várias tradições",
+            "description": "Autores posteriores desenvolvem e contestam aspectos do legado freudiano. A psicanálise não é hoje uma única escola teórica."
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-escuta",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "3. O que acontece numa escuta psicanalítica?"
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-sessao",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Falar não é simplesmente contar fatos",
+        "paragraphs": [
+          "Uma pessoa pode chegar dizendo que está angustiada, que vive um conflito ou que não entende certas repetições em suas relações. A escuta psicanalítica procura oferecer espaço para que ela desenvolva sua própria maneira de falar sobre o que vive. Em vez de começar por um conselho pronto, o trabalho se interessa por como aquela experiência é narrada, sentida e associada a outras.",
+          "Na tradição freudiana, a associação livre convida a falar também do que parece secundário, estranho ou desconexo. Não se trata de falar sem parar nem de uma fórmula mágica: hesitações, silêncios, esquecimentos e dificuldades também precisam ser compreendidos com cuidado e no contexto de uma relação clínica.",
+          "O analista não deveria agir como alguém que adivinha o pensamento do outro. A escuta é um trabalho que se constrói ao longo do tempo, sem prometer resultados instantâneos ou respostas infalíveis."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-associacao",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Associação livre",
+        "definition": "Princípio técnico pelo qual a pessoa é convidada a comunicar pensamentos, lembranças, imagens e sentimentos que lhe ocorram, mesmo quando pareçam pouco importantes. O propósito é abrir caminhos de investigação, não produzir uma interpretação automática.",
+        "example": "Alguém começa falando de uma reunião, lembra de uma antiga apresentação na escola e depois de uma sensação de vergonha. O percurso pode ser explorado, sem concluir antecipadamente o que ele significa."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "psicanalise-transferencia",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Transferência",
+        "definition": "Conceito que se refere, de maneiras elaboradas por diferentes escolas, à atualização de expectativas, sentimentos e padrões relacionais na relação com o analista. É um tema clínico complexo, não sinônimo de simplesmente gostar ou não gostar do profissional.",
+        "example": "Uma reação intensa ao silêncio do analista pode tornar-se assunto de investigação; isoladamente, ela não autoriza um diagnóstico."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "psicanalise-vinheta",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Marina e a mensagem nunca enviada",
+        "narrative": "Marina, personagem fictícia, deseja conversar com uma amiga sobre um desentendimento. Escreve uma mensagem, apaga, reescreve e termina sem enviar. Diz apenas: “Faço isso sempre”. Uma pessoa próxima responde: “Você tem medo de abandono; está explicado”. Marina fica em silêncio.",
+        "reflection": "O que foi efetivamente observado? Que perguntas poderiam ajudá-la a falar de sua experiência antes de atribuir uma causa?",
+        "disclaimer": "Vinheta inventada exclusivamente para estudo. Não representa paciente, análise real nem diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-laboratorio",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Laboratório de escuta: qual pergunta abre mais possibilidades?",
+        "description": "Volte à situação de Marina. Experimente três maneiras de responder a ela e leia as consequências de cada escolha. A atividade não tenta interpretar uma pessoa real.",
+        "prompt": "Se você estivesse tentando compreender essa situação com prudência, qual abordagem escolheria?",
+        "choices": [
+          {
+            "id": "perguntar",
+            "label": "“O que costuma acontecer com você quando chega a hora de enviar a mensagem?”",
+            "feedback": "Essa pergunta convida Marina a descrever a própria experiência, sem impor uma explicação. Ainda seria importante escutar sua resposta e o contexto."
+          },
+          {
+            "id": "rotular",
+            "label": "“Isso certamente é um trauma de abandono.”",
+            "feedback": "Essa afirmação fecha a investigação antes que Marina possa falar. Uma reação isolada não comprova a existência de trauma ou qualquer mecanismo inconsciente."
+          },
+          {
+            "id": "minimizar",
+            "label": "“É só parar de pensar e apertar enviar.”",
+            "feedback": "Um conselho direto pode ignorar a dificuldade relatada. A escuta procura levar a experiência a sério sem transformar tudo em sintoma."
+          }
+        ],
+        "alternative": "Anote duas perguntas abertas que poderiam ajudar Marina a descrever o que sente, sem estabelecer causas prontas."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-equivocos",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "4. O que a psicanálise não é?"
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-mitos",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Quatro confusões muito comuns",
+        "caption": "Formulações para distinguir caricaturas de uma prática de investigação",
+        "columns": [
+          "Ideia simplificada",
+          "Distinção necessária"
+        ],
+        "rows": [
+          {
+            "criterion": "“Psicanálise é ler mentes.”",
+            "values": [
+              "O analista descobre tudo sem que a pessoa saiba.",
+              "Não existe acesso direto ao pensamento alheio. O trabalho depende da fala, da escuta e da elaboração conjunta."
+            ]
+          },
+          {
+            "criterion": "“Todo sonho tem um significado fixo.”",
+            "values": [
+              "Cada imagem corresponde a um símbolo universal.",
+              "A interpretação dos sonhos em Freud considera associações e a história singular; um dicionário pronto de símbolos não substitui isso."
+            ]
+          },
+          {
+            "criterion": "“É só falar de sexo ou da infância.”",
+            "values": [
+              "Um único tema explicaria todas as pessoas.",
+              "Freud atribuiu importância à sexualidade em sentido amplo e às experiências infantis, mas a clínica não se reduz a dois assuntos."
+            ]
+          },
+          {
+            "criterion": "“O analista dá conselhos para tudo.”",
+            "values": [
+              "O profissional entrega a solução correta.",
+              "A escuta analítica não se confunde com aconselhamento rápido, embora a prática clínica envolva responsabilidade e atenção a necessidades reais."
+            ]
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-profissoes",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Psicanálise, psicologia e psiquiatria: não são sinônimos",
+        "paragraphs": [
+          "Psicologia é um campo amplo de estudo e atuação relacionado ao comportamento e aos processos psicológicos, com diferentes teorias e métodos. Psiquiatria é uma especialidade médica dedicada à saúde mental, que pode incluir avaliação clínica, tratamentos medicamentosos e outras intervenções. Psicanálise é uma tradição teórica e clínica com métodos próprios de investigação e escuta.",
+          "Esses campos podem dialogar. Não é correto afirmar que a psicanálise substitui toda intervenção psicológica, médica ou psiquiátrica. A formação e as regras para o exercício profissional variam conforme o país e a atividade realizada."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-quiz-definicao",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Segundo a definição clássica de Freud, a psicanálise reúne quais dimensões?",
+        "options": [
+          {
+            "id": "quiz-definicao-1",
+            "text": "Investigação dos processos psíquicos, método de tratamento e campo de conhecimento."
+          },
+          {
+            "id": "quiz-definicao-2",
+            "text": "Interpretação de sonhos, aconselhamento e leitura de personalidade."
+          },
+          {
+            "id": "quiz-definicao-3",
+            "text": "Exclusivamente uma técnica para conhecer a infância."
+          },
+          {
+            "id": "quiz-definicao-4",
+            "text": "Somente um conjunto de ideias sobre Freud."
+          }
+        ],
+        "correctOptionId": "quiz-definicao-1",
+        "feedbackCorrect": "Isso mesmo. Freud articula investigação, tratamento e elaboração teórica. A mesma palavra pode designar essas três dimensões.",
+        "feedbackIncorrect": "Releia o quadro 'As três dimensões da psicanálise'. A definição de Freud não reduz o campo a uma técnica isolada."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-quiz-escuta",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Uma pessoa repete um comportamento e não sabe explicar por quê. O que é mais coerente com uma atitude de escuta psicanalítica?",
+        "options": [
+          {
+            "id": "quiz-escuta-1",
+            "text": "Dizer que a repetição comprova um conflito inconsciente específico."
+          },
+          {
+            "id": "quiz-escuta-2",
+            "text": "Perguntar por sua experiência e contexto antes de propor interpretações."
+          },
+          {
+            "id": "quiz-escuta-3",
+            "text": "Ignorar a pergunta, porque toda repetição é aleatória."
+          },
+          {
+            "id": "quiz-escuta-4",
+            "text": "Atribuir o comportamento a um símbolo universal."
+          }
+        ],
+        "correctOptionId": "quiz-escuta-2",
+        "feedbackCorrect": "Exatamente. Investigar não é adivinhar. A experiência da própria pessoa e seu contexto são indispensáveis.",
+        "feedbackIncorrect": "Uma repetição, sozinha, não confirma uma hipótese clínica. O primeiro movimento é abrir a investigação e escutar."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-limites",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "5. Uma teoria influente, perguntas ainda abertas"
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-atualidade",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma tradição plural e sujeita à discussão",
+        "paragraphs": [
+          "Freud lançou as bases da psicanálise, mas o campo continuou se transformando. Depois dele, diferentes autores desenvolveram maneiras diversas de pensar as relações, o inconsciente, a linguagem e a experiência clínica. Por isso, duas pessoas que trabalham em tradições psicanalíticas distintas nem sempre compreendem um conceito da mesma forma.",
+          "Também é importante separar três perguntas: uma teoria influenciou a cultura? Suas afirmações explicam adequadamente os fenômenos? Um tratamento ajuda determinadas pessoas em determinadas condições? Essas perguntas exigem tipos diferentes de argumento e pesquisa.",
+          "Há estudos que sustentam a eficácia de diferentes psicoterapias psicodinâmicas para certos problemas de saúde mental, mas isso não valida automaticamente cada conceito de Freud, nem permite afirmar que qualquer modalidade de psicanálise seja adequada para todas as pessoas. A escolha de cuidados deve considerar necessidades, evidências, preferências e avaliação profissional apropriada."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-pergunta-final",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Se a psicanálise não oferece explicações prontas para cada comportamento, o que ela oferece?",
+        "hint": "Pense no valor de uma pergunta bem construída, na atenção à história singular e na diferença entre observar um fato e afirmar sua causa."
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-resumo",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Leve estas quatro ideias para a próxima aula",
+        "paragraphs": [
+          "1. A psicanálise nasce de perguntas sobre experiências que não são totalmente transparentes à consciência.",
+          "2. Freud articulou investigação, tratamento clínico e produção de conhecimento — três dimensões de um mesmo campo.",
+          "3. Falar e escutar são centrais, mas interpretar não é adivinhar. Um gesto isolado não prova um conflito inconsciente.",
+          "4. A psicanálise possui história, diferentes escolas e limites. Estudá-la bem exige curiosidade, atenção ética e pensamento crítico.",
+          "Na próxima aula, vamos conhecer Freud e o contexto em que essas perguntas começaram a ganhar forma. Você não precisa sair daqui com todas as respostas: precisa saber formular perguntas melhores."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "psicanalise-bibliografia",
+      "type": "references",
+      "version": 1,
+      "data": {
+        "referenceIds": [
+          "freud-1923",
+          "freud-conferencias",
+          "ipa-intro",
+          "apsa-definicao",
+          "apsa-diversidade",
+          "scielo-associacao",
+          "apa-psi",
+          "evidencias-2023"
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [
+    {
+      "id": "freud-1923",
+      "author": "Sigmund Freud",
+      "title": "Psicanálise (Dois verbetes de enciclopédia)",
+      "year": "1923",
+      "note": "Fonte histórica para a definição em três dimensões. Discussão em português publicada em Psicologia: Teoria e Pesquisa (SciELO).",
+      "url": "https://www.scielo.br/j/ptp/a/jJ4XLGvs4MPxRfsfjHF4kRJ/"
+    },
+    {
+      "id": "freud-conferencias",
+      "author": "Sigmund Freud",
+      "title": "Conferências introdutórias à psicanálise",
+      "year": "1916–1917",
+      "note": "Texto original de introdução às perguntas freudianas, em edição digital em inglês do Project Gutenberg.",
+      "url": "https://www.gutenberg.org/ebooks/75810"
+    },
+    {
+      "id": "ipa-intro",
+      "author": "International Psychoanalytical Association",
+      "title": "What is Psychoanalysis?",
+      "year": "s.d.",
+      "note": "Apresentação institucional contemporânea da psicanálise como tratamento e investigação.",
+      "url": "https://www.ipa.world/ipa/IPADev/Psychoanalysis/What_is_Psychoanalysis/Dev/About_Psychoanalysis/What_is_Psychoanalysis.aspx?hkey=f6804a78-88e2-4665-b41e-804be5515172"
+    },
+    {
+      "id": "apsa-definicao",
+      "author": "American Psychoanalytic Association",
+      "title": "About Psychoanalysis",
+      "year": "s.d.",
+      "note": "Visão geral de escuta, inconsciente, transferência e tratamento clínico.",
+      "url": "https://apsa.org/about-psychoanalysis/"
+    },
+    {
+      "id": "apsa-diversidade",
+      "author": "American Psychoanalytic Association",
+      "title": "Psychoanalytic Theory & Approaches",
+      "year": "s.d.",
+      "note": "Panorama da diversidade de escolas psicanalíticas posteriores a Freud.",
+      "url": "https://apsa.org/about-psychoanalysis/psychoanalytic-theory-approaches/"
+    },
+    {
+      "id": "scielo-associacao",
+      "author": "Autores de artigo acadêmico indexado em PePSIC",
+      "title": "O estatuto de regra fundamental da associação livre: sobre as bases teóricas da técnica da psicanálise",
+      "year": "2019",
+      "note": "Pesquisa acadêmica em português sobre o desenvolvimento histórico da associação livre.",
+      "url": "https://pepsic.scielo.org/scielo.php?lng=p&pid=S2236-64072019000200004&script=sci_arttext"
+    },
+    {
+      "id": "apa-psi",
+      "author": "American Psychological Association",
+      "title": "Psychoanalysis vs. psychodynamic therapy",
+      "year": "2017",
+      "note": "Discussão sobre diferenças entre psicanálise clássica e psicoterapias psicodinâmicas.",
+      "url": "https://www.apa.org/monitor/2017/12/psychoanalysis-psychodynamic"
+    },
+    {
+      "id": "evidencias-2023",
+      "author": "Leichsenring e colaboradores",
+      "title": "The status of psychodynamic psychotherapy as an empirically supported treatment for common mental disorders",
+      "year": "2023",
+      "note": "Revisão abrangente em World Psychiatry. Examina evidências de psicoterapia psicodinâmica, sem validar indistintamente toda teoria psicanalítica.",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168167/"
+    }
+  ],
+  "metadata": {
+    "readingLevel": "iniciante",
+    "targetAudience": "Pessoas sem conhecimento prévio",
+    "editorialStatus": "revisao_pedagogica_recomendada",
+    "tags": [
+      "introducao",
+      "freud",
+      "inconsciente",
+      "associacao-livre",
+      "escuta",
+      "historia",
+      "etica"
+    ],
+    "researchDate": "2026-10-14",
+    "contentNote": "Atividade de estudo, não orientação terapêutica nem diagnóstico."
+  }
+}
