@@ -240,13 +240,24 @@ async function courseStructure(cid){
  // não deve ficar bloqueado por uma busca remota no GitHub Pages.
  try{available=await getLocalAvailableCourse(cid);}
  catch(err){warning=warning||"Catálogo deste dispositivo indisponível: "+err.message;}
- if(!local&&!available){
-   try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
-   catch(err){if(err.code!=="not_found")throw err;}
+ // Consulte também a publicação quando existir rascunho antigo. Caso o
+ // GitHub tenha aulas novas, ofereça incorporá-las SEM sobrescrever o rascunho.
+ try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
+ catch(err){
+   if(!local&&!available&&err.code!=="not_found")throw err;
+   if(err.code!=="not_found")console.warn("Curso GitHub temporariamente indisponível:",err);
  }
  if(!local&&!publicCourse&&!available)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
  const course=local?.course||publicCourse||available.course;
  const entries=getCourseEntries(course,{includeDrafts:true});
+ const localIds=new Set(course.modules.flatMap(m=>m.lessons.map(l=>l.id)));
+ const newOnline=local&&publicCourse?
+   publicCourse.modules.flatMap(m=>m.lessons).filter(l=>!localIds.has(l.id)):[];
+ const onlineAlert=newOnline.length?
+   '<div class="notice" role="status"><strong>Há '+newOnline.length+' aula(s) publicada(s) no GitHub que ainda não aparecem neste rascunho.</strong>'+
+   '<p>Seu rascunho local foi preservado. Você pode incorporar essas aulas sem substituir suas alterações já salvas.</p>'+
+   '<button type="button" class="button action" data-course-op="sync-online" data-course-id="'+e(course.id)+
+   '">Incorporar aulas publicadas →</button></div>':"";
  const courseAttr=' data-course-id="'+e(course.id)+'"';
  const status=available?"Disponível na área do aluno deste dispositivo":local?"Rascunho salvo neste navegador":"Curso público — ainda sem revisão local";
  const form='<form data-authoring-form="course-info"'+courseAttr+' class="card authoring-fields">'+
@@ -274,6 +285,7 @@ async function courseStructure(cid){
  pageHead("Professor / Gestão",e(course.title),
  "O curso reúne diretamente as aulas, na ordem em que serão estudadas. Organize e prepare o conteúdo de cada aula no Estúdio Visual.")+
  (warning?'<div class="notice" role="alert">'+e(warning)+'</div>':'')+
+ onlineAlert+
  '<div id="course-authoring-status" tabindex="-1" role="status" aria-live="polite" class="tiny">Nenhuma alteração desta tela foi salva automaticamente.</div>'+
  '<div class="authoring-layout"><div class="authoring-primary">'+form+
  sectionHead("Aulas do curso",badge(entries.length+" aula(s)"))+
