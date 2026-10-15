@@ -6,7 +6,7 @@ import {makeCourseAvailableOnDevice} from "../features/authoring/local-publicati
 import {createLesson} from "../features/authoring/lesson-editor.js";
 import {useLessonTemplate} from "../features/authoring/lesson-templates.js";
 import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "../features/authoring/studio-controller.js?build=stabilizacao-sprint14-20261014";
-import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest,mergePublishedLessons} from "../features/authoring/course-editor.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest,mergePublishedLessons} from "../features/authoring/course-editor.js?build=fix-importacao-20261015-v3";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
 import {checkQuiz,exploreLab} from "../features/learning/activities.js";
