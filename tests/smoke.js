@@ -4,11 +4,11 @@ import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-reposito
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 import {getCourseEntries} from "../src/features/learning/course-entries.js";
-import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry} from "../src/features/authoring/course-editor.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,mergePublishedLessons} from "../src/features/authoring/course-editor.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse,validateLocalSnapshot} from "../src/repositories/local-catalog-repository.js";
-import {learnerContentRepository} from "../src/repositories/learner-content-repository.js";
+import {learnerContentRepository,preferOnlineUpdate} from "../src/repositories/learner-content-repository.js";
 import {loadCourseMenu,currentCourseChoice,coursePicker,courseOutline,loadCourseOutline,selectedModuleId,selectedCourseId} from "../src/features/navigation/course-menu.js";
 import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
@@ -95,6 +95,27 @@ async function run(){
    if(lesson.blocks.some(b=>b.type==="multiple_choice"&&!b.data.options.some(o=>o.id===b.data.correctOptionId)))
      throw new Error("Existe questão sem resposta correta.");
  });
+ await check("Nova versão pública não fica escondida por cópia antiga",async()=>{
+   const {course}=await contentRepository.getPublishedCourse("curso-introducao-psicanalise");
+   const old=structuredClone(course);
+   old.revision=1;old.modules[0].lessons=[];
+   if(!preferOnlineUpdate(old,course))throw Error("Nova aula publicada não foi detectada.");
+   if(preferOnlineUpdate(course,old))throw Error("A publicação antiga deveria ser ignorada.");
+ });
+ await check("Professor incorpora aula publicada sem perder o rascunho",async()=>{
+   const {course}=await contentRepository.getPublishedCourse("curso-introducao-psicanalise");
+   const old=structuredClone(course);
+   old.status="draft";
+   old.modules[0].lessons=[];
+   old.modules[1].title="Título pessoal preservado";
+   const original=JSON.stringify(old);
+   const updated=mergePublishedLessons(old,course);
+   if(updated.added!==1||updated.course.modules[0].lessons[0].id!=="aula-o-que-e-psicanalise"||
+     updated.course.modules[1].title!=="Título pessoal preservado"||
+     JSON.stringify(old)!==original)throw Error("Sincronização alterou o rascunho ou perdeu a aula.");
+   if(mergePublishedLessons(updated.course,course).added!==0)
+     throw Error("A sincronização repetida criou cópias duplicadas.");
+ });
  await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
    const list=await learnerContentRepository.listPublishedCourses();
    const ids=["curso-introducao-psicanalise","curso-formacao-freudiana"];
@@ -103,8 +124,10 @@ async function run(){
    const manifests=await Promise.all(ids.map(id=>learnerContentRepository.getPublishedCourse(id)));
    if(manifests[0].course.modules.length!==8||manifests[1].course.modules.length!==10)
      throw new Error("Módulos dos cursos iniciais não correspondem ao esperado.");
-   if(manifests.some(x=>x.course.modules.some(m=>m.lessons.length)))
-     throw new Error("Há aulas marcadas como prontas antes de terem sido criadas.");
+   const first=manifests[0].course.modules.flatMap(m=>m.lessons);
+   const second=manifests[1].course.modules.flatMap(m=>m.lessons);
+   if(first.length!==1||first[0].id!=="aula-o-que-e-psicanalise"||second.length!==0)
+     throw new Error("A primeira aula deve estar publicada, e as dez aulas freudianas previstas.");
    if(list.some(c=>c.id==="curso-fundamentos"&&!c.local))
      throw new Error("O curso técnico aparece indevidamente no catálogo principal.");
  });
