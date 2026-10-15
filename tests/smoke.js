@@ -14,7 +14,7 @@ import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} 
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
 import {checkQuiz,exploreLab} from "../src/features/learning/activities.js";
-import {confirmQuizStep,advanceQuiz,restartQuiz,restoreQuizAnswers} from "../src/features/learning/quiz-flow.js";
+import {confirmQuizStep,advanceQuiz,retryQuizStep,restartQuiz,restoreQuizAnswers} from "../src/features/learning/quiz-flow.js";
 import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} from "../src/repositories/learning-repository.js";
 import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
@@ -124,6 +124,23 @@ async function run(){
      carousel.querySelector('input:checked')||
      carousel.querySelector("[data-quiz-next]").hidden===false)
      throw new Error("O botão Refazer não reiniciou o quiz.");
+ });
+ await check("Quiz permite nova tentativa depois de resposta incorreta",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const root=document.createElement("div");root.innerHTML=renderLessonBlocks(lesson);
+   const slide=root.querySelector(".quiz-carousel-slide[data-block-id]");
+   const form=slide.querySelector('form[data-activity="quiz"]');
+   const wrong=[...form.querySelectorAll('input[type="radio"]')].find(input=>input.value!==form.dataset.correct);
+   if(!wrong)throw new Error("Questão sem alternativa incorreta.");
+   wrong.checked=true;
+   const result=checkQuiz(form);
+   if(result.correct||!confirmQuizStep(form,result)||slide.querySelector("[data-quiz-retry]").hidden)
+     throw new Error("Feedback incorreto não liberou nova tentativa.");
+   const id=retryQuizStep(slide.querySelector("[data-quiz-retry]"));
+   if(id!==slide.dataset.blockId||slide.dataset.answered||
+      form.querySelector('input[type="radio"]:checked')||
+      form.querySelector('button[type="submit"]').hidden)
+     throw new Error("Nova tentativa não liberou a questão.");
  });
  await check("Respostas anteriores podem ser retomadas no quiz unificado",async()=>{
    const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
