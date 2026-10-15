@@ -4,6 +4,14 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 
 > **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
 
+## Leitura integrada e temas claro/escuro
+
+A Sala de Aula não usa mais um grande contêiner bege. O conteúdo é exibido diretamente sobre o fundo do tema escolhido; destaques internos, tabelas, quizzes e conceitos têm cores próprias em ambos os temas. O título principal e a apresentação da aula aparecem apenas uma vez no topo da leitura.
+
+O botão com ícone de **sol/lua** aparece no cabeçalho dos ambientes Aluno, Professor e Administrador e na tela de escolha de perfil. Alternar o tema **não recarrega a rota, não altera o conteúdo e não apaga notas/rascunhos**. A preferência é registrada localmente em `localStorage`, na chave `atelier-theme-v1`, com tema escuro por padrão. Se o navegador bloquear o armazenamento, a alteração visual continua funcionando na aba atual.
+
+CSS complementar: `src/styles/theme.css`. Comportamento: `src/features/theme/theme.js`. Os testes de regressão de tema e de remoção do fundo bege estão em `tests/smoke.html`.
+
 ## Primeira aula publicada — O que é psicanálise?
 
 A primeira aula do curso **Introdução à Psicanálise** já está disponível em [`#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise`](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise).
