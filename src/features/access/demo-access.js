@@ -13,7 +13,7 @@ let profilePromise=null,volatileRole=null;
 export function getDemoRole(){
  try{
    const saved=localStorage.getItem(STORAGE_KEY);
-   return ALLOWED.includes(saved)?saved:null;
+   return ALLOWED.includes(saved)?saved:(ALLOWED.includes(volatileRole)?volatileRole:null);
  }catch{return ALLOWED.includes(volatileRole)?volatileRole:null}
 }
 export function setDemoRole(role){
@@ -81,7 +81,7 @@ export function renderAccessScreen(profiles,{activeRole=null,requestedPath="/"}=
     '<span class="access-eyebrow">'+e(p.label)+'</span>'+
     '<strong class="access-card-title">'+e(p.title)+'</strong>'+
     '<span class="access-card-description">'+e(p.description)+'</span>'+
-    '<span class="access-card-features">'+features+'</span>'+
+    '<ul class="access-card-features">'+features+'</ul>'+
     '<span class="access-card-footer">Entrar como '+e(p.title)+' <span aria-hidden="true">↗</span></span>'+
    '</button>';
  }).join("");
@@ -90,7 +90,7 @@ export function renderAccessScreen(profiles,{activeRole=null,requestedPath="/"}=
    '<span class="access-header-tag">LABORATÓRIO DE PSICANÁLISE · DEMONSTRAÇÃO</span></header>'+
    '<section class="access-hero" aria-labelledby="access-title">'+
      '<span class="access-kicker">BEM-VINDO AO ATELIER</span>'+
-     '<div class="access-headline-row"><div><h1 id="access-title">Um lugar para <em>pensar, criar e aprender.</em></h1>'+
+     '<div class="access-headline-row"><div><h1 id="access-title" tabindex="-1">Um lugar para <em>pensar, criar e aprender.</em></h1>'+
       intro+'</div><div class="access-ornament" aria-hidden="true">ψ</div></div>'+
    '</section>'+
    '<div class="access-grid" role="group" aria-label="Escolha seu ambiente">'+cards+'</div>'+
