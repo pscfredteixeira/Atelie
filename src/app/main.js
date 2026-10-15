@@ -15,8 +15,10 @@ import {downloadLocalBackup,importLocalBackup} from "../features/administration/
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aula-online-v2-20261015";
 import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js";
+import {applyTheme,toggleTheme,themeToggleHTML} from "../features/theme/theme.js";
 import {escapeHTML as e} from "../ui/components.js";
 
+applyTheme(document.documentElement.dataset.theme||"dark",{persist:false});
 const app = document.getElementById("app");
 const toastHost = document.getElementById("toast-host");
 const navGroups = [
@@ -183,6 +185,7 @@ async function render(moveFocus) {
     (chosen==="#/admin"?"":coursePicker(chosen==="#/professor"?"teacher":"student",path,
       chosen==="#/professor"?menus.teacher:menus.student,"header",
       chosen==="#/professor"?selectedIds.teacher:selectedIds.student))+
+    themeToggleHTML()+
     '<span class="access-active-role" aria-label="Perfil demonstrativo atual">'+e(labelForRole(role))+'</span>'+
     '<a href="#/entrar" class="access-switch-link">Trocar perfil</a>'+
     '<button class="access-logout" data-access-logout type="button">Sair</button></div></header>';
@@ -583,6 +586,8 @@ document.addEventListener("submit",ev=>{
   onCourseForm(form).finally(()=>{if(form.isConnected)delete form.dataset.busy;});
 });
 document.addEventListener("click",ev=>{
+  const themeButton=ev.target.closest("[data-theme-toggle]");
+  if(themeButton){toggleTheme();return;}
   const enter=ev.target.closest("[data-demo-enter]");
   if(enter){
     try{
