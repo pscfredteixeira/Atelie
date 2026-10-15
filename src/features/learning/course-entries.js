@@ -23,3 +23,22 @@ export function getCourseEntries(course,{includeDrafts=false}={}){
  }
  return entries.map((entry,i)=>({...entry,number:i+1,total:entries.length}));
 }
+
+
+/* Sprint 15: cálculo separado do programa completo e da parte estudável. */
+export function isValidCourseSectionId(value){
+ return typeof value==="string" && /^[A-Za-z0-9_-]+$/.test(value);
+}
+export function summarizeLearningProgress(course,completedLessonIds=[]){
+ const entries=getCourseEntries(course);
+ const available=entries.filter(item=>!item.planned);
+ const completedSet=new Set(completedLessonIds);
+ const done=available.filter(item=>completedSet.has(item.id)).length;
+ return {
+  total:entries.length,
+  available:available.length,
+  planned:entries.length-available.length,
+  completed:done,
+  percent:available.length?Math.round(100*done/available.length):0
+ };
+}

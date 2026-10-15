@@ -2,7 +2,16 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
+> **Estado atual:** Sprint 15 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** a execução em navegadores reais, acessibilidade e testes com convidados ainda precisam ser conferidos.
+
+## Sprint 15 — correções de estabilidade
+
+- Identificadores de aulas previstas corrigidos no painel do professor.
+- Progresso distingue a quantidade de aulas no programa da quantidade disponível para estudar; nunca trate 1/1 disponível como 100% do curso inteiro.
+- Leitura mostra posição no programa completo, mesmo que apenas a primeira aula tenha conteúdo.
+- Backup validado antes de escrever, com checkpoint de dados locais e reversão de alterações já aplicadas quando uma etapa de restauração falha; não há garantia de transação atômica entre bancos IndexedDB separados.
+- Testes de regressão para progresso, navegação, feedback verde e restauração estão em \`tests/smoke.html\`. A execução clique a clique em um dispositivo real continua pendente.
+- Nenhum manifesto de curso ou arquivo de aula publicado foi alterado.
 
 ## Leitura integrada e temas claro/escuro
 

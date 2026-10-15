@@ -107,6 +107,7 @@ export function validateLearningBackup(data){
  if(data?.format!=="atelier-learning-backup"||data.schemaVersion!==1||!Array.isArray(data.states))
    throw Error("Arquivo não é um backup de aprendizagem compatível.");
  if(data.states.length>25000)throw Error("Backup de aprendizagem excessivamente grande.");
+ const seenKeys=new Set();
  const records=data.states.map(x=>{
   if(!x||!DEMO_PROFILES.some(p=>p.id===x.profileId)||
     typeof x.courseId!=="string"||!(/^[A-Za-z0-9_-]+$/).test(x.courseId)||
@@ -120,7 +121,10 @@ export function validateLearningBackup(data){
       answer.selection.length>1000||typeof answer.correct!=="boolean")
       throw Error("Resposta inválida no backup de aprendizagem.");
   }
-  return {...x,key:key(x.profileId,x.courseId,x.lessonId),completed:x.completed===true};
+  const recordKey=key(x.profileId,x.courseId,x.lessonId);
+  if(seenKeys.has(recordKey))throw Error("Backup contém histórico duplicado para a mesma aula e perfil.");
+  seenKeys.add(recordKey);
+  return {...x,key:recordKey,completed:x.completed===true};
  });
  return records;
 }

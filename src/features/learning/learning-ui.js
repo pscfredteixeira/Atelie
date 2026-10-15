@@ -1,6 +1,7 @@
 /* Sprint 10 — Interface dos perfis fictícios, notas e progresso local. */
 import {getDemoProfile,DEMO_PROFILES,getLearningState,listLearningStates} from "../../repositories/learning-repository.js";
 import {escapeHTML as e,action,emptyState,pageHead,note} from "../../ui/components.js";
+import {summarizeLearningProgress} from "./course-entries.js?build=sprint15-20261015";
 const url=(cid,lid)=>"#/cursos/"+encodeURIComponent(cid)+"/aulas/"+encodeURIComponent(lid);
 export function profilePicker(){
  const selected=getDemoProfile();
@@ -55,19 +56,26 @@ export async function progressPage(repository){
  for(const c of published){
   try{
    const manifest=(await repository.getPublishedCourse(c.id)).course;
-   const lessons=manifest.modules.flatMap(m=>m.lessons);
-   const done=lessons.filter(l=>completed.some(r=>r.courseId===c.id&&r.lessonId===l.id)).length;
-   cards.push('<article class="card"><div class="card-label">Curso em andamento</div><h3>'+e(manifest.title)+'</h3>'+
-     '<p>'+done+' de '+lessons.length+' aulas marcadas como concluídas.</p>'+
-     '<div class="progress-label"><span>Conclusão local</span><span>'+Math.round(100*done/Math.max(1,lessons.length))+'%</span></div>'+
-     '<div class="progress" role="img" aria-label="'+done+' de '+lessons.length+' aulas marcadas como concluídas"><span style="width:'+Math.round(100*done/Math.max(1,lessons.length))+'%"></span></div>'+
+   const courseCompleted=completed.filter(r=>r.courseId===c.id).map(r=>r.lessonId);
+   const stats=summarizeLearningProgress(manifest,courseCompleted);
+   const availableLabel=stats.available===1?"aula disponível":"aulas disponíveis";
+   const completedLabel=stats.available?
+      stats.completed+" de "+stats.available+" "+availableLabel+" concluída"+(stats.available===1?"":"s"):
+      "Nenhuma aula disponível para concluir";
+   const plannedLabel=stats.planned?
+      stats.planned+" aula"+(stats.planned===1?"":"s")+" em preparação.":"Programa integral disponível.";
+   cards.push('<article class="card"><div class="card-label">Progresso nas aulas disponíveis</div><h3>'+e(manifest.title)+'</h3>'+
+     '<p>'+e(completedLabel)+'. '+e(plannedLabel)+'</p>'+
+     '<div class="progress-label"><span>Conclusão do conteúdo disponível</span><span>'+stats.percent+'%</span></div>'+
+     '<div class="progress" role="img" aria-label="'+e(completedLabel)+'; '+stats.percent+'% do conteúdo disponível"><span style="width:'+stats.percent+'%"></span></div>'+
+     '<p class="tiny">'+stats.total+' aula'+(stats.total===1?"":"s")+' no programa completo.</p>'+
      action("Ver curso →","#/cursos/"+e(c.id),"small")+'</article>');
   }catch{/* skip unavailable course */}
  }
  return pageHead("Aprender / Meu progresso","O caminho que você <em>percorreu.</em>",
-  "As conclusões são marcadas manualmente e ficam somente neste navegador.")+
+  "A porcentagem se refere somente às aulas já disponíveis. As aulas em preparação não entram no cálculo.")+
   '<div class="learning-profile-row">'+profilePicker()+'</div>'+
-  '<div class="metrics"><div class="metric"><strong>'+completed.length+'</strong><span>Aulas marcadas como concluídas</span></div>'+
+  '<div class="metrics"><div class="metric"><strong>'+completed.length+'</strong><span>Marcações de conclusão neste perfil</span></div>'+
   '<div class="metric"><strong>'+records.length+'</strong><span>Aulas com atividade registrada</span></div>'+
   '<div class="metric"><strong>'+records.reduce((n,r)=>n+Object.keys(r.answers||{}).length,0)+'</strong><span>Respostas registradas</span></div></div>'+
   (cards.length?'<div class="grid two" style="margin-top:22px">'+cards.join("")+'</div>':

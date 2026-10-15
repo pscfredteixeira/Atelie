@@ -7,7 +7,7 @@ import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/lea
 import {getCourseEntries} from "../features/learning/course-entries.js";
 import {getCourseDraft,listCourseDrafts} from "../repositories/course-draft-repository.js";
 import {LESSON_TEMPLATES} from "../features/authoring/lesson-templates.js";
-import {lessonNotebook,notebookPage,progressPage} from "../features/learning/learning-ui.js";
+import {lessonNotebook,notebookPage,progressPage} from "../features/learning/learning-ui.js?build=sprint15-20261015";
 import {renderBeta} from "../features/administration/beta-ui.js";
 import {escapeHTML as e,badge,action,demoAction,note,pageHead,sectionHead,card,emptyState,notFound} from "../ui/components.js";
 const routeCourse=id=>"#/cursos/"+encodeURIComponent(id);
@@ -136,13 +136,17 @@ async function lessonPage(cid,lid){
  }
  const {course,lesson,contentURL,local}=record;
  const context=getLessonContext(course,lid);
+ const program=getCourseEntries(course);
+ const programIndex=program.findIndex(item=>item.id===lid);
+ const displayIndex=programIndex===-1?context.index:programIndex;
+ const displayTotal=program.length||context.sequence.length;
  const breadcrumb='<nav class="journey-breadcrumb" aria-label="Localização no curso">'+
  action("Todos os cursos","#/cursos","quiet small")+'<span aria-hidden="true">/</span>'+
  action(e(course.title),routeCourse(cid),"quiet small")+
- '<span aria-hidden="true">/</span><span aria-current="page">Aula '+(context.index+1)+'</span></nav>';
+ '<span aria-hidden="true">/</span><span aria-current="page">Aula '+(displayIndex+1)+'</span></nav>';
  return breadcrumb+
  (local?'<p class="notice" role="note">Aula disponibilizada somente neste dispositivo.</p>':'')+
- '<div class="lesson-header-info"><div><span class="overline">Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
+ '<div class="lesson-header-info"><div><span class="overline">Aula '+(displayIndex+1)+' de '+displayTotal+' no programa</span>'+
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
  (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
  reader(lesson,{sourceURL:contentURL,showHeading:false})+

@@ -1,4 +1,5 @@
-import {routeView} from "./views.js?build=estabilizar-quiz-20261015-v2";
+import {routeView} from "./views.js?build=sprint15-20261015";
+import {isValidCourseSectionId} from "../features/learning/course-entries.js?build=sprint15-20261015";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse} from "../repositories/local-catalog-repository.js";
@@ -193,7 +194,7 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path,menus,outline,focusedArea,selectedIds)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Beta JSON · Sprints 0–13</span><span>'+
+    '<footer class="footer"><span>Atelier. · Beta JSON · Sprint 15</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
@@ -227,7 +228,7 @@ async function render(moveFocus) {
   if(path.startsWith("/professor/cursos/")){
     const params=new URLSearchParams((window.location.hash.split("?")[1]||""));
     const selected=params.get("aula");
-    if(selected&&/^[\\w-]+$/.test(selected)){
+    if(isValidCourseSectionId(selected)){
       const target=document.getElementById("course-lesson-"+selected);
       if(target){target.scrollIntoView({block:"start",behavior:"instant"});target.focus({preventScroll:true});}
     }

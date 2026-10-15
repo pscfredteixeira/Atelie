@@ -3,7 +3,7 @@ import {validateLesson,validateLessonLink} from "../src/repositories/validators.
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js?build=quiz-integrado-20261015-v1";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
-import {getCourseEntries} from "../src/features/learning/course-entries.js";
+import {getCourseEntries,isValidCourseSectionId,summarizeLearningProgress} from "../src/features/learning/course-entries.js?build=sprint15-20261015";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,mergePublishedLessons} from "../src/features/authoring/course-editor.js?build=fix-importacao-20261015-v3";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
@@ -16,7 +16,7 @@ import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/less
 import {checkQuiz,exploreLab} from "../src/features/learning/activities.js";
 import {confirmQuizStep,advanceQuiz,retryQuizStep,restartQuiz,restoreQuizAnswers} from "../src/features/learning/quiz-flow.js";
 import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} from "../src/repositories/learning-repository.js";
-import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
+import {buildLocalBackup,validateLocalBackup,importLocalBackup} from "../src/features/administration/backup.js?build=sprint15-20261015";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
 import {loadDemoProfiles,getDemoRole,canVisit,homeForRole,roleForPath,renderAccessScreen} from "../src/features/access/demo-access.js";
 import {applyTheme,getTheme,themeToggleHTML} from "../src/features/theme/theme.js";
@@ -53,8 +53,10 @@ async function run(){
    const freud=await loadCourseOutline("teacher",freudId);
    if(getCourseEntries(intro).length!==8||getCourseEntries(freud).length!==10)
      throw new Error("As aulas previstas não correspondem aos cursos.");
-   if(!getCourseEntries(intro).every(item=>item.planned))
-     throw new Error("Uma aula em preparação foi identificada como publicada.");
+   if(getCourseEntries(intro).filter(item=>item.planned).length!==7 ||
+      getCourseEntries(intro).filter(item=>!item.planned).length!==1 ||
+      !getCourseEntries(freud).every(item=>item.planned))
+     throw new Error("Status de publicação das aulas incorreto.");
    const current=intro.modules[1].id;
    const introHtml=courseOutline("student",intro,"#/cursos/"+introId+"/aulas/"+current);
    const freudHtml=courseOutline("teacher",freud,"#/professor/cursos/"+freudId);
@@ -613,6 +615,77 @@ async function run(){
      if(!record||record.lesson.id!==copy.id)throw new Error("Rascunho não foi recuperado.");
    }finally{
      if(saved)await deleteDraft(copy.courseId,copy.id);
+   }
+ });
+
+ await check("Sprint 15: ID de aula prevista aceita identificadores válidos",()=>{
+   for(const id of ["modulo-introducao-a-psicanalise-02","aula_o_que_e"]){
+     if(!isValidCourseSectionId(id))throw new Error("Aula válida foi rejeitada: "+id);
+   }
+   for(const id of ["", "../segredo", "com espaço", "aula?teste"]){
+     if(isValidCourseSectionId(id))throw new Error("ID inválido foi aceito: "+id);
+   }
+ });
+ await check("Sprint 15: progresso distingue aulas previstas e disponíveis",async()=>{
+   const {course}=await contentRepository.getPublishedCourse("curso-introducao-psicanalise");
+   const first=getCourseEntries(course).find(item=>!item.planned);
+   const before=summarizeLearningProgress(course,[]);
+   const after=summarizeLearningProgress(course,[first.id,"nao-existe"]);
+   if(before.total!==8||before.available!==1||before.planned!==7||before.percent!==0||
+      after.completed!==1||after.percent!==100)
+     throw Error("Porcentagem ou total de aulas não preserva o programa de oito aulas.");
+   const {course:freud}=await contentRepository.getPublishedCourse("curso-formacao-freudiana");
+   const empty=summarizeLearningProgress(freud,[]);
+   if(empty.total!==10||empty.planned!==10||empty.available!==0||empty.percent!==0)
+     throw Error("Curso em preparação gerou conclusão incorreta.");
+ });
+ await check("Sprint 15: resposta correta fica verde nos dois temas",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const root=document.createElement("div");root.className="reader";
+   root.style.cssText="position:absolute;left:-99999px";
+   root.innerHTML=renderLessonBlocks(lesson);
+   document.body.append(root);
+   const initial=getTheme();
+   try{
+    const form=root.querySelector('form[data-activity="quiz"]');
+    const answer=form.querySelector('input[value="'+form.dataset.correct+'"]');
+    answer.checked=true;
+    if(!checkQuiz(form).correct)throw Error("Gabarito não foi reconhecido.");
+    const feedback=form.querySelector(".learning-feedback");
+    for(const [theme,color] of [["dark","rgb(25, 58, 45)"],["light","rgb(229, 246, 235)"]]){
+     applyTheme(theme,{persist:false});
+     if(feedback.dataset.result!=="correct"||
+        getComputedStyle(feedback).backgroundColor!==color)
+      throw Error("Feedback não ficou verde no tema "+theme);
+    }
+   }finally{applyTheme(initial,{persist:false});root.remove()}
+ });
+ await check("Sprint 15: backup rejeita históricos duplicados antes de escrever",async()=>{
+   const sample=await buildLocalBackup();
+   const state={profileId:"teste-a",courseId:"curso-qa15",lessonId:"aula-qa15",
+     note:"Fictício",completed:false,answers:{}};
+   sample.learning.states.push({...state},{...state});
+   let rejected=false;
+   try{validateLocalBackup(sample)}catch(e){rejected=String(e.message).includes("duplicado")}
+   if(!rejected)throw Error("Backup com entradas duplicadas foi aceito.");
+ });
+ await check("Sprint 15: restauração controlada de dados fictícios",async()=>{
+   const draft=createCourse("Backup temporário QA15");
+   const module=applyCourseChange(draft,"add-module",{title:"Aula de teste"});
+   const created=createLesson(module,module.modules[0].id,"Aula fictícia");
+   const original=await buildLocalBackup();
+   const sample={...original,courseDrafts:[created.course],
+     lessonDrafts:[created.lesson],localAvailable:[],
+     learning:{...original.learning,states:[]}};
+   try{
+     const counts=await importLocalBackup(sample);
+     if(counts.courses!==1||counts.lessons!==1||
+       !(await getCourseDraft(created.course.id))||
+       !(await getDraft(created.course.id,created.lesson.id)))
+       throw Error("Restauração fictícia não persistiu os registros.");
+   }finally{
+     await deleteDraft(created.course.id,created.lesson.id);
+     await deleteCourseDraft(created.course.id);
    }
  });
  result.forEach(r=>{

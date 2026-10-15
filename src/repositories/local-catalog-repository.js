@@ -66,6 +66,12 @@ export async function getLocalAvailableCourse(id){
 export async function removeLocalAvailableCourse(id){
  await transact("readwrite",store=>store.delete(id));
 }
+/* Recuperação exata de um snapshot validado, incluindo availableAt. */
+export async function restoreLocalSnapshot(snapshot){
+ validateLocalSnapshot(snapshot);
+ await transact("readwrite",store=>store.put(clone(snapshot)));
+}
+
 export async function publishLocalSnapshot(course,lessons){
  const normalized=clone(course);
  normalized.status="published";

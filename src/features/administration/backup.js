@@ -1,10 +1,10 @@
 /* Sprint 11 — Backup portátil JSON, sem transmissão a servidor.
    Pacote completo de *rascunhos locais + aprendizagem*.
    Não copia mídia binária nem JSON público de cursos não editados. */
-import {listCourseDrafts,saveCourseDraft} from "../../repositories/course-draft-repository.js";
-import {listDrafts,saveDraft,downloadJSON} from "../../repositories/draft-repository.js";
-import {listLocalAvailableSnapshots,validateLocalSnapshot,publishLocalSnapshot} from "../../repositories/local-catalog-repository.js";
-import {exportLearningStates,importLearningStates,validateLearningBackup} from "../../repositories/learning-repository.js";
+import {listCourseDrafts,saveCourseDraft,deleteCourseDraft} from "../../repositories/course-draft-repository.js";
+import {listDrafts,saveDraft,deleteDraft,downloadJSON} from "../../repositories/draft-repository.js";
+import {listLocalAvailableSnapshots,validateLocalSnapshot,publishLocalSnapshot,restoreLocalSnapshot,removeLocalAvailableCourse} from "../../repositories/local-catalog-repository.js";
+import {exportLearningStates,importLearningStates,validateLearningBackup,deleteLearningState} from "../../repositories/learning-repository.js";
 import {validateCourse,validateLesson,validateLessonLink} from "../../repositories/validators.js";
 export async function buildLocalBackup(){
  const [courses,lessons,learning,available]=await Promise.all([listCourseDrafts(),listDrafts(),exportLearningStates(),listLocalAvailableSnapshots()]);
@@ -53,14 +53,71 @@ export function validateLocalBackup(data){
  validateLearningBackup(data.learning);
  return {courses:data.courseDrafts.length,lessons:data.lessonDrafts.length,available:locallyAvailable.length,states:data.learning.states.length};
 }
+
+/* As quatro bases IndexedDB não aceitam uma transação global.
+   Guardamos um checkpoint completo ANTES de gravar e, se houver falha,
+   revertemos cada chave alterada. Um erro de armazenamento persistente
+   ainda pode impedir rollback; nesse caso, comunicamos explicitamente. */
+async function undoPartialImport(checkpoint,changed){
+ const oldCourses=new Map(checkpoint.courseDrafts.map(x=>[x.id,x]));
+ const oldLessons=new Map(checkpoint.lessonDrafts.map(x=>[x.courseId+"::"+x.id,x]));
+ const oldAvailable=new Map(checkpoint.localAvailable.map(x=>[x.id,x]));
+ const oldLearning=new Map(checkpoint.learning.states.map(x=>[x.profileId+"::"+x.courseId+"::"+x.lessonId,x]));
+ const failures=[];
+ async function safe(action){
+  try{await action()}catch(err){failures.push(err?.message||String(err))}
+ }
+ for(const id of [...changed.available].reverse()){
+  const previous=oldAvailable.get(id);
+  await safe(()=>previous?restoreLocalSnapshot(previous):removeLocalAvailableCourse(id));
+ }
+ for(const x of [...changed.learning].reverse()){
+  const original=oldLearning.get(x.profileId+"::"+x.courseId+"::"+x.lessonId);
+  if(original){
+   await safe(()=>importLearningStates({...checkpoint.learning,states:[original]}));
+  }else{
+   await safe(()=>deleteLearningState(x.courseId,x.lessonId,x.profileId));
+  }
+ }
+ for(const x of [...changed.lessons].reverse()){
+  const original=oldLessons.get(x.courseId+"::"+x.id);
+  await safe(()=>original?saveDraft(x.courseId,original):deleteDraft(x.courseId,x.id));
+ }
+ for(const id of [...changed.courses].reverse()){
+  const original=oldCourses.get(id);
+  await safe(()=>original?saveCourseDraft(original):deleteCourseDraft(id));
+ }
+ return failures;
+}
 export async function importLocalBackup(data){
  const counts=validateLocalBackup(data);
- // Importação é create/update; não apaga outros rascunhos.
- // O IndexedDB dos três repositórios é separado: se um passo falhar,
- // comunicar que parte do backup pode ter sido restaurada.
- for(const c of data.courseDrafts)await saveCourseDraft(c);
- for(const l of data.lessonDrafts)await saveDraft(l.courseId,l);
- await importLearningStates(data.learning);
- for(const snapshot of data.localAvailable||[])await publishLocalSnapshot(snapshot.course,Object.values(snapshot.lessons));
- return counts;
+ // Falha ao ler o estado anterior? Então não escreva nada.
+ const checkpoint=await buildLocalBackup();
+ const changed={courses:[],lessons:[],learning:[],available:[]};
+ try{
+  for(const c of data.courseDrafts){
+   await saveCourseDraft(c);
+   changed.courses.push(c.id);
+  }
+  for(const l of data.lessonDrafts){
+   await saveDraft(l.courseId,l);
+   changed.lessons.push({courseId:l.courseId,id:l.id});
+  }
+  await importLearningStates(data.learning);
+  changed.learning.push(...data.learning.states);
+  for(const snapshot of data.localAvailable||[]){
+   await publishLocalSnapshot(snapshot.course,Object.values(snapshot.lessons));
+   changed.available.push(snapshot.id);
+  }
+  return counts;
+ }catch(err){
+  const failures=await undoPartialImport(checkpoint,changed);
+  if(failures.length){
+   throw Error("A restauração falhou e a recuperação local ficou incompleta ("+
+     failures.length+" falha(s)). Evite novas edições e utilize seu arquivo de backup original. Causa: "+
+     (err?.message||String(err)));
+  }
+  throw Error("A restauração falhou e as alterações aplicadas foram revertidas. Seus dados anteriores permanecem disponíveis. Causa: "+
+    (err?.message||String(err)));
+ }
 }
