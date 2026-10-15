@@ -8,7 +8,7 @@ import {makeCourseAvailableOnDevice} from "./local-publication.js?bootfix=202610
 import {startCourseDraft} from "./course-editor.js";
 import {startLessonDraft,updateLesson,syncLessonManifest,BLOCK_TYPES} from "./lesson-editor.js";
 import {renderBlockFields,readBlockFields,formatReferences,parseReferences} from "./block-fields.js";
-import {renderLessonBlocks,getLessonOutline,getBlockLabel} from "../../lesson-engine/engine.js?build=quiz-integrado-20261015-v1";
+import {renderLessonBlocks,getLessonOutline,getBlockLabel} from "../../lesson-engine/engine.js?build=estabilizar-quiz-20261015-v2";
 import {validateLessonLink} from "../../repositories/validators.js";
 import {escapeHTML as e} from "../../ui/components.js";
 
