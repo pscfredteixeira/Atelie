@@ -96,7 +96,7 @@ function reader(lesson,{isPreview=false,hasDraft=false,sourceURL,showHeading=tru
   (html||'<p>Esta aula ainda não possui blocos.</p>')+'</div></article>';
  const links=outline.map((x,i)=>'<li><button type="button" class="lesson-jump" data-scroll-block="'+e(x.id)+'">'+
    '<span class="lesson-jump-no">'+String(i+1).padStart(2,"0")+'</span><span>'+e(x.label)+'</span></button></li>').join("");
- const sidebar='<aside class="sidepanel lesson-sidebar"><span class="overline">Índice da aula</span><h3>'+e(lesson.blocks.length)+' momentos de estudo</h3>'+
+ const sidebar='<aside class="sidepanel lesson-sidebar"><span class="overline">Índice da aula</span><h3>'+e(outline.length)+' momentos de estudo</h3>'+
   (outline.length?'<nav aria-label="Etapas desta aula"><ol class="lesson-outline">'+links+'</ol></nav>':
    '<p class="hint">Aula sem blocos de estudo.</p>')+
   '<div class="rule"></div><p class="hint">O índice leva à seção correspondente. Ele não representa conclusão ou avaliação.</p>'+
