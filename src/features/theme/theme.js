@@ -23,7 +23,7 @@ export function toggleTheme(){
 export function themeToggleHTML(){
  const light=getTheme()==="light";
  return '<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="'+light+'" '+
-  'aria-label="'+(light?"Ativar tema escuro":"Ativar tema claro")+'" title="'+
+  'aria-label="Modo claro" title="'+
    (light?"Mudar para tema escuro":"Mudar para tema claro")+'">'+
   '<svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
    '<circle cx="12" cy="12" r="4"></circle>'+
@@ -36,7 +36,7 @@ export function syncThemeControls(){
  const light=getTheme()==="light";
  document.querySelectorAll("[data-theme-toggle]").forEach(button=>{
   button.setAttribute("aria-pressed",String(light));
-  button.setAttribute("aria-label",light?"Ativar tema escuro":"Ativar tema claro");
+  button.setAttribute("aria-label","Modo claro");
   button.setAttribute("title",light?"Mudar para tema escuro":"Mudar para tema claro");
   const text=button.querySelector(".theme-toggle-text");
   if(text)text.textContent="Tema "+(light?"escuro":"claro");
