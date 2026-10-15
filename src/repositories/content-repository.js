@@ -13,16 +13,31 @@ async function readJSON(url,validate) {
   const key=url.href;
   if(cache.has(key))return cache.get(key);
   const load=(async()=>{
-    let response;
-    try{response=await fetch(url.href,{cache:"no-cache"});}
-    catch{throw new ContentError("Não foi possível conectar para carregar o conteúdo.","network_error",url.pathname);}
-    if(response.status===404)throw new ContentError("Arquivo JSON não encontrado.","not_found",url.pathname);
-    if(!response.ok)throw new ContentError("Falha ao carregar conteúdo (HTTP "+response.status+").","network_error",url.pathname);
-    let body;
-    try{body=await response.json();}
-    catch{throw new ContentError("O arquivo carregado não é um JSON válido.","invalid",url.pathname);}
-    validate(body);
-    return body;
+    // Rede lenta/offline não pode deixar o aluno preso no indicador de carregamento.
+    // AbortController é nativo do navegador; a requisição cancelada sai do cache.
+    const controller=new AbortController();
+    let expired=false;
+    const timeout=setTimeout(()=>{expired=true;controller.abort();},10000);
+    try{
+      let response;
+      try{response=await fetch(url.href,{cache:"no-cache",signal:controller.signal});}
+      catch{
+        throw new ContentError(expired?
+          "O carregamento demorou demais. Confira a conexão e tente novamente.":
+          "Não foi possível conectar para carregar o conteúdo.","network_error",url.pathname);
+      }
+      if(response.status===404)throw new ContentError("Arquivo JSON não encontrado.","not_found",url.pathname);
+      if(!response.ok)throw new ContentError("Falha ao carregar conteúdo (HTTP "+response.status+").","network_error",url.pathname);
+      let body;
+      try{body=await response.json();}
+      catch{
+        throw new ContentError(expired?
+          "Tempo esgotado ao carregar a aula. Tente novamente.":
+          "O arquivo carregado não é um JSON válido.",expired?"network_error":"invalid",url.pathname);
+      }
+      validate(body);
+      return body;
+    }finally{clearTimeout(timeout);}
   })();
   cache.set(key,load);
   try{return await load;}
