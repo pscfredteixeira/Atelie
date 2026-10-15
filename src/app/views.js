@@ -236,11 +236,14 @@ async function courseStructure(cid){
  let local=null,publicCourse=null,available=null,warning="";
  try{local=await getCourseDraft(cid);}
  catch(err){warning="Armazenamento local não disponível: "+err.message;}
- try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
- catch(err){if(err.code!=="not_found"&&!local)throw err;
-  if(err.code!=="not_found"&&local)warning=warning||"Catálogo remoto temporariamente indisponível."; }
+ // Primeiro consulta o que está neste navegador. Um curso em rascunho
+ // não deve ficar bloqueado por uma busca remota no GitHub Pages.
  try{available=await getLocalAvailableCourse(cid);}
  catch(err){warning=warning||"Catálogo deste dispositivo indisponível: "+err.message;}
+ if(!local&&!available){
+   try{publicCourse=(await contentRepository.getPublishedCourse(cid)).course;}
+   catch(err){if(err.code!=="not_found")throw err;}
+ }
  if(!local&&!publicCourse&&!available)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
  const course=local?.course||publicCourse||available.course;
  const modulesSorted=[...course.modules].sort((a,b)=>a.position-b.position);
