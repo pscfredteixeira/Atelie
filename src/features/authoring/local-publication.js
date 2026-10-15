@@ -11,6 +11,8 @@ export async function makeCourseAvailableOnDevice(courseId){
  if(!record?.course)throw Error("Salve primeiro as informações do curso neste dispositivo.");
  const course=record.course;
  if(course.status!=="draft")throw Error("Abra o curso em modo de rascunho antes de disponibilizar.");
+ const total=course.modules.reduce((count,module)=>count+module.lessons.length,0);
+ if(total<1)throw Error("Crie e salve ao menos uma aula antes de disponibilizar o curso na área do aluno.");
  const lessons=[];
  for(const module of course.modules){
   for(const entry of module.lessons){
