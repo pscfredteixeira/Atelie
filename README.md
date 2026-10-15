@@ -4,6 +4,20 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 
 > **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
 
+## Entrada por três perfis demonstrativos (JSON)
+
+Ao abrir a plataforma em um navegador sem perfil selecionado, aparece uma **tela de entrada** com três cartões:
+
+- **Aluno**: cursos, aulas, caderno e progresso local.
+- **Professor**: painel, criação de cursos, editor visual e rascunhos locais.
+- **Administrador**: diagnóstico, backups, biblioteca de blocos e roteiro beta.
+
+A configuração dos cartões está no arquivo [`content/perfis-acesso.json`](content/perfis-acesso.json). O papel escolhido é guardado na chave `atelier-demo-access-v1` de `localStorage`, até usar **Sair** ou selecionar outro perfil. **Trocar perfil** abre novamente os três cartões. As opções de menu e as rotas exibidas se adaptam ao perfil escolhido; o conteúdo e os rascunhos locais não são apagados ao sair.
+
+**Isso não é autenticação:** não há usuário/senha, permissões de servidor ou segurança de rota. Como o site e o JSON estão no GitHub Pages, o código e o conteúdo publicado podem ser vistos independentemente da interface. **Não inserir senhas, hashes, credenciais ou conteúdo confidencial no JSON.** O acesso por contas reais exigirá backend, autenticação e autorização no servidor.
+
+Acesse a seleção pelo link: `https://pscfredteixeira.github.io/Atelie/#/entrar`.
+
 ## Abrir o Atelier
 
 Site principal (GitHub Pages em `main/(root)`):
