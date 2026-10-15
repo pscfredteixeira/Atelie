@@ -652,3 +652,40 @@ textarea.field{min-height:110px;resize:vertical}
  .topbar .breadcrumb{font-size:9px}
  .access-switch-link{display:none}
 }
+
+
+/* Curso > aulas: uma sequência direta, sem contêineres de módulos na interface */
+.course-lesson-list{display:grid;gap:11px;margin:18px 0 26px}
+.course-lesson-link{display:grid;grid-template-columns:53px minmax(0,1fr) auto;align-items:center;gap:14px;
+ min-height:86px;padding:19px 20px;text-decoration:none;border-radius:13px;border:1px solid var(--stroke);
+ color:var(--ink);background:var(--surface);transition:background .18s,border-color .18s}
+.course-lesson-link:hover,.course-lesson-link.is-current{background:var(--surface-hover);border-color:var(--accent)}
+.course-lesson-index{font:400 27px/1 var(--font-editorial);color:var(--accent)}
+.course-lesson-body{min-width:0;display:grid;gap:6px}
+.course-lesson-body strong{font-size:16px;font-weight:600;line-height:1.4}
+.course-lesson-body small{font-size:12px;line-height:1.55;color:var(--ink-muted)}
+.course-lesson-action{font-size:11px;font-weight:750;color:var(--action);white-space:nowrap}
+.course-lesson-action span{margin-left:4px}
+.course-lesson-editor{margin:14px 0;padding:21px}
+.course-lesson-editor .topline{margin-bottom:13px}
+.course-lesson-editor-title{font:400 24px/1.25 var(--font-editorial);margin:6px 0 10px}
+.course-lesson-editor>.authoring-controls{border-top:1px solid var(--stroke-soft);margin-top:17px;padding-top:16px}
+.course-lesson-editor:focus{outline:none}
+.course-lesson-editor:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.course-tree-link-content{min-width:0;display:grid;gap:3px}
+.course-tree-status{font-size:10px;color:var(--ink-dim);line-height:1.35}
+.planned-lesson-state{margin:22px 0;padding:clamp(24px,4vw,42px)}
+.planned-lesson-state h2{font:400 clamp(25px,4vw,37px)/1.2 var(--font-editorial);margin:11px 0}
+.planned-lesson-state p{color:var(--ink-subtle);max-width:60ch;line-height:1.75;margin-bottom:23px}
+.course-program-return{margin-top:34px}
+@media(max-width:740px){
+ .course-lesson-link{grid-template-columns:38px minmax(0,1fr);gap:10px;padding:17px 15px}
+ .course-lesson-index{font-size:24px}
+ .course-lesson-body strong{font-size:14px}
+ .course-lesson-action{grid-column:2;margin-top:1px}
+ .course-lesson-editor{padding:17px}
+ .course-lesson-editor>.authoring-controls{display:flex;flex-wrap:wrap}
+ .course-lesson-editor>.authoring-controls .button{flex:1;min-width:125px}
+ .course-tree-link-content{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){.course-lesson-link{transition:none}}
