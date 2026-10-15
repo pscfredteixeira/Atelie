@@ -130,11 +130,15 @@ async function loadState(root){
  const localCourse=await getCourseDraft(cid).catch(err=>{throw Error("Não foi possível consultar o curso local: "+err.message)});
  let published=null,publishedCourse=null,available=null;
  try{available=await getLocalAvailableCourse(cid);}catch(err){console.warn("Catálogo local indisponível:",err);}
- try{published=await contentRepository.getPublishedLesson(cid,lid);}
- catch(err){if(err.code!=="not_found"&&!saved&&!available)throw err;}
- if(!localCourse){
+ // Um rascunho já salvo não pode depender da rede para abrir no Estúdio.
+ // A consulta remota só é necessária se não houver cópia local da aula.
+ if(!saved&&!available){
+   try{published=await contentRepository.getPublishedLesson(cid,lid);}
+   catch(err){if(err.code!=="not_found")throw err;}
+ }
+ if(!localCourse&&!published&&!available){
    try{publishedCourse=(await contentRepository.getPublishedCourse(cid)).course;}
-   catch(err){if(err.code!=="not_found"&&!available)throw err;}
+   catch(err){if(err.code!=="not_found")throw err;}
  }
  const course=localCourse?.course||published?.course||publishedCourse||available?.course;
  if(!course)throw Error("Curso não encontrado no navegador nem no catálogo.");
@@ -213,9 +217,15 @@ export async function mountVisualStudio(root){
        }else{
          state.busy=true;
          try{
-           const base=state.course.status==="draft"?state.course:startCourseDraft(state.course);
+           // Carregue o manifesto mais recente, para não sobrescrever módulos
+           // editados em outra aba enquanto a aula estava aberta.
+           const latest=await getCourseDraft(state.cid);
+           const current=latest?.course||state.course;
+           const base=current.status==="draft"?current:startCourseDraft(current);
            const updated=syncLessonManifest(base,state.lesson);
            validateLessonLink(state.lesson,updated,state.lesson.moduleId);
+           // Persistências em bases distintas não são atômicas. Se o curso falhar,
+           // a aula preservada permanece recuperável, e a interface avisará o erro.
            await saveDraft(state.cid,state.lesson);
            await saveCourseDraft(updated);
            state.course=updated;state.dirty=false;
