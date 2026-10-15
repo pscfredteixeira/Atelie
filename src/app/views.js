@@ -4,6 +4,7 @@ import {getLocalAvailableCourse,listLocalAvailableCourses} from "../repositories
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../features/learning/journey.js";
+import {getCourseEntries} from "../features/learning/course-entries.js";
 import {getCourseDraft,listCourseDrafts} from "../repositories/course-draft-repository.js";
 import {LESSON_TEMPLATES} from "../features/authoring/lesson-templates.js";
 import {lessonNotebook,notebookPage,progressPage} from "../features/learning/learning-ui.js";
@@ -26,36 +27,28 @@ function courseHeader(course){
  return pageHead("Curso / Formação",e(course.title),course.subtitle||course.description||"Percurso de estudo e pesquisa.");
 }
 function modules(course,teacher=false,currentLessonId=null){
- const sequence=getCourseJourney(course),order=new Map(sequence.map(x=>[x.id,x]));
- const ms=[...course.modules].sort((a,b)=>a.position-b.position);
- if(!ms.length)return emptyState("Curso em preparação","Este curso ainda não possui módulos.");
- return ms.map((m,i)=>{
-  const rows=[...m.lessons].sort((a,b)=>a.position-b.position).filter(l=>l.status===undefined||l.status==="published");
-  const active=!!currentLessonId&&rows.some(l=>l.id===currentLessonId);
-  return '<details class="module" id="course-module-'+e(m.id)+'" tabindex="-1" '+(active||i===0?'open':'')+'><summary>'+
-  '<div><div class="overline">Módulo '+String(i+1).padStart(2,"0")+' · '+rows.length+' aula(s)</div>'+
-  '<h3>'+e(m.title)+'</h3>'+(m.description?'<p class="module-description">'+e(m.description)+'</p>':'')+
-  '</div><span class="chevron" aria-hidden="true">+</span></summary>'+
-  (rows.length?rows.map(l=>{
-     const indexed=order.get(l.id),isCurrent=currentLessonId===l.id;
-     const title=indexed?.title||l.title||l.id,minutes=indexed?.estimatedMinutes;
-     return '<div class="lesson-item journey-row'+(isCurrent?' current':'')+'"><div class="journey-entry">'+
-      '<span class="journey-number" aria-hidden="true">'+String(indexed?.number||1).padStart(2,"0")+'</span>'+
-      '<div><strong>'+e(title)+'</strong>'+
-      (l.summary?'<p>'+e(l.summary)+'</p>':'')+
-      '<span class="journey-meta">'+(minutes!==null&&minutes!==undefined?e(minutes)+' min · ':'')+
-      (isCurrent?'Aula atual':'Leitura disponível')+'</span></div></div>'+
-      action(teacher?"Editar →":isCurrent?"Retomar leitura →":"Abrir aula →",
-       teacher?routeEdit(course.id,l.id):routeLesson(course.id,l.id),"small")+'</div>';
-   }).join(''):'<div class="lesson-item">Nenhuma aula disponível neste módulo.</div>')+'</details>';
- }).join("");
+ const entries=getCourseEntries(course,{includeDrafts:teacher});
+ if(!entries.length)return emptyState("Curso em preparação","Este curso ainda não possui aulas.");
+ return '<div class="course-lesson-list" aria-label="Sequência de aulas">'+entries.map(item=>{
+   const current=currentLessonId===item.id;
+   const href=teacher?
+     (item.planned?routeManage(course.id)+"?aula="+encodeURIComponent(item.moduleId):routeEdit(course.id,item.id)):
+     routeLesson(course.id,item.id);
+   const label=item.planned?"Em preparação":teacher?"Abrir no Estúdio":"Abrir aula";
+   return '<a class="course-lesson-link'+(current?" is-current":"")+'" href="'+e(href)+'"'+
+     (current?' aria-current="page"':'')+'>'+
+     '<span class="course-lesson-index">'+String(item.number).padStart(2,"0")+'</span>'+
+     '<span class="course-lesson-body"><strong>'+e(item.title)+'</strong>'+
+       (item.summary?'<small>'+e(item.summary)+'</small>':"")+'</span>'+
+     '<span class="course-lesson-action">'+e(label)+' <span aria-hidden="true">→</span></span></a>';
+ }).join("")+'</div>';
 }
 async function studentHome(){
  const list=await learnerContentRepository.listPublishedCourses();
  return pageHead("Atelier · Aprender","Um laboratório de <em>ideias.</em>",
  "Cada percurso une leitura, investigação e reflexão. Estamos construindo uma plataforma para aprender psicanálise com profundidade.")+
  (list.length?'<section class="illustrated"><div><div class="overline">Conheça o primeiro percurso</div><h2>'+e(list[0].title)+'</h2>'+
-   '<p>Conheça os módulos previstos para esta formação. As aulas serão preparadas no Estúdio do professor.</p>'+
+   '<p>Conheça a sequência de aulas do curso. Os conteúdos em preparação serão desenvolvidos no Estúdio do professor.</p>'+
    action("Conhecer o curso →",routeCourse(list[0].id),"action")+
    '</div><div class="illustrated-symbol" aria-hidden="true">ψ</div></section>':
    emptyState("Ainda não há cursos publicados","O catálogo receberá cursos conforme forem revisados e publicados."))+
@@ -73,20 +66,20 @@ async function catalog(){
 async function coursePage(id){
  const {course,local}=await learnerContentRepository.getPublishedCourse(id);
  const sequence=getCourseJourney(course),stats=summarizeCourse(course);
+ const entries=getCourseEntries(course);
  return courseHeader(course)+
  (local?'<p class="notice" role="note"><strong>Curso deste dispositivo.</strong> Este percurso foi disponibilizado somente neste navegador. Outros usuários ainda não o veem pela internet.</p>':'')+
  '<div class="course-eyebrow">Um percurso de aprendizagem · do primeiro conceito ao último</div>'+
- metrics([[stats.moduleCount,stats.moduleCount===1?"Módulo":"Módulos"],
-   [stats.lessonCount,stats.lessonCount===1?"Aula":"Aulas"],
-   [stats.durationMinutes===null?"—":stats.durationMinutes+" min","Tempo estimado"]])+
+ metrics([[entries.length,entries.length===1?"Aula no curso":"Aulas no curso"],
+   [entries.filter(x=>x.planned).length,"Em preparação"],
+   [stats.durationMinutes===null?"—":stats.durationMinutes+" min","Tempo disponível"]])+
  (sequence.length?'<section class="course-start"><div><span class="overline">Seu ponto de partida</span>'+
  '<h2>Comece pela primeira aula</h2><p>'+e(sequence[0].title)+'</p></div>'+
  action("Começar a estudar →",routeLesson(course.id,sequence[0].id),"action")+'</section>':'')+
  (course.objectives?.length?'<section class="card course-goals"><div class="card-label">O que você poderá compreender</div><ul>'+
  course.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></section>':'')+
  sectionHead("Programa de estudos",badge("Sequência sugerida","purple"))+
- (sequence.length?modules(course):
-  '<div class="notice" role="status"><strong>Aulas em preparação.</strong> A estrutura do curso está cadastrada. Você já pode conhecer os módulos; os conteúdos serão produzidos no Estúdio do professor.</div>'+modules(course))+
+ modules(course)+
  note("<strong>Seu percurso:</strong> você pode revisitar qualquer aula e marcá-la como concluída no caderno ao final da leitura. O acompanhamento fica somente neste navegador, no perfil fictício selecionado.")+info();
 }
 function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
@@ -123,7 +116,22 @@ function lessonPager(course,ctx){
  '</nav>';
 }
 async function lessonPage(cid,lid){
- const {course,lesson,contentURL,local}=await learnerContentRepository.getPublishedLesson(cid,lid);
+ let record;
+ try{record=await learnerContentRepository.getPublishedLesson(cid,lid);}
+ catch(error){
+   if(error.code!=="not_found")throw error;
+   const {course}=await learnerContentRepository.getPublishedCourse(cid);
+   const planned=getCourseEntries(course).find(item=>item.planned&&item.id===lid);
+   if(!planned)throw error;
+   return pageHead("Aluno / Aula "+planned.number,e(planned.title),planned.summary)+
+     '<section class="card planned-lesson-state"><span class="overline">Aula '+String(planned.number).padStart(2,"0")+
+     ' de '+planned.total+'</span><h2>Conteúdo em preparação</h2>'+
+     '<p>Esta aula já faz parte do programa, mas o conteúdo didático ainda não foi produzido e disponibilizado.</p>'+
+     action("Ver todas as aulas →",routeCourse(cid),"action")+'</section>'+
+     '<div class="course-program-return">'+sectionHead("Programa do curso")+
+     modules(course,false,lid)+'</div>';
+ }
+ const {course,lesson,contentURL,local}=record;
  const context=getLessonContext(course,lid);
  const breadcrumb='<nav class="journey-breadcrumb" aria-label="Localização no curso">'+
  action("Todos os cursos","#/cursos","quiet small")+'<span aria-hidden="true">/</span>'+
@@ -131,8 +139,7 @@ async function lessonPage(cid,lid){
  '<span aria-hidden="true">/</span><span aria-current="page">Aula '+(context.index+1)+'</span></nav>';
  return breadcrumb+
  (local?'<p class="notice" role="note">Aula disponibilizada somente neste dispositivo.</p>':'')+
- '<div class="lesson-header-info"><div><span class="overline">'+e(context.current?.moduleTitle||"Módulo")+
- ' · Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
+ '<div class="lesson-header-info"><div><span class="overline">Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
  (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
  reader(lesson,{sourceURL:contentURL})+
