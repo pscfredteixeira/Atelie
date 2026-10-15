@@ -4,7 +4,7 @@ import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-reposito
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 import {getCourseEntries} from "../src/features/learning/course-entries.js";
-import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,mergePublishedLessons} from "../src/features/authoring/course-editor.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,mergePublishedLessons} from "../src/features/authoring/course-editor.js?build=fix-importacao-20261015-v3";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../src/repositories/course-draft-repository.js";
 import {makeCourseAvailableOnDevice} from "../src/features/authoring/local-publication.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse,validateLocalSnapshot} from "../src/repositories/local-catalog-repository.js";
