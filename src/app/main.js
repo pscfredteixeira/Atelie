@@ -1,4 +1,4 @@
-import {routeView} from "./views.js?build=stabilizacao-sprint14-20261014";
+import {routeView} from "./views.js?build=aulas-lineares-v1-20261015";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse} from "../repositories/local-catalog-repository.js";
@@ -13,7 +13,7 @@ import {checkQuiz,exploreLab} from "../features/learning/activities.js";
 import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
-import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=stabilizacao-sprint14-20261014";
+import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aulas-lineares-v1-20261015";
 import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js";
 import {escapeHTML as e} from "../ui/components.js";
 
@@ -666,7 +666,7 @@ document.addEventListener("change",async ev=>{
     const newId=currentCourseChoice(next.slice(1),kind);
     if(newId)rememberCourseChoice(kind,newId);
     // No celular, mantenha o menu aberto após escolher um curso para que
-    // o usuário possa entrar imediatamente nos módulos exibidos abaixo.
+    // o usuário possa entrar imediatamente nas aulas exibidas abaixo.
     keepCourseMenuOpen=!!(isMenuOpen&&picker.closest(".sidebar"));
     if(isMenuOpen&&!keepCourseMenuOpen)setMenu(false);
     window.location.hash=next;
