@@ -14,6 +14,7 @@ import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=stabilizacao-sprint14-20261014";
+import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js";
 import {escapeHTML as e} from "../ui/components.js";
 
 const app = document.getElementById("app");
@@ -52,7 +53,7 @@ const unsavedForms=new Set();
 let unsavedNote=false;
 let approvedNavigationHash=null;
 function route() {
-  let path = window.location.hash.slice(1) || "/aluno";
+  let path = window.location.hash.slice(1) || "/";
   path = path.split("?")[0].replace(/\/+$/,"") || "/";
   return path.startsWith("/") ? path : "/not-found";
 }
@@ -69,9 +70,9 @@ function anchor(item, selected) {
 function sidebar(path,menus,outline,focusedArea,selectedIds) {
   const active = selectedNav(path);
   return '<aside class="sidebar'+(isMenuOpen?' is-open':'')+'" id="sidebar" aria-label="Navegação principal">'+
-  '<a href="#/aluno" class="brand">Atelier<span class="brand-dot">.</span></a>'+
+  '<a href="'+e("#"+homeForRole(getDemoRole()))+'" class="brand">Atelier<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
-  navGroups.map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+
+  navGroups.filter(g=>g.name===(getDemoRole()==="aluno"?"Aprender":getDemoRole()==="professor"?"Criar":"Organizar")).map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+
     (g.name==="Aprender"?
       coursePicker("student",path,menus.student,"sidebar",selectedIds.student)+
       (focusedArea==="student"?courseOutline("student",outline,window.location.hash):""):
@@ -79,16 +80,26 @@ function sidebar(path,menus,outline,focusedArea,selectedIds) {
       coursePicker("teacher",path,menus.teacher,"sidebar",selectedIds.teacher)+
       (focusedArea==="teacher"?courseOutline("teacher",outline,window.location.hash):""):"")+
     '</div>').join('')+
-  '</nav><div class="sidebar-foot">Atelier · Beta local em JSON.<br>Sem login real ou sincronização entre aparelhos.<br>'+
+  '</nav><div class="sidebar-foot">Atelier · Acesso demonstrativo.<br>Sem senha real ou sincronização entre aparelhos.<br>'+
+  '<button type="button" class="access-sidebar-exit" data-access-logout>Sair deste perfil ↗</button><br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
 function bottomMenu(path) {
   const active = selectedNav(path);
-  const links=[
+  const role=getDemoRole();
+  const links=role==="aluno"?[
     {href:"#/aluno",name:"Início",icon:"⌂"},
     {href:"#/cursos",name:"Cursos",icon:"◇"},
-    {href:"#/professor",name:"Criar",icon:"✧"},
-    {href:"#/admin",name:"Admin",icon:"▦"}
+    {href:"#/aluno/caderno",name:"Caderno",icon:"✎"},
+    {href:"#/aluno/progresso",name:"Progresso",icon:"◷"}
+  ]:role==="professor"?[
+    {href:"#/professor",name:"Professor",icon:"✎"},
+    {href:"#/entrar",name:"Perfis",icon:"◈"}
+  ]:[
+    {href:"#/admin",name:"Início",icon:"▦"},
+    {href:"#/admin/identidade",name:"Visual",icon:"◈"},
+    {href:"#/admin/blocos",name:"Blocos",icon:"▧"},
+    {href:"#/admin/beta",name:"Beta",icon:"☑"}
   ];
   const bottomActive = active.startsWith("#/professor")?"#/professor":active;
   return '<nav class="mobile-bar" aria-label="Acesso rápido">'+links.map(x=>'<a href="'+e(x.href)+'"'+(x.href===bottomActive?' aria-current="page"':'')+
@@ -96,7 +107,32 @@ function bottomMenu(path) {
 }
 async function render(moveFocus) {
   const call=++activeRender;
-  const path=route();
+  const requested=route();
+  const role=getDemoRole();
+  const path=requested==="/"&&role?homeForRole(role):requested;
+  // Entrada demonstrativa: nunca trate como autenticação de servidor.
+  // O JSON configura cartões e o papel escolhido controla apenas a navegação da interface.
+  if(!role||requested==="/entrar"||!canVisit(role,path)){
+    let view;
+    try{
+      const profiles=await loadDemoProfiles();
+      view=renderAccessScreen(profiles,{activeRole:role,requestedPath:path});
+    }catch(error){
+      console.error("Atelier: perfis de entrada indisponíveis",error);
+      view='<main class="access-load-error" id="main-content"><h1>Não foi possível carregar a entrada.</h1>'+
+       '<p>'+e(error?.message||"Erro na configuração de perfis.")+'</p>'+
+       '<button class="button action" type="button" data-access-retry>Tentar novamente</button></main>';
+    }
+    if(call!==activeRender)return;
+    unmountStudio();
+    unsavedForms.clear();
+    unsavedNote=false;
+    isMenuOpen=false;
+    app.innerHTML=view;
+    document.title="Escolha seu perfil · Atelier";
+    if(moveFocus)document.querySelector("#access-title, .access-load-error h1")?.focus?.({preventScroll:true});
+    return;
+  }
   // A lista do menu é independente da página: problemas no catálogo local
   // não devem impedir que a tela principal seja exibida.
   const fallbackMenus={student:FALLBACK_COURSES,teacher:FALLBACK_COURSES};
@@ -147,11 +183,9 @@ async function render(moveFocus) {
     (chosen==="#/admin"?"":coursePicker(chosen==="#/professor"?"teacher":"student",path,
       chosen==="#/professor"?menus.teacher:menus.student,"header",
       chosen==="#/professor"?selectedIds.teacher:selectedIds.student))+
-    '<label for="switch-role" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Trocar ambiente</label>'+
-    '<select class="view-toggle" id="switch-role" aria-label="Trocar ambiente demonstrativo">'+
-    '<option value="#/aluno"'+(chosen==="#/aluno"?' selected':'')+'>Aluno</option>'+
-    '<option value="#/professor"'+(chosen==="#/professor"?' selected':'')+'>Professor</option>'+
-    '<option value="#/admin"'+(chosen==="#/admin"?' selected':'')+'>Admin</option></select></div></header>';
+    '<span class="access-active-role" aria-label="Perfil demonstrativo atual">'+e(labelForRole(role))+'</span>'+
+    '<a href="#/entrar" class="access-switch-link">Trocar perfil</a>'+
+    '<button class="access-logout" data-access-logout type="button">Sair</button></div></header>';
   app.innerHTML = '<div class="shell">'+sidebar(path,menus,outline,focusedArea,selectedIds)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
@@ -502,6 +536,28 @@ document.addEventListener("submit",ev=>{
   onCourseForm(form).finally(()=>{if(form.isConnected)delete form.dataset.busy;});
 });
 document.addEventListener("click",ev=>{
+  const enter=ev.target.closest("[data-demo-enter]");
+  if(enter){
+    try{
+      const chosenRole=setDemoRole(enter.dataset.demoEnter);
+      const requested=route();
+      const destination=roleForPath(requested)===chosenRole?requested:homeForRole(chosenRole);
+      if(window.location.hash==="#"+destination)render(true);
+      else window.location.hash="#"+destination;
+    }catch(error){showToast(error.message);}
+    return;
+  }
+  if(ev.target.closest("[data-access-retry]")){window.location.reload();return;}
+  if(ev.target.closest("[data-access-logout]")){
+    if(unsavedForms.size&&!confirmUnsaved())return;
+    if(isStudioDirty()&&!confirmStudioLeave())return;
+    if(unsavedNote&&!window.confirm("A anotação atual não foi salva. Deseja sair mesmo assim?"))return;
+    clearDemoRole();
+    approvedNavigationHash="#/entrar";
+    if(window.location.hash==="#/entrar")render(true);
+    else window.location.hash="#/entrar";
+    return;
+  }
   const lab=ev.target.closest('[data-branch]');
   if(lab){exploreLab(lab);return;}
   const mark=ev.target.closest('[data-learning-action="complete"]');
@@ -604,13 +660,6 @@ document.addEventListener("change",async ev=>{
     finally{ev.target.value="";}
     return;
   }
-  if(ev.target.id==="switch-role"){
-    if(unsavedForms.size&&!confirmUnsaved()){ev.target.value=route().startsWith("/professor")?"#/professor":route().startsWith("/admin")?"#/admin":"#/aluno";return;}
-    if(isStudioDirty()&&!confirmStudioLeave()){ev.target.value="#/professor";return;}
-    if(unsavedNote&&!window.confirm("Anotação não salva. Deseja mudar de ambiente?"))return;
-    if(unsavedForms.size||isStudioDirty()||unsavedNote)approvedNavigationHash=ev.target.value;
-    window.location.hash=ev.target.value;return;
-  }
   if(ev.target.id!=="draft-import-file")return;
   const file=ev.target.files?.[0];
   if(!file)return;
@@ -685,4 +734,4 @@ render(false).catch(error=>{
   region.append(h,p,retry);
   app.append(region);
 });
-showToast("Atelier beta: aulas, atividades e histórico locais. Sem login real.");
+showToast("Atelier · escolha um perfil para começar. Acesso demonstrativo sem senha.");
