@@ -15,6 +15,13 @@ function safeMediaURL(src,context){
 function refText(r){
   return (r.author?r.author+". ":"")+r.title+(r.year?" ("+r.year+")":"")+".";
 }
+function referenceURL(r){
+  if(typeof r?.url!=="string")return null;
+  try{
+    const url=new URL(r.url);
+    return url.protocol==="https:"&&!url.username&&!url.password?url.href:null;
+  }catch{return null}
+}
 function note(text){return '<p class="lesson-inline-note">'+txt(text)+'</p>'}
 function register(type,label,render,outline){
   registerBlockRenderer({type,label,version:1,render,outline});
@@ -44,7 +51,12 @@ register("multiple_choice","Questão de revisão",(d)=>{
 register("references","Referências",(d,ctx)=>{
   const refs=d.referenceIds.map(id=>ctx.lesson.references.find(r=>r.id===id)).filter(Boolean);
   return '<h3>Para aprofundar</h3><ul class="lesson-references">'+
-    refs.map(r=>'<li>'+txt(refText(r))+(r.note?'<br><small>'+txt(r.note)+'</small>':"")+'</li>').join("")+'</ul>';
+    refs.map(r=>{
+      const url=referenceURL(r);
+      return '<li>'+txt(refText(r))+
+        (r.note?'<br><small>'+txt(r.note)+'</small>':"")+
+        (url?'<br><a href="'+txt(url)+'" target="_blank" rel="noopener noreferrer">Consultar fonte ↗</a>':"")+'</li>';
+    }).join("")+'</ul>';
 },()=> "Bibliografia");
 register("heading","Seção",(d)=>{
   return '<h3>'+txt(d.text||"Seção")+'</h3>';
