@@ -6,7 +6,7 @@ import {makeCourseAvailableOnDevice} from "../features/authoring/local-publicati
 import {createLesson} from "../features/authoring/lesson-editor.js";
 import {useLessonTemplate} from "../features/authoring/lesson-templates.js";
 import {mountVisualStudio,unmountStudio,isStudioDirty,confirmStudioLeave} from "../features/authoring/studio-controller.js?build=stabilizacao-sprint14-20261014";
-import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest} from "../features/authoring/course-editor.js";
+import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,exportManifest,mergePublishedLessons} from "../features/authoring/course-editor.js";
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
 import {checkQuiz,exploreLab} from "../features/learning/activities.js";
@@ -457,6 +457,16 @@ async function onCourseOperation(button){
       return;
     }
     const draft=local?.course || await editableCourse(cid);
+    if(op==="sync-online"){
+      if(!local)throw Error("Abra um rascunho local antes de incorporar a publicação.");
+      const {course:online}=await getPublishedCourse(cid);
+      const merged=mergePublishedLessons(draft,online);
+      if(!merged.added){authoringStatus("Seu rascunho já contém todas as aulas publicadas.");return;}
+      await saveCourseDraft(merged.course);
+      await render(false);
+      authoringStatus(merged.added+" aula(s) incorporada(s) do GitHub sem substituir seu conteúdo local.");
+      return;
+    }
     if(op==="prepare-lesson"){
       const module=draft.modules.find(m=>m.id===button.dataset.moduleId);
       if(!module)throw Error("Aula prevista não encontrada.");
