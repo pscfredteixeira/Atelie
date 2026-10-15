@@ -303,6 +303,36 @@ async function run(){
    const result=checkQuiz(quiz);
    if(!result.correct||quiz.querySelector(".learning-feedback").hidden)throw new Error("Feedback do quiz não apareceu.");
  });
+ await check("Salvamentos simultâneos preservam anotação, resposta e conclusão",async()=>{
+   const id="qa14-"+Date.now().toString(36),lid="aula-qa14",profile=DEMO_PROFILES[0].id;
+   try{
+     await Promise.all([
+       updateLearningState(id,lid,{note:"Anotação fictícia de QA"},profile),
+       updateLearningState(id,lid,{completed:true},profile),
+       updateLearningState(id,lid,{answer:{blockId:"bloco-qa",selection:"opcao-1",correct:true}},profile)
+     ]);
+     const stored=await getLearningState(id,lid,profile);
+     if(stored.note!=="Anotação fictícia de QA"||!stored.completed||
+        stored.answers?.["bloco-qa"]?.selection!=="opcao-1")
+       throw new Error("Uma gravação substituiu outra no mesmo perfil e aula.");
+   }finally{await deleteLearningState(id,lid,profile);}
+ });
+ await check("Curso sem aulas não é disponibilizado no catálogo local",async()=>{
+   const course=createCourse("Curso vazio temporário");
+   let stored=false;
+   try{
+     await saveCourseDraft(course);stored=true;
+     let rejected=false;
+     try{await makeCourseAvailableOnDevice(course.id);}
+     catch(err){
+       rejected=err.message.includes("ao menos uma aula");
+       if(!rejected)throw err;
+     }
+     if(!rejected)throw new Error("Um curso vazio foi disponibilizado indevidamente.");
+     if(await getLocalAvailableCourse(course.id))
+       throw new Error("Curso vazio foi gravado no catálogo local.");
+   }finally{if(stored)await deleteCourseDraft(course.id);}
+ });
  await check("Progresso, nota e conclusão são isolados por perfil",async()=>{
    const id="smoke-"+Date.now();
    let written=false;
