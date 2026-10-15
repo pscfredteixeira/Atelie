@@ -9,7 +9,7 @@
       "slug": "introducao-a-psicanalise",
       "manifest": "./courses/introducao-a-psicanalise/curso.json",
       "status": "published",
-      "summary": "Primeiros conceitos e perguntas da psicanálise. Estrutura dos módulos cadastrada; aulas em preparação."
+      "summary": "Oito aulas sobre os conceitos e as perguntas iniciais da psicanálise. Conteúdos em preparação."
     },
     {
       "id": "curso-formacao-freudiana",
@@ -18,7 +18,7 @@
       "slug": "formacao-freudiana",
       "manifest": "./courses/formacao-freudiana/curso.json",
       "status": "published",
-      "summary": "Formação sistemática na obra de Freud. Estrutura dos módulos cadastrada; aulas em preparação."
+      "summary": "Dez aulas para um percurso de leitura da obra de Freud. Conteúdos em preparação."
     },
     {
       "id": "curso-fundamentos",
