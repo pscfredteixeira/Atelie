@@ -19,7 +19,8 @@ export function renderQuizCarousel(blocks){
      (index?'aria-hidden="true" inert':'aria-hidden="false"')+'>'+
        '<div class="quiz-carousel-question-no">QUESTÃO '+String(index+1).padStart(2,"0")+'</div>'+
        inside+
-       '<div class="quiz-carousel-actions"><button class="button action quiz-carousel-next" type="button" data-quiz-next hidden>'+
+       '<div class="quiz-carousel-actions"><button class="button quiz-carousel-retry" type="button" data-quiz-retry hidden>Tentar novamente</button>'+
+        '<button class="button action quiz-carousel-next" type="button" data-quiz-next hidden>'+
          (index===total-1?"Ver meu resultado →":"Continuar →")+'</button></div>'+
      '</div>';
  }).join("");
