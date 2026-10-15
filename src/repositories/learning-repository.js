@@ -1,6 +1,8 @@
 /* Sprint 10 — Progresso e notas locais, isolados por perfil SIMULADO.
    Não autentica ninguém, não coleta nome/email e não sincroniza. */
 const DB="atelier-learning-v1",STORE="states";
+const pendingWrites=new Map(); // Sequencial por perfil/curso/aula: evita perda de nota ou resposta.
+
 const PROFILE_KEY="atelier-demo-profile-v1";
 export const DEMO_PROFILES=Object.freeze([
  {id:"teste-a",label:"Aluno de teste A"},{id:"teste-b",label:"Aluno de teste B"}
@@ -54,6 +56,9 @@ export async function getLearningState(courseId,lessonId,profileId=getDemoProfil
  return (await operate("readonly",s=>s.get(key(profileId,courseId,lessonId))))||defaults(profileId,courseId,lessonId);
 }
 export async function updateLearningState(courseId,lessonId,change,profileId=getDemoProfile()){
+ const writeKey=key(profileId,courseId,lessonId);
+ const previous=pendingWrites.get(writeKey)||Promise.resolve();
+ const running=previous.catch(()=>{}).then(async()=>{
  if(!/^[\w-]+$/.test(courseId)||!/^[\w-]+$/.test(lessonId)||!/^[\w-]+$/.test(profileId))throw Error("Identificador inválido.");
  const prev=await getLearningState(courseId,lessonId,profileId);
  const next={...prev};
@@ -74,6 +79,11 @@ export async function updateLearningState(courseId,lessonId,change,profileId=get
  next.updatedAt=new Date().toISOString();
  await operate("readwrite",s=>s.put(next));
  return next;
+
+ });
+ pendingWrites.set(writeKey,running);
+ try{return await running;}
+ finally{if(pendingWrites.get(writeKey)===running)pendingWrites.delete(writeKey);}
 }
 export async function deleteLearningState(courseId,lessonId,profileId=getDemoProfile()){
  await operate("readwrite",s=>s.delete(key(profileId,courseId,lessonId)));
