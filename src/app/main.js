@@ -1,4 +1,4 @@
-import {routeView} from "./views.js?build=aula-online-v2-20261015";
+import {routeView} from "./views.js?build=tema-claro-escuro-20261015-v1";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";
 import {getLocalAvailableCourse,removeLocalAvailableCourse} from "../repositories/local-catalog-repository.js";
@@ -14,7 +14,7 @@ import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aula-online-v2-20261015";
-import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js";
+import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js?build=tema-claro-escuro-20261015-v1";
 import {applyTheme,toggleTheme,themeToggleHTML} from "../features/theme/theme.js";
 import {escapeHTML as e} from "../ui/components.js";
 
