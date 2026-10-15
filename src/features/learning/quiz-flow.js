@@ -49,8 +49,32 @@ export function confirmQuizStep(form,result){
  if(check)check.hidden=true;
  const next=slide.querySelector("[data-quiz-next]");
  if(next)next.hidden=false;
+ const retry=slide.querySelector("[data-quiz-retry]");
+ if(retry)retry.hidden=result.correct===true;
  updateStatus(slide.closest("[data-quiz-carousel]"));
  return true;
+}
+export function retryQuizStep(button){
+ const slide=button.closest(".quiz-carousel-slide");
+ const carousel=slide?.closest("[data-quiz-carousel]");
+ if(!carousel||slide.dataset.answered!=="true"||slide.dataset.correct!=="false")return null;
+ const blockId=slide.dataset.blockId;
+ delete slide.dataset.answered;
+ delete slide.dataset.correct;
+ const form=slide.querySelector('form[data-activity="quiz"]');
+ if(!form)return null;
+ form.querySelectorAll('input[type="radio"]').forEach(input=>{input.checked=false;input.disabled=false});
+ form.querySelectorAll(".learning-option").forEach(label=>label.classList.remove("is-chosen"));
+ const feedback=form.querySelector(".learning-feedback");
+ if(feedback){feedback.hidden=true;feedback.textContent="";delete feedback.dataset.result;}
+ const check=form.querySelector('button[type="submit"]');
+ if(check)check.hidden=false;
+ const next=slide.querySelector("[data-quiz-next]");
+ if(next)next.hidden=true;
+ button.hidden=true;
+ updateStatus(carousel);
+ form.querySelector('input[type="radio"]')?.focus({preventScroll:true});
+ return blockId||null;
 }
 export function advanceQuiz(button){
  const slide=button.closest(".quiz-carousel-slide");
@@ -80,6 +104,8 @@ export function restartQuiz(button){
   if(check)check.hidden=false;
   const next=slide.querySelector("[data-quiz-next]");
   if(next)next.hidden=true;
+  const retry=slide.querySelector("[data-quiz-retry]");
+  if(retry)retry.hidden=true;
  }
  switchSlide(carousel,0);
  return ids;
