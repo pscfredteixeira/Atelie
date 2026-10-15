@@ -529,3 +529,17 @@ textarea.field{min-height:110px;resize:vertical}
   .course-tree-overview{min-height:44px;display:flex;align-items:center}
   [id^="course-module-"]{scroll-margin-top:160px}
 }
+
+/* Sprint 14 · estabilidade da navegação em telas pequenas e áreas seguras */
+@media(max-width:740px){
+  .sidebar.is-open{
+    max-height:100dvh;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:calc(26px + env(safe-area-inset-bottom));
+  }
+  .course-picker-header,.course-tree,.studio-toolbar-actions{min-width:0}
+  .course-tree-lessons li a{min-height:44px;display:flex;align-items:center}
+  .studio-item-tools button{min-width:40px;min-height:40px}
+}
