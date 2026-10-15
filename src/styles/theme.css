@@ -242,3 +242,34 @@ html[data-theme="light"] .button.action:hover{filter:brightness(.92)}
  .reader-prompt{padding:18px}
 }
 @media(prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
+
+/* Demais áreas do Estúdio e navegação — contraste consistente no tema claro. */
+html[data-theme="light"] .nav-link:hover{background:var(--accent-soft)}
+html[data-theme="light"] .nav-link[aria-current="page"]{background:#e7dcef;border-color:#bfa9d0;color:var(--ink)}
+html[data-theme="light"] .illustrated{
+ background:linear-gradient(120deg,#efe5f5,#f7e9f0 67%,#fff1e8 130%);
+ border-color:var(--stroke)
+}
+html[data-theme="light"] .illustrated p{color:var(--ink-subtle)}
+html[data-theme="light"] .illustrated-symbol{color:#85699840}
+html[data-theme="light"] .metric{background:var(--surface)}
+html[data-theme="light"] .progress{background:#e5ddea}
+html[data-theme="light"] .authoring-creation{
+ background:linear-gradient(120deg,#f1eaf7,#fff);border-color:var(--stroke)
+}
+html[data-theme="light"] .studio-toolbar{
+ background:linear-gradient(115deg,#f1e8f6,#fff 80%);border-color:var(--stroke)
+}
+html[data-theme="light"] .studio-item.is-selected{background:var(--accent-soft);border-color:var(--accent)}
+html[data-theme="light"] .studio-item-tools button{
+ background:var(--surface);color:var(--ink);border-color:var(--stroke)
+}
+html[data-theme="light"] .studio-item-tools button:hover:not(:disabled){background:var(--accent-soft)}
+html[data-theme="light"] .studio-library{background:var(--surface-raised);border-color:var(--stroke)}
+html[data-theme="light"] .journey-course-drawer{background:var(--surface)}
+html[data-theme="light"] .toast{background:var(--surface);border-color:var(--stroke);color:var(--ink)}
+html[data-theme="light"] .mobile-bar{background:rgba(248,247,249,.98);border-color:var(--stroke)}
+html[data-theme="light"] .mobile-bar a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
+html[data-theme="light"] .dialog-backdrop{background:#211a2a88}
+html[data-theme="light"] .footnote{background:#fbf2eb}
+html[data-theme="light"] .sidebar-shade{background:#2a213677}
