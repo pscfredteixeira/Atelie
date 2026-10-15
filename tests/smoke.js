@@ -16,6 +16,7 @@ import {checkQuiz,exploreLab} from "../src/features/learning/activities.js";
 import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} from "../src/repositories/learning-repository.js";
 import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
+import {loadDemoProfiles,getDemoRole,canVisit,homeForRole,roleForPath,renderAccessScreen} from "../src/features/access/demo-access.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -360,6 +361,32 @@ async function run(){
    });
    try{validateLocalBackup(backup);}catch{return;}
    throw new Error("O backup com resposta inválida foi aceito.");
+ });
+ await check("Entrada JSON: exatamente três perfis sem senhas públicas",async()=>{
+   const profiles=await loadDemoProfiles();
+   const ids=profiles.map(x=>x.id).sort().join(",");
+   if(ids!=="administrador,aluno,professor")throw new Error("Os três perfis estão incompletos.");
+   const forbidden=profiles.some(x=>"password" in x||"senha" in x||"token" in x);
+   if(forbidden)throw new Error("Nunca inclua credenciais no JSON público.");
+ });
+ await check("Navegação demonstrativa respeita a área escolhida",async()=>{
+   if(homeForRole("aluno")!=="/aluno"||homeForRole("professor")!=="/professor"||
+      homeForRole("administrador")!=="/admin")throw new Error("Inícios de perfil incorretos.");
+   const checks=[
+    ["aluno","/cursos/curso-fundamentos",true],["aluno","/professor",false],
+    ["professor","/professor/cursos/curso-fundamentos",true],["professor","/admin",false],
+    ["administrador","/admin/beta",true],["administrador","/cursos",false]
+   ];
+   for(const [role,path,allowed] of checks){
+     if(canVisit(role,path)!==allowed)throw new Error("Rota demonstrativa incoerente: "+role+" "+path);
+     if(allowed&&roleForPath(path)!==role)throw new Error("Mapeamento de rota incorreto.");
+   }
+ });
+ await check("Tela de entrada apresenta três cartões acessíveis",async()=>{
+   const page=renderAccessScreen(await loadDemoProfiles(),{requestedPath:"/professor"});
+   const matches=page.match(/data-demo-enter="/g)||[];
+   if(matches.length!==3||!page.includes('id="access-title"')||!page.includes("Acesso")&&!page.includes("ACESSO"))
+     throw new Error("Tela de escolha de perfis incompleta.");
  });
  await check("Roteiro do beta prepara feedback voluntário",async()=>{
    if(BETA_TASKS.length<8)throw new Error("Checklist do beta incompleto.");
