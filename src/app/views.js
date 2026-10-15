@@ -1,5 +1,5 @@
 import {contentRepository} from "../repositories/content-repository.js";
-import {learnerContentRepository} from "../repositories/learner-content-repository.js";
+import {learnerContentRepository} from "../repositories/learner-content-repository.js?build=aula-online-v2-20261015";
 import {getLocalAvailableCourse,listLocalAvailableCourses} from "../repositories/local-catalog-repository.js";
 import {getDraft,listDrafts} from "../repositories/draft-repository.js";
 import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../lesson-engine/engine.js";
