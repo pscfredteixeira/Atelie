@@ -77,6 +77,24 @@ async function run(){
    if(!html.includes('href="#/cursos/curso-fundamentos/aulas/'+rows[1].id+'" aria-current="page"'))
      throw new Error("A navegação direta para aula existente falhou.");
  });
+ await check("Aula O que é psicanálise: conteúdo publicado e atividades",async()=>{
+   const id="curso-introducao-psicanalise";
+   const info=await contentRepository.getPublishedLesson(id,"aula-o-que-e-psicanalise");
+   const {course,lesson,module}=info;
+   validateLessonLink(lesson,course,module.id);
+   if(lesson.title!=="O que é psicanálise?"||lesson.blocks.length<20)
+     throw new Error("Aula introdutória está incompleta.");
+   if(getCourseEntries(course).length!==8||getCourseJourney(course).length!==1)
+     throw new Error("O curso não apresenta a aula e suas sete aulas previstas.");
+   const html=renderLessonBlocks(lesson,{sourceURL:info.contentURL});
+   if((html.match(/data-activity="quiz"/g)||[]).length!==2||
+     (html.match(/data-activity="lab"/g)||[]).length!==1)
+     throw new Error("As atividades da primeira aula não apareceram.");
+   if((html.match(/Consultar fonte ↗/g)||[]).length!==8)
+     throw new Error("Os links bibliográficos da aula estão indisponíveis.");
+   if(lesson.blocks.some(b=>b.type==="multiple_choice"&&!b.data.options.some(o=>o.id===b.data.correctOptionId)))
+     throw new Error("Existe questão sem resposta correta.");
+ });
  await check("Dois cursos iniciais visíveis no catálogo do aluno",async()=>{
    const list=await learnerContentRepository.listPublishedCourses();
    const ids=["curso-introducao-psicanalise","curso-formacao-freudiana"];
