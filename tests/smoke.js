@@ -14,6 +14,7 @@ import {createLesson,blockTemplate,updateLesson,syncLessonManifest,BLOCK_TYPES} 
 import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
 import {LESSON_TEMPLATES,useLessonTemplate} from "../src/features/authoring/lesson-templates.js";
 import {checkQuiz,exploreLab} from "../src/features/learning/activities.js";
+import {confirmQuizStep,advanceQuiz,restartQuiz,restoreQuizAnswers} from "../src/features/learning/quiz-flow.js";
 import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} from "../src/repositories/learning-repository.js";
 import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
@@ -77,6 +78,62 @@ async function run(){
    const html=courseOutline("student",course,"#/cursos/curso-fundamentos/aulas/"+rows[1].id);
    if(!html.includes('href="#/cursos/curso-fundamentos/aulas/'+rows[1].id+'" aria-current="page"'))
      throw new Error("A navegação direta para aula existente falhou.");
+ });
+ await check("Quiz de uma aula reúne perguntas em um único carrossel",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const markup=renderLessonBlocks(lesson);
+   const root=document.createElement("div");root.innerHTML=markup;
+   const carousel=root.querySelector("[data-quiz-carousel]");
+   const slides=root.querySelectorAll(".quiz-carousel-slide[data-block-id]");
+   if(!carousel||slides.length!==2)throw new Error("As questões não foram agrupadas.");
+   if(root.querySelectorAll(".lesson-quiz-composite").length!==1)
+     throw new Error("Há mais de um bloco de quiz.");
+   if(root.querySelectorAll('.lesson-block[data-block-type="multiple_choice"]').length)
+     throw new Error("Questões ficaram separadas no conteúdo.");
+   const outline=getLessonOutline(lesson);
+   if(outline.filter(x=>x.type==="quiz_group").length!==1||
+      !markup.includes('id="bloco-quiz-integrado"')||
+      outline.length!==lesson.blocks.length-1)
+     throw new Error("O índice não acompanha o quiz unificado.");
+   if(!slides[1].inert||slides[0].inert)throw new Error("Questões ocultas não estão inacessíveis ao teclado.");
+ });
+ await check("Quiz desliza ao confirmar e mostra o resultado sem mudar de página",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const root=document.createElement("div");root.innerHTML=renderLessonBlocks(lesson);
+   const carousel=root.querySelector("[data-quiz-carousel]");
+   const slides=[...carousel.querySelectorAll(".quiz-carousel-slide[data-block-id]")];
+   for(const slide of slides){
+      const form=slide.querySelector('form[data-activity="quiz"]');
+      form.querySelector('input[value="'+form.dataset.correct+'"]').checked=true;
+      const result=checkQuiz(form);
+      if(!confirmQuizStep(form,result)||!result.correct)
+       throw new Error("A resposta não foi confirmada.");
+      if(!slide.querySelector("[data-quiz-next]")||
+         slide.querySelector("[data-quiz-next]").hidden||
+         !form.querySelector('button[type="submit"]').hidden)
+       throw new Error("O botão Continuar não surgiu.");
+      if(!advanceQuiz(slide.querySelector("[data-quiz-next]")))
+       throw new Error("A passagem de tela interna falhou.");
+   }
+   if(carousel.dataset.current!=="2"||
+     carousel.querySelector("[data-quiz-summary]").textContent!=="Você acertou 2 de 2 questões."||
+     carousel.querySelector(".quiz-carousel-progress").getAttribute("aria-valuenow")!=="2")
+     throw new Error("O resumo do quiz não apresentou as duas respostas.");
+   const ids=restartQuiz(carousel.querySelector("[data-quiz-restart]"));
+   if(ids.length!==2||carousel.dataset.current!=="0"||
+     carousel.querySelector('input:checked')||
+     carousel.querySelector("[data-quiz-next]").hidden===false)
+     throw new Error("O botão Refazer não reiniciou o quiz.");
+ });
+ await check("Respostas anteriores podem ser retomadas no quiz unificado",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const div=document.createElement("div");div.innerHTML=renderLessonBlocks(lesson);
+   const carousel=div.querySelector("[data-quiz-carousel]");
+   const slide=carousel.querySelector('.quiz-carousel-slide[data-block-id]');
+   const form=slide.querySelector('form[data-activity="quiz"]');
+   restoreQuizAnswers(carousel,{[slide.dataset.blockId]:{selection:form.dataset.correct,correct:true}});
+   if(carousel.dataset.current!=="1"||slide.dataset.answered!=="true")
+     throw new Error("O quiz não retomou da primeira questão pendente.");
  });
  await check("Aula O que é psicanálise: conteúdo publicado e atividades",async()=>{
    const id="curso-introducao-psicanalise";
