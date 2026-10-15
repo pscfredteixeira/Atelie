@@ -2,7 +2,7 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** piloto JSON com criação de cursos, módulos e aulas totalmente pela interface e disponibilização imediata **na área do aluno deste navegador**, além de editor visual, interatividades, progresso e backups. **Não está homologado:** testes completos em navegador real, acessibilidade e convidados continuam pendentes.
+> **Estado atual:** Sprint 14 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** verificação completa no GitHub Pages, acessibilidade e testes com convidados continuam pendentes.
 
 ## Abrir o Atelier
 
@@ -154,6 +154,20 @@ Os exemplos são propostas documentais verificadas quanto à sintaxe e às refer
 | 11 | Revisão, versões e exportação — **backup JSON local e validação de versões; publicação ainda manual** |
 | 12 | Testes, acessibilidade e desempenho — **diagnóstico e melhorias de código; QA real pendente** |
 | 13 | Beta e testes com convidados — **roteiro do beta disponível; aplicação com convidados pendente** |
+
+## Sprint 14 — Estabilização do Atelier
+
+[Relatório de correções, verificações e roteiro de homologação](docs/SPRINT_14_RESULTADO.md).
+
+- O Estúdio e a gestão de cursos dão prioridade aos rascunhos locais, mesmo sem rede.
+- Salvar uma aula relê a versão mais recente do manifesto e não elimina módulos reorganizados depois que o editor abriu.
+- Gravações de nota, conclusão e quiz são sequenciais por perfil/curso/aula para evitar perda de alterações.
+- Requisições de JSON têm limite de 10 s e o menu usa uma alternativa temporária após 3,5 s, em vez de manter a tela bloqueada.
+- Não é possível disponibilizar um curso local sem aulas.
+- Menu no celular sem sobreposição duplicada, com tecla Escape e melhorias de toque e rolagem.
+- Diagnóstico de navegador ampliado com testes de simultaneidade e de curso vazio.
+
+**Estado:** implementado e verificado parcialmente em testes isolados; a homologação no GitHub Pages, nos celulares e no IndexedDB real continua pendente.
 
 ## Antes de liberar o piloto aos convidados
 
