@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "kind": "demo_access",
+  "profiles": [
+    {
+      "id": "aluno",
+      "title": "Aluno",
+      "label": "Aprender",
+      "description": "Entre na sala de aula, explore cursos e acompanhe suas leituras.",
+      "features": [
+        "Cursos e aulas",
+        "Atividades e caderno",
+        "Progresso neste dispositivo"
+      ],
+      "home": "/aluno",
+      "symbol": "✦"
+    },
+    {
+      "id": "professor",
+      "title": "Professor",
+      "label": "Criar",
+      "description": "Organize percursos de formação e produza aulas no Estúdio Visual.",
+      "features": [
+        "Criar cursos e módulos",
+        "Editor visual de aulas",
+        "Rascunhos e prévias"
+      ],
+      "home": "/professor",
+      "symbol": "✎"
+    },
+    {
+      "id": "administrador",
+      "title": "Administrador",
+      "label": "Organizar",
+      "description": "Acesse os instrumentos de organização, qualidade e demonstração.",
+      "features": [
+        "Painel administrativo",
+        "Backups e biblioteca",
+        "Roteiro de testes"
+      ],
+      "home": "/admin",
+      "symbol": "◈"
+    }
+  ]
+}
