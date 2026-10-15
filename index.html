@@ -7,7 +7,17 @@
   <meta name="description" content="Atelier — plataforma em desenvolvimento para aprender e ensinar psicanálise. Protótipo beta em JSON com editor visual, atividades e progresso local.">
   <title>Atelier. · Laboratório de Psicanálise</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23121218'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia' font-size='46' fill='%23f0b283'%3E%CF%88%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./src/styles/atelier.css?build=aulas-lineares-v1-20261015">
+  <script>
+    // Evita piscar a página no tema errado antes de carregar o aplicativo.
+    try {
+      const stored = localStorage.getItem("atelier-theme-v1");
+      document.documentElement.dataset.theme = stored === "light" ? "light" : "dark";
+    } catch {
+      document.documentElement.dataset.theme = "dark";
+    }
+  </script>
+  <link rel="stylesheet" href="./src/styles/atelier.css?build=tema-claro-escuro-20261015-v1">
+  <link rel="stylesheet" href="./src/styles/theme.css?build=tema-claro-escuro-20261015-v1">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -50,7 +60,7 @@
       main.append(eyebrow, title, explanation, detail, retry);
       app.append(main);
     }
-    import("./src/app/main.js?build=fix-importacao-20261015-v3").catch(bootError);
+    import("./src/app/main.js?build=tema-claro-escuro-20261015-v1").catch(bootError);
   </script>
 </body>
 </html>
