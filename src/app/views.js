@@ -82,12 +82,15 @@ async function coursePage(id){
  modules(course)+
  note("<strong>Seu percurso:</strong> você pode revisitar qualquer aula e marcá-la como concluída no caderno ao final da leitura. O acompanhamento fica somente neste navegador, no perfil fictício selecionado.")+info();
 }
-function reader(lesson,{isPreview=false,hasDraft=false,sourceURL}={}){
+function reader(lesson,{isPreview=false,hasDraft=false,sourceURL,showHeading=true}={}){
  const html=renderLessonBlocks(lesson,{sourceURL});
  const outline=getLessonOutline(lesson);
  const description=lesson.summary||"Uma aula com textos e experiências pedagógicas estruturadas em JSON.";
- const inner='<article class="reader"><div class="reader-inner"><span class="overline">Aula · '+(isPreview?'Prévia do professor':'Conteúdo publicado')+'</span>'+
-  '<h2>'+e(lesson.title)+'</h2><p>'+e(description)+'</p>'+
+ const heading=showHeading?
+    '<span class="overline">Aula · '+(isPreview?'Prévia do professor':'Conteúdo publicado')+'</span>'+
+    '<h2>'+e(lesson.title)+'</h2><p>'+e(description)+'</p>':
+    '<span class="overline reader-reading-label">Leitura e atividades</span>';
+ const inner='<article class="reader"><div class="reader-inner">'+heading+
   (lesson.objectives?.length?'<div class="reader-objectives"><strong>Ao final desta aula</strong><ul>'+
    lesson.objectives.map(o=>'<li>'+e(o)+'</li>').join('')+'</ul></div>':'')+
   (html||'<p>Esta aula ainda não possui blocos.</p>')+'</div></article>';
@@ -142,7 +145,7 @@ async function lessonPage(cid,lid){
  '<div class="lesson-header-info"><div><span class="overline">Aula '+(context.index+1)+' de '+context.sequence.length+'</span>'+
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
  (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
- reader(lesson,{sourceURL:contentURL})+
+ reader(lesson,{sourceURL:contentURL,showHeading:false})+
  await lessonNotebook(cid,lid)+
  lessonPager(course,context)+
  '<details class="journey-course-drawer"><summary>Consultar programa do curso</summary>'+modules(course,false,lid)+'</details>'+
