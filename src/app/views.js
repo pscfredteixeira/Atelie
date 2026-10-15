@@ -166,20 +166,20 @@ async function teacherHome(){
  catch(err){warnings.push("Rascunhos de aula: "+err.message);}
  const modifiedIds=new Set(courseDrafts.map(x=>x.id));
  const create='<section class="card authoring-creation"><div class="card-label">Novo curso</div>'+
-  '<h2 class="section-title">Comece com um título.</h2><p>O Atelier criará a estrutura local para organizar módulos e aulas. Você não precisa escrever JSON.</p>'+
+  '<h2 class="section-title">Comece com um título.</h2><p>O Atelier criará um curso para reunir suas aulas. Você não precisa escrever JSON.</p>'+
   '<form data-authoring-form="new-course" class="authoring-quick-form">'+
   '<label class="field-label" for="create-course-title">Nome do curso</label>'+
   '<div class="authoring-inline"><input class="field" name="icon" maxlength="8" value="ψ" aria-label="Símbolo do curso" title="Símbolo do curso" style="max-width:70px;flex:0 0 70px" placeholder="📚"><input class="field" id="create-course-title" name="title" required maxlength="160" placeholder="Ex.: Introdução à clínica psicanalítica">'+
   '<button class="button action" type="submit">Criar curso local →</button></div>'+
   '</form></section>';
  return pageHead("Atelier / Criar","Organize seu <em>ensino.</em>",
- "Crie cursos, módulos e aulas pela interface. Depois, disponibilize o curso na área do aluno deste mesmo navegador, sem precisar editar JSON.")+
+ "Crie cursos e suas aulas diretamente pela interface. Depois, disponibilize o curso na área do aluno deste mesmo navegador, sem precisar editar JSON.")+
  (warnings.length?'<div class="notice" role="alert">'+warnings.map(e).join(" · ")+'</div>':'')+
  metrics([[publicCourses.length,"Cursos públicos"],[localAvailable.length,"Cursos disponíveis neste dispositivo"],[courseDrafts.length,"Cursos em edição"]])+
  create+sectionHead("Meus rascunhos de cursos",badge("Somente neste navegador","purple"))+
  (courseDrafts.length?'<div class="course-list">'+courseDrafts.map(d=>
    '<article class="card course-line"><span aria-hidden="true">✧</span><div><h3>'+e(d.course.title)+'</h3>'+
-   '<p>'+d.course.modules.length+' módulo(s) · Salvo localmente em '+e(new Date(d.savedAt).toLocaleString("pt-BR"))+'</p></div>'+
+   '<p>'+getCourseEntries(d.course,{includeDrafts:true}).length+' aula(s) · Salvo localmente em '+e(new Date(d.savedAt).toLocaleString("pt-BR"))+'</p></div>'+
    action("Continuar organizando →",routeManage(d.id),"small")+'</article>').join("")+'</div>':
   emptyState("Nenhum curso em rascunho","Crie um novo curso acima ou abra um curso publicado para começar uma revisão."))+
  sectionHead("Cursos publicados",badge("Conteúdo do GitHub"))+
@@ -199,45 +199,38 @@ async function teacherHome(){
  '<div class="course-list">'+lessonDrafts.map(d=>'<article class="card"><div class="card-label">Rascunho local de aula</div>'+
  '<h3>'+e(d.lesson.title)+'</h3>'+action("Editar JSON →",routeEdit(d.courseId,d.lessonId),"small")+'</article>').join("")+'</div>':'')+info();
 }
-function moduleEditor(course,mod,index){
- const sortedModules=[...course.modules].sort((a,b)=>a.position-b.position);
- const lessons=[...mod.lessons].sort((a,b)=>a.position-b.position);
- const courseAttr=' data-course-id="'+e(course.id)+'"';
- const modAttr=' data-module-id="'+e(mod.id)+'"';
- const controls='<div class="authoring-controls">'+
-  '<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+' data-direction="-1"'+(index===0?' disabled':'')+'>↑ Mover módulo</button>'+
-  '<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+' data-direction="1"'+(index===sortedModules.length-1?' disabled':'')+'>↓ Mover módulo</button>'+
-  '<button type="button" class="button small quiet" data-course-op="remove-module"'+courseAttr+modAttr+(lessons.length?' disabled title="Não é possível remover um módulo que possui aulas."':'')+'>Excluir módulo vazio</button></div>';
- return '<section class="card course-module-editor" id="course-module-'+e(mod.id)+'" tabindex="-1"><div class="topline"><span class="overline">Módulo '+String(index+1).padStart(2,"0")+'</span>'+
-  badge(lessons.length+" aula(s)","purple")+'</div>'+
-  '<form data-authoring-form="module-info"'+courseAttr+modAttr+' class="authoring-fields">'+
-  '<label class="field-label" for="module-title-'+e(mod.id)+'">Nome do módulo</label>'+
-  '<input class="field" id="module-title-'+e(mod.id)+'" name="title" maxlength="160" required value="'+e(mod.title)+'">'+
-  '<label class="field-label" for="module-desc-'+e(mod.id)+'">Descrição</label>'+
-  '<textarea class="field" id="module-desc-'+e(mod.id)+'" name="description" maxlength="1200" rows="2">'+e(mod.description||"")+'</textarea>'+
-  '<div class="button-row"><button class="button action small" type="submit">Salvar módulo</button></div></form>'+
-  controls+
-  (lessons.length?'<div class="authoring-lesson-list"><div class="overline">Aulas neste módulo</div>'+
-   lessons.map((l,li)=>'<div class="authoring-lesson"><div class="authoring-lesson-title">'+
-    '<span class="journey-number" aria-hidden="true">'+String(li+1).padStart(2,"0")+'</span>'+
-    '<span>'+e(l.title||l.id)+'</span></div>'+
-    '<div class="authoring-controls">'+
-    '<button class="button small" type="button" data-course-op="move-lesson"'+courseAttr+modAttr+
-      ' data-lesson-id="'+e(l.id)+'" data-direction="-1"'+(li===0?' disabled':'')+' aria-label="Mover aula '+e(l.title||l.id)+' para cima">↑</button>'+
-    '<button class="button small" type="button" data-course-op="move-lesson"'+courseAttr+modAttr+
-      ' data-lesson-id="'+e(l.id)+'" data-direction="1"'+(li===lessons.length-1?' disabled':'')+
-      ' aria-label="Mover aula '+e(l.title||l.id)+' para baixo">↓</button>'+
-    action("Editar aula →",routeEdit(course.id,l.id),"small")+
-    '</div></div>').join("")+'</div>':
-   '<p class="authoring-empty">Este módulo ainda não possui aulas. Crie a primeira abaixo.</p>')+
-  '<form class="studio-new-lesson" data-authoring-form="new-lesson"'+courseAttr+modAttr+'>'+
-  '<label class="field-label" for="new-lesson-'+e(mod.id)+'">Nova aula neste módulo</label>'+
-  '<label class="field-label" for="lesson-template-'+e(mod.id)+'">Modelo pedagógico</label>'+
- '<select class="field" name="templateId" id="lesson-template-'+e(mod.id)+'">'+LESSON_TEMPLATES.map(t=>
- '<option value="'+e(t.id)+'">'+e(t.title)+' — '+e(t.description)+'</option>').join("")+'</select>'+
-  '<div class="authoring-inline"><input class="field" id="new-lesson-'+e(mod.id)+'" name="title" maxlength="160" required placeholder="Ex.: Introdução ao inconsciente">'+
-  '<button class="button action" type="submit">+ Criar aula</button></div></form>'+
-  '</section>';
+function courseLessonEditor(course,item,index,total){
+ const mod=item.module, lesson=item.lesson, planned=item.planned;
+ const courseAttr=' data-course-id="'+e(course.id)+'"',modAttr=' data-module-id="'+e(mod.id)+'"';
+ const alone=(mod.lessons||[]).length<=1;
+ const mods=[...course.modules].sort((a,b)=>a.position-b.position);
+ const modIndex=mods.findIndex(m=>m.id===mod.id);
+ const legacyGroup=(mod.lessons||[]).length>1;
+ const actions='<div class="authoring-controls">'+
+   (alone?'<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+
+     ' data-direction="-1"'+(modIndex===0?' disabled':'')+'>↑ Subir aula</button>'+
+     '<button type="button" class="button small" data-course-op="move-module"'+courseAttr+modAttr+
+     ' data-direction="1"'+(modIndex===mods.length-1?' disabled':'')+'>↓ Descer aula</button>':'')+
+   (planned?'<button type="button" class="button small quiet" data-course-op="remove-module"'+courseAttr+modAttr+
+     '>Excluir aula prevista</button>':
+     '<a class="button small action" href="'+e(routeEdit(course.id,item.id))+'">Editar conteúdo da aula →</a>')+
+   '</div>';
+ return '<section class="card course-lesson-editor" id="course-lesson-'+e(item.id)+'" tabindex="-1">'+
+    '<div class="topline"><span class="overline">Aula '+String(index+1).padStart(2,"0")+' de '+total+'</span>'+
+    badge(planned?"Conteúdo por preparar":"Aula com conteúdo","purple")+'</div>'+
+    (planned?
+      '<form data-authoring-form="module-info"'+courseAttr+modAttr+' class="authoring-fields">'+
+        '<label class="field-label" for="lesson-title-'+e(mod.id)+'">Título da aula</label>'+
+        '<input class="field" id="lesson-title-'+e(mod.id)+'" name="title" maxlength="160" required value="'+e(mod.title)+'">'+
+        '<label class="field-label" for="lesson-desc-'+e(mod.id)+'">Apresentação (opcional)</label>'+
+        '<textarea class="field" id="lesson-desc-'+e(mod.id)+'" name="description" maxlength="1200" rows="2">'+e(mod.description||"")+'</textarea>'+
+        '<div class="button-row"><button class="button small" type="submit">Salvar título</button>'+
+        '<button type="button" class="button action small" data-course-op="prepare-lesson"'+courseAttr+modAttr+
+        '>Preparar conteúdo da aula →</button></div></form>':
+      '<h3 class="course-lesson-editor-title">'+e(item.title)+'</h3>'+
+      (item.summary?'<p class="muted">'+e(item.summary)+'</p>':'')+
+      (legacyGroup?'<p class="tiny">Esta aula pertence a um agrupamento antigo preservado para não alterar arquivos já salvos.</p>':''))+
+    actions+'</section>';
 }
 async function courseStructure(cid){
  let local=null,publicCourse=null,available=null,warning="";
@@ -253,7 +246,7 @@ async function courseStructure(cid){
  }
  if(!local&&!publicCourse&&!available)throw new Error(warning||"Este curso não existe neste navegador nem no catálogo público.");
  const course=local?.course||publicCourse||available.course;
- const modulesSorted=[...course.modules].sort((a,b)=>a.position-b.position);
+ const entries=getCourseEntries(course,{includeDrafts:true});
  const courseAttr=' data-course-id="'+e(course.id)+'"';
  const status=available?"Disponível na área do aluno deste dispositivo":local?"Rascunho salvo neste navegador":"Curso público — ainda sem revisão local";
  const form='<form data-authoring-form="course-info"'+courseAttr+' class="card authoring-fields">'+
@@ -269,22 +262,23 @@ async function courseStructure(cid){
  '<label class="field-label" for="authoring-course-objectives">Objetivos de aprendizagem (um por linha)</label>'+
  '<textarea class="field" id="authoring-course-objectives" name="objectives" rows="4">'+e((course.objectives||[]).join("\n"))+'</textarea>'+
  '<div class="button-row"><button class="button action" type="submit">Salvar alterações do curso</button></div></form>';
- const add='<form class="card authoring-fields" data-authoring-form="add-module"'+courseAttr+'>'+
- '<div class="card-label">Organização pedagógica</div><h2 class="section-title">Adicionar um módulo</h2>'+
- '<label class="field-label" for="new-module-name">Título do módulo</label>'+
- '<input class="field" id="new-module-name" name="title" required maxlength="160" placeholder="Ex.: Primeiras questões sobre o inconsciente">'+
- '<label class="field-label" for="new-module-desc">Descrição do módulo (opcional)</label>'+
- '<textarea class="field" id="new-module-desc" name="description" rows="2" maxlength="1200"></textarea>'+
- '<div class="button-row"><button class="button action" type="submit">+ Adicionar módulo</button></div></form>';
+ const add='<form class="card authoring-fields" data-authoring-form="new-course-lesson"'+courseAttr+'>'+
+ '<div class="card-label">Nova aula</div><h2 class="section-title">Adicionar uma aula ao curso</h2>'+
+ '<label class="field-label" for="new-course-lesson-title">Título da nova aula</label>'+
+ '<input class="field" id="new-course-lesson-title" name="title" required maxlength="160" placeholder="Ex.: Primeiras questões sobre o inconsciente">'+
+ '<label class="field-label" for="new-course-lesson-template">Modelo pedagógico</label>'+
+ '<select class="field" name="templateId" id="new-course-lesson-template">'+LESSON_TEMPLATES.map(t=>
+ '<option value="'+e(t.id)+'">'+e(t.title)+' — '+e(t.description)+'</option>').join("")+'</select>'+
+ '<div class="button-row"><button class="button action" type="submit">+ Criar aula</button></div></form>';
  return '<div class="topline"><span class="overline">Estúdio / Estrutura de curso</span>'+badge(status,"purple")+'</div>'+
  pageHead("Professor / Gestão",e(course.title),
- "Organize cursos, módulos e aulas pela interface. Quando tudo estiver pronto, disponibilize o percurso para estudo neste mesmo dispositivo.")+
+ "O curso reúne diretamente as aulas, na ordem em que serão estudadas. Organize e prepare o conteúdo de cada aula no Estúdio Visual.")+
  (warning?'<div class="notice" role="alert">'+e(warning)+'</div>':'')+
  '<div id="course-authoring-status" tabindex="-1" role="status" aria-live="polite" class="tiny">Nenhuma alteração desta tela foi salva automaticamente.</div>'+
  '<div class="authoring-layout"><div class="authoring-primary">'+form+
- sectionHead("Módulos do curso",badge(modulesSorted.length+" módulo(s)"))+
- (modulesSorted.length?modulesSorted.map((m,i)=>moduleEditor(course,m,i)).join(""):
- emptyState("Comece pelo primeiro módulo","Divida o curso em etapas pedagógicas. Em seguida, crie as aulas visualmente."))+
+ sectionHead("Aulas do curso",badge(entries.length+" aula(s)"))+
+ (entries.length?entries.map((item,i)=>courseLessonEditor(course,item,i,entries.length)).join(""):
+ emptyState("Comece pela primeira aula","Crie uma aula abaixo e construa o conteúdo no Estúdio Visual."))+
  add+'</div><aside class="sidepanel authoring-side"><div class="overline">Publicação e backup</div><h3>O rascunho fica com você.</h3>'+
  '<p class="hint">Salve primeiro cada aula e as informações do curso. Depois, use “Disponibilizar” para vê-lo na área do aluno deste navegador.</p>'+
  '<div class="authoring-downloads">'+
@@ -297,7 +291,7 @@ async function courseStructure(cid){
  '<button type="button" class="button quiet" data-course-op="discard-course"'+courseAttr+'>'+
  (publicCourse?"Descartar revisão local":"Excluir curso local")+'</button></div>'+
  '<div class="rule"></div><div class="notice">Salvar, exportar e publicar são etapas diferentes. O arquivo exportado é um rascunho: revise-o antes de publicá-lo manualmente no GitHub.</div>'+
- '<p class="hint">IDs de cursos e módulos não mudam com a ordem. Módulos com aulas não podem ser excluídos nesta fase, para proteger os vínculos.</p>'+
+ '<p class="hint">As aulas já preparadas mantêm seus identificadores ao mudar de posição. Somente aulas previstas e ainda vazias podem ser excluídas, para proteger os vínculos de conteúdo.</p>'+
  '<div class="rule"></div>'+action("Voltar aos meus cursos →","#/professor","small")+'</aside></div>'+
  info();
 }
