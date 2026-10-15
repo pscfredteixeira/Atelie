@@ -232,11 +232,22 @@ function setMenu(open){
   if(side)side.classList.toggle("is-open",open);
   if(toggle){toggle.setAttribute("aria-expanded",String(open));toggle.setAttribute("aria-label",open?"Fechar navegação":"Abrir navegação");}
   let shade=document.getElementById("sidebar-shade");
-  if(open&&!shade){shade=document.createElement("button");shade.type="button";shade.className="sidebar-shade";shade.id="sidebar-shade";shade.setAttribute("aria-label","Fechar navegação");document.body.appendChild(shade);}
-  if(!open&&shade)shade.remove();
+  if(open&&!shade){
+    shade=document.createElement("button");
+    shade.type="button";shade.className="sidebar-shade";shade.id="sidebar-shade";
+    shade.setAttribute("aria-label","Fechar navegação");
+    app.appendChild(shade);
+  }
+  if(!open)document.querySelectorAll("#sidebar-shade").forEach(item=>item.remove());
   if(open)side?.querySelector(".nav-link")?.focus();
   else toggle?.focus();
 }
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&isMenuOpen&&!currentDialog){
+   event.preventDefault();
+   setMenu(false);
+ }
+});
 function statusMessage(message,bad=false){
   const box=document.getElementById("draft-status");
   if(box){box.textContent=message;box.style.color=bad?"var(--danger)":"var(--good)";}
