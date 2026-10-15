@@ -207,7 +207,16 @@ async function render(moveFocus) {
     const main=document.getElementById("main-content");
     main.focus({preventScroll:true});
   }
-  // Links do sumário de curso abrem diretamente o módulo solicitado.
+  // Links com ?aula= selecionam uma aula prevista no painel do professor.
+  if(path.startsWith("/professor/cursos/")){
+    const params=new URLSearchParams((window.location.hash.split("?")[1]||""));
+    const selected=params.get("aula");
+    if(selected&&/^[\\w-]+$/.test(selected)){
+      const target=document.getElementById("course-lesson-"+selected);
+      if(target){target.scrollIntoView({block:"start",behavior:"instant"});target.focus({preventScroll:true});}
+    }
+  }
+  // Compatibilidade com links antigos para módulos internos.
   const moduleId=selectedModuleId(window.location.hash);
   if(moduleId&&(path.startsWith("/cursos/")||path.startsWith("/professor/cursos/"))){
     const target=document.getElementById("course-module-"+moduleId);
@@ -365,6 +374,21 @@ async function onCourseForm(form){
   const cid=form.dataset.courseId;
   try{
 
+    if(kind==="new-course-lesson"){
+      if(!cid)throw Error("Curso não identificado.");
+      const base=await editableCourse(cid);
+      const expanded=applyCourseChange(base,"add-module",{title:data.title,description:""});
+      const lastModule=[...expanded.modules].sort((a,b)=>a.position-b.position).at(-1);
+      const created=createLesson(expanded,lastModule.id,data.title);
+      created.lesson=useLessonTemplate(created.lesson,data.templateId||"blank");
+      await saveDraft(cid,created.lesson);
+      try{await saveCourseDraft(created.course);}
+      catch(error){await deleteDraft(cid,created.lesson.id);throw error;}
+      unsavedForms.clear();
+      showToast("Aula criada e salva neste navegador.");
+      window.location.hash="#/professor/cursos/"+cid+"/aulas/"+created.lesson.id+"/editar";
+      return;
+    }
     if(kind==="new-lesson"){
       if(!cid||!form.dataset.moduleId)throw Error("Escolha um módulo para a nova aula.");
       const base=await editableCourse(cid);
@@ -433,6 +457,19 @@ async function onCourseOperation(button){
       return;
     }
     const draft=local?.course || await editableCourse(cid);
+    if(op==="prepare-lesson"){
+      const module=draft.modules.find(m=>m.id===button.dataset.moduleId);
+      if(!module)throw Error("Aula prevista não encontrada.");
+      if(module.lessons.length)throw Error("Esta aula já possui conteúdo. Use o Estúdio Visual para editá-la.");
+      const created=createLesson(draft,module.id,module.title);
+      created.lesson=useLessonTemplate(created.lesson,"blank");
+      await saveDraft(cid,created.lesson);
+      try{await saveCourseDraft(created.course);}
+      catch(error){await deleteDraft(cid,created.lesson.id);throw error;}
+      showToast("Rascunho da aula criado. Agora você pode escrever o conteúdo.");
+      window.location.hash="#/professor/cursos/"+cid+"/aulas/"+created.lesson.id+"/editar";
+      return;
+    }
     if(op==="export-manifest"){
       downloadJSON(exportManifest(draft),draft.slug+"-curso-rascunho.json");
       authoringStatus("Manifesto JSON baixado. O curso continua sem publicação automática.");
@@ -444,7 +481,7 @@ async function onCourseOperation(button){
       authoringStatus("Entrada do catálogo baixada como rascunho, para revisão antes do commit.");
       return;
     }
-    if(op==="remove-module"&&!window.confirm("Excluir este módulo vazio do rascunho local?"))return;
+    if(op==="remove-module"&&!window.confirm("Excluir esta aula ainda sem conteúdo do rascunho local?"))return;
     const changed=applyCourseChange(draft,op,{
       moduleId:button.dataset.moduleId,lessonId:button.dataset.lessonId,
       direction:Number(button.dataset.direction)
