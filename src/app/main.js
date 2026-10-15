@@ -10,7 +10,8 @@ import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,expor
 import {saveDraft,deleteDraft,downloadJSON} from "../repositories/draft-repository.js";
 import {validateLessonLink} from "../repositories/validators.js";
 import {checkQuiz,exploreLab} from "../features/learning/activities.js";
-import {getDemoProfile,setDemoProfile,updateLearningState} from "../repositories/learning-repository.js";
+import {confirmQuizStep,advanceQuiz,restartQuiz,restoreQuizAnswers} from "../features/learning/quiz-flow.js";
+import {getDemoProfile,setDemoProfile,getLearningState,updateLearningState} from "../repositories/learning-repository.js";
 import {downloadLocalBackup,importLocalBackup} from "../features/administration/backup.js";
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aula-online-v2-20261015";
@@ -197,6 +198,18 @@ async function render(moveFocus) {
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');
   document.title = page.title + " · Atelier";
+  const activeLesson=currentLessonRoute();
+  if(activeLesson){
+    getLearningState(activeLesson.courseId,activeLesson.lessonId).then(record=>{
+      if(call!==activeRender)return;
+      app.querySelectorAll("[data-quiz-carousel]").forEach(carousel=>{
+        // A recuperação do histórico não substitui escolhas já feitas nesta tela.
+        if(!carousel.querySelector('input[type="radio"]:checked') &&
+           !carousel.querySelector('[data-answered="true"]'))
+          restoreQuizAnswers(carousel,record.answers||{});
+      });
+    }).catch(error=>console.warn("Histórico do quiz indisponível:",error));
+  }
   const studioNode=app.querySelector("[data-visual-studio]");
   if(studioNode){
     try{await mountVisualStudio(studioNode);}
@@ -557,7 +570,7 @@ async function toggleLearningComplete(button){
 async function saveQuizAnswer(form,result){
  if(!result.answered)return;
  const target=currentLessonRoute();
- const section=form.closest(".lesson-block");
+ const section=form.closest("[data-block-id]");
  if(!target||!section)return; // Prévia e editor não registram notas.
  try{await updateLearningState(target.courseId,target.lessonId,
   {answer:{blockId:section.dataset.blockId,selection:result.selection,correct:result.correct}});}
@@ -575,7 +588,16 @@ document.addEventListener("submit",ev=>{
     return;
   }
   const quiz=ev.target.closest('form[data-activity="quiz"]');
-  if(quiz){ev.preventDefault();saveQuizAnswer(quiz,checkQuiz(quiz));return;}
+  if(quiz){
+    ev.preventDefault();
+    if(quiz.closest(".quiz-carousel-slide")?.dataset.answered==="true")return;
+    const result=checkQuiz(quiz);
+    if(result.answered){
+      confirmQuizStep(quiz,result);
+      saveQuizAnswer(quiz,result);
+    }
+    return;
+  }
   const note=ev.target.closest('form[data-learning-form="note"]');
   if(note){ev.preventDefault();saveLearningNote(note);return;}
   const form=ev.target.closest('form[data-authoring-form]');
@@ -608,6 +630,17 @@ document.addEventListener("click",ev=>{
     approvedNavigationHash="#/entrar";
     if(window.location.hash==="#/entrar")render(true);
     else window.location.hash="#/entrar";
+    return;
+  }
+  const quizNext=ev.target.closest("[data-quiz-next]");
+  if(quizNext){advanceQuiz(quizNext);return;}
+  const quizRestart=ev.target.closest("[data-quiz-restart]");
+  if(quizRestart){
+    const ids=restartQuiz(quizRestart);
+    const target=currentLessonRoute();
+    if(target&&ids.length)
+      updateLearningState(target.courseId,target.lessonId,{clearAnswerIds:ids})
+        .catch(err=>showToast("Quiz reiniciado, mas o histórico não foi atualizado: "+err.message));
     return;
   }
   const lab=ev.target.closest('[data-branch]');
