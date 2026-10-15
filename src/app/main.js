@@ -38,6 +38,16 @@ let currentDialog = null;
 let opener = null;
 let toastTimer;
 let activeRender=0;
+const FALLBACK_COURSES=[
+ {id:"curso-introducao-psicanalise",title:"Introdução à Psicanálise"},
+ {id:"curso-formacao-freudiana",title:"Formação Freudiana"}
+];
+function boundedLoading(promise,milliseconds,fallback){
+ let timeoutId;
+ const timer=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve(fallback),milliseconds)});
+ return Promise.race([promise,timer]).finally(()=>clearTimeout(timeoutId));
+}
+
 const unsavedForms=new Set();
 let unsavedNote=false;
 let approvedNavigationHash=null;
@@ -89,9 +99,10 @@ async function render(moveFocus) {
   const path=route();
   // A lista do menu é independente da página: problemas no catálogo local
   // não devem impedir que a tela principal seja exibida.
-  const menusPromise=loadCourseMenu().catch(error=>{
+  const fallbackMenus={student:FALLBACK_COURSES,teacher:FALLBACK_COURSES};
+  const menusPromise=boundedLoading(loadCourseMenu(),3500,fallbackMenus).catch(error=>{
     console.warn("Atelier: seletor de cursos indisponível",error);
-    return {student:[],teacher:[]};
+    return fallbackMenus;
   });
   let page;
   try{
@@ -117,7 +128,12 @@ async function render(moveFocus) {
   };
   let outline=null;
   if(focusedArea&&selectedIds[focusedArea]){
-    outline=await loadCourseOutline(focusedArea,selectedIds[focusedArea]);
+    try{
+      outline=await boundedLoading(loadCourseOutline(focusedArea,selectedIds[focusedArea]),3500,null);
+    }catch(error){
+      console.warn("Atelier: estrutura do menu temporariamente indisponível",error);
+      outline=null;
+    }
     if(call!==activeRender)return;
   }
   unmountStudio();
