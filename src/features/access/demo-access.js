@@ -3,6 +3,7 @@
  * Nenhuma senha, segredo ou dado pessoal deve ser incluído no arquivo JSON.
  */
 import {escapeHTML as e} from "../../ui/components.js";
+import {themeToggleHTML} from "../theme/theme.js";
 
 const STORAGE_KEY="atelier-demo-access-v1";
 const PROFILE_PATH=new URL("../../../content/perfis-acesso.json",import.meta.url);
@@ -87,7 +88,8 @@ export function renderAccessScreen(profiles,{activeRole=null,requestedPath="/"}=
  }).join("");
  return '<div class="access-page"><div class="access-wrap">'+
    '<header class="access-header"><span class="access-brand">Atelier<span>.</span></span>'+
-   '<span class="access-header-tag">LABORATÓRIO DE PSICANÁLISE · DEMONSTRAÇÃO</span></header>'+
+   '<div class="access-header-controls"><span class="access-header-tag">LABORATÓRIO DE PSICANÁLISE · DEMONSTRAÇÃO</span>'+
+   themeToggleHTML()+'</div></header>'+
    '<section class="access-hero" aria-labelledby="access-title">'+
      '<span class="access-kicker">BEM-VINDO AO ATELIER</span>'+
      '<div class="access-headline-row"><div><h1 id="access-title" tabindex="-1">Um lugar para <em>pensar, criar e aprender.</em></h1>'+
