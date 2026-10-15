@@ -75,6 +75,13 @@ export async function updateLearningState(courseId,lessonId,change,profileId=get
    if(!/^[\w-]+$/.test(blockId)||typeof selection!=="string")throw Error("Resposta inválida.");
    next.answers={...prev.answers,[blockId]:{selection,correct:correct===true,at:new Date().toISOString()}};
  }
+ if(Object.hasOwn(change,"clearAnswerIds")){
+   const ids=change.clearAnswerIds;
+   if(!Array.isArray(ids)||ids.length>2000||!ids.every(x=>typeof x==="string"&&/^[A-Za-z0-9_-]+$/.test(x)))
+     throw Error("Lista de questões inválida para reiniciar o quiz.");
+   next.answers={...next.answers};
+   for(const id of ids)delete next.answers[id];
+ }
  if(change.opened===true)next.lastOpenedAt=new Date().toISOString();
  next.updatedAt=new Date().toISOString();
  await operate("readwrite",s=>s.put(next));
