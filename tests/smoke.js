@@ -18,6 +18,7 @@ import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} 
 import {buildLocalBackup,validateLocalBackup} from "../src/features/administration/backup.js";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
 import {loadDemoProfiles,getDemoRole,canVisit,homeForRole,roleForPath,renderAccessScreen} from "../src/features/access/demo-access.js";
+import {applyTheme,getTheme,themeToggleHTML} from "../src/features/theme/theme.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -412,6 +413,34 @@ async function run(){
    });
    try{validateLocalBackup(backup);}catch{return;}
    throw new Error("O backup com resposta inválida foi aceito.");
+ });
+ await check("Alternância de temas mantém controle acessível e não muda os dados",async()=>{
+   const initial=getTheme();
+   try{
+     applyTheme("light",{persist:false});
+     if(getTheme()!=="light")throw new Error("Tema claro não foi ativado.");
+     const light=themeToggleHTML();
+     if(!light.includes('aria-pressed="true"')||!light.includes('aria-label="Modo claro"'))
+       throw new Error("O botão não reflete o tema claro.");
+     applyTheme("dark",{persist:false});
+     if(getTheme()!=="dark")throw new Error("Tema escuro não foi ativado.");
+     const dark=themeToggleHTML();
+     if(!dark.includes('aria-pressed="false"'))throw new Error("O botão não reflete o tema escuro.");
+   }finally{applyTheme(initial,{persist:false});}
+ });
+ await check("A leitura está integrada à página sem bloco bege",async()=>{
+   const reader=document.createElement("article");reader.className="reader";
+   reader.style.position="absolute";reader.style.left="-99999px";
+   document.body.append(reader);
+   const initial=getTheme();
+   try{
+     for(const theme of ["dark","light"]){
+       applyTheme(theme,{persist:false});
+       const background=getComputedStyle(reader).backgroundColor;
+       if(!["transparent","rgba(0, 0, 0, 0)"].includes(background))
+         throw new Error("O leitor mantém fundo de cartão no tema "+theme+": "+background);
+     }
+   }finally{applyTheme(initial,{persist:false});reader.remove();}
  });
  await check("Entrada JSON: exatamente três perfis sem senhas públicas",async()=>{
    const profiles=await loadDemoProfiles();
