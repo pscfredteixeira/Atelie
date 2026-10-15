@@ -98,6 +98,34 @@ export function applyCourseChange(course,action,params={}){
  validateCourse(draft);
  return draft;
 }
+/* Atualiza SOMENTE aulas faltantes da versão GitHub.
+ * Não substitui aulas, títulos, textos ou ordem já personalizados no navegador. */
+export function mergePublishedLessons(localDraft,onlineCourse){
+ validateCourse(localDraft);
+ validateCourse(onlineCourse);
+ if(localDraft.id!==onlineCourse.id)throw Error("Os cursos possuem IDs diferentes.");
+ if(localDraft.status!=="draft"||onlineCourse.status!=="published")
+   throw Error("É necessária uma revisão local e um manifesto público válidos.");
+ const result=copy(localDraft);
+ const existing=new Set(result.modules.flatMap(m=>m.lessons.map(l=>l.id)));
+ let added=0;
+ for(const source of [...onlineCourse.modules].sort((a,b)=>a.position-b.position)){
+   let target=result.modules.find(m=>m.id===source.id);
+   if(!target){
+     target={id:source.id,title:source.title,description:source.description||"",
+       position:result.modules.length+1,lessons:[]};
+     result.modules.push(target);
+   }
+   for(const lesson of [...source.lessons].sort((a,b)=>a.position-b.position)){
+     if(existing.has(lesson.id))continue;
+     target.lessons.push({...copy(lesson),position:target.lessons.length+1});
+     existing.add(lesson.id);
+     added++;
+   }
+ }
+ validateCourse(result);
+ return {course:result,added};
+}
 export function createCatalogEntry(course){
  validateCourse(course);
  return {id:course.id,title:course.title,icon:course.icon||"ψ",slug:course.slug,
