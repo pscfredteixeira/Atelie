@@ -17,10 +17,10 @@ import {downloadLocalBackup,importLocalBackup} from "../features/administration/
 import {setBetaCheck,betaReport} from "../features/administration/beta.js";
 import {loadCourseMenu,coursePicker,currentCourseChoice,selectedCourseId,loadCourseOutline,courseOutline,selectedModuleId,rememberCourseChoice} from "../features/navigation/course-menu.js?build=aula-online-v2-20261015";
 import {getDemoRole,setDemoRole,clearDemoRole,homeForRole,canVisit,roleForPath,labelForRole,loadDemoProfiles,renderAccessScreen} from "../features/access/demo-access.js?build=tema-claro-escuro-20261015-v1";
-import {applyTheme,toggleTheme,themeToggleHTML} from "../features/theme/theme.js?build=golden-20261019-v1";
+import {applyTheme,toggleTheme,themeToggleHTML} from "../features/theme/theme.js";
 import {escapeHTML as e} from "../ui/components.js";
 
-applyTheme(document.documentElement.dataset.theme||"light",{persist:false});
+applyTheme(document.documentElement.dataset.theme||"dark",{persist:false});
 const app = document.getElementById("app");
 const toastHost = document.getElementById("toast-host");
 const navGroups = [

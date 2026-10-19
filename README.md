@@ -13,21 +13,6 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 - Testes de regressão para progresso, navegação, feedback verde e restauração estão em \`tests/smoke.html\`. A execução clique a clique em um dispositivo real continua pendente.
 - Nenhum manifesto de curso ou arquivo de aula publicado foi alterado.
 
-## Identidade visual — creme e laranja (19/10/2026)
-
-A identidade principal do Ateliê segue o guia visual fornecido: canvas creme `#fff8f1`,
-cartões brancos, CTA e destaques em laranja `#fa5d00`, raio de 16px nos botões e
-campos e 20px nos cartões. A família DM Sans é usada como equivalente livre para UI;
-DM Serif Display atende aos momentos editoriais maiores, com fontes locais de fallback.
-O tema **claro agora é o padrão**, e o escuro usa a mesma linguagem em tons quentes.
-A preferência da nova identidade usa `atelier-theme-golden-v1`: as preferências antigas
-permanecem armazenadas, mas não são reutilizadas para forçar o antigo tema escuro.
-
-Todos os overrides visuais ficam em `src/styles/atelier-golden.css`, carregado após
-os estilos anteriores. Nenhum JSON de curso, conteúdo, histórico ou banco IndexedDB
-foi modificado. Perfis demonstrativos e navegação lateral permanecem funcionais.
-Testes de regressão de cores e raios estão em `tests/smoke.html`.
-
 ## Leitura integrada e temas claro/escuro
 
 A Sala de Aula não usa mais um grande contêiner bege. O conteúdo é exibido diretamente sobre o fundo do tema escolhido; destaques internos, tabelas, quizzes e conceitos têm cores próprias em ambos os temas. O título principal e a apresentação da aula aparecem apenas uma vez no topo da leitura.

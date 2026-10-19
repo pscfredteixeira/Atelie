@@ -1,19 +1,19 @@
 /* Alternância visual global do Atelier. Sem dependências de autenticação ou backend. */
-const KEY="atelier-theme-golden-v1";
+const KEY="atelier-theme-v1";
 const THEMES=["dark","light"];
 export function getTheme(){
  const current=document.documentElement.dataset.theme;
- return THEMES.includes(current)?current:"light";
+ return THEMES.includes(current)?current:"dark";
 }
 export function applyTheme(theme,{persist=true}={}){
- const normalized=THEMES.includes(theme)?theme:"light";
+ const normalized=THEMES.includes(theme)?theme:"dark";
  document.documentElement.dataset.theme=normalized;
  document.documentElement.style.colorScheme=normalized;
  if(persist){
   try{localStorage.setItem(KEY,normalized)}catch{/* preferência apenas nesta aba */}
  }
  const meta=document.querySelector('meta[name="theme-color"]');
- if(meta)meta.setAttribute("content",normalized==="light"?"#fff8f1":"#1b1714");
+ if(meta)meta.setAttribute("content",normalized==="light"?"#f8f7f9":"#121218");
  syncThemeControls();
  return normalized;
 }

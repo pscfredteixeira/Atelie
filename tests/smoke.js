@@ -19,7 +19,7 @@ import {getLearningState,updateLearningState,deleteLearningState,DEMO_PROFILES} 
 import {buildLocalBackup,validateLocalBackup,importLocalBackup} from "../src/features/administration/backup.js?build=sprint15-20261015";
 import {BETA_TASKS,betaReport} from "../src/features/administration/beta.js";
 import {loadDemoProfiles,getDemoRole,canVisit,homeForRole,roleForPath,renderAccessScreen} from "../src/features/access/demo-access.js";
-import {applyTheme,getTheme,themeToggleHTML} from "../src/features/theme/theme.js?build=golden-20261019-v1";
+import {applyTheme,getTheme,themeToggleHTML} from "../src/features/theme/theme.js";
 const summary=document.getElementById("summary"),list=document.getElementById("results"),again=document.getElementById("again");
 let running=false;
 async function run(){
@@ -687,32 +687,6 @@ async function run(){
      await deleteDraft(created.course.id,created.lesson.id);
      await deleteCourseDraft(created.course.id);
    }
- });
-
- await check("Identidade Golden: creme, laranja e cartões arredondados no tema claro",async()=>{
-  const initial=getTheme();
-  const test=document.createElement("div");
-  test.innerHTML='<div class="card"><h3>Cartão</h3></div><button class="button action">Continuar</button><input class="field" aria-label="Exemplo">';
-  test.style.cssText="position:absolute;left:-99999px;top:0";
-  document.body.append(test);
-  try{
-    applyTheme("light",{persist:false});
-    const body=getComputedStyle(document.body);
-    const card=getComputedStyle(test.querySelector(".card"));
-    const button=getComputedStyle(test.querySelector(".button.action"));
-    const field=getComputedStyle(test.querySelector(".field"));
-    if(body.backgroundColor!=="rgb(255, 248, 241)")
-      throw Error("Fundo creme não aplicado: "+body.backgroundColor);
-    if(card.backgroundColor!=="rgb(255, 255, 255)"||card.borderRadius!=="20px")
-      throw Error("Cartão não corresponde ao design: "+card.backgroundColor+"/"+card.borderRadius);
-    if(button.backgroundColor!=="rgb(250, 93, 0)"||button.borderRadius!=="16px")
-      throw Error("CTA laranja não corresponde ao design.");
-    if(field.borderRadius!=="16px")
-      throw Error("Campo não recebeu raio de 16px.");
-    applyTheme("dark",{persist:false});
-    if(getComputedStyle(document.body).backgroundColor!=="rgb(27, 23, 20)")
-      throw Error("Tema escuro não foi adaptado à paleta quente.");
-  }finally{applyTheme(initial,{persist:false});test.remove();}
  });
  result.forEach(r=>{
    const li=document.createElement("li");
