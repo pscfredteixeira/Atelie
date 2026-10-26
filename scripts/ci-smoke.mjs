@@ -41,6 +41,20 @@ try{
  if(published<5)throw Error("Linha do tempo da Aula 2 não renderizou.");
  console.log("OK — Sprint 16: Aula 1 → Aula 2, quiz, linha do tempo e layout mobile.");
 
+ // A seção histórica não deve aparecer como cartão isolado antes do texto.
+ const readingHeading=page.locator('.reader #bloco-origens-parte-1');
+ await readingHeading.waitFor({timeout:15000});
+ const together=await readingHeading.evaluate(node=>{
+   const next=node.nextElementSibling;
+   return Boolean(next&&next.classList.contains("lesson-block")&&
+      getComputedStyle(node.querySelector(".block-kicker")).display==="none"&&
+      getComputedStyle(next).borderTopWidth==="0px"&&
+      getComputedStyle(next.querySelector(".block-kicker")).display==="none");
+ });
+ if(!together)throw Error("O título 1. O cenário médico do fim do século XIX continua isolado.");
+ console.log("OK — Seções da Aula 2 integradas aos textos, sem etiqueta de bloco.");
+
+
  if(exceptions.length)throw Error("Erros JavaScript: "+exceptions.join(" | "));
 } catch(error){failed=true;console.error(error)}
 finally{await browser.close()}

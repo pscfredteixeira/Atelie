@@ -734,6 +734,38 @@ async function run(){
       carousel.querySelector("[data-quiz-summary]").textContent!=="Você acertou 4 de 4 questões.")
       throw Error("Conclusão do quiz de quatro questões não foi reconhecida.");
  });
+
+ await check("Sprint 16: títulos de seção ficam juntos ao conteúdo, sem rótulos técnicos",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-freud-nascimento-psicanalise");
+   const host=document.createElement("div");
+   host.className="reader";
+   host.style.cssText="position:absolute;left:-99999px;top:0;width:780px";
+   host.innerHTML=renderLessonBlocks(lesson);
+   document.body.append(host);
+   const original=getTheme();
+   try{
+     const sections=[...host.querySelectorAll('.lesson-block[data-block-type="heading"]')];
+     if(sections.length!==6)throw Error("A Aula 2 deve ter seis seções de estudo.");
+     for(const mode of ["dark","light"]){
+       applyTheme(mode,{persist:false});
+       for(const section of sections){
+         const next=section.nextElementSibling;
+         if(!next?.classList.contains("lesson-block"))throw Error("Seção sem conteúdo depois do título.");
+         if(getComputedStyle(section.querySelector(".block-kicker")).display!=="none")
+           throw Error("Rótulo de seção isolado aparece no tema "+mode);
+         if(getComputedStyle(next).borderTopWidth!=="0px")
+           throw Error("Separação visual excessiva entre seção e conteúdo no tema "+mode);
+         if(next.querySelector(":scope > .block-kicker")&&
+            getComputedStyle(next.querySelector(":scope > .block-kicker")).display!=="none")
+           throw Error("Rótulo técnico interrompe o início da seção.");
+         const gap=parseFloat(getComputedStyle(section).paddingBottom)+parseFloat(getComputedStyle(next).paddingTop);
+         if(gap>20)throw Error("A seção continua afastada do primeiro texto.");
+       }
+     }
+     if(!getLessonOutline(lesson).some(item=>item.label==="1. O cenário médico do fim do século XIX"))
+       throw Error("O título da seção desapareceu do índice.");
+   }finally{applyTheme(original,{persist:false});host.remove();}
+ });
  result.forEach(r=>{
    const li=document.createElement("li");
    li.textContent=(r.ok?"OK — ":"FALHA — ")+r.label+(r.message?" ("+r.message+")":"");

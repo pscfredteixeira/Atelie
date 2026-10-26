@@ -441,3 +441,36 @@ html[data-theme="light"] .quiz-carousel-slide .learning-feedback[data-result="co
   background:#388a5c;
   color:#fff;
 }
+
+
+/* Sprint 16 · revisão de leitura — seções de aula não são cartões soltos.
+   Une visualmente um título editorial ao primeiro bloco de conteúdo seguinte.
+   Mantém os IDs e o índice acessível; não altera HTML ou histórico de estudos. */
+.reader .lesson-block[data-block-type="heading"] {
+  padding:32px 0 0;
+  border-top:1px solid var(--lesson-stroke);
+}
+.reader .lesson-block[data-block-type="heading"] > .block-kicker {
+  display:none;
+}
+.reader .lesson-block[data-block-type="heading"] > h3 {
+  font-size:clamp(25px,3vw,33px);
+  line-height:1.27;
+  margin:0;
+  color:var(--lesson-ink);
+}
+.reader .lesson-block[data-block-type="heading"] + .lesson-block:not([data-block-type="heading"]) {
+  border-top:0;
+  padding-top:9px;
+}
+.reader .lesson-block[data-block-type="heading"] + .lesson-block:not([data-block-type="heading"]) > .block-kicker {
+  display:none;
+}
+.reader .lesson-block[data-block-type="heading"] + .lesson-block[data-block-type="rich_text"] > h3 {
+  margin-top:4px;
+  font-size:clamp(20px,2.3vw,25px);
+}
+@media(max-width:740px){
+  .reader .lesson-block[data-block-type="heading"]{padding-top:27px}
+  .reader .lesson-block[data-block-type="heading"] + .lesson-block:not([data-block-type="heading"]){padding-top:7px}
+}
