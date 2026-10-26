@@ -87,7 +87,7 @@ export function renderAccessScreen(profiles,{activeRole=null,requestedPath="/"}=
    '</button>';
  }).join("");
  return '<div class="access-page"><div class="access-wrap">'+
-   '<header class="access-header"><span class="access-brand">Atelier<span>.</span></span>'+
+   '<header class="access-header"><span class="access-brand">Ateliê<span>.</span></span>'+
    '<div class="access-header-controls"><span class="access-header-tag">LABORATÓRIO DE PSICANÁLISE · DEMONSTRAÇÃO</span>'+
    themeToggleHTML()+'</div></header>'+
    '<section class="access-hero" aria-labelledby="access-title">'+

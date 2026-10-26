@@ -74,7 +74,7 @@ function anchor(item, selected) {
 function sidebar(path,menus,outline,focusedArea,selectedIds) {
   const active = selectedNav(path);
   return '<aside class="sidebar'+(isMenuOpen?' is-open':'')+'" id="sidebar" aria-label="Navegação principal">'+
-  '<a href="'+e("#"+homeForRole(getDemoRole()))+'" class="brand">Atelier<span class="brand-dot">.</span></a>'+
+  '<a href="'+e("#"+homeForRole(getDemoRole()))+'" class="brand">Ateliê<span class="brand-dot">.</span></a>'+
   '<div class="brand-sub">Laboratório de psicanálise</div><nav aria-label="Ambientes do Atelier">'+
   navGroups.filter(g=>g.name===(getDemoRole()==="aluno"?"Aprender":getDemoRole()==="professor"?"Criar":"Organizar")).map(g=>'<span class="nav-caption">'+e(g.name)+'</span><div class="nav-group">'+g.links.map(x=>anchor(x,active)).join('')+
     (g.name==="Aprender"?
@@ -84,7 +84,7 @@ function sidebar(path,menus,outline,focusedArea,selectedIds) {
       coursePicker("teacher",path,menus.teacher,"sidebar",selectedIds.teacher)+
       (focusedArea==="teacher"?courseOutline("teacher",outline,window.location.hash):""):"")+
     '</div>').join('')+
-  '</nav><div class="sidebar-foot">Atelier · Acesso demonstrativo.<br>Sem senha real ou sincronização entre aparelhos.<br>'+
+  '</nav><div class="sidebar-foot">Ateliê · Acesso demonstrativo.<br>Sem senha real ou sincronização entre aparelhos.<br>'+
   '<button type="button" class="access-sidebar-exit" data-access-logout>Sair deste perfil ↗</button><br>'+
   '<a href="./wireframes.html">Wireframes anteriores ↗</a></div></aside>';
 }
@@ -194,7 +194,7 @@ async function render(moveFocus) {
   app.innerHTML = '<div class="shell">'+sidebar(path,menus,outline,focusedArea,selectedIds)+
     '<div class="workarea">'+topbar+
     '<main class="main" id="main-content" tabindex="-1"><div class="viewport">'+page.html+'</div>'+
-    '<footer class="footer"><span>Atelier. · Beta JSON · Sprint 15</span><span>'+
+    '<footer class="footer"><span>Ateliê · Plataforma de aprendizagem</span><span>'+
     '<a href="./arquitetura.html">Mapa original</a> · <a href="./wireframes.html">Wireframes</a> · '+
     '<a href="https://github.com/pscfredteixeira/Atelie" target="_blank" rel="noopener noreferrer">Código no GitHub ↗</a></span></footer></main></div>'+
     '</div>'+bottomMenu(path)+(isMenuOpen?'<button class="sidebar-shade" id="sidebar-shade" type="button" aria-label="Fechar navegação"></button>':'');

@@ -17,11 +17,17 @@ const routeEdit=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)+"/
 const routePreview=(cid,lid)=>routeManage(cid)+"/aulas/"+encodeURIComponent(lid)+"/previa";
 const info=()=>note("<strong>Como os cursos funcionam:</strong> os cursos do GitHub são públicos; os cursos criados e disponibilizados nesta plataforma aparecem somente neste navegador. Não há contas reais nem sincronização entre dispositivos.");
 function metrics(items){return '<div class="metrics">'+items.map(([count,title])=>'<div class="metric"><strong>'+e(count)+'</strong><span>'+e(title)+'</span></div>').join('')+'</div>';}
-function courseCard(item){
-  return card((item.icon?item.icon+" · ":"")+(item.local?"Criado neste dispositivo":"Curso do catálogo público"),item.title,
-    (item.summary||"Abra a apresentação e percorra as aulas na ordem proposta.")+
-    (item.local?" · Disponível somente neste navegador.":""),
-    action("Conhecer o curso →",routeCourse(item.id),"small"));
+function courseCard(item,index=0){
+  const number=String(index+1).padStart(2,"0");
+  const href=routeCourse(item.id);
+  return '<article class="course-tile course-tile--'+(index%3+1)+'">'+
+    '<a class="course-tile-link" href="'+e(href)+'" aria-label="Conhecer o curso '+e(item.title)+'">'+
+    '<div class="course-tile-art" aria-hidden="true"><span class="course-art-ring"></span>'+
+    '<span class="course-art-glyph">'+e(item.icon||"ψ")+'</span></div>'+
+    '<div class="course-tile-body"><span class="course-tile-count">'+number+' <span>· CURSO</span></span>'+
+    '<h3>'+e(item.title)+'</h3>'+
+    '<p>'+e(item.summary||"Explore um percurso de leituras e atividades em psicanálise.")+'</p>'+
+    '<span class="course-tile-cta">Conhecer o curso <span aria-hidden="true">↗</span></span></div></a></article>';
 }
 function courseHeader(course){
  return pageHead("Curso / Formação",e(course.title),course.subtitle||course.description||"Percurso de estudo e pesquisa.");
@@ -45,21 +51,41 @@ function modules(course,teacher=false,currentLessonId=null){
 }
 async function studentHome(){
  const list=await learnerContentRepository.listPublishedCourses();
- return pageHead("Atelier · Aprender","Um laboratório de <em>ideias.</em>",
- "Cada percurso une leitura, investigação e reflexão. Estamos construindo uma plataforma para aprender psicanálise com profundidade.")+
- (list.length?'<section class="illustrated"><div><div class="overline">Conheça o primeiro percurso</div><h2>'+e(list[0].title)+'</h2>'+
-   '<p>Conheça a sequência de aulas do curso. Os conteúdos em preparação serão desenvolvidos no Estúdio do professor.</p>'+
-   action("Conhecer o curso →",routeCourse(list[0].id),"action")+
-   '</div><div class="illustrated-symbol" aria-hidden="true">ψ</div></section>':
-   emptyState("Ainda não há cursos publicados","O catálogo receberá cursos conforme forem revisados e publicados."))+
- sectionHead("Biblioteca de cursos",badge(list.length+" curso(s)","purple"))+
- (list.length?'<div class="grid">'+list.map(courseCard).join('')+'</div>':'')+info();
+ const first=list[0];
+ const hero='<section class="home-hero" aria-labelledby="atelier-home-title">'+
+   '<div class="home-hero-copy">'+
+   '<span class="home-kicker">CONHECIMENTO, ESCUTA E EXPERIÊNCIA</span>'+
+   '<h1 id="atelier-home-title">Um laboratório de ideias <em>para aprender psicanálise.</em></h1>'+
+   '<p>Estude no seu ritmo. Leia, questione e construa seu próprio percurso de investigação e reflexão.</p>'+
+   '<div class="home-hero-actions">'+
+   action("Explorar os cursos →","#/cursos","action")+
+   action("Abrir meu caderno","#/aluno/caderno","quiet")+
+   '</div></div>'+
+   '<div class="home-hero-art" aria-hidden="true"></div></section>';
+ const featured=first?
+   '<section class="featured-course" aria-label="Curso em destaque">'+
+   '<div class="featured-course-art" aria-hidden="true"><span>ψ</span></div>'+
+   '<div class="featured-course-copy"><span class="overline">CURSO EM DESTAQUE</span>'+
+   '<h2>'+e(first.title)+'</h2>'+
+   '<p>'+e(first.summary||"Um percurso de estudo para investigar a psicanálise.")+'</p>'+
+   '<span class="featured-course-meta">Aulas · Leitura · Atividades</span></div>'+
+   '<div class="featured-course-action">'+action("Conhecer o percurso →",routeCourse(first.id),"action")+'</div></section>':
+   emptyState("Ainda não há cursos publicados","O catálogo receberá cursos conforme forem revisados e publicados.");
+ return '<div class="learning-home">'+hero+featured+
+   sectionHead("Nossos cursos",action("Ver todos os cursos →","#/cursos","quiet small"))+
+   (list.length?'<div class="course-gallery">'+list.map((course,i)=>courseCard(course,i)).join('')+'</div>':'')+
+   '<div class="home-tools"><div><span class="overline">SEU ESPAÇO DE ESTUDOS</span>'+
+   '<h2>Suas ideias também fazem parte do percurso.</h2>'+
+   '<p>Retome suas anotações ou consulte o andamento das aulas estudadas neste dispositivo.</p></div>'+
+   '<div class="button-row">'+action("Meu caderno →","#/aluno/caderno","small")+
+   action("Meu progresso →","#/aluno/progresso","small")+'</div></div>'+
+   info()+'</div>';
 }
 async function catalog(){
  const list=await learnerContentRepository.listPublishedCourses();
  return pageHead("Aprender / Cursos","O que você deseja <em>investigar?</em>",
  "Explore tanto os cursos públicos quanto os cursos que você criou e disponibilizou neste dispositivo.")+
- (list.length?'<div class="grid">'+list.map(courseCard).join('')+'</div>':
+ (list.length?'<div class="course-gallery">'+list.map((course,i)=>courseCard(course,i)).join('')+'</div>':
  emptyState("Nenhum curso disponível","A biblioteca ainda está sendo preparada.",
  action("Voltar ao início →","#/aluno","action")))+info();
 }

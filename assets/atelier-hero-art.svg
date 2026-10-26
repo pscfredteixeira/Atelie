@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 510" role="img" aria-label="Arte abstrata em lavanda">
+<defs>
+ <radialGradient id="halo" cx="52%" cy="45%"><stop offset="0" stop-color="#d4afe9" stop-opacity=".34"/><stop offset=".58" stop-color="#9c69c3" stop-opacity=".15"/><stop offset="1" stop-color="#27162e" stop-opacity="0"/></radialGradient>
+ <linearGradient id="bust" x1="0" x2="1" y1="0" y2=".8"><stop stop-color="#c7abd8" stop-opacity=".55"/><stop offset=".5" stop-color="#705181" stop-opacity=".7"/><stop offset="1" stop-color="#281a37" stop-opacity=".6"/></linearGradient>
+ <linearGradient id="sleeve" x1="0" x2="1"><stop stop-color="#88729f" stop-opacity=".46"/><stop offset="1" stop-color="#342339" stop-opacity=".8"/></linearGradient>
+</defs>
+<ellipse cx="427" cy="245" rx="260" ry="260" fill="url(#halo)"/>
+<g fill="none" stroke="#cda8eb" stroke-opacity=".49" stroke-width="1.4">
+ <ellipse cx="415" cy="215" rx="212" ry="282" transform="rotate(25 415 215)"/>
+ <ellipse cx="486" cy="240" rx="204" ry="300" transform="rotate(52 486 240)"/>
+ <ellipse cx="474" cy="252" rx="165" ry="253" transform="rotate(-15 474 252)"/>
+ <path d="M158 399C274 206 402 194 692 210" stroke-opacity=".3"/>
+</g>
+<path d="M380 421c-29-30-42-68-35-116l-13-37-4-51c4-45 22-90 62-112 43-24 112-17 153 16 37 28 62 82 52 133l-14 36 7 28-22 44 9 69z" fill="url(#bust)" opacity=".84"/>
+<path d="M352 191c-2-71 57-132 123-130 58-1 116 45 132 112-21-24-46-37-77-34-48-12-95 6-128 39-16 11-33 17-50 13z" fill="#2e233e" fill-opacity=".75"/>
+<path d="M540 181c14 27 17 58 7 74l-9 25c9 17 13 31-2 41-13 6-31 5-45 9l7 20c-18 27-44 39-77 30l-13-36c-32-2-45-23-43-49l-7-40" fill="none" stroke="#f8e4ff" stroke-opacity=".33" stroke-width="3"/>
+<path d="M452 276c19-10 42-9 60 2M497 319c-20 6-38 5-52-3" stroke="#e8c8ed" stroke-opacity=".42" stroke-width="3" fill="none"/>
+<path d="M323 487c13-60 58-113 121-115 27 17 73 15 106-5 58 21 85 71 95 120" fill="url(#sleeve)" stroke="#c19bd5" stroke-opacity=".29"/>
+<path d="M305 498c42-83 62-95 106-104M520 398c57 39 75 74 99 102" stroke="#e7bdef" stroke-opacity=".28" fill="none"/>
+</svg>
