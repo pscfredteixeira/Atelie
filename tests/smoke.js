@@ -57,7 +57,7 @@ async function run(){
       getCourseEntries(intro).filter(item=>!item.planned).length!==2 ||
       !getCourseEntries(freud).every(item=>item.planned))
      throw new Error("Status de publicação das aulas incorreto.");
-   const current=intro.modules[1].id;
+   const current=intro.modules[2].id;
    const introHtml=courseOutline("student",intro,"#/cursos/"+introId+"/aulas/"+current);
    const freudHtml=courseOutline("teacher",freud,"#/professor/cursos/"+freudId);
    if((introHtml.match(/class="course-tree-module"/g)||[]).length!==8||
@@ -184,6 +184,7 @@ async function run(){
    const old=structuredClone(course);
    old.status="draft";
    old.modules[0].lessons=[];
+   old.modules[1].lessons=[];
    old.modules[1].title="Título pessoal preservado";
    const original=JSON.stringify(old);
    const updated=mergePublishedLessons(old,course);
