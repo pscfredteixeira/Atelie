@@ -105,19 +105,28 @@ html[data-theme="light"] .button.action:hover{background:#7e3b1d}
 
 /* Dashboard editorial do aluno. */
 .learning-home{min-width:0}
-.home-hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:343px;padding:clamp(26px,3.8vw,49px);background:
- radial-gradient(ellipse 77% 120% at 110% 0%,#5a3a7645,transparent 70%),
- linear-gradient(128deg,#1c1629 4%,#171420 70%,#25172e);
- border:1px solid #5d4969;border-radius:19px;isolation:isolate}
-.home-hero-copy{position:relative;z-index:2;max-width:680px;width:69%}
+.home-hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:343px;padding:clamp(26px,3.8vw,49px);background:linear-gradient(120deg,#1a1522,#191421 63%,#30213b);
+ border:1px solid #4b3a56;border-radius:16px;isolation:isolate}
+.home-hero-copy{position:relative;z-index:2;max-width:665px;width:68%;min-width:0}
 .home-kicker{display:block;color:#d8b3f2;font-size:10px;font-weight:800;letter-spacing:.23em;margin-bottom:18px}
-.home-hero h1{font:400 clamp(34px,4vw,54px)/1.11 var(--font-editorial);letter-spacing:-.038em;margin:0 0 18px;color:#fff7ff;max-width:675px}
+.home-hero h1{font:400 clamp(33px,3.55vw,50px)/1.13 var(--font-editorial);letter-spacing:-.038em;margin:0 0 18px;color:#fff7ff;max-width:675px}
 .home-hero h1 em{font-weight:400;font-style:normal;color:#e2c3f5}
 .home-hero p{font-size:14px;line-height:1.78;color:#d3c4d8;max-width:510px;margin:0}
 .home-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
 .home-hero-actions .button.quiet{color:#f3e7f6;border-color:#60516c}
-.home-hero-art{position:absolute;z-index:1;pointer-events:none;width:49%;height:100%;right:0;top:0;background:url("../../assets/atelier-hero-art.svg") center right / cover no-repeat;opacity:.93}
-.home-hero::after{position:absolute;content:"";inset:0;z-index:1;background:linear-gradient(90deg,#1c162900 50%,#1c16291c);pointer-events:none}
+.home-hero-art{position:absolute;z-index:1;pointer-events:none;inset:0 0 0 auto;width:43%;
+ overflow:hidden;background:linear-gradient(138deg,#292032,#17131e);
+ -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 23%);mask-image:linear-gradient(90deg,transparent 0%,#000 23%)}
+.home-portrait-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center 18%;
+ filter:grayscale(1) contrast(1.19) brightness(.72);opacity:.84}
+.home-hero-art::after{content:"";position:absolute;inset:0;background:
+ linear-gradient(90deg,#201727aa,transparent 55%),
+ linear-gradient(0deg,#1c152ac9,transparent 33%,#23172c36);pointer-events:none}
+.home-portrait-caption{position:absolute;right:25px;bottom:18px;z-index:1;color:#e3d3e8;
+ font:700 9px/1.3 var(--font-ui);letter-spacing:.19em;text-shadow:0 2px 12px #0009}
+.home-hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+ background:linear-gradient(90deg,transparent 60%,#1a14210a)}
+
 .featured-course{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr) auto;gap:24px;align-items:center;padding:18px;margin-top:18px;background:linear-gradient(105deg,#34243f,#2b203a 64%,#241d31);border:1px solid #654c73;border-radius:15px;color:#fff}
 .featured-course-art{height:145px;border-radius:11px;display:grid;place-items:center;overflow:hidden;background:
  radial-gradient(circle at 85% 15%,#b48cda70,transparent 48%),
@@ -208,7 +217,7 @@ html[data-theme="light"] .button.action:hover{background:#7e3b1d}
  .home-hero-art{right:-7%;width:59%;opacity:.65}
  .course-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
  .home-tools{flex-direction:column;align-items:flex-start}
- .reading-layout{grid-template-columns:1fr}
+ .reading-layout{grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:740px){
  .shell{display:block;padding-bottom:calc(65px + env(safe-area-inset-bottom))}
@@ -220,8 +229,10 @@ html[data-theme="light"] .button.action:hover{background:#7e3b1d}
  .home-hero{min-height:360px;padding:28px 25px;align-items:flex-start}
  .home-hero-copy{width:100%}
  .home-hero h1{font-size:clamp(35px,9vw,47px);max-width:540px}
- .home-hero-art{width:100%;height:77%;right:-23%;top:23%;opacity:.23}
- .home-hero::after{background:linear-gradient(90deg,#18131eba,transparent)}
+ .home-hero-art{width:80%;height:100%;right:-25%;top:0;opacity:.22}
+ .home-hero-art::after{background:linear-gradient(90deg,#18131b94,transparent)}
+ .home-portrait-caption{display:none}
+ .home-hero::after{background:linear-gradient(90deg,#18131ba3 0%,transparent 86%)}
  .home-hero p{font-size:13px}
  .home-hero-actions{gap:9px;margin-top:23px}
  .featured-course{grid-template-columns:92px minmax(0,1fr);gap:14px;padding:13px}
@@ -256,4 +267,21 @@ html[data-theme="light"] .button.action:hover{background:#7e3b1d}
 @media(prefers-reduced-motion:reduce){
  .button,.course-tile{transition:none}
  .button:hover,.course-tile:hover{transform:none}
+}
+/* Sprint 17.1: composição editorial e prevenção de transbordamento. */
+html,body,#app,.shell,.workarea,.main,.viewport{max-width:100%}
+.workarea,.viewport,.reading-layout,.reader,.reader-inner,.lesson-block,.topbar{min-width:0}
+@media(max-width:980px){
+ .reading-layout{grid-template-columns:minmax(0,1fr)}
+ .home-hero-copy{width:75%}
+ .home-hero-art{width:48%;right:0;opacity:.7}
+}
+@media(max-width:740px){
+ .reading-layout{grid-template-columns:minmax(0,1fr)}
+ .workarea,.topbar,.main,.viewport{width:100%;min-width:0}
+ .home-hero-copy{width:100%}
+ .home-hero-art{width:85%;right:-24%;opacity:.19}
+ .home-hero-art::after{background:linear-gradient(90deg,#18131bc0,transparent)}
+ .home-hero h1{font-size:clamp(33px,8.8vw,45px)}
+ .home-hero{min-height:320px}
 }

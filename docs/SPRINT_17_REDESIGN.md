@@ -22,3 +22,10 @@ A nova folha `src/styles/redesign.css` é carregada **após** `atelier.css` e `t
 
 ## Conferência necessária
 Revisar visualmente em navegador real nos perfis Aluno, Professor e Administração, temas claro/escuro e larguras de 390 px, 768 px e desktop. Validar interações de quiz, caderno, rascunho e recuperação após atualização. Não houve execução de testes de navegador nesta alteração.
+
+## Revisão visual 17.1
+- Removido o rosto geométrico e os anéis sobrepostos da capa, considerados artificiais na revisão.
+- Capa usa agora uma fotografia documental de Sigmund Freud feita por Max Halberstadt (circa 1921), em domínio público segundo Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Sigmund_Freud,_by_Max_Halberstadt.jpg
+- A imagem é servida externamente pelo Wikimedia Commons, com fundo degradê de reserva caso ela não carregue.
+- Refinados largura da área de texto e visibilidade do retrato por tamanho de tela.
+- Revertida grade min-width implícita na leitura móvel: `minmax(0,1fr)`.

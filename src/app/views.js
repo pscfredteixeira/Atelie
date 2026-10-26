@@ -61,7 +61,10 @@ async function studentHome(){
    action("Explorar os cursos →","#/cursos","action")+
    action("Abrir meu caderno","#/aluno/caderno","quiet")+
    '</div></div>'+
-   '<div class="home-hero-art" aria-hidden="true"></div></section>';
+   '<div class="home-hero-art" aria-hidden="true"><img class="home-portrait-image" '+
+   'src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Sigmund_Freud%2C_by_Max_Halberstadt.jpg/500px-Sigmund_Freud%2C_by_Max_Halberstadt.jpg" '+
+   'alt="" loading="eager" decoding="async" referrerpolicy="no-referrer">'+
+   '<span class="home-portrait-caption">SIGMUND FREUD · 1921</span></div></section>';
  const featured=first?
    '<section class="featured-course" aria-label="Curso em destaque">'+
    '<div class="featured-course-art" aria-hidden="true"><span>ψ</span></div>'+

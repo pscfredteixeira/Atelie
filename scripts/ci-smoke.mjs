@@ -28,6 +28,21 @@ try{
  console.log("OK — Navegação, numeração do programa e largura mobile.");
 
  // Sprint 16 — a segunda aula precisa estar publicada e acessível pelo fluxo real.
+ // Sprint 17.1 — hero novo e nenhuma rolagem horizontal, mesmo em 390px.
+ await page.goto(base+"/#/aluno",{waitUntil:"domcontentloaded"});
+ await page.locator(".home-hero").waitFor({timeout:30000});
+ if(await page.locator(".home-portrait-image").count()!==1)
+  throw Error("Redesign: retrato editorial do hero não foi inserido.");
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2))
+  throw Error("Redesign: a página inicial tem rolagem horizontal em 390px.");
+ console.log("OK — Novo hero editorial e home responsiva.");
+
+ await page.goto(base+"/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise",{waitUntil:"domcontentloaded"});
+ await page.locator("[data-quiz-carousel]").waitFor({timeout:30000});
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2))
+  throw Error("Redesign: a leitura tem rolagem horizontal em 390px.");
+ console.log("OK — Sala de aula responsiva em 390px.");
+
  const nextLesson=page.locator('a.journey-pager-link[href="#/cursos/curso-introducao-psicanalise/aulas/aula-freud-nascimento-psicanalise"]');
  await nextLesson.waitFor({timeout:15000});
  await nextLesson.click();
