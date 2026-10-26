@@ -1,7 +1,7 @@
 import {contentRepository} from "../src/repositories/content-repository.js";
 import {validateLesson,validateLessonLink} from "../src/repositories/validators.js";
 import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
-import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js?build=quiz-integrado-20261015-v1";
+import {renderLessonBlocks,getLessonOutline,listRegisteredBlocks} from "../src/lesson-engine/engine.js?build=secoes-pedagogicas-20261026-v1";
 import {getCourseJourney,getLessonContext,summarizeCourse} from "../src/features/learning/journey.js";
 import {getCourseEntries,isValidCourseSectionId,summarizeLearningProgress} from "../src/features/learning/course-entries.js?build=sprint15-20261015";
 import {createCourse,startCourseDraft,applyCourseChange,createCatalogEntry,mergePublishedLessons} from "../src/features/authoring/course-editor.js?build=fix-importacao-20261015-v3";
@@ -735,7 +735,7 @@ async function run(){
       throw Error("Conclusão do quiz de quatro questões não foi reconhecida.");
  });
 
- await check("Sprint 16: títulos de seção ficam juntos ao conteúdo, sem rótulos técnicos",async()=>{
+ await check("Seções numeradas da Aula 2 ficam junto ao conteúdo nos dois temas",async()=>{
    const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-freud-nascimento-psicanalise");
    const host=document.createElement("div");
    host.className="reader";
@@ -748,11 +748,13 @@ async function run(){
      if(sections.length!==6)throw Error("A Aula 2 deve ter seis seções de estudo.");
      for(const mode of ["dark","light"]){
        applyTheme(mode,{persist:false});
-       for(const section of sections){
+       for(const [index,section] of sections.entries()){
          const next=section.nextElementSibling;
          if(!next?.classList.contains("lesson-block"))throw Error("Seção sem conteúdo depois do título.");
-         if(getComputedStyle(section.querySelector(".block-kicker")).display!=="none")
-           throw Error("Rótulo de seção isolado aparece no tema "+mode);
+         const kicker=section.querySelector(":scope > .block-kicker-section");
+         if(!kicker||kicker.textContent.trim()!=="SEÇÃO "+(index+1)+" DE 6"||
+            getComputedStyle(kicker).display==="none")
+           throw Error("Numeração pedagógica não aparece no tema "+mode);
          if(getComputedStyle(next).borderTopWidth!=="0px")
            throw Error("Separação visual excessiva entre seção e conteúdo no tema "+mode);
          if(next.querySelector(":scope > .block-kicker")&&
@@ -762,9 +764,34 @@ async function run(){
          if(gap>20)throw Error("A seção continua afastada do primeiro texto.");
        }
      }
-     if(!getLessonOutline(lesson).some(item=>item.label==="1. O cenário médico do fim do século XIX"))
+     if(sections[0].querySelector(":scope > h3")?.textContent!=="O cenário médico do fim do século XIX")
+       throw Error("Título exibe o número duas vezes.");
+     if(!getLessonOutline(lesson).some(item=>item.label==="O cenário médico do fim do século XIX"))
        throw Error("O título da seção desapareceu do índice.");
    }finally{applyTheme(original,{persist:false});host.remove();}
+ });
+ await check("Seções da Aula 1 e de outras aulas usam contador independente do bloco",async()=>{
+   const {lesson:intro}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-o-que-e-psicanalise");
+   const markup=renderLessonBlocks(intro);
+   const root=document.createElement("div");root.innerHTML=markup;
+   const parts=[...root.querySelectorAll('.lesson-block[data-block-type="heading"]')];
+   if(parts.length!==5)throw Error("A Aula 1 perdeu seus cinco títulos.");
+   for(const [index,section] of parts.entries()){
+     const label=section.querySelector(".block-kicker-section")?.textContent.trim();
+     if(label!=="SEÇÃO "+(index+1)+" DE 5")
+       throw Error("Ordinal da seção segue a contagem dos blocos, não das seções.");
+   }
+   if(parts[0].querySelector("h3")?.textContent!=="Afinal, o que é psicanálise?")
+     throw Error("Numeração duplicada no título da Aula 1.");
+   if(intro.blocks.find(block=>block.type==="heading").data.text!=="1. Afinal, o que é psicanálise?")
+     throw Error("Texto original da aula foi modificado.");
+   const sample=structuredClone(intro);
+   sample.blocks=sample.blocks.filter(block=>block.type!=="heading").slice(0,3);
+   sample.blocks.splice(1,0,{id:"titulo-adicionado",type:"heading",version:1,
+     data:{text:"Por que escutar?"},settings:{}});
+   const snapshot=renderLessonBlocks(sample);
+   if(!snapshot.includes("SEÇÃO 1 DE 1")||!snapshot.includes("Por que escutar?"))
+     throw Error("Uma aula criada pelo professor não é numerada automaticamente.");
  });
  result.forEach(r=>{
    const li=document.createElement("li");

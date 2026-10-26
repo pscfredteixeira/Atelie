@@ -24,15 +24,26 @@ function organizedLessonBlocks(lesson){
  ordered.splice(insertAt,0,{quizzes});
  return ordered;
 }
+// O ordinal da seção pertence à leitura, não ao ID técnico do bloco.
+// Os textos originais continuam intactos nos JSONs e nos rascunhos do professor.
+function readingHeadingData(block,ordinal){
+ if(block?.type!=="heading"||typeof block.data?.text!=="string")return block.data;
+ const text=block.data.text;
+ const match=text.match(/^\s*(\d+)[.)]\s+/);
+ if(!match||Number(match[1])!==ordinal)return block.data;
+ return {...block.data,text:text.slice(match[0].length)};
+}
 export function getLessonOutline(lesson){
+ let sectionOrdinal=0;
  return organizedLessonBlocks(lesson).flatMap(entry=>{
    if(entry.quizzes)return [{id:QUIZ_GROUP_ID,label:QUIZ_GROUP_LABEL,type:"quiz_group"}];
    const b=entry.block;
+   const sectionData=b.type==="heading"?readingHeadingData(b,++sectionOrdinal):b.data;
    if(b.settings?.showInOutline===false)return [];
    const definition=getBlockRenderer(b.type,b.version);
    let title=definition?.label||"Bloco não disponível";
    if(definition?.outline){
-     try{title=definition.outline(b.data,{lesson})||title}catch{/* preserve safe label */}
+     try{title=definition.outline(sectionData,{lesson})||title}catch{/* preserve safe label */}
    }
    return [{id:"bloco-"+b.id,label:String(title),type:b.type}];
  });
@@ -40,25 +51,32 @@ export function getLessonOutline(lesson){
 export function renderLessonBlocks(lesson,{sourceURL}={}){
  if(!lesson||!Array.isArray(lesson.blocks))return unavailable("aula","Nenhuma estrutura de aula foi encontrada.");
  const context={lesson,sourceURL};
- return organizedLessonBlocks(lesson).map((entry,i)=>{
+ const ordered=organizedLessonBlocks(lesson);
+ const totalSections=ordered.filter(entry=>entry.block?.type==="heading").length;
+ let sectionOrdinal=0;
+ return ordered.map((entry,i)=>{
    if(entry.quizzes)return renderQuizCarousel(entry.quizzes);
    const b=entry.block;
-   const label=String(i+1).padStart(2,"0");
+   const isSection=b.type==="heading";
+   const data=isSection?readingHeadingData(b,++sectionOrdinal):b.data;
    const definition=getBlockRenderer(b.type,b.version);
    let inside="";
    if(!definition)inside=unavailable(b.type,
      "Este bloco precisa de um componente ou versão ainda não instalada.");
    else{
-     try{inside=definition.render(b.data,context)||unavailable(b.type,"O bloco ainda não possui conteúdo.");}
+     try{inside=definition.render(data,context)||unavailable(b.type,"O bloco ainda não possui conteúdo.");}
      catch(err){
        console.warn("Atelier: falha ao renderizar bloco",b.id,err);
        inside=unavailable(b.type,"Não foi possível apresentar este bloco. Os demais continuam disponíveis.");
      }
    }
    const featured=b.settings?.emphasis==="featured";
+   const kicker=isSection
+     ?'<span class="block-kicker block-kicker-section">SEÇÃO '+sectionOrdinal+' DE '+totalSections+'</span>'
+     :'<span class="block-kicker">'+String(i+1).padStart(2,"0")+' · '+e(definition?.label||"Bloco indisponível")+'</span>';
    return '<section class="lesson-block'+(featured?' lesson-featured':'')+
      '" id="bloco-'+e(b.id)+'" data-block-type="'+e(b.type)+'" data-block-id="'+e(b.id)+'" tabindex="-1">'+
-     '<span class="block-kicker">'+label+' · '+e(definition?.label||"Bloco indisponível")+'</span>'+inside+'</section>';
+     kicker+inside+'</section>';
  }).join("");
 }
 export {getBlockRenderer,getBlockLabel,listRegisteredBlocks,registerBlockRenderer};

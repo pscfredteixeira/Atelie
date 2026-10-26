@@ -4,6 +4,13 @@ Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da p
 
 > **Estado atual:** Sprint 16 com Aula 2 publicada; Sprint 15 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** a execução em navegadores reais, acessibilidade e testes com convidados ainda precisam ser conferidos.
 
+## Refinamento do Sprint 16 — seções pedagógicas
+
+- Títulos de seção aparecem com **SEÇÃO 1 DE 6**, **SEÇÃO 2 DE 6** etc., numerados por seção e não pelo índice técnico dos blocos.
+- O título exibido omite o numeral inicial redundante quando ele corresponde à posição da seção. O JSON original, o ID e os rascunhos permanecem intactos.
+- Índice, leitura publicada e prévia do Estúdio usam a mesma regra. As seções ficam ligadas visualmente ao primeiro texto; demais blocos não mudam.
+- Verificação nos dois temas, na Aula 1, na Aula 2 e em exemplo de nova aula.
+
 ## Sprint 16 — Aula 2 e jornada de aprendizagem
 
 - Curso **Introdução à Psicanálise** atualizado para duas aulas estudáveis e seis previstas, mantendo oito aulas no programa.

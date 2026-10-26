@@ -450,8 +450,15 @@ html[data-theme="light"] .quiz-carousel-slide .learning-feedback[data-result="co
   padding:32px 0 0;
   border-top:1px solid var(--lesson-stroke);
 }
-.reader .lesson-block[data-block-type="heading"] > .block-kicker {
-  display:none;
+.reader .lesson-block[data-block-type="heading"] > .block-kicker.block-kicker-section {
+  display:block;
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.12em;
+  line-height:1.4;
+  text-transform:uppercase;
 }
 .reader .lesson-block[data-block-type="heading"] > h3 {
   font-size:clamp(25px,3vw,33px);

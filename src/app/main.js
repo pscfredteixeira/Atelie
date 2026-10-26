@@ -1,4 +1,4 @@
-import {routeView} from "./views.js?build=sprint15-20261015";
+import {routeView} from "./views.js?build=secoes-pedagogicas-20261026-v1";
 import {isValidCourseSectionId} from "../features/learning/course-entries.js?build=sprint15-20261015";
 import {getPublishedLesson,getPublishedCourse} from "../repositories/content-repository.js";
 import {getCourseDraft,saveCourseDraft,deleteCourseDraft} from "../repositories/course-draft-repository.js";

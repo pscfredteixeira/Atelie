@@ -47,12 +47,17 @@ try{
  const together=await readingHeading.evaluate(node=>{
    const next=node.nextElementSibling;
    return Boolean(next&&next.classList.contains("lesson-block")&&
-      getComputedStyle(node.querySelector(".block-kicker")).display==="none"&&
+      node.querySelector(".block-kicker-section")?.textContent.trim()==="SEÇÃO 1 DE 6"&&
+      getComputedStyle(node.querySelector(".block-kicker-section")).display!=="none"&&
+      node.querySelector("h3")?.textContent.trim()==="O cenário médico do fim do século XIX"&&
       getComputedStyle(next).borderTopWidth==="0px"&&
       getComputedStyle(next.querySelector(".block-kicker")).display==="none");
  });
- if(!together)throw Error("O título 1. O cenário médico do fim do século XIX continua isolado.");
- console.log("OK — Seções da Aula 2 integradas aos textos, sem etiqueta de bloco.");
+ if(!together)throw Error("Seção inicial ainda está solta, sem rótulo claro ou com título duplicado.");
+ const allSections=await page.locator('.reader .lesson-block[data-block-type="heading"] .block-kicker-section').allTextContents();
+ if(allSections.length!==6||allSections[5].trim()!=="SEÇÃO 6 DE 6")
+   throw Error("A contagem das seis seções da Aula 2 está incorreta.");
+ console.log("OK — Seções da Aula 2: rótulos SEÇÃO X DE Y e título sem numeração dupla.");
 
 
  if(exceptions.length)throw Error("Erros JavaScript: "+exceptions.join(" | "));
