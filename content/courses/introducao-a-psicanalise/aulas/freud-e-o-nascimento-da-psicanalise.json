@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-freud-nascimento-psicanalise",
+  "courseId": "curso-introducao-psicanalise",
+  "moduleId": "modulo-introducao-a-psicanalise-02",
+  "slug": "freud-e-o-nascimento-da-psicanalise",
+  "revision": 1,
+  "status": "published",
+  "title": "Freud e o nascimento da psicanálise",
+  "summary": "Conheça o contexto médico do fim do século XIX, Charcot, Breuer, o método catártico e a passagem gradual para a associação livre — com atenção aos limites históricos.",
+  "estimatedMinutes": 45,
+  "objectives": [
+    "Situar as origens da psicanálise no ambiente médico e científico do fim do século XIX.",
+    "Distinguir as contribuições de Charcot, Breuer e Freud sem atribuir a um só autor o trabalho de todos.",
+    "Explicar o caráter gradual da passagem de hipnose e método catártico à associação livre.",
+    "Reconhecer que a categoria histórica “histeria” não equivale automaticamente a um diagnóstico atual.",
+    "Avaliar criticamente afirmações sobre técnicas, casos e evidências históricas."
+  ],
+  "blocks": [
+    {
+      "id": "origens-abertura",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Como um médico interessado no sistema nervoso chegou à ideia de que falar e escutar poderiam fazer parte de um tratamento?",
+        "hint": "Nesta aula, a resposta não será uma descoberta repentina: acompanhe mudanças de hipóteses, pessoas, técnicas e perguntas."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-contexto",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Antes da psicanálise, havia perguntas clínicas",
+        "paragraphs": [
+          "Imagine uma consulta médica em Viena no fim do século XIX. Uma pessoa relata dificuldades físicas reais, mas os instrumentos e explicações disponíveis não permitem compreender satisfatoriamente seu quadro. O que o profissional deveria investigar? E como escutar seu relato sem desconsiderar seu sofrimento?",
+          "Sigmund Freud começou sua carreira como médico e pesquisador do sistema nervoso. A psicanálise não nasceu pronta: desenvolveu-se ao longo de sua passagem por práticas neurológicas e clínicas então existentes, por diálogos com outros pesquisadores e pelo trabalho com pessoas que buscavam tratamento.",
+          "Estudaremos uma história situada no tempo, não um mito do gênio que descobre sozinho uma verdade definitiva. Tratamentos, categorias e explicações do século XIX precisam ser examinados criticamente."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-parte-1",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "1. O cenário médico do fim do século XIX"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-histeria",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O que significava “histeria” naquele contexto?",
+        "paragraphs": [
+          "Na medicina europeia da época, “histeria” designava um conjunto heterogêneo de manifestações, entre elas alterações de movimento, sensibilidade ou fala que os médicos da época nem sempre explicavam por lesões identificáveis. O termo reunia fenômenos diferentes e carregava pressupostos históricos, inclusive sobre gênero.",
+          "Não se deve converter automaticamente aquela categoria em um diagnóstico contemporâneo, nem concluir que a ausência de uma lesão identificada significava que o sofrimento era inventado. Pessoas podem apresentar sintomas reais cuja avaliação exige prudência e investigação.",
+          "Para compreender a origem da psicanálise, o importante é perceber o problema enfrentado por médicos da época: de que modo experiências, lembranças, afetos e palavras poderiam se relacionar com sintomas?"
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-conceito-historico",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Categoria histórica, não diagnóstico atual",
+        "definition": "“Histeria” é aqui o nome utilizado em textos e práticas dos séculos XIX e XX iniciais. Os conhecimentos, os critérios diagnósticos e a atenção às condições sociais e de gênero mudaram desde então.",
+        "example": "Ao ler um relato de 1895, procure compreender o vocabulário e as hipóteses daquele momento em vez de atribuir automaticamente o mesmo diagnóstico a alguém hoje."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "origens-parte-2",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "2. Charcot: um encontro decisivo, não uma descoberta pronta"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-charcot",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O que Freud encontrou na Salpêtrière?",
+        "paragraphs": [
+          "Entre 1885 e 1886, Freud estudou em Paris com o neurologista Jean-Martin Charcot, na Salpêtrière. Charcot investigava manifestações clínicas então classificadas como histéricas e utilizava a hipnose, inclusive em demonstrações públicas.",
+          "Essas experiências ajudaram a questionar explicações estritamente anatômicas para alguns sintomas e chamaram a atenção de Freud para a relação entre fenômenos psíquicos e corporais. Isso não significa que Charcot tivesse desenvolvido a psicanálise, nem que suas demonstrações constituíssem, por si, evidência conclusiva dos mecanismos postulados mais tarde por Freud.",
+          "É importante lembrar que as demonstrações tinham também um caráter espetacular e podem ser estudadas criticamente: a posição de autoridade do médico, as expectativas da plateia e a experiência das pessoas examinadas fazem parte dessa história."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-conceito-hipnose",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Hipnose e sugestão",
+        "definition": "A hipnose foi uma das técnicas investigadas por médicos no período e podia envolver estados de atenção e respostas à sugestão. Na história de Freud, ela é uma etapa das experimentações clínicas anteriores à consolidação da associação livre.",
+        "example": "Uma demonstração de sugestão hipnótica não prova uma teoria universal sobre sintomas; mostra como, naquele contexto, certos pesquisadores formularam novas perguntas."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "origens-parte-3",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "3. Breuer e as primeiras experiências com a fala"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-breuer",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Por que Josef Breuer aparece nessa história?",
+        "paragraphs": [
+          "Josef Breuer, médico de Viena, havia trabalhado com uma paciente apresentada na literatura como “Anna O.”. Esse tratamento ocorreu antes da publicação de Estudos sobre a histeria e tornou-se uma referência fundamental na discussão sobre lembranças, afetos e expressão verbal.",
+          "Um cuidado histórico: Anna O. foi paciente de Breuer, não de Freud. O tratamento não deve ser descrito como uma cura definitiva ou uma confirmação incontestável das explicações apresentadas no livro.",
+          "Freud e Breuer publicaram em 1895 Estudos sobre a histeria, reunindo relatos clínicos e propondo hipóteses sobre a relação entre experiências, emoções e sintomas. Ambos participaram dessa etapa, mas suas explicações e seus caminhos de investigação não permaneceriam idênticos."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-conceito-catartico",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Método catártico",
+        "definition": "Nome associado às primeiras tentativas de relacionar sintomas a experiências lembradas e à expressão de afetos, frequentemente com apoio de procedimentos hipnóticos. É uma etapa histórica de pesquisa e tratamento, não a descrição integral da técnica psicanalítica posterior.",
+        "example": "Recordar e expressar um episódio durante uma intervenção é diferente de pressupor que toda dificuldade será resolvida por uma única lembrança."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "origens-comparacao",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Três contribuições, três ênfases",
+        "caption": "Síntese pedagógica do período; não substitui a leitura dos textos originais.",
+        "columns": [
+          "Questão de trabalho",
+          "Contribuição na história"
+        ],
+        "rows": [
+          {
+            "criterion": "Charcot",
+            "values": [
+              "Como investigar manifestações clínicas sem uma lesão identificável nas condições de estudo da época?",
+              "Estudos neurológicos, hipnose e demonstrações que influenciaram Freud."
+            ]
+          },
+          {
+            "criterion": "Breuer",
+            "values": [
+              "Como lembranças, afetos e relatos se articulam na experiência de um sintoma?",
+              "Trabalho clínico e método catártico, inclusive o caso apresentado como Anna O."
+            ]
+          },
+          {
+            "criterion": "Freud",
+            "values": [
+              "O que fazer quando uma explicação ou técnica não basta para a complexidade de um relato?",
+              "Revisão progressiva das técnicas e elaboração de novas hipóteses sobre conflitos e processos psíquicos."
+            ]
+          }
+        ]
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "origens-parte-4",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "4. Da hipnose à associação livre: uma passagem gradual"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-metodo",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Nem tudo mudou de uma vez",
+        "paragraphs": [
+          "Nos primeiros anos, Freud utilizou procedimentos variados: hipnose, sugestão e outras formas de estimular lembranças e relatos. Ele foi revendo suas técnicas e hipóteses conforme encontrava dificuldades e novas questões clínicas.",
+          "A associação livre foi ganhando importância: em lugar de depender de um estado hipnótico para buscar um acontecimento específico, a pessoa era convidada a dizer pensamentos, imagens e lembranças que lhe ocorressem, sem selecionar somente o que parecia lógico ou relevante.",
+          "Essa transição não ocorreu numa data única. Também não autorizava o analista a atribuir automaticamente um significado a cada palavra. A técnica envolve escuta, contexto, tempo e elaboração; não é adivinhação nem interrogatório."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-conceito-associacao",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Associação livre",
+        "definition": "Princípio técnico progressivamente desenvolvido por Freud, no qual o paciente é convidado a falar das ideias que lhe vêm à mente, mesmo quando parecem desconexas ou pouco importantes. Seu uso exige contexto clínico, e o material não possui sentido fixo por si só.",
+        "example": "Uma pessoa começa falando de uma viagem, lembra-se de uma mudança antiga e depois de uma conversa difícil. Esse percurso é matéria para investigação, não para um diagnóstico instantâneo."
+      },
+      "settings": {
+        "emphasis": "featured"
+      }
+    },
+    {
+      "id": "origens-timeline",
+      "type": "timeline",
+      "version": 1,
+      "data": {
+        "title": "Linha do tempo — como as perguntas ganharam forma",
+        "events": [
+          {
+            "date": "1885–1886",
+            "title": "Freud em Paris com Charcot",
+            "description": "Na Salpêtrière, Freud acompanha pesquisas e demonstrações envolvendo hipnose e os fenômenos chamados de histéricos."
+          },
+          {
+            "date": "1886",
+            "title": "Retorno a Viena",
+            "description": "Freud estabelece sua prática médica e continua a experimentar abordagens clínicas utilizadas em sua época."
+          },
+          {
+            "date": "1895",
+            "title": "Estudos sobre a histeria",
+            "description": "Breuer e Freud publicam o livro que reúne casos e hipóteses sobre sintomas, lembranças, afetos e diferentes técnicas."
+          },
+          {
+            "date": "1896",
+            "title": "Nomeação da psicanálise",
+            "description": "Segundo a cronologia da Biblioteca do Congresso dos EUA, Freud passa a usar o termo “psicanálise” em suas publicações."
+          },
+          {
+            "date": "1900",
+            "title": "A interpretação dos sonhos",
+            "description": "A obra, publicada em 1899 com data editorial de 1900, marca uma nova sistematização de sua investigação sobre a vida psíquica."
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-parte-5",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "5. O que aprendemos — e o que precisamos questionar?"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-vinheta",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Uma situação fictícia para pensar a história",
+        "narrative": "Clara, personagem inteiramente fictícia, relata uma dificuldade persistente de falar em certas situações. Um observador afirma: “Se os exames não mostraram nada, então é psicológico”. Outro diz: “Basta hipnotizá-la e pedir que se lembre do primeiro momento”. Clara responde que ambos parecem ter decidido por ela.",
+        "reflection": "Que pressupostos aparecem nas duas respostas? O que aprendemos ao distinguir observação, hipótese histórica e cuidado clínico? Que informações ainda faltariam?",
+        "disclaimer": "Situação inventada para estudo histórico. Não oferece diagnóstico nem orientação terapêutica individual."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-laboratorio",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Laboratório: que conclusão a história realmente permite?",
+        "description": "Escolha uma leitura sobre a transição histórica. Depois compare a devolutiva com o conteúdo da aula.",
+        "prompt": "Qual afirmação é mais fiel ao percurso entre Charcot, Breuer e Freud?",
+        "choices": [
+          {
+            "id": "gradual",
+            "label": "A psicanálise tomou forma por meio de encontros, impasses e mudanças técnicas ao longo do tempo.",
+            "feedback": "Boa leitura. As datas e técnicas mostram desenvolvimento gradual, diálogo e revisão de hipóteses. Evite transformar essa história em uma origem única e inevitável."
+          },
+          {
+            "id": "breuer",
+            "label": "Freud tratou Anna O., inventou a fala terapêutica e depois ensinou Breuer.",
+            "feedback": "A ordem e as autorias estão trocadas. Anna O. foi atendida por Breuer; o trabalho com a fala tem antecedentes e colaboradoras que precisam ser reconhecidos."
+          },
+          {
+            "id": "hipnose",
+            "label": "Uma demonstração de hipnose provou todas as teorias posteriores de Freud.",
+            "feedback": "Uma demonstração histórica não prova todas as hipóteses formuladas décadas depois. O significado científico e ético dessas práticas continua sujeito a análise crítica."
+          }
+        ],
+        "alternative": "Escreva três frases: uma sobre a contribuição de Charcot, outra sobre Breuer e outra sobre a mudança de técnica em Freud. Em seguida, marque quais são fatos históricos e quais são interpretações."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-limites",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O que essa história não nos autoriza a afirmar",
+        "paragraphs": [
+          "Não existe uma linha reta e inevitável de Charcot à psicanálise atual. A história envolve diferentes pessoas, pacientes, escolhas clínicas, disputas teóricas, condições sociais e revisões posteriores.",
+          "Os modelos do século XIX não podem substituir uma avaliação clínica contemporânea. Também não é correto supor que todo sintoma tenha uma causa psicológica única ou que a associação livre, isoladamente, produza resultados garantidos.",
+          "Estudar Freud criticamente é reconhecer a relevância histórica de suas formulações sem transformar hipóteses em verdades indiscutíveis. Na próxima aula, avançaremos para o desenvolvimento da ideia de inconsciente."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-revisao",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "6. Revisão do percurso"
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-quiz-charcot",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Qual acontecimento teve papel importante na formação clínica de Freud?",
+        "options": [
+          {
+            "id": "origens-quiz-charcot-a",
+            "text": "A apresentação de um modelo psicanalítico pronto por Charcot, em 1885."
+          },
+          {
+            "id": "origens-quiz-charcot-b",
+            "text": "O contato com Charcot e seus estudos sobre hipnose e manifestações então chamadas histéricas, em Paris."
+          },
+          {
+            "id": "origens-quiz-charcot-c",
+            "text": "A criação do tratamento de Anna O. por Freud na Salpêtrière."
+          },
+          {
+            "id": "origens-quiz-charcot-d",
+            "text": "A publicação de A interpretação dos sonhos durante sua estadia em Paris."
+          }
+        ],
+        "correctOptionId": "origens-quiz-charcot-b",
+        "feedbackCorrect": "Correto. Freud estudou com Charcot entre 1885 e 1886; esse contato influenciou suas perguntas, mas não entregou uma psicanálise pronta.",
+        "feedbackIncorrect": "Charcot investigava hipnose e manifestações histéricas. Freud acompanhou seu trabalho em Paris, antes de desenvolver sua própria técnica."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-quiz-breuer",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Sobre Breuer e o caso apresentado como Anna O., qual afirmação é historicamente mais cuidadosa?",
+        "options": [
+          {
+            "id": "origens-quiz-breuer-a",
+            "text": "Anna O. foi paciente de Freud, que depois apresentou o caso a Breuer."
+          },
+          {
+            "id": "origens-quiz-breuer-b",
+            "text": "A paciente foi atendida por Breuer, e o relato integra a história dos métodos que antecederam a psicanálise madura."
+          },
+          {
+            "id": "origens-quiz-breuer-c",
+            "text": "O caso comprovou a eficácia universal e definitiva do método catártico."
+          },
+          {
+            "id": "origens-quiz-breuer-d",
+            "text": "Breuer publicou sozinho Estudos sobre a histeria em 1900."
+          }
+        ],
+        "correctOptionId": "origens-quiz-breuer-b",
+        "feedbackCorrect": "Isso mesmo. A distinção entre os autores e os limites das conclusões é essencial para uma história rigorosa.",
+        "feedbackIncorrect": "Anna O. foi atendida por Breuer. O relato é historicamente significativo, mas não demonstra cura definitiva nem valida todas as hipóteses."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-quiz-metodo",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "O que melhor descreve a passagem de Freud à associação livre?",
+        "options": [
+          {
+            "id": "origens-quiz-metodo-a",
+            "text": "Uma troca instantânea de técnica, realizada integralmente em um único dia de 1895."
+          },
+          {
+            "id": "origens-quiz-metodo-b",
+            "text": "Uma prática em que o analista atribui sentido fixo a cada palavra do paciente."
+          },
+          {
+            "id": "origens-quiz-metodo-c",
+            "text": "Uma mudança progressiva, com revisão das técnicas anteriores e maior atenção às associações da pessoa."
+          },
+          {
+            "id": "origens-quiz-metodo-d",
+            "text": "Uma técnica que dispensa a escuta porque interpreta os sintomas por tabelas universais."
+          }
+        ],
+        "correctOptionId": "origens-quiz-metodo-c",
+        "feedbackCorrect": "Exato. A mudança foi gradual, e a associação livre é uma via de investigação, não um dicionário de símbolos.",
+        "feedbackIncorrect": "Freud experimentou diferentes técnicas antes de dar maior centralidade à associação livre; não houve uma substituição instantânea nem significados fixos."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-quiz-critica",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Uma pesquisa de 1895 descreve um sintoma como “histérico”. Como ler essa informação hoje?",
+        "options": [
+          {
+            "id": "origens-quiz-critica-a",
+            "text": "Como um diagnóstico atual, suficiente para classificar uma pessoa contemporânea."
+          },
+          {
+            "id": "origens-quiz-critica-b",
+            "text": "Como evidência de que sintomas sem lesão identificada eram simulados."
+          },
+          {
+            "id": "origens-quiz-critica-c",
+            "text": "Como uma classificação histórica a ser compreendida criticamente, sem transportar diagnósticos automaticamente ao presente."
+          },
+          {
+            "id": "origens-quiz-critica-d",
+            "text": "Como prova de que apenas as mulheres tinham aquelas manifestações."
+          }
+        ],
+        "correctOptionId": "origens-quiz-critica-c",
+        "feedbackCorrect": "Correto. Vocabulário, práticas e critérios diagnósticos mudaram, e o sofrimento relatado não pode ser desqualificado.",
+        "feedbackIncorrect": "A categoria é histórica e carregada de pressupostos próprios de sua época. Não deve ser usada automaticamente como diagnóstico atual."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-reflexao",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Que diferença há entre reconhecer a influência de uma prática histórica e afirmar que ela estava cientificamente correta?",
+        "hint": "Considere as contribuições de Charcot, Breuer e Freud, os limites das fontes e as experiências das pessoas atendidas."
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-sintese",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Cinco ideias para levar à Aula 3",
+        "paragraphs": [
+          "1. Freud iniciou sua trajetória como médico e pesquisador do sistema nervoso; não criou a psicanálise pronta.",
+          "2. Em Paris (1885–1886), o contato com Charcot ampliou suas perguntas sobre sintomas e fenômenos psíquicos.",
+          "3. O trabalho anterior de Breuer com Anna O. e Estudos sobre a histeria (1895) fazem parte dessa história de colaboração e debate.",
+          "4. A passagem da hipnose à associação livre foi gradual, com mudanças de técnica e de hipótese.",
+          "5. Ler a história da psicanálise exige distinguir fatos, interpretações, categorias antigas e diagnósticos atuais.",
+          "Na próxima aula, investigaremos como Freud passou a formular a ideia de inconsciente. Por enquanto, o importante é compreender que as teorias surgem de perguntas, impasses e revisões."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "origens-bibliografia",
+      "type": "references",
+      "version": 1,
+      "data": {
+        "referenceIds": [
+          "loc-cronologia",
+          "freud-museum-physician",
+          "loc-terapia",
+          "nlm-histeria",
+          "wellcome-histeria",
+          "freud-museum-charcot"
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [
+    {
+      "id": "loc-cronologia",
+      "author": "Library of Congress",
+      "title": "Sigmund Freud (1856 to 1939): timeline",
+      "year": "s.d.",
+      "note": "Cronologia documental: Paris, Estudos sobre a histeria, uso do termo psicanálise e A interpretação dos sonhos.",
+      "url": "https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/"
+    },
+    {
+      "id": "freud-museum-physician",
+      "author": "Freud Museum London",
+      "title": "From Medicine to Psychoanalysis",
+      "year": "s.d.",
+      "note": "Introdução ao percurso de formação de Freud e ao contato com Charcot.",
+      "url": "https://www.freud.org.uk/schools/resources/freud-the-physician/from-medicine-to-psychoanalysis/"
+    },
+    {
+      "id": "loc-terapia",
+      "author": "Library of Congress",
+      "title": "Sigmund Freud: Conflict & Culture — The Individual: Therapy",
+      "year": "s.d.",
+      "note": "Da hipnose e sugestão à associação livre, com contextualização do caso Anna O.",
+      "url": "https://www.loc.gov/exhibits/freud/freud02.html"
+    },
+    {
+      "id": "nlm-histeria",
+      "author": "U.S. National Library of Medicine",
+      "title": "Emotions + Disease",
+      "year": "s.d.",
+      "note": "Contextualiza o trabalho de Breuer e Freud e a publicação de Estudos sobre a histeria em 1895.",
+      "url": "https://www.nlm.nih.gov/exhibition/emotions-and-disease/index.html"
+    },
+    {
+      "id": "wellcome-histeria",
+      "author": "Wellcome Collection",
+      "title": "What is hysteria?",
+      "year": "s.d.",
+      "note": "Discussão histórica e crítica sobre a categoria histeria e seu lugar nos debates médicos.",
+      "url": "https://wellcomecollection.org/stories/what-is-hysteria"
+    },
+    {
+      "id": "freud-museum-charcot",
+      "author": "Freud Museum London",
+      "title": "Charcot: From Iconography to Archeology",
+      "year": "s.d.",
+      "note": "O ambiente da Salpêtrière, demonstrações públicas e seus problemas interpretativos.",
+      "url": "https://stories.freud.org.uk/charcot/1/"
+    }
+  ]
+}

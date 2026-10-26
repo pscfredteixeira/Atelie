@@ -2,7 +2,18 @@
 
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
-> **Estado atual:** Sprint 15 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** a execução em navegadores reais, acessibilidade e testes com convidados ainda precisam ser conferidos.
+> **Estado atual:** Sprint 16 com Aula 2 publicada; Sprint 15 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** a execução em navegadores reais, acessibilidade e testes com convidados ainda precisam ser conferidos.
+
+## Sprint 16 — Aula 2 e jornada de aprendizagem
+
+- Curso **Introdução à Psicanálise** atualizado para duas aulas estudáveis e seis previstas, mantendo oito aulas no programa.
+- Aula 2 — **Freud e o nascimento da psicanálise**: percurso histórico situado; Charcot, Breuer, mudanças técnicas e leitura crítica da categoria "histeria".
+- 45 minutos estimados, objetivos, comparações, cronologia, conceitos reveláveis, vinheta fictícia, laboratório de escolha, **quatro perguntas no quiz integrado**, síntese e seis referências verificadas.
+- Link de sequência da Aula 1 para a Aula 2, sem introduzir módulos visuais.
+- Testes funcionais e mobile atualizados para duas aulas disponíveis; o teste automático verifica a navegação real em 390 px.
+- Nenhum tema, histórico, schema do IndexedDB, login ou infraestrutura de hospedagem foi alterado.
+
+**[Ler Aula 2](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-freud-nascimento-psicanalise)** · [Relatório Sprint 16](docs/SPRINT_16_RESULTADO.md)
 
 ## Sprint 15 — correções de estabilidade
 
@@ -33,15 +44,15 @@ O motor e a prévia do Estúdio usam o mesmo componente. Os testes de agrupament
 
 ## Primeira aula publicada — O que é psicanálise?
 
-A primeira aula do curso **Introdução à Psicanálise** já está disponível em [`#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise`](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise).
+As duas primeiras aulas do curso **Introdução à Psicanálise** já estão disponíveis em [`#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise`](https://pscfredteixeira.github.io/Atelie/#/cursos/curso-introducao-psicanalise/aulas/aula-o-que-e-psicanalise).
 
-Ela reúne 27 blocos (texto didático, conceitos reveláveis, cronologia, comparação, vinheta fictícia, laboratório de escuta, duas perguntas com correção e bibliografia com links). As outras sete aulas continuam honestamente sinalizadas como em preparação. [Leia o plano de pesquisa, referências e pontos de rigor](docs/AULA_01_O_QUE_E_PSICANALISE.md).
+Ela reúne 27 blocos (texto didático, conceitos reveláveis, cronologia, comparação, vinheta fictícia, laboratório de escuta, duas perguntas com correção e bibliografia com links). As outras seis aulas continuam honestamente sinalizadas como em preparação. [Leia o plano de pesquisa, referências e pontos de rigor](docs/AULA_01_O_QUE_E_PSICANALISE.md).
 
 ## Organização pedagógica: curso → aulas
 
 O Atelier apresenta uma **sequência única de aulas dentro de cada curso**, sem subníveis de módulos na navegação ou na criação visual.
 
-- **Introdução à Psicanálise:** oito aulas previstas, ainda em preparação.
+- **Introdução à Psicanálise:** oito aulas no programa, duas publicadas e seis em preparação.
 - **Formação Freudiana:** dez aulas previstas, ainda em preparação.
 - **Fundamentos da Psicanálise:** três aulas com conteúdo publicado, preservadas.
 

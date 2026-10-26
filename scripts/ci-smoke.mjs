@@ -26,6 +26,21 @@ try{
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2))
   throw Error("Página de leitura apresenta rolagem horizontal em 390px.");
  console.log("OK — Navegação, numeração do programa e largura mobile.");
+
+ // Sprint 16 — a segunda aula precisa estar publicada e acessível pelo fluxo real.
+ const nextLesson=page.locator('a.journey-pager-link[href="#/cursos/curso-introducao-psicanalise/aulas/aula-freud-nascimento-psicanalise"]');
+ await nextLesson.waitFor({timeout:15000});
+ await nextLesson.click();
+ await page.locator('[data-quiz-carousel][data-total="4"]').waitFor({timeout:30000});
+ const nextPosition=await page.locator(".lesson-header-info .overline").allTextContents();
+ if(!nextPosition.some(x=>x.includes("Aula 2 de 8 no programa")))
+  throw Error("Navegação da Aula 1 para a 2 perdeu a numeração: "+nextPosition.join("|"));
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2))
+  throw Error("Aula 2 tem rolagem horizontal em 390px.");
+ const published=await page.locator(".lesson-timeline li").count();
+ if(published<5)throw Error("Linha do tempo da Aula 2 não renderizou.");
+ console.log("OK — Sprint 16: Aula 1 → Aula 2, quiz, linha do tempo e layout mobile.");
+
  if(exceptions.length)throw Error("Erros JavaScript: "+exceptions.join(" | "));
 } catch(error){failed=true;console.error(error)}
 finally{await browser.close()}

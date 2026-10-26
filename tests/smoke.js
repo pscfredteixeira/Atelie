@@ -53,8 +53,8 @@ async function run(){
    const freud=await loadCourseOutline("teacher",freudId);
    if(getCourseEntries(intro).length!==8||getCourseEntries(freud).length!==10)
      throw new Error("As aulas previstas não correspondem aos cursos.");
-   if(getCourseEntries(intro).filter(item=>item.planned).length!==7 ||
-      getCourseEntries(intro).filter(item=>!item.planned).length!==1 ||
+   if(getCourseEntries(intro).filter(item=>item.planned).length!==6 ||
+      getCourseEntries(intro).filter(item=>!item.planned).length!==2 ||
       !getCourseEntries(freud).every(item=>item.planned))
      throw new Error("Status de publicação das aulas incorreto.");
    const current=intro.modules[1].id;
@@ -161,7 +161,7 @@ async function run(){
    validateLessonLink(lesson,course,module.id);
    if(lesson.title!=="O que é psicanálise?"||lesson.blocks.length<20)
      throw new Error("Aula introdutória está incompleta.");
-   if(getCourseEntries(course).length!==8||getCourseJourney(course).length!==1)
+   if(getCourseEntries(course).length!==8||getCourseJourney(course).length!==2)
      throw new Error("O curso não apresenta a aula e suas sete aulas previstas.");
    const html=renderLessonBlocks(lesson,{sourceURL:info.contentURL});
    if((html.match(/data-activity="quiz"/g)||[]).length!==2||
@@ -187,7 +187,7 @@ async function run(){
    old.modules[1].title="Título pessoal preservado";
    const original=JSON.stringify(old);
    const updated=mergePublishedLessons(old,course);
-   if(updated.added!==1||updated.course.modules[0].lessons[0].id!=="aula-o-que-e-psicanalise"||
+   if(updated.added!==2||updated.course.modules[0].lessons[0].id!=="aula-o-que-e-psicanalise"||
      updated.course.modules[1].title!=="Título pessoal preservado"||
      JSON.stringify(old)!==original)throw Error("Sincronização alterou o rascunho ou perdeu a aula.");
    if(mergePublishedLessons(updated.course,course).added!==0)
@@ -203,7 +203,7 @@ async function run(){
      throw new Error("Módulos dos cursos iniciais não correspondem ao esperado.");
    const first=manifests[0].course.modules.flatMap(m=>m.lessons);
    const second=manifests[1].course.modules.flatMap(m=>m.lessons);
-   if(first.length!==1||first[0].id!=="aula-o-que-e-psicanalise"||second.length!==0)
+   if(first.length!==2||first[0].id!=="aula-o-que-e-psicanalise"||first[1].id!=="aula-freud-nascimento-psicanalise"||second.length!==0)
      throw new Error("A primeira aula deve estar publicada, e as dez aulas freudianas previstas.");
    if(list.some(c=>c.id==="curso-fundamentos"&&!c.local))
      throw new Error("O curso técnico aparece indevidamente no catálogo principal.");
@@ -631,9 +631,9 @@ async function run(){
    const first=getCourseEntries(course).find(item=>!item.planned);
    const before=summarizeLearningProgress(course,[]);
    const after=summarizeLearningProgress(course,[first.id,"nao-existe"]);
-   if(before.total!==8||before.available!==1||before.planned!==7||before.percent!==0||
-      after.completed!==1||after.percent!==100)
-     throw Error("Porcentagem ou total de aulas não preserva o programa de oito aulas.");
+   if(before.total!==8||before.available!==2||before.planned!==6||before.percent!==0||
+      after.completed!==1||after.percent!==50)
+     throw Error("Progresso não reflete duas aulas publicadas entre oito planejadas.");
    const {course:freud}=await contentRepository.getPublishedCourse("curso-formacao-freudiana");
    const empty=summarizeLearningProgress(freud,[]);
    if(empty.total!==10||empty.planned!==10||empty.available!==0||empty.percent!==0)
@@ -687,6 +687,51 @@ async function run(){
      await deleteDraft(created.course.id,created.lesson.id);
      await deleteCourseDraft(created.course.id);
    }
+ });
+
+ await check("Sprint 16: segunda aula publicada, validada e ligada ao programa",async()=>{
+   const introId="curso-introducao-psicanalise",lessonId="aula-freud-nascimento-psicanalise";
+   const {course,lesson,module,contentURL}=await contentRepository.getPublishedLesson(introId,lessonId);
+   validateLessonLink(lesson,course,module.id);
+   if(!contentURL.endsWith("/freud-e-o-nascimento-da-psicanalise.json"))
+     throw Error("Arquivo da Aula 2 não corresponde ao manifesto.");
+   const entries=getCourseEntries(course),stats=summarizeLearningProgress(course,[]);
+   if(entries.length!==8||entries[1].id!==lessonId||entries[1].planned||stats.available!==2||stats.planned!==6)
+     throw Error("Aula 2 não entrou na segunda posição do programa.");
+   if(lesson.estimatedMinutes!==45||lesson.blocks.length<24||lesson.objectives.length<5)
+     throw Error("Aula histórica está incompleta.");
+   const ids=new Set(lesson.blocks.map(block=>block.id));
+   if(ids.size!==lesson.blocks.length)throw Error("Há IDs repetidos nos blocos.");
+   if(lesson.blocks.filter(b=>b.type==="multiple_choice").length!==4||
+      lesson.blocks.filter(b=>b.type==="interactive_lab").length!==1||
+      lesson.blocks.filter(b=>b.type==="timeline").length!==1||
+      lesson.blocks.filter(b=>b.type==="clinical_vignette").length!==1)
+      throw Error("Não há revisão, linha do tempo, laboratório e vinheta completos.");
+   const markup=renderLessonBlocks(lesson,{sourceURL:contentURL});
+   if((markup.match(/data-activity="quiz"/g)||[]).length!==4||
+      (markup.match(/data-activity="lab"/g)||[]).length!==1||
+      !markup.includes("bloco-quiz-integrado")||
+      (markup.match(/Consultar fonte ↗/g)||[]).length!==6)
+      throw Error("Os elementos interativos ou as fontes da Aula 2 não renderizam.");
+   if(lesson.blocks.some(b=>b.type==="multiple_choice"&&!b.data.options.some(o=>o.id===b.data.correctOptionId)))
+      throw Error("Existe resposta sem gabarito válido.");
+ });
+ await check("Sprint 16: quiz da Aula 2 permite completar todas as questões",async()=>{
+   const {lesson}=await contentRepository.getPublishedLesson("curso-introducao-psicanalise","aula-freud-nascimento-psicanalise");
+   const root=document.createElement("div");root.innerHTML=renderLessonBlocks(lesson);
+   const carousel=root.querySelector("[data-quiz-carousel]");
+   const slides=[...carousel.querySelectorAll(".quiz-carousel-slide[data-block-id]")];
+   if(!carousel||slides.length!==4)throw Error("O carrossel da Aula 2 não foi montado.");
+   for(const slide of slides){
+      const form=slide.querySelector('form[data-activity="quiz"]');
+      form.querySelector('input[value="'+form.dataset.correct+'"]').checked=true;
+      const result=checkQuiz(form);
+      if(!result.correct||!confirmQuizStep(form,result)||!advanceQuiz(slide.querySelector("[data-quiz-next]")))
+       throw Error("Quiz não avança depois da resposta correta.");
+   }
+   if(carousel.dataset.current!=="4"||
+      carousel.querySelector("[data-quiz-summary]").textContent!=="Você acertou 4 de 4 questões.")
+      throw Error("Conclusão do quiz de quatro questões não foi reconhecida.");
  });
  result.forEach(r=>{
    const li=document.createElement("li");
