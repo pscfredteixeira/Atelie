@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/state/{docId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId && docId == 'atelier';
+      }
+      function validState() {
+        return request.resource.data.keys().hasOnly(['saved','completed','notes','answers','updatedAt'])
+          && request.resource.data.keys().hasAll(['saved','completed','notes','answers','updatedAt'])
+          && request.resource.data.saved is list
+          && request.resource.data.saved.size() <= 3
+          && request.resource.data.saved.hasOnly(['introducao-a-psicanalise','formacao-freudiana','fundamentos-da-psicanalise'])
+          && request.resource.data.completed is list
+          && request.resource.data.completed.size() <= 3
+          && request.resource.data.completed.hasOnly(['escuta','pergunta-freud','conflito-exemplo'])
+          && request.resource.data.notes is map
+          && request.resource.data.notes.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo'])
+          && request.resource.data.notes.get('escuta','') is string
+          && request.resource.data.notes.get('pergunta-freud','') is string
+          && request.resource.data.notes.get('conflito-exemplo','') is string
+          && request.resource.data.notes.get('escuta','').size() <= 5000
+          && request.resource.data.notes.get('pergunta-freud','').size() <= 5000
+          && request.resource.data.notes.get('conflito-exemplo','').size() <= 5000
+          && request.resource.data.answers is map
+          && request.resource.data.answers.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo'])
+          && request.resource.data.updatedAt is int;
+      }
+      allow read: if isOwner();
+      allow create, update: if isOwner() && validState();
+      allow delete: if false;
+    }
+  }
+}

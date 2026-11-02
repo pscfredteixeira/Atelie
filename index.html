@@ -2,66 +2,81 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#121218">
-  <meta name="description" content="Atelier — plataforma em desenvolvimento para aprender e ensinar psicanálise. Protótipo beta em JSON com editor visual, atividades e progresso local.">
-  <title>Ateliê · Laboratório de Psicanálise</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23121218'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia' font-size='46' fill='%23f0b283'%3E%CF%88%3C/text%3E%3C/svg%3E">
-  <script>
-    // Evita piscar a página no tema errado antes de carregar o aplicativo.
-    try {
-      const stored = localStorage.getItem("atelier-theme-v1");
-      document.documentElement.dataset.theme = stored === "light" ? "light" : "dark";
-    } catch {
-      document.documentElement.dataset.theme = "dark";
-    }
-  </script>
-  <link rel="stylesheet" href="./src/styles/atelier.css?build=tema-claro-escuro-20261015-v1">
-  <link rel="stylesheet" href="./src/styles/theme.css?build=secoes-pedagogicas-20261026-v1">
-  <link rel="stylesheet" href="./src/styles/redesign.css?build=redesign-20261026-v2">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1b191e">
+  <meta name="description" content="Ateliê — ambiente beta de estudos em psicanálise, com aulas fictícias para testar as funcionalidades.">
+  <title>Ateliê · Estudos em Psicanálise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" media="(min-width: 1025px)" href="assets/hero-escultura-hd.jpg?v=atelie-banner-hd-20261102">
+  <link rel="stylesheet" href="styles.css?v=atelie-beta-sprint18">
+  <script type="module" src="firebase.js"></script>
+  <script src="app.js?v=atelie-beta-sprint18" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
-  <div id="app">
-    <main class="main" id="main-content" tabindex="-1">
-      <p class="overline">Atelier · Carregando</p>
-      <h1 class="page-title">Preparando sua experiência.</h1>
-      <p class="lead">Se esta mensagem permanecer, confira a conexão e a disponibilidade dos arquivos JavaScript.</p>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-7H9v7H3z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-10-1v15c4-1 7-1 10 1m0-15c3-2 6-2 10-1v15c-4-1-7-1-10 1m0-15v15"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8zM2 13l10 5 10-5M2 18l10 5 10-5"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7 11 17M18 7l-5 10"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21 4 13C-2 7 5 0 12 7c7-7 14 0 8 6z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+<symbol id="i-graduation" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5zM6 12v6c4 3 8 3 12 0v-6M22 9v7"/></symbol>
+<symbol id="i-notebook" viewBox="0 0 24 24"><rect x="5" y="2" width="16" height="20" rx="2"/><path d="M9 2v20m4-14h5m-5 4h5"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 20c.5 2 3.5 2 4 0"/></symbol>
+</svg>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <a class="brand" href="#/" aria-label="Ateliê: ir ao início">
+        <span class="brand-word">Ateliê<span class="brand-rule"></span></span>
+        <span class="brand-sub">ESTUDOS EM<br>PSICANÁLISE</span>
+      </a>
+      <nav aria-label="Menu principal">
+        <a href="#/" data-nav="/" class="nav-link"><svg><use href="#i-home"/></svg> Início</a>
+        <a href="#/cursos" data-nav="/cursos" class="nav-link"><svg><use href="#i-layers"/></svg> Cursos</a>
+        <a href="#/trilhas" data-nav="/trilhas" class="nav-link"><svg><use href="#i-route"/></svg> Trilhas</a>
+        <a href="#/biblioteca" data-nav="/biblioteca" class="nav-link"><svg><use href="#i-book"/></svg> Biblioteca</a>
+      </nav>
+      <div class="sidebar-separator"></div>
+      <p class="sidebar-caption">MEU ESTUDO</p>
+      <nav aria-label="Menu do estudante">
+        <a href="#/salvos" data-nav="/salvos" class="nav-link"><svg><use href="#i-heart"/></svg> Cursos salvos <span class="count" id="savedCount">0</span></a>
+        <a href="#/caderno" data-nav="/caderno" class="nav-link"><svg><use href="#i-notebook"/></svg> Meu caderno</a>
+        <a href="#/progresso" data-nav="/progresso" class="nav-link"><svg><use href="#i-graduation"/></svg> Progresso</a>
+        <a href="#/estudio" data-nav="/estudio" class="nav-link"><svg><use href="#i-spark"/></svg> Estúdio (teste)</a>
+        <a href="#/sobre" data-nav="/sobre" class="nav-link"><svg><use href="#i-spark"/></svg> Sobre o Ateliê</a>
+      </nav>
+    </div>
+    <div class="sidebar-bottom"><div class="bottom-symbol">ψ</div><p>Um espaço para pensar, ler e formular novas perguntas.</p><small>BETA · FUNCIONALIDADES</small></div>
+  </aside>
+  <div class="overlay" id="overlay" hidden></div>
+  <div class="workspace">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir menu"><svg><use href="#i-menu"/></svg></button>
+      <a class="mobile-brand" href="#/" aria-label="Ateliê: voltar ao início">Ateliê</a>
+      <form id="searchForm" class="search-form" role="search">
+        <svg aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr-only" for="globalSearch">Buscar cursos e assuntos</label>
+        <input id="globalSearch" type="search" autocomplete="off" placeholder="Buscar cursos, autores, assuntos...">
+        <kbd>/</kbd>
+      </form>
+      <div class="topbar-right"><button type="button" class="login-btn" id="loginButton">Entrar com Google</button></div>
+    </header>
+    <main id="main" class="main" tabindex="-1">
+      <div class="loading"><span class="eyebrow">ATELIÊ</span><h1>Preparando seu espaço de estudo.</h1></div>
     </main>
+    <footer class="footer"><span>Ateliê · Estudos em Psicanálise</span><span id="cloudStatus" role="status">Seus estudos estão salvos somente neste navegador</span></footer>
   </div>
-  <div class="toast-zone" id="toast-host" aria-live="polite" role="status"></div>
-  <noscript><p style="padding:24px;color:#f5f0ef;background:#121218">O Atelier precisa de JavaScript para exibir seus ambientes demonstrativos.</p></noscript>
-  <script type="module">
-    // Inicialização com diagnóstico visível: um erro de importação não deve
-    // deixar a plataforma eternamente na tela "Preparando sua experiência".
-    const app = document.getElementById("app");
-    function bootError(error) {
-      console.error("Atelier: erro ao inicializar", error);
-      app.replaceChildren();
-      const main = document.createElement("main");
-      main.className = "main";
-      main.id = "main-content";
-      const eyebrow = document.createElement("p");
-      eyebrow.className = "overline";
-      eyebrow.textContent = "Atelier · Inicialização";
-      const title = document.createElement("h1");
-      title.className = "page-title";
-      title.textContent = "Não foi possível iniciar o Atelier.";
-      const explanation = document.createElement("p");
-      explanation.className = "lead";
-      explanation.textContent = "Um arquivo do aplicativo não foi carregado. Atualize a página para tentar novamente. Seus cursos e rascunhos locais não serão apagados.";
-      const detail = document.createElement("p");
-      detail.className = "tiny";
-      detail.textContent = "Detalhe técnico: " + (error?.message || String(error));
-      const retry = document.createElement("button");
-      retry.className = "button action";
-      retry.type = "button";
-      retry.textContent = "Atualizar e tentar novamente";
-      retry.addEventListener("click", () => location.reload());
-      main.append(eyebrow, title, explanation, detail, retry);
-      app.append(main);
-    }
-    import("./src/app/main.js?build=redesign-20261026-v2").catch(bootError);
-  </script>
+</div>
 </body>
 </html>
