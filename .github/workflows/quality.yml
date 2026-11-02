@@ -9,6 +9,11 @@ on:
       - "scripts/**"
       - ".github/workflows/quality.yml"
       - "index.html"
+      - "app.js"
+      - "styles.css"
+      - "firebase.js"
+      - "assets/**"
+      - "firestore.rules"
   pull_request:
   workflow_dispatch:
 
@@ -31,4 +36,4 @@ jobs:
       - name: Testar plataforma localmente
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/atelier-server.log 2>&1 &
-          node scripts/ci-smoke.mjs
+          node scripts/ci-sprint18.mjs
