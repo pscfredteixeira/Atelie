@@ -68,7 +68,7 @@ function queueCloudSync(delay = 700) {
    } finally {
      syncing = false;
      renderStatus();
-     if (uid === activeUid && localStorage.getItem(pendingKey(uid)) && window.AtelieCloud?.ready && !conflict && cloudMessage.startsWith('Alterações sincronizadas')) queueCloudSync(100);
+     if (activeUid && localStorage.getItem(pendingKey(activeUid)) && window.AtelieCloud?.ready && !conflict && cloudMessage.startsWith('Alterações sincronizadas')) queueCloudSync(100);
    }
  }, delay);
 }
@@ -194,3 +194,12 @@ document.addEventListener('click', e => {
 
 window.addEventListener('hashchange',render);
 render();
+// Firebase modules may initialize before this deferred script registers listeners.
+if (window.AtelieCloud?.user) {
+ const cloud = window.AtelieCloud;
+ window.dispatchEvent(new CustomEvent('atelie-cloud-auth', { detail: { uid: cloud.user.uid } }));
+ if (cloud.snapshot?.uid === cloud.user.uid) {
+   window.dispatchEvent(new CustomEvent('atelie-cloud-loaded', { detail: cloud.snapshot }));
+   if (cloud.ready) window.dispatchEvent(new CustomEvent('atelie-cloud-ready', { detail: { uid: cloud.user.uid } }));
+ }
+}
