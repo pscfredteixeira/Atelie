@@ -21,6 +21,7 @@ let session = 0;
 const cloud = {
   user: null,
   ready: false,
+  snapshot: null,
   async login() {
     const provider = new GoogleAuthProvider();
     try {
@@ -57,6 +58,7 @@ onAuthStateChanged(auth, async user => {
   const currentSession = ++session;
   cloud.user = user;
   cloud.ready = false;
+  cloud.snapshot = null;
   signal('atelie-cloud-auth', { uid: user?.uid ?? null, name: user?.displayName ?? null });
   if (!user) {
     emit('Você está no modo local, sem sincronização na nuvem.');
@@ -66,7 +68,8 @@ onAuthStateChanged(auth, async user => {
   try {
     const snap = await getDoc(doc(db, 'users', user.uid, 'state', 'atelier'));
     if (currentSession !== session || cloud.user?.uid !== user.uid) return;
-    signal('atelie-cloud-loaded', { uid: user.uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null });
+    cloud.snapshot = { uid: user.uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null };
+    signal('atelie-cloud-loaded', cloud.snapshot);
     cloud.ready = true;
     signal('atelie-cloud-ready', { uid: user.uid });
     emit(snap.exists() ? 'Conta conectada · estudos carregados.' : 'Conta conectada · nenhum estudo anterior na nuvem.');
@@ -86,7 +89,8 @@ window.addEventListener('online', () => {
     getDoc(doc(db, 'users', uid, 'state', 'atelier')).then(snap => {
       if (session !== expectedSession || cloud.user?.uid !== uid) return;
       cloud.ready = true;
-      signal('atelie-cloud-loaded', { uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null });
+      cloud.snapshot = { uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null };
+      signal('atelie-cloud-loaded', cloud.snapshot);
       signal('atelie-cloud-ready', { uid });
     }).catch(() => {});
   } else if (cloud.user && cloud.ready) {
