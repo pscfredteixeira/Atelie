@@ -75,3 +75,9 @@
 .note-preview{white-space:pre-wrap;overflow-wrap:anywhere;max-height:135px;overflow:hidden}
 @media(max-width:790px){.topbar-right{display:flex;order:1;margin-left:4px}.login-btn{font-size:11px;padding:8px 10px;max-width:145px}.mobile-brand{margin-right:auto}}
 @media(max-width:400px){.login-btn{max-width:105px;font-size:10px}.reading-panel h2{font-size:24px}}
+
+/* Sprint 19 — decisão explícita para conflitos entre dispositivos. */
+.sync-conflict{flex:1 0 100%;display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:13px 15px;background:#fbf4e8;border:1px solid #d5b892;border-radius:12px;color:#5a422c;font-size:12px}
+.sync-conflict[hidden]{display:none}
+.sync-conflict button{border:1px solid #b5916a;background:#fff;border-radius:8px;color:#513927;padding:8px 11px;cursor:pointer;font-size:12px;font-weight:700}
+.sync-conflict button:hover,.sync-conflict button:focus-visible{background:#f5e5d1;outline:2px solid #be9769;outline-offset:1px}
