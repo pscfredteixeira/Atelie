@@ -8,6 +8,8 @@ const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(base + "/", { waitUntil: "domcontentloaded" });
+  await page.locator("#entryGate").waitFor({ state: "visible" });
+  await page.locator("#gateDemoButton").click();
   await page.locator(".course-card").first().waitFor({ timeout: 30000 });
   assert.equal(await page.locator(".course-card").count(), 3, "Três cursos ilustrativos na home");
   assert.match(await page.locator("main h1").innerText(), /Estudo e formação/);
@@ -46,6 +48,8 @@ try {
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await mobile.goto(base + "/", { waitUntil: "domcontentloaded" });
+  await mobile.locator("#entryGate").waitFor({ state: "visible" });
+  await mobile.locator("#gateDemoButton").click();
   await mobile.locator(".course-card").first().waitFor();
   assert.equal(await mobile.locator(".course-card").count(), 3);
   assert.equal(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), true, "Sem rolagem horizontal");
