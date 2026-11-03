@@ -1,0 +1,22 @@
+/* Diagnóstico seguro: consulta apenas a configuração pública do Firebase Auth. */
+import fs from 'node:fs/promises';
+const js=await fs.readFile('firebase.js','utf8');
+const key=js.match(/apiKey:\s*['"]([^'"]+)['"]/)?.[1];
+if(!key)throw new Error('Firebase API key ausente no arquivo de configuração.');
+const url = new URL('https://identitytoolkit.googleapis.com/v1/projects');
+url.searchParams.set('key', key);
+const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
+const data=await response.json().catch(()=>({}));
+if(!response.ok){
+ console.log('Config pública Firebase Auth: indisponível. HTTP '+response.status+', código '+(data.error?.status||'não informado'));
+ process.exitCode=1;
+}else{
+ const allowed=Array.isArray(data.authorizedDomains)?data.authorizedDomains:[];
+ console.log('Firebase projectId:',data.projectId||'(não informado)');
+ console.log('Domínios OAuth autorizados:', allowed.length?allowed.join(', '):'(nenhum retornado)');
+ console.log('GitHub Pages autorizado:',allowed.includes('pscfredteixeira.github.io')?'SIM':'NÃO');
+ if(!allowed.includes('pscfredteixeira.github.io')){
+   console.error('AÇÃO: Firebase Console > Authentication > Settings > Authorized domains > adicionar pscfredteixeira.github.io');
+   process.exitCode=2;
+ }
+}
