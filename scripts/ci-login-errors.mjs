@@ -11,6 +11,7 @@ try {
  const checks=[
   ['auth/unauthorized-domain','não está autorizado no Firebase'],
   ['auth/operation-not-allowed','O provedor Google está desativado'],
+  ['auth/configuration-not-found','O Firebase Authentication ainda não está configurado'],
   ['auth/popup-blocked','O navegador bloqueou a janela'],
   ['auth/network-request-failed','Não conseguimos acessar o Firebase']
  ];
