@@ -39,6 +39,7 @@ jobs:
           node scripts/ci-sprint18.mjs
           node scripts/ci-sprint19.mjs
           node scripts/ci-entry-gate.mjs
+          node scripts/ci-login-errors.mjs
       - name: Diagnosticar domínio Firebase Auth (configuração pública)
         if: always()
         run: node scripts/diagnose-firebase-login.mjs
