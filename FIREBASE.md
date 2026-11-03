@@ -13,6 +13,14 @@ O código do Sprint 19 usa configuração pública Firebase Web SDK no arquivo `
 5. Em **Firestore → Regras**, revise e publique exatamente o arquivo `firestore.rules`. O commit no GitHub não publica as regras no Firebase.
 6. Entre em https://pscfredteixeira.github.io/Atelie/ e teste login, anotação e sincronização em dois navegadores/dispositivos usando a **mesma conta**.
 
+## Diagnóstico do login Google — 03/11/2026
+
+Uma consulta à configuração pública do Identity Toolkit para o Web SDK existente retornou **HTTP 400 · `CONFIGURATION_NOT_FOUND`**. Isso é compatível com Firebase Authentication ainda não inicializado, mas também exige confirmar se o projeto e a Web API Key correspondem à mesma instância. O código do site não pode habilitar o serviço sem autenticação administrativa.
+
+Conferir no Firebase Console: Authentication → Get started → Sign-in method → Google → habilitar; Authentication → Settings → Authorized domains → `pscfredteixeira.github.io`. O código agora usa somente `signInWithPopup`, pois redirecionamentos usando `authDomain` em `firebaseapp.com` numa aplicação hospedada em GitHub Pages podem falhar no Safari devido a armazenamento de terceiros. No iPhone, teste no Safari real, não em navegador embutido.
+
+Depois de ativar a autenticação, repita o diagnóstico no pipeline e faça um teste de login Google com conta real. Os testes CI de interface são simulados e não provam o serviço remoto.
+
 ## Estrutura de dados
 
 A plataforma grava somente estudos pessoais em `users/{uid}/state/atelier`:

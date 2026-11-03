@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
 
 // Firebase Web config is public. Never publish service account credentials.
@@ -22,20 +22,12 @@ const cloud = {
   user: null,
   ready: false,
   snapshot: null,
-  async login() {
-    const provider = new GoogleAuthProvider();
-    try {
-      return await signInWithPopup(auth, provider);
-    } catch (error) {
-      // Popup may be blocked on mobile. Redirect needs an authorized domain
-      // and, on some browsers, a same-domain auth handler/proxy.
-      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment'].includes(error.code)) {
-        emit('Redirecionando para autenticação do Google...');
-        await signInWithRedirect(auth, provider);
-        return;
-      }
-      throw error;
-    }
+  login() {
+    // The app runs on GitHub Pages, not Firebase Hosting.
+    // Redirect auth via firebaseapp.com may fail in Safari/modern browsers
+    // because its cross-origin helper loses storage access. Use a popup only
+    // and give users a clear message if their browser blocks it.
+    return signInWithPopup(auth, new GoogleAuthProvider());
   },
   logout: () => signOut(auth),
   async save(data) {
@@ -80,7 +72,6 @@ onAuthStateChanged(auth, async user => {
   }
 }, error => emit('Falha na autenticação: ' + (error.code || error.message)));
 
-getRedirectResult(auth).catch(error => emit('Não foi possível concluir o retorno do login: ' + (error.code || error.message)));
 window.addEventListener('online', () => {
   if (cloud.user && !cloud.ready) {
     // Recheck the server by signing in state observer is not guaranteed.
