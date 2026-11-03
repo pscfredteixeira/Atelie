@@ -12,7 +12,7 @@ try {
   await page.locator("#gateDemoButton").click();
   await page.locator(".course-card").first().waitFor({ timeout: 30000 });
   assert.equal(await page.locator(".course-card").count(), 3, "Três cursos ilustrativos na home");
-  assert.match(await page.locator("main h1").innerText(), /Estudo e formação/);
+  assert.match(await page.locator("#main h1").innerText(), /Estudo e formação/);
   console.log("OK — Home, identidade e três cursos ilustrativos.");
 
   const lessons = ["escuta", "pergunta-freud", "conflito-exemplo"];
@@ -33,9 +33,9 @@ try {
   await page.goto(base + "/#/progresso");
   assert.match(await page.locator(".progress-head").innerText(), /1 de 3/);
   await page.goto(base + "/#/caderno");
-  assert.match(await page.locator("main").innerText(), /Anotação de teste do Sprint 18/);
+  assert.match(await page.locator("#main").innerText(), /Anotação de teste do Sprint 18/);
   await page.reload({ waitUntil: "domcontentloaded" });
-  await page.locator("main").getByText("Anotação de teste do Sprint 18").waitFor();
+  await page.locator("#main").getByText("Anotação de teste do Sprint 18").waitFor();
   console.log("OK — Progresso, caderno e persistência local.");
 
   await page.goto(base + "/#/estudio/pergunta-freud");
@@ -43,7 +43,7 @@ try {
   await page.locator("#editorForm button[type=submit]").click();
   assert.match(await page.locator("#editorStatus").innerText(), /Rascunho salvo/);
   await page.goto(base + "/#/aula/pergunta-freud");
-  assert.match(await page.locator("main h1").innerText(), /Título ilustrativo editado/);
+  assert.match(await page.locator("#main h1").innerText(), /Título ilustrativo editado/);
   console.log("OK — Estúdio demonstrativo local.");
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -56,7 +56,7 @@ try {
   await mobile.locator("#menuToggle").click();
   assert.match(await mobile.locator("#sidebar").getAttribute("class"), /is-open/);
   await mobile.locator('#sidebar a[href="#/caderno"]').click();
-  await mobile.locator("main h1").getByText("Meu caderno").waitFor();
+  await mobile.locator("#main h1").getByText("Meu caderno").waitFor();
   console.log("OK — Navegação mobile em 390 px.");
 } finally {
   await browser.close();
