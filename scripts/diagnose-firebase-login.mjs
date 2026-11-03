@@ -2,6 +2,7 @@
 import fs from 'node:fs/promises';
 const js=await fs.readFile('firebase.js','utf8');
 const key=js.match(/apiKey:\s*['"]([^'"]+)['"]/)?.[1];
+const expectedProjectId=js.match(/projectId:\s*['"]([^'"]+)['"]/)?.[1];
 if(!key)throw new Error('Firebase API key ausente no arquivo de configuração.');
 const url = new URL('https://identitytoolkit.googleapis.com/v1/projects');
 url.searchParams.set('key', key);
@@ -14,6 +15,8 @@ if(!response.ok){
 }else{
  const allowed=Array.isArray(data.authorizedDomains)?data.authorizedDomains:[];
  console.log('Firebase projectId:',data.projectId||'(não informado)');
+ console.log('ID do projeto confere com o site:', data.projectId===expectedProjectId ? 'SIM' : 'NÃO');
+ if(data.projectId && expectedProjectId && data.projectId!==expectedProjectId)console.warn('VERIFICAR: config Web do Ateliê aponta para outro projeto Firebase.');
  console.log('Domínios OAuth autorizados:', allowed.length?allowed.join(', '):'(nenhum retornado)');
  console.log('GitHub Pages autorizado:',allowed.includes('pscfredteixeira.github.io')?'SIM':'NÃO');
  if(!allowed.includes('pscfredteixeira.github.io')){
