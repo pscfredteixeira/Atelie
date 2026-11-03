@@ -9,7 +9,8 @@ const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
 const data=await response.json().catch(()=>({}));
 if(!response.ok){
  console.log('Config pública Firebase Auth: indisponível. HTTP '+response.status+', código '+(data.error?.status||'não informado')+', motivo '+String(data.error?.message||'não informado').replaceAll(key,'[chave omitida]').slice(0,250));
- console.warn('Diagnóstico não conclusivo: configuração pública indisponível.');
+ if(data.error?.message==='CONFIGURATION_NOT_FOUND') console.warn('VERIFICAR: Authentication → Começar / Google, e se o projeto e a Web API Key correspondem.');
+ else console.warn('Diagnóstico não conclusivo: configuração pública indisponível.');
 }else{
  const allowed=Array.isArray(data.authorizedDomains)?data.authorizedDomains:[];
  console.log('Firebase projectId:',data.projectId||'(não informado)');
