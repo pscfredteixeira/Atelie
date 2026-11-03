@@ -19,6 +19,7 @@ if(!response.ok){
  console.log('Número do projeto Firebase Auth:', data.projectId || '(não informado)');
  console.log('Projeto correspondente ao aplicativo Web:', String(data.projectId) === expectedProjectNumber ? 'SIM' : 'VERIFICAR');
  console.log('Domínios OAuth autorizados:', allowed.length?allowed.join(', '):'(nenhum retornado)');
+ console.log('Configuração pública de provedores OAuth:',Array.isArray(data.idpConfig)?data.idpConfig.map(x=>x.providerId||'não informado').join(', '):'não disponível publicamente');
  console.log('GitHub Pages autorizado:',allowed.includes('pscfredteixeira.github.io')?'SIM':'NÃO');
  if(!allowed.includes('pscfredteixeira.github.io')){
    console.error('AÇÃO: Firebase Console > Authentication > Settings > Authorized domains > adicionar pscfredteixeira.github.io');
