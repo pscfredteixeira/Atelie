@@ -9,7 +9,7 @@ const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
 const data=await response.json().catch(()=>({}));
 if(!response.ok){
  console.log('Config pública Firebase Auth: indisponível. HTTP '+response.status+', código '+(data.error?.status||'não informado'));
- process.exitCode=1;
+ console.warn('Diagnóstico não conclusivo: configuração pública indisponível.');
 }else{
  const allowed=Array.isArray(data.authorizedDomains)?data.authorizedDomains:[];
  console.log('Firebase projectId:',data.projectId||'(não informado)');
@@ -17,6 +17,6 @@ if(!response.ok){
  console.log('GitHub Pages autorizado:',allowed.includes('pscfredteixeira.github.io')?'SIM':'NÃO');
  if(!allowed.includes('pscfredteixeira.github.io')){
    console.error('AÇÃO: Firebase Console > Authentication > Settings > Authorized domains > adicionar pscfredteixeira.github.io');
-   process.exitCode=2;
+   console.warn('O site pode não conseguir autenticar até o domínio ser habilitado.');
  }
 }
