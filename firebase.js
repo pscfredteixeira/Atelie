@@ -81,11 +81,13 @@ getRedirectResult(auth).catch(error => emit('Não foi possível concluir o retor
 window.addEventListener('online', () => {
   if (cloud.user && !cloud.ready) {
     // Recheck the server by signing in state observer is not guaranteed.
-    getDoc(doc(db, 'users', cloud.user.uid, 'state', 'atelier')).then(snap => {
-      if (!cloud.user) return;
+    const uid = cloud.user.uid;
+    const expectedSession = session;
+    getDoc(doc(db, 'users', uid, 'state', 'atelier')).then(snap => {
+      if (session !== expectedSession || cloud.user?.uid !== uid) return;
       cloud.ready = true;
-      signal('atelie-cloud-loaded', { uid: cloud.user.uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null });
-      signal('atelie-cloud-ready', { uid: cloud.user.uid });
+      signal('atelie-cloud-loaded', { uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null });
+      signal('atelie-cloud-ready', { uid });
     }).catch(() => {});
   } else if (cloud.user && cloud.ready) {
     signal('atelie-cloud-ready', { uid: cloud.user.uid });
