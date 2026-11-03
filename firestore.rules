@@ -24,7 +24,12 @@ service cloud.firestore {
           && request.resource.data.notes.get('conflito-exemplo','').size() <= 5000
           && request.resource.data.answers is map
           && request.resource.data.answers.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo'])
-          && request.resource.data.updatedAt is int;
+          && request.resource.data.answers.size() <= 3
+          && (!('escuta' in request.resource.data.answers) || (request.resource.data.answers.escuta is int && request.resource.data.answers.escuta >= 0 && request.resource.data.answers.escuta <= 2))
+          && (!('pergunta-freud' in request.resource.data.answers) || (request.resource.data.answers['pergunta-freud'] is int && request.resource.data.answers['pergunta-freud'] >= 0 && request.resource.data.answers['pergunta-freud'] <= 2))
+          && (!('conflito-exemplo' in request.resource.data.answers) || (request.resource.data.answers['conflito-exemplo'] is int && request.resource.data.answers['conflito-exemplo'] >= 0 && request.resource.data.answers['conflito-exemplo'] <= 2))
+          && request.resource.data.updatedAt is int
+          && request.resource.data.updatedAt >= 0;
       }
       allow read: if isOwner();
       allow create, update: if isOwner() && validState();

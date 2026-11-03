@@ -15,7 +15,7 @@ const $=(s,root=document)=>root.querySelector(s);
 const icon=n=>'<svg aria-hidden="true"><use href="#i-'+n+'"></use></svg>';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const STORE='ateliepsi-beta-state-v1';
-const empty=()=>({saved:[],completed:[],notes:{},answers:{},drafts:{}});
+const empty=()=>({saved:[],completed:[],notes:{},answers:{},drafts:{},updatedAt:0});
 function normalize(value){
  const o=empty();if(!value||typeof value!=='object')return o;
  o.saved=Array.isArray(value.saved)?value.saved.filter(s=>COURSES.some(c=>c.slug===s)):[];
@@ -27,22 +27,79 @@ function normalize(value){
    if(field==='drafts'&&val&&typeof val==='object')o.drafts[key]={title:String(val.title??'').slice(0,120),intro:String(val.intro??'').slice(0,4000),text:String(val.text??'').slice(0,5000)};
   }
  }
+ if(Number.isSafeInteger(value.updatedAt) && value.updatedAt>=0)o.updatedAt=value.updatedAt;
  return o;
 }
-let state=empty();try{state=normalize(JSON.parse(localStorage.getItem(STORE)||'null'))}catch{}
-let courseFilter='all';let cloudMessage='';let cloudStatus='';
-let syncTimer;
-function saveState(){
- try{localStorage.setItem(STORE,JSON.stringify(state))}catch{cloudMessage='Armazenamento local indisponível.'}
- clearTimeout(syncTimer);
- if(window.AtelieCloud?.user)syncTimer=setTimeout(()=>window.AtelieCloud.save(state).catch(e=>{cloudMessage='Falha ao sincronizar: '+e.message;renderStatus()}),700);
- updateSavedCounter();
+const accountKey = uid => STORE + ':account:' + uid;
+const pendingKey = uid => STORE + ':pending:' + uid;
+function loadLocal(key) {
+ try { return normalize(JSON.parse(localStorage.getItem(key) || 'null')); }
+ catch { return empty(); }
 }
-function updateSavedCounter(){const el=$('#savedCount');if(el)el.textContent=String(state.saved.length)}
-function renderStatus(){
- const el=$('#cloudStatus');if(!el)return;
- el.textContent=cloudMessage||(window.AtelieCloud?.user?'Conta conectada · seus estudos são sincronizados':'Seus estudos estão salvos somente neste navegador');
- const btn=$('#loginButton');if(btn)btn.textContent=window.AtelieCloud?.user?'Sair da conta':'Entrar com Google';
+let activeUid = null;
+let state = loadLocal(STORE);
+let courseFilter = 'all';
+let cloudMessage = '';
+let syncTimer;
+let syncing = false;
+let conflict = null;
+
+function queueCloudSync(delay = 700) {
+ clearTimeout(syncTimer);
+ if (!activeUid || conflict || !window.AtelieCloud?.ready) return;
+ const uid = activeUid;
+ if (!localStorage.getItem(pendingKey(uid))) return;
+ syncTimer = setTimeout(async () => {
+   if (uid !== activeUid || conflict || !window.AtelieCloud?.ready || window.AtelieCloud.user?.uid !== uid) return;
+   if (syncing) { queueCloudSync(1000); return; }
+   const version = localStorage.getItem(pendingKey(uid));
+   if (!version) return;
+   syncing = true;
+   cloudMessage = 'Sincronizando alterações...';
+   renderStatus();
+   try {
+     await window.AtelieCloud.save(loadLocal(accountKey(uid)));
+     if (uid === activeUid) {
+       if (localStorage.getItem(pendingKey(uid)) === version) localStorage.removeItem(pendingKey(uid));
+       cloudMessage = 'Alterações sincronizadas com o Firebase.';
+     }
+   } catch (error) {
+     if (uid === activeUid) cloudMessage = 'Não foi possível sincronizar. Seus dados continuam salvos neste dispositivo (' + (error.code || error.message) + ').';
+   } finally {
+     syncing = false;
+     renderStatus();
+     if (activeUid && localStorage.getItem(pendingKey(activeUid)) && window.AtelieCloud?.ready && !conflict && cloudMessage.startsWith('Alterações sincronizadas')) queueCloudSync(100);
+   }
+ }, delay);
+}
+function saveState() {
+ state.updatedAt = Math.max(Date.now(), (state.updatedAt || 0) + 1);
+ try {
+   localStorage.setItem(activeUid ? accountKey(activeUid) : STORE, JSON.stringify(state));
+   if (activeUid) localStorage.setItem(pendingKey(activeUid), String(state.updatedAt));
+ } catch {
+   cloudMessage = 'Armazenamento local indisponível. Copie seus dados antes de sair.';
+ }
+ queueCloudSync();
+ updateSavedCounter();
+ renderStatus();
+}
+function updateSavedCounter() {
+ const el = $('#savedCount');
+ if (el) el.textContent = String(state.saved.length);
+}
+function renderStatus() {
+ const el = $('#cloudStatus');
+ if (el) {
+   const pending = activeUid && localStorage.getItem(pendingKey(activeUid));
+   el.textContent = conflict ? 'Conflito de versões: escolha qual estudo manter.'
+     : pending && window.AtelieCloud?.ready && !syncing ? 'Alterações salvas neste dispositivo · sincronização pendente.'
+     : cloudMessage || (activeUid ? 'Conta conectada.' : 'Seus estudos estão salvos somente neste navegador');
+ }
+ const btn = $('#loginButton');
+ if (btn) btn.textContent = activeUid ? 'Sair da conta' : 'Entrar com Google';
+ const actions = $('#syncConflict');
+ if (actions) actions.hidden = !conflict;
 }
 function lesson(id){return {...LESSONS[id],...(state.drafts[id]||{})}}
 function getCourse(id){return COURSES.find(c=>c.slug===id)}
@@ -73,13 +130,76 @@ document.addEventListener('click',e=>{
  const reset=e.target.closest('[data-reset]');if(reset&&confirm('Restaurar a aula ilustrativa original neste navegador?')){delete state.drafts[reset.dataset.reset];saveState();render();return}
 });
 let noteTimer;
-document.addEventListener('input',e=>{const note=e.target.closest('[data-note]');if(!note)return;state.notes[note.dataset.note]=note.value.slice(0,5000);clearTimeout(noteTimer);const status=$('#noteSaveStatus');if(status)status.textContent='Salvando...';noteTimer=setTimeout(()=>{saveState();const status=$('#noteSaveStatus');if(status)status.textContent='Anotação salva'+(window.AtelieCloud?.user?' · sincronizando com a nuvem':' neste navegador')+'.'},350)});
+document.addEventListener('input',e=>{const note=e.target.closest('[data-note]');if(!note)return;state.notes[note.dataset.note]=note.value.slice(0,5000);saveState();clearTimeout(noteTimer);const status=$('#noteSaveStatus');if(status)status.textContent='Anotação salva neste dispositivo.';});
 document.addEventListener('submit',e=>{const f=e.target.closest('#editorForm');if(!f)return;e.preventDefault();const id=f.dataset.edit;const vals=new FormData(f);state.drafts[id]={title:String(vals.get('title')||'').trim(),intro:String(vals.get('intro')||'').trim(),text:String(vals.get('text')||'').trim()};saveState();$('#editorStatus').textContent='Rascunho salvo neste navegador. Veja a aula para conferir.'});
 $('#searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#globalSearch').value.trim();courseFilter='all';location.hash='#/cursos'+(q?'?q='+encodeURIComponent(q):'');render()});
 $('#menuToggle').addEventListener('click',toggleMenu);$('#overlay').addEventListener('click',closeMenu);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!e.altKey&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$('#globalSearch').focus()}});
 $('#loginButton').addEventListener('click',async()=>{if(!window.AtelieCloud){cloudMessage='Firebase ainda está carregando. Confira sua conexão.';renderStatus();return}try{cloudMessage='Conectando...';renderStatus();if(window.AtelieCloud.user)await window.AtelieCloud.logout();else await window.AtelieCloud.login()}catch(err){cloudMessage='Não foi possível entrar: '+(err.code||err.message);renderStatus()}});
-window.addEventListener('atelie-cloud-state',e=>{cloudMessage=e.detail.message||'';renderStatus()});
-window.addEventListener('atelie-cloud-loaded',e=>{state=normalize({...e.detail,drafts:state.drafts});try{localStorage.setItem(STORE,JSON.stringify(state))}catch{}render()});
+window.addEventListener('atelie-cloud-state', e => {
+ cloudMessage = e.detail.message || '';
+ renderStatus();
+});
+window.addEventListener('atelie-cloud-auth', e => {
+ activeUid = e.detail.uid || null;
+ conflict = null;
+ clearTimeout(syncTimer);
+ state = loadLocal(activeUid ? accountKey(activeUid) : STORE);
+ render();
+});
+window.addEventListener('atelie-cloud-loaded', e => {
+ if (!activeUid || e.detail.uid !== activeUid) return;
+ const local = loadLocal(accountKey(activeUid));
+ const remote = normalize(e.detail.state);
+ const pending = localStorage.getItem(pendingKey(activeUid));
+ if (pending && e.detail.exists && remote.updatedAt > local.updatedAt) {
+   conflict = { uid: activeUid, remote };
+   state = local;
+   cloudMessage = 'Existe uma versão mais recente na nuvem. Escolha qual deseja manter.';
+   render();
+   return;
+ }
+ if (pending) state = local;
+ else if (e.detail.exists) state = { ...remote, drafts: local.drafts };
+ else state = local;
+ try { localStorage.setItem(accountKey(activeUid), JSON.stringify(state)); } catch {}
+ render();
+ queueCloudSync(100);
+});
+window.addEventListener('atelie-cloud-ready', e => {
+ if (e.detail.uid === activeUid) queueCloudSync(100);
+});
+window.addEventListener('online', () => queueCloudSync(500));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) queueCloudSync(500); });
+document.addEventListener('click', e => {
+ const choice = e.target.closest('[data-conflict]');
+ if (!choice || !conflict || conflict.uid !== activeUid) return;
+ const { remote } = conflict;
+ conflict = null;
+ if (choice.dataset.conflict === 'cloud') {
+   state = { ...remote, drafts: state.drafts };
+   try {
+     localStorage.setItem(accountKey(activeUid), JSON.stringify(state));
+     localStorage.removeItem(pendingKey(activeUid));
+   } catch {}
+   cloudMessage = 'Versão da nuvem restaurada neste dispositivo.';
+   render();
+   return;
+ }
+ state.updatedAt = Math.max(state.updatedAt, remote.updatedAt);
+ saveState();
+ cloudMessage = 'Versão deste dispositivo escolhida para sincronizar.';
+ render();
+});
+
 window.addEventListener('hashchange',render);
 render();
+// Firebase modules may initialize before this deferred script registers listeners.
+if (window.AtelieCloud?.user) {
+ const cloud = window.AtelieCloud;
+ window.dispatchEvent(new CustomEvent('atelie-cloud-auth', { detail: { uid: cloud.user.uid } }));
+ if (cloud.snapshot?.uid === cloud.user.uid) {
+   window.dispatchEvent(new CustomEvent('atelie-cloud-loaded', { detail: cloud.snapshot }));
+   if (cloud.ready) window.dispatchEvent(new CustomEvent('atelie-cloud-ready', { detail: { uid: cloud.user.uid } }));
+ }
+}

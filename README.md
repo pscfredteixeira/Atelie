@@ -1,5 +1,8 @@
 # Atelier.
 
+> **Atualização (Sprint 19):** Beta com uma aula fictícia por curso e sincronização Firebase preparada, com dados locais isolados por conta. Para ativar e validar o serviço remoto, siga [FIREBASE.md](FIREBASE.md). Nenhuma aula antiga foi importada. A documentação histórica abaixo descreve etapas anteriores do projeto.
+
+
 Protótipo de uma plataforma para ensinar, estudar e experimentar conceitos da psicanálise.
 
 > **Estado atual:** Sprint 16 com Aula 2 publicada; Sprint 15 de estabilização implementado: edição offline de rascunhos, histórico local protegido, carregamento com limites de espera e ajustes no menu mobile. A criação de cursos e aulas continua na interface. **Não está homologado:** a execução em navegadores reais, acessibilidade e testes com convidados ainda precisam ser conferidos.
