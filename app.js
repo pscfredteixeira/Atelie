@@ -170,27 +170,42 @@ $('#loginButton').addEventListener('click', async () => {
  updateEntryGate();
 });
 $('#gateDemoButton').addEventListener('click', enterDemo);
+function googleLoginError(error) {
+ const code = error?.code || '';
+ switch (code) {
+  case 'auth/unauthorized-domain':
+    return 'O domínio pscfredteixeira.github.io não está autorizado no Firebase. O responsável precisa adicioná-lo em Authentication → Settings → Authorized domains.';
+  case 'auth/operation-not-allowed':
+    return 'O provedor Google está desativado. É preciso ativá-lo em Firebase → Authentication → Sign-in method.';
+  case 'auth/popup-blocked':
+  case 'auth/operation-not-supported-in-this-environment':
+    return 'O navegador bloqueou a janela do Google. Abra o site diretamente no Safari ou Chrome, fora do navegador interno de aplicativos, e permita pop-ups.';
+  case 'auth/popup-closed-by-user':
+  case 'auth/cancelled-popup-request':
+    return 'A autenticação não foi concluída. Tente novamente.';
+  case 'auth/network-request-failed':
+    return 'Não conseguimos acessar o Firebase. Confira sua internet ou bloqueadores de conteúdo e tente novamente.';
+  case 'auth/invalid-api-key':
+  case 'auth/app-not-authorized':
+    return 'A configuração do Firebase precisa ser revisada pelo responsável. Código: ' + code;
+  default:
+    return 'Não foi possível entrar. Código: ' + (code || error?.message || 'desconhecido') + '. Você ainda pode explorar a demonstração.';
+ }
+}
 $('#gateGoogleButton').addEventListener('click', async () => {
  const status = $('#gateStatus');
+ const btn = $('#gateGoogleButton');
  if (!window.AtelieCloud) {
-   status.textContent = 'O login ainda não está disponível. Você pode acessar a versão demonstrativa.';
+   status.textContent = 'O Firebase não carregou. Abra o site diretamente no Safari ou Chrome e atualize a página. Se persistir, verifique a configuração do projeto.';
    return;
  }
- const btn = $('#gateGoogleButton');
  btn.disabled = true;
- status.textContent = 'Abrindo o login do Google...';
+ status.textContent = 'Abrindo a janela de acesso do Google...';
  try {
    await window.AtelieCloud.login();
-   status.textContent = 'Autenticação recebida. Preparando seu espaço...';
+   if (!window.AtelieCloud.user) status.textContent = 'Verificando sua sessão com o Firebase...';
  } catch (error) {
-   const code = error.code || '';
-   status.textContent = code === 'auth/unauthorized-domain'
-     ? 'Este endereço ainda não foi autorizado no Firebase Authentication.'
-     : code === 'auth/operation-not-allowed'
-     ? 'O login Google precisa ser habilitado no console do Firebase.'
-     : code === 'auth/popup-closed-by-user'
-     ? 'O login foi cancelado. Você pode tentar novamente.'
-     : 'Não foi possível entrar (' + (code || error.message) + '). A demonstração continua disponível.';
+   status.textContent = googleLoginError(error);
  } finally {
    btn.disabled = false;
  }
