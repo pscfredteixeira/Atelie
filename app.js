@@ -177,6 +177,11 @@ function googleLoginError(error) {
     return 'O domínio pscfredteixeira.github.io não está autorizado no Firebase. O responsável precisa adicioná-lo em Authentication → Settings → Authorized domains.';
   case 'auth/operation-not-allowed':
     return 'O provedor Google está desativado. É preciso ativá-lo em Firebase → Authentication → Sign-in method.';
+  case 'auth/configuration-not-found':
+  case 'auth/project-not-found':
+    return 'O Firebase Authentication ainda não está configurado para este projeto. O responsável deve abrir Firebase → Authentication → Começar e habilitar Google.';
+  case 'auth/internal-error':
+    return 'O Firebase retornou um erro ao iniciar o Google Login. Confira se Authentication já foi ativado no projeto e se o domínio está autorizado.';
   case 'auth/popup-blocked':
   case 'auth/operation-not-supported-in-this-environment':
     return 'O navegador bloqueou a janela do Google. Abra o site diretamente no Safari ou Chrome, fora do navegador interno de aplicativos, e permita pop-ups.';
