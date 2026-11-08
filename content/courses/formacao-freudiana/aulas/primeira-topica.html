@@ -66,7 +66,9 @@
     .word-slot:disabled{cursor:default;opacity:1}
     .word-bank{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 18px}
     .word-bank[hidden],.word-check[hidden]{display:none!important}
-    .word-chip{background:#fff;border:1px solid #cbb7d6;color:#4b3962;padding:9px 13px;border-radius:999px;font-weight:650;font-size:.89rem;touch-action:manipulation;user-select:none}
+    .word-chip{background:#fff;border:1px solid #cbb7d6;color:#4b3962;padding:9px 13px;border-radius:999px;font-weight:650;font-size:.89rem;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
+    .word-chip.word-dragging{opacity:.5;cursor:grabbing}
+    .word-ghost{position:fixed!important;z-index:9999;left:0;top:0;transform:translate(-50%,-50%) scale(1.07);margin:0;box-shadow:0 12px 28px #3b28564d;background:#fff!important;border:2px solid #795c9a!important;color:#3e2b51!important;border-radius:999px;pointer-events:none;touch-action:none;cursor:grabbing;opacity:.97;text-align:center}
     .word-chip:hover:not(:disabled){border-color:#795c9a;background:#f5eef8}
     .word-chip.used{opacity:.38;text-decoration:line-through;cursor:default}
     .word-chip:disabled{cursor:default}
@@ -400,13 +402,106 @@
   const WORD_FEEDBACK=["✓ A hipótese do inconsciente permite investigar efeitos que ultrapassam o relato consciente.","✓ A tópica descreve relações funcionais entre sistemas, não compartimentos anatômicos.","✓ Os trabalhos de 1900 e 1915 marcam momentos importantes na elaboração do modelo.","✓ Nem tudo que está fora da consciência está recalcado: a diferença é dinâmica."];
   document.querySelectorAll('.word-exercise').forEach(ex=>{
     const n=Number(ex.dataset.wordExercise);
+    // No computador: drag-and-drop nativo. No celular: Pointer Events
+    // criam uma cópia visual que acompanha o dedo até a lacuna escolhida.
     ex.querySelectorAll('.word-chip').forEach(chip=>{
-      chip.addEventListener('click',()=>placeWord(ex,chip.dataset.word,null));
+      let suppressClickUntil=0;
+      let touchDrag=null;
+      chip.addEventListener('click',()=>{
+        if(Date.now()<suppressClickUntil)return;
+        placeWord(ex,chip.dataset.word,null);
+      });
       chip.addEventListener('dragstart',ev=>{
         if(chip.disabled){ev.preventDefault();return}
         ev.dataTransfer.setData('text/plain',chip.dataset.word);
         ev.dataTransfer.effectAllowed='move';
       });
+      chip.addEventListener('dragend',()=>ex.querySelectorAll('.word-slot').forEach(slot=>slot.classList.remove('dragover')));
+      chip.addEventListener('pointerdown',ev=>{
+        if(ev.pointerType==='mouse'||chip.disabled||ex.classList.contains('solved'))return;
+        if(touchDrag)return;
+        touchDrag={pointerId:ev.pointerId,startX:ev.clientX,startY:ev.clientY,x:ev.clientX,y:ev.clientY,moved:false,ghost:null,target:null,scrollFrame:null};
+        chip.draggable=false;
+        try{chip.setPointerCapture(ev.pointerId)}catch{}
+        window.addEventListener('pointermove',moveTouchDrag,{passive:false});
+        window.addEventListener('pointerup',endTouchDrag);
+        window.addEventListener('pointercancel',cancelTouchDrag);
+      });
+      function moveGhost(){
+        if(!touchDrag||!touchDrag.ghost)return;
+        touchDrag.ghost.style.left=touchDrag.x+'px';
+        touchDrag.ghost.style.top=touchDrag.y+'px';
+        const el=document.elementFromPoint(touchDrag.x,touchDrag.y);
+        const slot=el&&el.closest('.word-slot');
+        const target=slot&&ex.contains(slot)&&!slot.disabled?slot:null;
+        if(touchDrag.target!==target){
+          if(touchDrag.target)touchDrag.target.classList.remove('dragover');
+          if(target)target.classList.add('dragover');
+          touchDrag.target=target;
+        }
+      }
+      function scrollDuringDrag(){
+        if(!touchDrag||!touchDrag.moved)return;
+        const y=touchDrag.y;
+        const edge=75;
+        const speed=y<edge?-Math.min(13,(edge-y)*.22):y>window.innerHeight-edge?Math.min(13,(y-(window.innerHeight-edge))*.22):0;
+        if(speed)window.scrollBy(0,speed);
+        moveGhost();
+        touchDrag.scrollFrame=requestAnimationFrame(scrollDuringDrag);
+      }
+      function moveTouchDrag(ev){
+        const d=touchDrag;
+        if(!d||ev.pointerId!==d.pointerId)return;
+        d.x=ev.clientX;d.y=ev.clientY;
+        if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)<8)return;
+        if(!d.moved){
+          d.moved=true;
+          const ghost=chip.cloneNode(true);
+          ghost.disabled=false;
+          ghost.removeAttribute('draggable');
+          ghost.classList.add('word-ghost');
+          ghost.style.width=chip.getBoundingClientRect().width+'px';
+          document.body.appendChild(ghost);
+          d.ghost=ghost;
+          chip.classList.add('word-dragging');
+          d.scrollFrame=requestAnimationFrame(scrollDuringDrag);
+        }
+        ev.preventDefault();
+        moveGhost();
+      }
+      function cleanupTouchDrag(){
+        const d=touchDrag;
+        if(!d)return;
+        if(d.scrollFrame!==null)cancelAnimationFrame(d.scrollFrame);
+        if(d.target)d.target.classList.remove('dragover');
+        if(d.ghost)d.ghost.remove();
+        chip.classList.remove('word-dragging');
+        chip.draggable=true;
+        try{if(chip.hasPointerCapture(d.pointerId))chip.releasePointerCapture(d.pointerId)}catch{}
+        touchDrag=null;
+        window.removeEventListener('pointermove',moveTouchDrag);
+        window.removeEventListener('pointerup',endTouchDrag);
+        window.removeEventListener('pointercancel',cancelTouchDrag);
+      }
+      function endTouchDrag(ev){
+        const d=touchDrag;
+        if(!d||ev.pointerId!==d.pointerId)return;
+        const wasMoved=d.moved;
+        const word=chip.dataset.word;
+        moveGhost();
+        const target=d.target;
+        cleanupTouchDrag();
+        if(wasMoved){
+          suppressClickUntil=Date.now()+500;
+          if(target)placeWord(ex,word,target);
+        }
+      }
+      function cancelTouchDrag(ev){
+        if(touchDrag&&ev.pointerId===touchDrag.pointerId){
+          suppressClickUntil=Date.now()+250;
+          cleanupTouchDrag();
+        }
+      }
     });
     ex.querySelectorAll('.word-slot').forEach(slot=>{
       slot.addEventListener('click',()=>clearWordSlot(ex,slot));
