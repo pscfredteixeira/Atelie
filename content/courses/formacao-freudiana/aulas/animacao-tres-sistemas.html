@@ -100,8 +100,6 @@ button:disabled{cursor:wait;opacity:.64}
   <div class="audio-alert" id="audio-status" role="status" aria-live="polite">Preparando a narração…</div><button class="audio-retry" type="button" id="audio-retry" hidden>Carregar novamente</button>
   </div>
  </div>
- <p class="below-note">As cenas acompanham <b>o tempo da narração original</b>: pausa, avanço e mudança de velocidade preservam a sincronização. A imagem do iceberg funciona como recurso didático, não como diagrama anatômico formulado por Freud.</p>
- <div class="small-print">Ateliê de Psicanálise · Aula sobre a primeira tópica freudiana · Narração: arquivo original enviado para o projeto.</div>
 </div>
 <script>
 (()=>{'use strict';
@@ -145,7 +143,9 @@ let objectURL=null;
 let loading=false;
 function reportHeight(){
  if(window.parent===window)return;
- const height=Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight));
+ const wrap=document.querySelector('.wrap');
+ if(!wrap)return;
+ const height=Math.ceil(wrap.getBoundingClientRect().height);
  window.parent.postMessage({type:'atelie-sistemas-altura',height},location.origin);
 }
 async function prepareNarration(){
@@ -190,7 +190,7 @@ audio.addEventListener('ended',()=>{
 retry.addEventListener('click',prepareNarration);
 window.addEventListener('load',reportHeight);
 window.addEventListener('resize',reportHeight);
-if('ResizeObserver' in window)new ResizeObserver(reportHeight).observe(document.body);
+if('ResizeObserver' in window)new ResizeObserver(reportHeight).observe(document.querySelector('.wrap'));
 prepareNarration();
 })();
 </script>
