@@ -15,7 +15,12 @@
     button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}a:hover{text-decoration-thickness:2px} button:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
     .shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #dcd5dc}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted);text-align:right}
     .intro{padding:42px 0 28px}.eyebrow{color:var(--accent-dark);letter-spacing:.16em;font-size:.76rem;text-transform:uppercase;font-weight:800}.intro h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.08;letter-spacing:-.028em;font-size:clamp(2.4rem,5.2vw,4.2rem);max-width:740px;margin:13px 0 18px}.intro>p{max-width:670px;color:var(--muted);font-size:1.06rem;margin:0}
-    .progress-wrap{margin:23px 0 3px;padding:17px 19px;background:rgba(255,253,250,.8);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:650;font-size:.88rem}.progress-head span:last-child{color:var(--accent-dark);font-variant-numeric:tabular-nums}.track{height:7px;background:#e5dfea;border-radius:30px;margin-top:11px;overflow:hidden}.track>div{width:0;height:100%;background:linear-gradient(90deg,#8062a6,#b699c7);transition:width .45s ease;border-radius:inherit}.roadmap{display:flex;gap:6px;color:var(--muted);font-size:.75rem;justify-content:space-between;margin-top:9px}.roadmap span:last-child{text-align:right}
+    .progress-wrap{margin:23px 0 3px;padding:17px 19px;background:rgba(255,253,250,.8);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:650;font-size:.88rem}.progress-head span:last-child{color:var(--accent-dark);font-variant-numeric:tabular-nums}.track{height:7px;background:#e5dfea;border-radius:30px;margin-top:11px;overflow:hidden}.track>div{width:0;height:100%;background:linear-gradient(90deg,#8062a6,#b699c7);transition:width .45s ease;border-radius:inherit}
+    .progress-segments{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;margin-top:12px}
+    .progress-segments span{display:block;height:9px;border-radius:10px;background:#e6dfeb;border:1px solid #e1d7e7;transition:background .3s,box-shadow .3s}
+    .progress-segments span.done{background:linear-gradient(90deg,#71548e,#a989c2);border-color:transparent;box-shadow:0 1px 3px #6f53863a}
+    .progress-foot{margin:10px 0 0;color:#796b7e;font-size:.78rem;line-height:1.45}
+    @media(max-width:560px){.progress-segments{gap:3px}.progress-segments span{height:8px}}.roadmap{display:flex;gap:6px;color:var(--muted);font-size:.75rem;justify-content:space-between;margin-top:9px}.roadmap span:last-child{text-align:right}
     .timeline{position:relative;padding:12px 0 30px}.timeline:before{content:"";position:absolute;top:35px;bottom:110px;left:23px;width:2px;background:repeating-linear-gradient(to bottom,#c9b8d6 0,#c9b8d6 8px,transparent 8px,transparent 15px)}
     .step{position:relative;padding-left:56px;margin:15px 0 28px;scroll-margin-top:20px}.dot{position:absolute;left:5px;top:19px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid #bba6ca;background:var(--bg);color:var(--accent-dark);font-weight:800;z-index:1}.step.complete .dot{background:var(--good);border-color:var(--good);color:#fff}.step.locked .dot,.step.planned .dot{color:#948b9a;border-color:#d8d0da}
     .panel{background:var(--paper);border:1px solid #e5dce5;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-inner{padding:clamp(20px,3.5vw,33px)}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.kicker{font-weight:800;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-dark)}.pill{display:inline-flex;align-items:center;gap:5px;background:#f1edf5;color:#604a7c;border-radius:100px;padding:3px 10px;font-size:.72rem;font-weight:800;white-space:nowrap}.pill.done{background:var(--good-bg);color:var(--good)}.pill.lock{background:#eeebef;color:#7d7581}
@@ -117,9 +122,10 @@
     <section class="intro" aria-labelledby="title">
       <h1 id="title">A primeira tópica de Freud</h1>
 
-      <div class="progress-wrap" aria-label="Progresso dos três primeiros quadradinhos">
-        <div class="progress-head"><span>Seu progresso nesta versão</span><span id="progress-label">0 de 3 etapas</span></div>
-        <div class="track" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" id="progressbar"><div id="progress-fill"></div></div>
+      <div class="progress-wrap" aria-label="Progresso das atividades da aula">
+        <div class="progress-head"><span>Seu progresso na aula</span><span id="progress-label">0 de 14 marcos</span></div>
+        <div class="progress-segments" role="progressbar" aria-label="Marcos concluídos da aula" aria-valuemin="0" aria-valuemax="14" aria-valuenow="0" id="progressbar"></div>
+        <p class="progress-foot" id="progress-next">A seguir: assistir à abertura.</p>
       </div>
     </section>
 
@@ -379,7 +385,32 @@
     $('#third-audio-skip').hidden=!narrationFailed||state.thirdAudioDone;
     renderWordStages();
     Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
-    const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
+    const progressMarks=[
+      {done:videoDone,label:'Assistir ao vídeo de abertura'},
+      {done:passed('q1'),label:'Responder ao desafio da abertura'},
+      ...[1,2,3,4].map(n=>({done:wordStageComplete(n),label:'Concluir a interação de palavras '+n})),
+      {done:passed('q2a'),label:'Resolver o desafio sobre lugares psíquicos'},
+      {done:passed('q2b'),label:'Resolver o desafio sobre os fundamentos'},
+      {done:state.thirdAudioDone,label:'Concluir a narração sobre os três sistemas'},
+      ...['ics','pcs','cs'].map(id=>({done:state.thirdAudioDone&&state.visited.includes(id),label:'Explorar o sistema '+({ics:'inconsciente',pcs:'pré-consciente',cs:'consciente'}[id])})),
+      {done:passed('q3a'),label:'Resolver a aplicação clínica'},
+      {done:passed('q3b'),label:'Resolver a distinção teórica final'}
+    ];
+    const count=progressMarks.filter(x=>x.done).length;
+    $('#progress-label').textContent=count+' de '+progressMarks.length+' marcos';
+    const progressBar=$('#progressbar');
+    if(!progressBar.children.length){
+      progressMarks.forEach((mark,i)=>{
+        const segment=document.createElement('span');
+        segment.title=(i+1)+'. '+mark.label;
+        progressBar.appendChild(segment);
+      });
+    }
+    [...progressBar.children].forEach((segment,i)=>segment.classList.toggle('done',progressMarks[i].done));
+    progressBar.setAttribute('aria-valuenow',String(count));
+    progressBar.setAttribute('aria-valuetext',count+' de '+progressMarks.length+' marcos concluídos');
+    const next=progressMarks.find(x=>!x.done);
+    $('#progress-next').textContent=next?'Próximo marco: '+next.label+'.':'Todos os marcos concluídos. Insígnia conquistada.';
     $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
     $('#gate-2').textContent=c2?'✓ Etapa concluída. Explore agora os três sistemas.':'Acerte as duas perguntas para desbloquear o esquema interativo.';
     $('#gate-3').textContent=c3?'✓ Protótipo concluído. A próxima etapa será adicionada na continuação da aula.':'Explore os três sistemas e acerte as duas perguntas para concluir este protótipo.';
