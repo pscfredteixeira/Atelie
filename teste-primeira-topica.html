@@ -149,6 +149,11 @@
           <h2 id="step3-title">Os três sistemas psíquicos</h2>
           <p class="hint" id="hint-3">Conclua os dois desafios da etapa anterior para explorar o esquema.</p>
           <div class="step-content" id="content-3" hidden>
+            <div class="systems-narration" aria-label="Narração animada sobre os três sistemas">
+              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html" title="Animação narrada: os três sistemas psíquicos" loading="lazy" allow="autoplay" style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
+              <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;display:block">Continuar para o esquema interativo</button>
+            </div>
+            <div id="interactive-system-area" hidden>
             <p class="lead">Clique nos três sistemas para investigar suas diferenças. Depois, resolva as situações propostas.</p>
             <div class="systems" role="tablist" aria-label="Sistemas da primeira tópica">
               <button type="button" class="system-tab active" role="tab" aria-selected="true" aria-controls="system-panel" data-system="ics"><span>Ics.</span><b>Inconsciente</b></button>
@@ -184,6 +189,7 @@
               <div class="feedback" role="status" aria-live="polite" hidden></div>
             </div>
             <div class="step-gate" id="gate-3">Explore os três sistemas e acerte as duas perguntas para concluir esta primeira versão.</div>
+            </div>
           </div>
         </div></div>
       </section>
@@ -194,9 +200,9 @@
 (()=>{
   'use strict';
   const STORAGE_KEY='atelie-primeira-topica-2026-v1';
-  const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false});
+  const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false});
   let state;
-  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1')}:defaultState()}catch{state=defaultState()}
+  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b')}:defaultState()}catch{state=defaultState()}
   const $=s=>document.querySelector(s);
   const quizzes={
     q1:{right:'c',tips:{a:'Freud propôs um modelo psíquico, não uma localização anatômica das lembranças.',b:'É justamente o contrário: a consciência não explica, sozinha, toda a vida psíquica.',c:'Correto: Freud formulou a hipótese de processos inconscientes para compreender efeitos psíquicos que não se esgotam na consciência.',d:'Os sonhos foram um caminho central da investigação freudiana, não algo que ele quis abandonar.'}},
@@ -226,6 +232,8 @@
     $('#q1').hidden=!videoDone;
     $('#video-gate').hidden=videoDone;
     if(videoDone)$('#video-fallback').hidden=true;
+    $('#interactive-system-area').hidden=!state.thirdAudioDone;
+    $('#third-audio-skip').hidden=state.thirdAudioDone;
     Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
     const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
     $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
@@ -277,6 +285,20 @@
       }});
     }catch{showVideoFallback()}
   };
+  // Libera os diagramas após o fim da narração ou por escolha explícita do aluno.
+  function showThirdSystems(){
+    if(state.thirdAudioDone)return;
+    state.thirdAudioDone=true;
+    save();render();
+    $('#interactive-system-area').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'nearest'});
+  }
+  $('#third-audio-skip').addEventListener('click',showThirdSystems);
+  window.addEventListener('message',ev=>{
+    if(location.protocol.startsWith('http')&&ev.origin!==location.origin)return;
+    const iframe=$('#animated-system-iframe');
+    if(ev.source!==iframe.contentWindow)return;
+    if(ev.data&&ev.data.type==='atelie-sistemas-narracao-finalizada')showThirdSystems();
+  });
   const ytApi=document.createElement('script');
   ytApi.src='https://www.youtube.com/iframe_api';
   ytApi.async=true;
