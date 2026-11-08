@@ -423,6 +423,13 @@
     }
     achievementWasComplete=c3;
     achievementFirstRender=false;
+    if(window.parent!==window){
+      window.parent.postMessage({
+        type:'atelie-lesson-progress',
+        lessonId:'aula-primeira-topica-freud',
+        completed:c3
+      },location.origin);
+    }
   }
 
   const WORD_STAGE_COUNT=4;
