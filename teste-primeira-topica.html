@@ -46,6 +46,7 @@
     #q1:not([hidden]){animation:tileOpen .5s ease both}
     @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
     @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
+    #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
   </style>
 </head>
 <body>
@@ -151,7 +152,7 @@
           <div class="step-content" id="content-3" hidden>
             <div class="systems-narration" aria-label="Narração animada sobre os três sistemas">
               <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html" title="Animação narrada: os três sistemas psíquicos" loading="lazy" allow="autoplay" style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
-              <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;display:block">Continuar para o esquema interativo</button>
+              <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;">Continuar para o esquema interativo</button>
             </div>
             <div id="interactive-system-area" hidden>
             <p class="lead">Clique nos três sistemas para investigar suas diferenças. Depois, resolva as situações propostas.</p>
