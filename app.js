@@ -38,16 +38,15 @@ function loadLocal(key) {
 }
 let activeUid = null;
 const DEMO_SESSION = 'ateliepsi-demo-entry-v1';
-let demoMode = false;
-try { demoMode = sessionStorage.getItem(DEMO_SESSION) === 'yes'; } catch {}
+// Acesso direto temporário: navegação pública sem exigir conta.
+let demoMode = true;
 let state = loadLocal(STORE);
 function updateEntryGate() {
- const authorized = !!activeUid || demoMode;
- const gate = $('#entryGate'), shell = $('#shell');
- if (gate && shell) { gate.hidden = authorized; shell.hidden = !authorized; }
+ // A tela de login foi retirada temporariamente; a plataforma está sempre disponível.
+ const shell = $('#shell');
+ if (shell) shell.hidden = false;
  const skip = $('#skipLink');
- if (skip) skip.href = authorized ? '#main' : '#entryGate';
- if (!authorized) document.title = 'Entrar · Ateliê';
+ if (skip) skip.href = '#main';
 }
 function enterDemo() {
  demoMode = true;
@@ -121,7 +120,7 @@ function renderStatus() {
      : cloudMessage || (activeUid ? 'Conta conectada.' : 'Seus estudos estão salvos somente neste navegador');
  }
  const btn = $('#loginButton');
- if (btn) btn.textContent = activeUid ? 'Sair da conta' : (demoMode ? 'Voltar à entrada' : 'Entrar com Google');
+ if (btn) btn.textContent = activeUid ? 'Sair da conta' : 'Acesso local';
  const actions = $('#syncConflict');
  if (actions) actions.hidden = !conflict;
 }
@@ -199,7 +198,7 @@ function studioEditor(id){if(id==='primeira-topica-freud')return heading('ESTÚD
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView('primeira-topica-freud');else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;const courseNav=$('#courseContextNav');if(courseNav){const freudContext=path==='/curso/formacao-freudiana'||path==='/aula/primeira-topica-freud'||path.startsWith('/cursos/curso-formacao-freudiana');courseNav.hidden=!freudContext;if(freudContext)courseNav.innerHTML=freudSidebarNav(path);}document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(!activeUid && !demoMode) ? 'Entrar · Ateliê' : (path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView('primeira-topica-freud');else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;const courseNav=$('#courseContextNav');if(courseNav){const freudContext=path==='/curso/formacao-freudiana'||path==='/aula/primeira-topica-freud'||path.startsWith('/cursos/curso-formacao-freudiana');courseNav.hidden=!freudContext;if(freudContext)courseNav.innerHTML=freudSidebarNav(path);}document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
 function closeMenu(){$('#sidebar').classList.remove('is-open');$('#overlay').hidden=true;$('#menuToggle').setAttribute('aria-expanded','false')}
 function toggleMenu(){const opened=$('#sidebar').classList.toggle('is-open');$('#overlay').hidden=!opened;$('#menuToggle').setAttribute('aria-expanded',String(opened))}
 document.addEventListener('click',e=>{
@@ -215,7 +214,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('#editorForm');i
 $('#searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#globalSearch').value.trim();courseFilter='all';location.hash='#/cursos'+(q?'?q='+encodeURIComponent(q):'');render()});
 $('#menuToggle').addEventListener('click',toggleMenu);$('#overlay').addEventListener('click',closeMenu);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!e.altKey&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$('#globalSearch').focus()}});
-$('#loginButton').addEventListener('click', async () => {
+$('#loginButton')?.addEventListener('click', async () => {
  if (demoMode && !activeUid) { exitDemo(); return; }
  if (activeUid && window.AtelieCloud) {
    try {
@@ -225,7 +224,7 @@ $('#loginButton').addEventListener('click', async () => {
  }
  updateEntryGate();
 });
-$('#gateDemoButton').addEventListener('click', enterDemo);
+$('#gateDemoButton')?.addEventListener('click', enterDemo);
 function googleLoginError(error) {
  const code = error?.code || '';
  switch (code) {
@@ -253,7 +252,7 @@ function googleLoginError(error) {
     return 'Não foi possível entrar. Código: ' + (code || error?.message || 'desconhecido') + '. Você ainda pode explorar a demonstração.';
  }
 }
-$('#gateGoogleButton').addEventListener('click', async () => {
+$('#gateGoogleButton')?.addEventListener('click', async () => {
  const status = $('#gateStatus');
  const btn = $('#gateGoogleButton');
  if (!window.AtelieCloud) {
