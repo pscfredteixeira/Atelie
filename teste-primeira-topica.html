@@ -151,7 +151,7 @@
           <p class="hint" id="hint-3">Conclua os dois desafios da etapa anterior para explorar o esquema.</p>
           <div class="step-content" id="content-3" hidden>
             <div class="systems-narration" aria-label="Narração animada sobre os três sistemas">
-              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html?v=20261108-cinema" title="Animação narrada: os três sistemas psíquicos" loading="eager" allow="autoplay; fullscreen" allowfullscreen style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
+              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html?v=20261108-responsive" title="Animação narrada: os três sistemas psíquicos" loading="eager" allow="autoplay; fullscreen" allowfullscreen style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
               <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;">Continuar para o esquema interativo</button>
             </div>
             <div id="interactive-system-area" hidden>
@@ -301,7 +301,7 @@
     if(ev.source!==iframe.contentWindow)return;
     if(ev.data&&ev.data.type==='atelie-sistemas-altura'){
       const height=Number(ev.data.height);
-      if(Number.isFinite(height)&&height>=300&&height<=2000)iframe.style.height=(height+8)+'px';
+      if(Number.isFinite(height)&&height>=300&&height<=2000)iframe.style.height=(height+2)+'px';
       return;
     }
     if(ev.data&&ev.data.type==='atelie-sistemas-narracao-finalizada')showThirdSystems();
