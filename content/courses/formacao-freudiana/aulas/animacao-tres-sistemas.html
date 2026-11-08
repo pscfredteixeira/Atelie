@@ -92,17 +92,16 @@ button{font:inherit;cursor:pointer}
   <div class="legend">Esquema conceitual: os sistemas não correspondem a regiões anatômicas do cérebro.</div>
  </div>
  <div class="frame">
-  <audio id="narration" preload="metadata" src="./assets/narracao-tres-sistemas.mp3"></audio>
+  <audio id="narration" preload="metadata"></audio>
   <div class="controls">
-   <button type="button" class="play" id="play" aria-label="Iniciar ou pausar narração">▶ Reproduzir</button>
+   <button type="button" class="play" id="play" aria-label="Iniciar ou pausar narração" disabled>Carregando…</button>
    <span class="clock" id="clock">0:00 / 4:28</span>
    <select class="speed" id="speed" aria-label="Velocidade de reprodução"><option value="0.8">0,8×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option></select>
-   <label class="load">Carregar MP3<input type="file" id="audio-input" accept="audio/*,.mp3" aria-label="Selecionar áudio da narração"></label>
   </div>
   <input class="seek" id="seek" type="range" min="0" max="268" step=".1" value="0" aria-label="Avançar ou retroceder na narração">
   <div class="chapter" id="chapter">Parte: <strong>Introdução</strong></div>
-  <div class="status" id="status">O áudio e as cenas seguem o mesmo relógio de reprodução.</div>
-  <div class="message" id="load-message" hidden>Para ouvir a narração, escolha o arquivo MP3 enviado com a aula. A página guardará o arquivo neste navegador e continuará sem exigir login.</div>
+  <div class="status" id="status" role="status" aria-live="polite">Preparando a narração e as cenas sincronizadas…</div>
+  <div class="message" id="load-message" hidden>Não foi possível carregar o áudio. Confira sua conexão e <button type="button" id="retry-audio">tente novamente</button>.</div>
  </div>
 </main>
 <script>
@@ -111,8 +110,7 @@ button{font:inherit;cursor:pointer}
 const A=document.getElementById("narration"),S=document.getElementById("stage"),T=document.getElementById("scene-title"),
 D=document.getElementById("scene-text"),K=document.getElementById("section"),C=document.getElementById("chapter"),
 P=document.getElementById("play"),R=document.getElementById("seek"),W=document.getElementById("clock"),
-M=document.getElementById("load-message"),ST=document.getElementById("status"),
-F=document.getElementById("audio-input");
+M=document.getElementById("load-message"),ST=document.getElementById("status");
 const cues=[
  [0,"intro","Apresentação","Os três sistemas psíquicos","Ateliê de Psicanálise · A primeira tópica de Freud."],
  [7,"intro","Ponto de partida","A consciência explica tudo?","A hipótese freudiana começa com os limites do que sabemos sobre nós mesmos."],
@@ -146,7 +144,7 @@ const cues=[
  [246,"final","Vamos explorar?","Agora é sua vez","Use o esquema interativo para explorar as diferenças."],
  [257,"final","Atividade seguinte","Observe e compare","Depois da narração, você poderá responder aos desafios da aula."]
 ];
-let last=-1,ready=false,savedURL=null;
+let last=-1,ready=false,savedURL=null,audioLoading=false;
 const total=268.042449;
 const fmt=n=>{n=Math.max(0,Math.floor(n||0));return Math.floor(n/60)+":"+String(n%60).padStart(2,"0")};
 function cue(t){
@@ -163,12 +161,12 @@ function update(t){
  if(document.activeElement!==R)R.value=t;
  const duration=Number.isFinite(A.duration)?A.duration:total;
  R.max=duration;W.textContent=fmt(t)+" / "+fmt(duration);
- P.textContent=A.paused?"▶ Reproduzir":"Ⅱ Pausar";
+ if(ready)P.textContent=A.paused?"▶ Reproduzir":"Ⅱ Pausar";
 }
 A.addEventListener("timeupdate",()=>update(A.currentTime));
 A.addEventListener("seeking",()=>update(A.currentTime));
 A.addEventListener("loadedmetadata",()=>{
- ready=true;M.hidden=true;ST.textContent="Narração carregada. Reproduza, pause ou arraste a linha do tempo.";update(A.currentTime);
+ ready=true;P.disabled=false;M.hidden=true;ST.textContent="Narração pronta. Reproduza para ver a animação sincronizada.";update(A.currentTime);
 });
 A.addEventListener("play",()=>update(A.currentTime));
 A.addEventListener("pause",()=>update(A.currentTime));
@@ -176,48 +174,54 @@ A.addEventListener("ended",()=>{
  ST.textContent="Narração concluída. Continue para a exploração interativa.";P.textContent="↻ Rever narração";
  if(window.parent!==window)window.parent.postMessage({type:"atelie-sistemas-narracao-finalizada"},window.location.origin);
 });
-A.addEventListener("error",()=>{if(!ready){M.hidden=false;ST.textContent="Áudio não hospedado nesta página. Selecione o MP3 para sincronizar as cenas."; }});
+A.addEventListener("error",()=>{if(!ready){M.hidden=false;ST.textContent="Não foi possível reproduzir a narração.";P.disabled=true; }});
 P.addEventListener("click",async()=>{
- if(!ready){M.hidden=false;F.click();return}
+ if(!ready)return;
  if(A.ended)A.currentTime=0;
- try{if(A.paused)await A.play();else A.pause()}catch{M.hidden=false;ST.textContent="O navegador não conseguiu iniciar o áudio. Selecione o MP3.";F.click()}
+ try{if(A.paused)await A.play();else A.pause()}
+ catch{ST.textContent="O navegador bloqueou a reprodução. Toque novamente em Reproduzir."}
 });
 R.addEventListener("input",()=>{const t=Number(R.value);if(ready)A.currentTime=t;else update(t)});
 document.getElementById("speed").addEventListener("change",e=>A.playbackRate=Number(e.target.value)||1);
-function dbOpen(){
- return new Promise((resolve,reject)=>{
-  if(!window.indexedDB){reject(new Error("IndexedDB indisponível"));return}
-  const req=indexedDB.open("atelie-tres-sistemas-audio",1);
-  req.onupgradeneeded=()=>req.result.createObjectStore("media");
-  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
- });
+/* As doze partes são apenas uma forma de hospedar o MP3 original no GitHub.
+   O navegador reúne os bytes e reproduz tudo como um único áudio. */
+async function loadNarration(){
+ if(audioLoading)return;
+ audioLoading=true;ready=false;P.disabled=true;P.textContent="Carregando…";
+ ST.textContent="Preparando a narração com áudio e animações sincronizados…";
+ M.hidden=true;
+ try{
+  const partSize=12;
+  const pieces=await Promise.all(Array.from({length:partSize},async(_,i)=>{
+   const file="./assets/narracao-tres-sistemas-"+String(i+1).padStart(2,"0")+".b64";
+   const response=await fetch(file,{cache:"force-cache"});
+   if(!response.ok)throw Error("Não foi possível ler a parte "+(i+1)+": "+response.status);
+   return (await response.text()).trim();
+  }));
+  const binary=atob(pieces.join(""));
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  if(bytes.length<4000000)throw Error("Narração incompleta");
+  if(savedURL)URL.revokeObjectURL(savedURL);
+  savedURL=URL.createObjectURL(new Blob([bytes],{type:"audio/mpeg"}));
+  A.src=savedURL;
+  A.load();
+ }catch(err){
+  console.error("Ateliê: falha ao carregar narração",err);
+  M.hidden=false;P.textContent="Indisponível";
+  ST.textContent="Falha no carregamento da narração. Use Tentar novamente.";
+ }finally{audioLoading=false}
 }
-async function rememberAudio(blob){
- const db=await dbOpen();
- return new Promise((res,rej)=>{
-  const tx=db.transaction("media","readwrite");tx.objectStore("media").put(blob,"narração");
-  tx.oncomplete=()=>{db.close();res()};tx.onerror=()=>{db.close();rej(tx.error)}
- });
+document.getElementById("retry-audio").addEventListener("click",loadNarration);
+window.addEventListener("resize",reportHeight);
+function reportHeight(){
+ if(window.parent===window)return;
+ const height=Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight));
+ window.parent.postMessage({type:"atelie-sistemas-altura",height},location.origin);
 }
-async function getAudio(){
- const db=await dbOpen();
- return new Promise((res,rej)=>{
-  const tx=db.transaction("media","readonly"),req=tx.objectStore("media").get("narração");
-  req.onsuccess=()=>{db.close();res(req.result)};req.onerror=()=>{db.close();rej(req.error)}
- });
-}
-function loadBlob(blob){
- if(savedURL)URL.revokeObjectURL(savedURL);
- savedURL=URL.createObjectURL(blob);ready=false;A.src=savedURL;A.load();M.hidden=true;
-}
-F.addEventListener("change",async()=>{
- const file=F.files&&F.files[0];if(!file)return;
- if(!file.type.startsWith("audio/")&&!/\.mp3$/i.test(file.name)){ST.textContent="Escolha um arquivo de áudio.";return}
- loadBlob(file);ST.textContent="Narração selecionada.";
- try{await rememberAudio(file);ST.textContent="Narração salva neste navegador. Não será necessário selecionar novamente."}
- catch{ST.textContent="Narração carregada nesta sessão. O navegador não permitiu salvá-la."}
-});
-getAudio().then(blob=>{if(blob&&!ready)loadBlob(blob)}).catch(()=>{});
+if("ResizeObserver" in window)new ResizeObserver(reportHeight).observe(document.body);
+window.addEventListener("load",reportHeight);
+loadNarration();
 update(0);
 })();
 </script>
