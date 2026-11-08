@@ -10,9 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" media="(min-width: 1025px)" href="assets/hero-escultura-hd.jpg?v=atelie-banner-hd-20261102">
-  <link rel="stylesheet" href="styles.css?v=freud-integrated-20261108-v1">
-  <script type="module" src="firebase.js?v=atelie-login-gate-v1"></script>
-  <script src="app.js?v=freud-integrated-20261108-v1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=sem-login-20261108-v1">
+  <script src="app.js?v=sem-login-20261108-v1" defer></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -33,33 +32,8 @@
 <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 20c.5 2 3.5 2 4 0"/></symbol>
 </svg>
-<a class="skip" id="skipLink" href="#entryGate">Pular para o conteúdo</a>
-<main id="entryGate" class="entry-gate">
-  <section class="entry-intro" aria-labelledby="entryTitle">
-    <div class="entry-brand"><span class="entry-logo">Ateliê<span class="entry-mark"></span></span><span class="entry-subtitle">ESTUDOS EM PSICANÁLISE</span></div>
-    <div class="entry-intro-copy">
-      <p class="entry-overline">UM ESPAÇO PARA PENSAR</p>
-      <h1 id="entryTitle">O conhecimento<br>começa por uma<br><em>pergunta.</em></h1>
-      <p>Entre no seu espaço de estudo, explore os percursos e construa seu próprio caminho.</p>
-    </div>
-    <div class="entry-footnote">ATELIÊ · VERSÃO BETA</div>
-    <div class="entry-art" aria-hidden="true"><span></span><span></span><span></span></div>
-  </section>
-  <section class="entry-panel" aria-labelledby="loginTitle">
-    <div class="entry-panel-inner">
-      <p class="entry-overline">BEM-VINDO AO ATELIÊ</p>
-      <h2 id="loginTitle">Entre para continuar.</h2>
-      <p class="entry-description">Acesse com sua conta Google para guardar seus estudos. O acesso de demonstração permite testar a plataforma sem criar uma conta.</p>
-      <button type="button" id="gateGoogleButton" class="entry-google"><span aria-hidden="true" class="google-letter">G</span> Entrar com Google</button>
-      <div class="entry-divider"><span>ou</span></div>
-      <button type="button" id="gateDemoButton" class="entry-demo">Explorar versão demonstrativa <span aria-hidden="true">→</span></button>
-      <p class="entry-helper">Na demonstração, as anotações ficam apenas neste navegador e não são sincronizadas com sua conta.</p>
-      <p id="gateStatus" class="entry-status" role="status" aria-live="polite"></p>
-    </div>
-    <footer class="entry-panel-footer">Aulas fictícias para testes · Nenhum curso definitivo publicado</footer>
-  </section>
-</main>
-<div class="shell" id="shell" hidden>
+<a class="skip" id="skipLink" href="#main">Pular para o conteúdo</a>
+<div class="shell" id="shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <a class="brand" href="#/" aria-label="Ateliê: ir ao início">
@@ -96,7 +70,7 @@
         <input id="globalSearch" type="search" autocomplete="off" placeholder="Buscar cursos, autores, assuntos...">
         <kbd>/</kbd>
       </form>
-      <div class="topbar-right"><button type="button" class="login-btn" id="loginButton">Entrar com Google</button></div>
+      
     </header>
     <main id="main" class="main" tabindex="-1">
       <div class="loading"><span class="eyebrow">ATELIÊ</span><h1>Preparando seu espaço de estudo.</h1></div>
