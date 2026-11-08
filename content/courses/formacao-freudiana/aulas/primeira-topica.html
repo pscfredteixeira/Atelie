@@ -46,6 +46,35 @@
     #q1:not([hidden]){animation:tileOpen .5s ease both}
     @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
     @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
+
+    /* Microunidades da fundamentação: leitura curta, escolha de palavras e desbloqueio progressivo. */
+    .word-stage{padding:clamp(18px,3vw,25px);margin:18px 0;border:1px solid #ddd2e2;border-radius:18px;background:#fffdfa;box-shadow:0 5px 18px #6255770b}
+    .word-stage[hidden],#q2a[hidden],#q2b[hidden],#gate-2[hidden]{display:none!important}
+    .word-stage-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+    .word-stage-number{color:#71568a;font-size:.73rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
+    .word-stage-status{color:#276850;font-size:.8rem;font-weight:750}
+    .word-stage .body-text h3{margin-top:12px}
+    .word-exercise{margin-top:21px;padding:20px;border-radius:16px;background:linear-gradient(135deg,#f4edf8 0%,#f9f6fb 100%);border:1px solid #dccde7}
+    .word-exercise-head{display:flex;align-items:center;gap:13px;flex-wrap:wrap;color:#594471}
+    .word-exercise-head span{font-size:.7rem;font-weight:800;letter-spacing:.12em}
+    .word-exercise-head strong{font-size:.97rem}
+    .word-directions{font-size:.86rem;color:#655872;line-height:1.55;margin:9px 0 16px}
+    .word-sentence{font-size:clamp(1rem,2vw,1.13rem);line-height:2.65;color:#352c40;margin-bottom:16px}
+    .word-slot{display:inline-flex;vertical-align:middle;justify-content:center;align-items:center;min-width:124px;max-width:100%;min-height:42px;padding:6px 12px;margin:2px 4px;border:2px dashed #a58bbb;border-radius:10px;background:#fff;color:#8c79a0;font-size:.89rem;line-height:1.2;transition:background .2s,border-color .2s;touch-action:manipulation}
+    .word-slot.filled{color:#3a2b4c;font-weight:700;border-style:solid;border-color:#755c9a;background:#eee4f4}
+    .word-slot.dragover{border-color:#276850;background:#eaf4eb}
+    .word-slot:disabled{cursor:default;opacity:1}
+    .word-bank{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 18px}
+    .word-chip{background:#fff;border:1px solid #cbb7d6;color:#4b3962;padding:9px 13px;border-radius:999px;font-weight:650;font-size:.89rem;touch-action:manipulation;user-select:none}
+    .word-chip:hover:not(:disabled){border-color:#795c9a;background:#f5eef8}
+    .word-chip.used{opacity:.38;text-decoration:line-through;cursor:default}
+    .word-chip:disabled{cursor:default}
+    .word-check{min-height:41px;padding:9px 17px;font-size:.9rem}
+    .word-feedback{margin:13px 0 0;font-size:.9rem;color:#8b443e;line-height:1.5}
+    .word-exercise.solved{border-color:#b2d5c0;background:#eef6f0}
+    .word-exercise.solved .word-feedback{color:#276850}
+    .word-stage.is-new{animation:tileOpen .65s ease both}
+    @media(max-width:560px){.word-stage{padding:18px 14px}.word-exercise{padding:15px 12px}.word-sentence{line-height:2.9}.word-slot{min-width:105px;padding:6px 8px;font-size:.78rem}.word-chip{font-size:.82rem;padding:9px 12px}.word-check{width:100%}}
     #third-audio-skip[hidden],#interactive-system-area[hidden],#third-video-launch[hidden],#third-video-player[hidden]{display:none!important}
     .narration-launch{padding:clamp(23px,5vw,38px);border:1px solid #d8c8df;border-radius:18px;background:linear-gradient(135deg,#f9f5fb 0%,#eee6f1 100%);text-align:left;margin:0 0 12px}
     .narration-kicker{color:#6a5082;font-weight:800;letter-spacing:.12em;font-size:.73rem}
@@ -101,28 +130,78 @@
           <h2 id="step2-title">Por que Freud criou a primeira tópica?</h2>
           <p class="hint" id="hint-2">Responda corretamente ao desafio anterior para abrir esta etapa.</p>
           <div class="step-content" id="content-2" hidden>
-            <div class="body-text">
+            <section class="word-stage" id="word-stage-1" hidden aria-label="Fundamentação, parte 1 de quatro">
+              <div class="word-stage-heading"><span class="word-stage-number">PARTE 01 DE 04</span><span class="word-stage-status"></span></div>
+              <div class="body-text">
               <p class="lead">A primeira tópica não nasce de uma curiosidade sobre o cérebro. Ela nasce de um problema clínico: como compreender fenômenos que parecem escapar à vontade e ao conhecimento consciente do sujeito?</p>
               <h3>1. O problema clínico</h3>
               <p>Nos estudos sobre os sintomas histéricos e, depois, na investigação dos sonhos, Freud se deparou com experiências que não se explicavam satisfatoriamente pelo que uma pessoa sabia ou conseguia contar a respeito de si. Certos sintomas, ideias e lembranças podiam estar ligados a conflitos que não eram reconhecidos conscientemente.</p>
               <p>Isso não significa que todo esquecimento, sonho ou sintoma tenha necessariamente uma causa recalcada. Significa que Freud passou a considerar a hipótese de <strong>processos psíquicos que atuam sem se apresentar diretamente à consciência</strong>.</p>
               <div class="aside"><strong>Exemplo para pensar.</strong> Uma pessoa se surpreende com a intensidade de sua reação a uma crítica aparentemente pequena. O relato consciente pode não esclarecer tudo. Na escuta analítica, investigaríamos suas associações e sua história, sem decidir previamente qual seria a causa.</div>
-              <h3>2. O que significa “tópica”?</h3>
+              </div>
+              <div class="word-exercise" data-word-exercise="1">
+                  <div class="word-exercise-head"><span>INTERAÇÃO 01</span><strong>Complete as ideias</strong></div>
+                  <p class="word-directions">Arraste as palavras até as lacunas ou toque nas palavras para preenchê-las. Toque em uma lacuna para corrigir.</p>
+                  <div class="word-sentence">Freud investigou como determinados <button type="button" class="word-slot" data-answer="sintomas" aria-label="Lacuna 1 do exercício 1. Toque para remover uma palavra.">Toque ou arraste</button> podem expressar conflitos não reconhecidos <button type="button" class="word-slot" data-answer="conscientemente" aria-label="Lacuna 2 do exercício 1. Toque para remover uma palavra.">Toque ou arraste</button>.</div>
+                  <div class="word-bank" aria-label="Palavras disponíveis"><button type="button" class="word-chip" draggable="true" data-word="conscientemente">conscientemente</button><button type="button" class="word-chip" draggable="true" data-word="reflexos">reflexos</button><button type="button" class="word-chip" draggable="true" data-word="sintomas">sintomas</button><button type="button" class="word-chip" draggable="true" data-word="anatomicamente">anatomicamente</button></div>
+                  <button type="button" class="btn word-check" disabled>Conferir palavras</button>
+                  <p class="word-feedback" role="status" aria-live="polite" hidden></p>
+                </div>
+            </section>
+
+            <section class="word-stage" id="word-stage-2" hidden aria-label="Fundamentação, parte 2 de quatro">
+              <div class="word-stage-heading"><span class="word-stage-number">PARTE 02 DE 04</span><span class="word-stage-status"></span></div>
+              <div class="body-text"><h3>2. O que significa “tópica”?</h3>
               <p>A palavra vem da ideia de <em>lugares</em> ou <em>posições</em>. Freud utiliza uma representação teórica do aparelho psíquico por sistemas distintos, com modos de funcionamento e relações entre si. Esses “lugares” não são compartimentos anatômicos.</p>
               <p>No capítulo VII de <em>A interpretação dos sonhos</em>, Freud propõe uma organização que permite pensar as condições de passagem, transformação e impedimento entre processos inconscientes, pré-conscientes e conscientes.</p>
               <div class="aside"><strong>Distinção essencial.</strong> A primeira tópica é um <em>modelo de funcionamento</em>, não uma imagem literal da mente nem um mapa de regiões cerebrais.</div>
-              <h3>3. Como a formulação se desenvolveu</h3>
+              </div>
+              <div class="word-exercise" data-word-exercise="2">
+                  <div class="word-exercise-head"><span>INTERAÇÃO 02</span><strong>Complete as ideias</strong></div>
+                  <p class="word-directions">Arraste as palavras até as lacunas ou toque nas palavras para preenchê-las. Toque em uma lacuna para corrigir.</p>
+                  <div class="word-sentence">Na primeira tópica, os “lugares psíquicos” representam <button type="button" class="word-slot" data-answer="sistemas teóricos" aria-label="Lacuna 1 do exercício 2. Toque para remover uma palavra.">Toque ou arraste</button> e não são <button type="button" class="word-slot" data-answer="regiões do cérebro" aria-label="Lacuna 2 do exercício 2. Toque para remover uma palavra.">Toque ou arraste</button>.</div>
+                  <div class="word-bank" aria-label="Palavras disponíveis"><button type="button" class="word-chip" draggable="true" data-word="regiões do cérebro">regiões do cérebro</button><button type="button" class="word-chip" draggable="true" data-word="traços de caráter">traços de caráter</button><button type="button" class="word-chip" draggable="true" data-word="sistemas teóricos">sistemas teóricos</button><button type="button" class="word-chip" draggable="true" data-word="fases da infância">fases da infância</button></div>
+                  <button type="button" class="btn word-check" disabled>Conferir palavras</button>
+                  <p class="word-feedback" role="status" aria-live="polite" hidden></p>
+                </div>
+            </section>
+
+            <section class="word-stage" id="word-stage-3" hidden aria-label="Fundamentação, parte 3 de quatro">
+              <div class="word-stage-heading"><span class="word-stage-number">PARTE 03 DE 04</span><span class="word-stage-status"></span></div>
+              <div class="body-text"><h3>3. Como a formulação se desenvolveu</h3>
               <div class="mini-timeline">
                 <div class="history"><div class="year">1895</div><p><strong>Estudos sobre a histeria.</strong> O trabalho clínico de Freud e Breuer ajuda a formular problemas ligados à memória, à defesa e aos sintomas.</p></div>
                 <div class="history"><div class="year">1900</div><p><strong>A interpretação dos sonhos.</strong> Especialmente no capítulo VII, Freud apresenta uma formulação decisiva do aparelho psíquico em sistemas.</p></div>
                 <div class="history"><div class="year">1915</div><p><strong>O inconsciente.</strong> Freud aprofunda as distinções entre sentidos descritivo, dinâmico e sistemático do inconsciente.</p></div>
               </div>
-              <h3>4. Por que três sistemas?</h3>
+              </div>
+              <div class="word-exercise" data-word-exercise="3">
+                  <div class="word-exercise-head"><span>INTERAÇÃO 03</span><strong>Complete as ideias</strong></div>
+                  <p class="word-directions">Arraste as palavras até as lacunas ou toque nas palavras para preenchê-las. Toque em uma lacuna para corrigir.</p>
+                  <div class="word-sentence">Em 1900, Freud apresenta uma formulação decisiva em <button type="button" class="word-slot" data-answer="A interpretação dos sonhos" aria-label="Lacuna 1 do exercício 3. Toque para remover uma palavra.">Toque ou arraste</button>; em 1915, aprofunda o tema no texto <button type="button" class="word-slot" data-answer="O inconsciente" aria-label="Lacuna 2 do exercício 3. Toque para remover uma palavra.">Toque ou arraste</button>.</div>
+                  <div class="word-bank" aria-label="Palavras disponíveis"><button type="button" class="word-chip" draggable="true" data-word="O inconsciente">O inconsciente</button><button type="button" class="word-chip" draggable="true" data-word="O Eu e o Isso">O Eu e o Isso</button><button type="button" class="word-chip" draggable="true" data-word="A interpretação dos sonhos">A interpretação dos sonhos</button><button type="button" class="word-chip" draggable="true" data-word="Estudos sobre a histeria">Estudos sobre a histeria</button></div>
+                  <button type="button" class="btn word-check" disabled>Conferir palavras</button>
+                  <p class="word-feedback" role="status" aria-live="polite" hidden></p>
+                </div>
+            </section>
+
+            <section class="word-stage" id="word-stage-4" hidden aria-label="Fundamentação, parte 4 de quatro">
+              <div class="word-stage-heading"><span class="word-stage-number">PARTE 04 DE 04</span><span class="word-stage-status"></span></div>
+              <div class="body-text"><h3>4. Por que três sistemas?</h3>
               <p>Estar fora da consciência <strong>não é sempre a mesma coisa</strong>. Podemos não estar pensando agora em um nome e recuperá-lo quando alguém pergunta. Mas há também representações que, na teoria freudiana, encontram obstáculos dinâmicos ao acesso à consciência. Essa diferença sustenta a distinção entre pré-consciente e inconsciente em sentido sistemático.</p>
               <p>A consciência, por sua vez, diz respeito à experiência psíquica atual. Nas próximas etapas, vamos estudar essas distinções sem imaginar os sistemas como gavetas imóveis.</p>
               <div class="aside"><strong>Pergunta orientadora.</strong> O que diferencia algo que simplesmente não está em nossa atenção de algo que sofre uma defesa inconsciente?</div>
-            </div>
-            <div class="quiz" id="q2a">
+              </div>
+              <div class="word-exercise" data-word-exercise="4">
+                  <div class="word-exercise-head"><span>INTERAÇÃO 04</span><strong>Complete as ideias</strong></div>
+                  <p class="word-directions">Arraste as palavras até as lacunas ou toque nas palavras para preenchê-las. Toque em uma lacuna para corrigir.</p>
+                  <div class="word-sentence">Uma lembrança facilmente evocável pode estar no sistema <button type="button" class="word-slot" data-answer="pré-consciente" aria-label="Lacuna 1 do exercício 4. Toque para remover uma palavra.">Toque ou arraste</button>; já o recalcado encontra <button type="button" class="word-slot" data-answer="obstáculos dinâmicos" aria-label="Lacuna 2 do exercício 4. Toque para remover uma palavra.">Toque ou arraste</button> para se tornar consciente.</div>
+                  <div class="word-bank" aria-label="Palavras disponíveis"><button type="button" class="word-chip" draggable="true" data-word="obstáculos dinâmicos">obstáculos dinâmicos</button><button type="button" class="word-chip" draggable="true" data-word="atenção suficiente">atenção suficiente</button><button type="button" class="word-chip" draggable="true" data-word="pré-consciente">pré-consciente</button><button type="button" class="word-chip" draggable="true" data-word="consciente">consciente</button></div>
+                  <button type="button" class="btn word-check" disabled>Conferir palavras</button>
+                  <p class="word-feedback" role="status" aria-live="polite" hidden></p>
+                </div>
+            </section>
+            <div class="quiz" id="q2a" hidden>
               <div class="quiz-top">✦ Desafio 02 · fundamento teórico</div>
               <h3>Na primeira tópica, o que significa falar em “lugares psíquicos”?</h3>
               <div class="answers" role="group" aria-label="Alternativas do desafio 2">
@@ -133,7 +212,7 @@
               <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
               <div class="feedback" role="status" aria-live="polite" hidden></div>
             </div>
-            <div class="quiz" id="q2b">
+            <div class="quiz" id="q2b" hidden>
               <div class="quiz-top">✦ Desafio 03 · raciocínio</div>
               <h3>Qual afirmação é mais coerente com o problema que levou Freud à formulação da tópica?</h3>
               <div class="answers" role="group" aria-label="Alternativas do desafio 3">
@@ -144,7 +223,7 @@
               <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
               <div class="feedback" role="status" aria-live="polite" hidden></div>
             </div>
-            <div class="step-gate" id="gate-2">Responda corretamente às duas perguntas para abrir o esquema interativo.</div>
+            <div class="step-gate" id="gate-2" hidden>Responda corretamente às duas perguntas para abrir o esquema interativo.</div>
           </div>
         </div></div>
       </section>
@@ -215,9 +294,9 @@
 (()=>{
   'use strict';
   const STORAGE_KEY='atelie-primeira-topica-2026-v1';
-  const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false});
+  const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false,wordsCompleted:[]});
   let state;
-  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b')}:defaultState()}catch{state=defaultState()}
+  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b'),wordsCompleted:Array.isArray(x.wordsCompleted)?x.wordsCompleted.filter(n=>Number.isInteger(n)&&n>=1&&n<=4):(x.passed.includes('q2a')&&x.passed.includes('q2b')?[1,2,3,4]:[])}:defaultState()}catch{state=defaultState()}
   const $=s=>document.querySelector(s);
   let narrationOpened=false;
   let narrationFailed=false;
@@ -254,6 +333,7 @@
     $('#third-video-player').hidden=!narrationOpened;
     $('#third-video-start').textContent=state.thirdAudioDone?'Rever a animação':'Abrir animação narrada';
     $('#third-audio-skip').hidden=!narrationFailed||state.thirdAudioDone;
+    renderWordStages();
     Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
     const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
     $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
@@ -261,6 +341,95 @@
     $('#gate-3').textContent=c3?'✓ Protótipo concluído. A próxima etapa será adicionada na continuação da aula.':'Explore os três sistemas e acerte as duas perguntas para concluir este protótipo.';
     $('#tab-counter').textContent='Sistemas explorados: '+new Set(state.visited).size+' de 3';
   }
+
+  const WORD_STAGE_COUNT=4;
+  function wordStageComplete(n){return state.wordsCompleted.includes(n)}
+  function updateWordCheck(ex){
+    ex.querySelector('.word-check').disabled=[...ex.querySelectorAll('.word-slot')].some(x=>!x.dataset.filled);
+  }
+  function clearWordSlot(ex,slot){
+    if(ex.classList.contains('solved')||!slot.dataset.filled)return;
+    const word=slot.dataset.filled;
+    const chip=[...ex.querySelectorAll('.word-chip')].find(c=>c.dataset.word===word);
+    if(chip){chip.disabled=false;chip.classList.remove('used')}
+    delete slot.dataset.filled;
+    slot.textContent='Toque ou arraste';
+    slot.classList.remove('filled');
+    ex.querySelector('.word-feedback').hidden=true;
+    updateWordCheck(ex);
+  }
+  function placeWord(ex,word,slot){
+    if(ex.classList.contains('solved'))return;
+    const chip=[...ex.querySelectorAll('.word-chip')].find(c=>c.dataset.word===word);
+    if(!chip||chip.disabled)return;
+    if(!slot)slot=[...ex.querySelectorAll('.word-slot')].find(x=>!x.dataset.filled);
+    if(!slot)return;
+    if(slot.dataset.filled)clearWordSlot(ex,slot);
+    chip.disabled=true;
+    chip.classList.add('used');
+    slot.dataset.filled=word;
+    slot.textContent=word;
+    slot.classList.add('filled');
+    ex.querySelector('.word-feedback').hidden=true;
+    updateWordCheck(ex);
+  }
+  function renderWordStages(){
+    for(let n=1;n<=WORD_STAGE_COUNT;n++){
+      const section=$('#word-stage-'+n);
+      const open=hasStep2()&&(n===1||wordStageComplete(n-1));
+      const wasHidden=section.hidden;
+      section.hidden=!open;
+      if(open&&wasHidden){section.classList.remove('is-new');void section.offsetWidth;section.classList.add('is-new')}
+      if(wordStageComplete(n)){
+        section.querySelector('.word-stage-status').textContent='✓ Concluído';
+        const ex=section.querySelector('.word-exercise');
+        ex.classList.add('solved');
+        [...ex.querySelectorAll('.word-slot')].forEach(slot=>{slot.dataset.filled=slot.dataset.answer;slot.textContent=slot.dataset.answer;slot.classList.add('filled');slot.disabled=true});
+        ex.querySelectorAll('.word-chip').forEach(chip=>{chip.disabled=true;chip.classList.add('used')});
+        ex.querySelector('.word-bank').hidden=true;
+        ex.querySelector('.word-check').hidden=true;
+        const fb=ex.querySelector('.word-feedback');fb.hidden=false;fb.textContent=WORD_FEEDBACK[n-1];
+      }
+    }
+    const allDone=wordStageComplete(WORD_STAGE_COUNT);
+    $('#q2a').hidden=!allDone;
+    $('#q2b').hidden=!allDone;
+    $('#gate-2').hidden=!allDone;
+  }
+  const WORD_FEEDBACK=["✓ A hipótese do inconsciente permite investigar efeitos que ultrapassam o relato consciente.","✓ A tópica descreve relações funcionais entre sistemas, não compartimentos anatômicos.","✓ Os trabalhos de 1900 e 1915 marcam momentos importantes na elaboração do modelo.","✓ Nem tudo que está fora da consciência está recalcado: a diferença é dinâmica."];
+  document.querySelectorAll('.word-exercise').forEach(ex=>{
+    const n=Number(ex.dataset.wordExercise);
+    ex.querySelectorAll('.word-chip').forEach(chip=>{
+      chip.addEventListener('click',()=>placeWord(ex,chip.dataset.word,null));
+      chip.addEventListener('dragstart',ev=>{
+        if(chip.disabled){ev.preventDefault();return}
+        ev.dataTransfer.setData('text/plain',chip.dataset.word);
+        ev.dataTransfer.effectAllowed='move';
+      });
+    });
+    ex.querySelectorAll('.word-slot').forEach(slot=>{
+      slot.addEventListener('click',()=>clearWordSlot(ex,slot));
+      slot.addEventListener('dragover',ev=>{if(!ex.classList.contains('solved')){ev.preventDefault();ev.dataTransfer.dropEffect='move';slot.classList.add('dragover')}});
+      slot.addEventListener('dragleave',()=>slot.classList.remove('dragover'));
+      slot.addEventListener('drop',ev=>{ev.preventDefault();slot.classList.remove('dragover');placeWord(ex,ev.dataTransfer.getData('text/plain'),slot)});
+    });
+    ex.querySelector('.word-check').addEventListener('click',()=>{
+      if(wordStageComplete(n))return;
+      const slots=[...ex.querySelectorAll('.word-slot')];
+      if(slots.some(slot=>!slot.dataset.filled))return;
+      const correct=slots.every(slot=>slot.dataset.filled===slot.dataset.answer);
+      if(correct){
+        state.wordsCompleted.push(n);save();render();
+        const next=$('#word-stage-'+(n+1))||$('#q2a');
+        if(next)next.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+      }else{
+        const fb=ex.querySelector('.word-feedback');
+        fb.hidden=false;
+        fb.textContent=["Pense no que Freud observava na clínica e na diferença entre conhecer ou não conhecer um conflito.","Diferencie uma construção metapsicológica de uma estrutura que poderia ser identificada em um exame.","Observe a linha do tempo e distinga a publicação de 1900 do texto metapsicológico de 1915.","Compare uma lembrança disponível à evocação com aquilo que encontra oposição defensiva."][n-1];
+      }
+    });
+  });
+
   document.querySelectorAll('.quiz').forEach(box=>{
     const id=box.id;const opts=[...box.querySelectorAll('.answer')];const verify=box.querySelector('.verify');
     opts.forEach(o=>o.addEventListener('click',()=>{if(passed(id))return;opts.forEach(x=>{x.setAttribute('aria-pressed',String(x===o));x.classList.remove('wrong','right')});verify.disabled=false;const fb=box.querySelector('.feedback');fb.hidden=true;fb.textContent=''}));
