@@ -151,7 +151,7 @@
           <p class="hint" id="hint-3">Conclua os dois desafios da etapa anterior para explorar o esquema.</p>
           <div class="step-content" id="content-3" hidden>
             <div class="systems-narration" aria-label="Narração animada sobre os três sistemas">
-              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html" title="Animação narrada: os três sistemas psíquicos" loading="lazy" allow="autoplay" style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
+              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html?v=20261108-cinema" title="Animação narrada: os três sistemas psíquicos" loading="eager" allow="autoplay; fullscreen" allowfullscreen style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
               <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;">Continuar para o esquema interativo</button>
             </div>
             <div id="interactive-system-area" hidden>
@@ -201,6 +201,7 @@
 (()=>{
   'use strict';
   const STORAGE_KEY='atelie-primeira-topica-2026-v1';
+  const previewThird=new URLSearchParams(location.search).get('preview')==='3';
   const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false});
   let state;
   try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b')}:defaultState()}catch{state=defaultState()}
@@ -228,7 +229,7 @@
   }
   function render(){
     const c1=passed('q1'), c2=hasStep3(), c3=complete3();
-    markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3(),c3);
+    markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3()||previewThird,c3);
     const videoDone=state.videoFinished||c1;
     $('#q1').hidden=!videoDone;
     $('#video-gate').hidden=videoDone;
@@ -313,6 +314,7 @@
   setTimeout(()=>{if(!playerReady)showVideoFallback()},12000);
   $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
   render();
+  if(previewThird)window.addEventListener('load',()=>setTimeout(()=>document.getElementById('step-3')?.scrollIntoView({behavior:'auto',block:'start'}),220));
 })();
 </script>
 <script>

@@ -1,228 +1,197 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f4f0eb">
-<meta name="description" content="Animação narrada dos três sistemas psíquicos — Ateliê de Psicanálise.">
-<title>Os três sistemas psíquicos · Ateliê de Psicanálise</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>A Primeira Tópica de Freud — Ateliê de Psicanálise</title>
 <style>
-:root{--ink:#292339;--purple:#695086;--deep:#3c2e56;--light:#f4f0eb;--border:#ded4e4;--muted:#71677b;--green:#37715f}
-*{box-sizing:border-box}
-body{margin:0;background:transparent;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{max-width:980px;margin:0 auto}
-.stage{position:relative;min-height:440px;overflow:hidden;border:1px solid #ded4e4;border-radius:19px;background:radial-gradient(ellipse at 15% 10%,#fff 0,transparent 44%),linear-gradient(155deg,#f9f6f3,#eee5f0 66%,#e7e8f0);isolation:isolate}
-.haze{position:absolute;border-radius:50%;filter:blur(20px);opacity:.56;pointer-events:none}
-.haze.a{width:210px;height:210px;right:-40px;top:-40px;background:#cdb7d9;animation:floaty 9s ease-in-out infinite alternate}
-.haze.b{width:180px;height:180px;left:-60px;bottom:-70px;background:#c9d9d6;animation:floaty 11s ease-in-out infinite alternate-reverse}
-.titles{position:relative;z-index:2;padding:26px 26px 0}
-.kicker{color:#665076;letter-spacing:.14em;text-transform:uppercase;font-weight:800;font-size:.71rem}
-h2{font:normal clamp(1.5rem,4vw,2.5rem)/1.12 Georgia,serif;letter-spacing:-.026em;margin:8px 0 8px;max-width:700px}
-.summary{color:#554b61;max-width:730px;min-height:2.5em;font-size:clamp(.9rem,1.8vw,1.06rem);margin:0}
-.diagram{position:relative;z-index:1;display:flex;align-items:stretch;justify-content:center;gap:clamp(5px,2vw,24px);margin:20px 20px 8px;min-height:210px}
-.system{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;min-width:0;max-width:210px;border-radius:18px;padding:16px 8px 19px;border:1px solid #dfd5e6;background:rgba(255,255,255,.48);opacity:.52;transform:scale(.96);transition:opacity .6s,transform .75s,background .65s,box-shadow .7s,border-color .6s}
-.system .symbol{position:relative;display:grid;place-items:center;width:clamp(58px,9vw,98px);height:clamp(58px,9vw,98px);border:2px solid #cbbada;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fdfcff,#e6dbea);box-shadow:inset 0 1px 14px #b9a5ca36;color:#5e467a}
-.system .symbol:before,.system .symbol:after{content:"";position:absolute;inset:10%;border:1px dashed #ac99c5;border-radius:50%;animation:orbit 12s linear infinite}
-.system .symbol:after{inset:26%;animation-duration:7s;animation-direction:reverse}
-.system strong{font:normal clamp(.9rem,2vw,1.23rem)/1.2 Georgia,serif;text-align:center}
-.system small{font-size:.64rem;letter-spacing:.08em;color:#776884;text-transform:uppercase;font-weight:800}
-.glyph{position:relative;z-index:1;font-size:clamp(1.3rem,3vw,2rem);color:#62497f;font-family:Georgia,serif}
-.stage[data-mode="con"] .system.con,.stage[data-mode="pre"] .system.pre,.stage[data-mode="un"] .system.un,.stage[data-mode="memory"] .system.pre,.stage[data-mode="repression"] .system.un,.stage[data-mode="clinical"] .system.un{opacity:1;transform:scale(1.035);background:rgba(255,255,255,.86);border-color:#bba3d2;box-shadow:0 12px 28px #64478218}
-.stage[data-mode="all"] .system,.stage[data-mode="intro"] .system,.stage[data-mode="final"] .system{opacity:1;transform:scale(1)}
-.stage[data-mode="con"] .system.con .symbol{background:radial-gradient(circle at 40% 30%,#fff,#d9ecd9)}
-.stage[data-mode="memory"] .system.pre .symbol{background:radial-gradient(circle at 40% 30%,#fff,#eed7ad)}
-.stage[data-mode="un"] .system.un .symbol,.stage[data-mode="repression"] .system.un .symbol{background:radial-gradient(circle at 40% 30%,#fff,#d9c5ef);animation:glow 2.6s ease-in-out infinite alternate}
-.stage[data-mode="all"] .system{box-shadow:0 8px 25px #64478212}
-.ribbon{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;min-height:39px;margin:6px 18px 18px}
-.ribbon span{border:1px solid #cdbdd9;padding:6px 11px;border-radius:25px;font-size:.75rem;color:#574168;background:#fffafc;opacity:.28;transform:translateY(7px);transition:opacity .4s,transform .4s}
-.stage[data-mode="con"] .ribbon span:nth-child(1),.stage[data-mode="pre"] .ribbon span:nth-child(2),.stage[data-mode="memory"] .ribbon span:nth-child(2),.stage[data-mode="un"] .ribbon span:nth-child(3),.stage[data-mode="repression"] .ribbon span:nth-child(3),.stage[data-mode="clinical"] .ribbon span:nth-child(3),.stage[data-mode="all"] .ribbon span,.stage[data-mode="final"] .ribbon span{opacity:1;transform:translateY(0)}
-.legend{position:relative;z-index:2;padding:0 22px 19px;text-align:center;color:#7b6c83;font-size:.72rem}
-.frame{border:1px solid #ded4e4;border-radius:0 0 18px 18px;margin-top:-11px;padding:28px 18px 16px;background:#fffdfa}
-.controls{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
-.play{border:0;background:var(--deep);color:#fff;border-radius:100px;padding:10px 20px;font-weight:750;min-width:115px;cursor:pointer}
-button{font:inherit;cursor:pointer}
-.seek{width:100%;accent-color:var(--purple);cursor:pointer;margin:12px 0 0}
-.clock{color:#675d6f;font:600 .86rem/1.4 ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}
-.speed{margin-left:auto;background:#f4eff6;border:1px solid #ddd1e4;border-radius:10px;padding:9px;color:#58456b}
-.load{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--deep);text-decoration:underline;font-size:.83rem}
-.load input{display:none}
-.status{font-size:.8rem;color:#675d6f;padding-top:8px}
-.message{background:#f5edf8;border:1px solid #d7c6e3;color:#574568;border-radius:10px;padding:11px 13px;margin:12px 0 0;font-size:.84rem}
-.message[hidden]{display:none}
-.chapter{color:#675176;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;font-weight:750;margin-top:10px}
-.chapter strong{font-weight:850}
-@keyframes floaty{to{transform:translate(25px,-20px)}}
-@keyframes orbit{to{transform:rotate(360deg)}}
-@keyframes glow{to{filter:brightness(1.09);box-shadow:0 0 28px #b48ad084}}
-@media(max-width:560px){
- .stage{min-height:360px}
- .titles{padding:18px 16px 0}
- .diagram{margin:20px 9px 6px;min-height:150px;gap:5px}
- .system{padding:10px 4px 12px;border-radius:12px;gap:8px}
- .system .symbol{width:55px;height:55px}
- .system small{font-size:.57rem}
- .ribbon{margin:10px 8px 8px;gap:5px}
- .ribbon span{font-size:.68rem;padding:5px 7px}
- .legend{padding:5px 11px 16px}
- .frame{padding:20px 12px 14px}
- .controls{gap:8px}
- .speed{margin-left:0}
- .summary{min-height:3.5em}
-}
-@media(prefers-reduced-motion:reduce){
- *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+:root{--ink:#272138;--violet:#625074;--lav:#c8b7d2;--cream:#f7f0e8;--sand:#eadbc9;--gold:#dcc39a;--radius:24px; color-scheme:light}
+*{box-sizing:border-box} html{min-height:100%;scroll-behavior:smooth} body{margin:0;color:var(--ink);font-family:'DM Sans',Arial,sans-serif;background:radial-gradient(circle at 5% 6%,#fefcf8 0,transparent 42%),radial-gradient(circle at 100% 82%,#e5dce9,transparent 34%),#eee8e5}
+button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #b58bc9;outline-offset:3px}
+.wrap{max-width:1110px;margin:0 auto;padding:20px clamp(12px,3vw,32px) 48px}
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:5px 5px 19px}.brand{display:flex;align-items:center;gap:10px;font-family:'Libre Baskerville',Georgia,serif;font-size:clamp(13px,1.5vw,16px);letter-spacing:-.02em}.brand-mark{font-size:30px;line-height:1;color:#625073}.top-label{font-size:10px;letter-spacing:.16em;font-weight:700;color:#7d697f;text-transform:uppercase;white-space:nowrap}.lesson-title{margin:0 0 16px;font-weight:500;font-size:14px;color:#7b6b7c}.lesson-title strong{color:#42354f}
+.player{border:1px solid #cdbfca;background:#fcfaf6;border-radius:25px;overflow:hidden;box-shadow:0 26px 68px #4e3a5130,0 4px 13px #62557714}
+.screen{aspect-ratio:16/9;position:relative;overflow:hidden;isolation:isolate;background:#1b2435;color:#fff;contain:layout paint;--scene-progress:0;min-height:0}
+.screen:after{content:"";position:absolute;z-index:25;inset:0;pointer-events:none;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.69' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23n)' opacity='.19' fill='%23fff' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}
+.scene{inset:0;position:absolute;opacity:0;transform:scale(1.035);transition:opacity 1.1s ease,transform 7.5s ease;pointer-events:none;overflow:hidden}.scene.on{opacity:1;transform:scale(1)}
+.s-art{position:absolute;object-fit:cover;max-width:none;display:block;user-select:none;pointer-events:none}
+.fade-bottom{position:absolute;inset:0;z-index:5;background:linear-gradient(0deg,rgba(17,16,30,.87) 0,rgba(17,16,30,.6) 13%,transparent 56%);pointer-events:none}
+.scene-intro{background:radial-gradient(ellipse at 70% 25%,#cbb7b8 0,#a18c98 34%,#554358 66%,#342536 100%)}.intro-arch{position:absolute;left:2%;width:41%;height:105%;top:-5%;border-radius:40% 40% 0 0;border:1px solid #d5c0c262;background:#ab8b8852;box-shadow:0 0 130px #fff5d62a}.intro-freud{height:111%;width:38%;left:5%;top:1%;object-position:center top;mask-image:linear-gradient(to right,#000 85%,transparent 100%);filter:sepia(.1) saturate(.9) contrast(1.03)}.scene-intro.on .intro-freud{animation:rise 18s ease-out both}.intro-right{position:absolute;top:19%;right:7%;width:48%;z-index:3}.intro-right .kicker{font-weight:700;font-size:clamp(9px,1.15vw,15px);letter-spacing:.22em;color:#f2dbbb}.intro-right h1{font:normal clamp(27px,4.3vw,68px)/1.14 'Libre Baskerville',Georgia,serif;letter-spacing:-.055em;margin:14px 0;color:#fdf3e9;text-wrap:balance}.intro-rule{background:#d9c6af;width:90px;height:3px;margin-top:24px}.intro-couch{width:58%;height:17%;object-fit:cover;left:42%;bottom:0;opacity:.35;mix-blend-mode:multiply}.intro-chapter{margin-top:16px;color:#f8e8dcbd;letter-spacing:.13em;text-transform:uppercase;font-size:11px}
+.scene-ice{background:radial-gradient(circle at 55% -20%,#e8caa7,#aac7d2 28%,#31536b 62%,#071b35 96%)}.ice-portrait{width:28%;height:101%;left:-5%;top:0;object-position:center center;filter:sepia(.35);opacity:.18;mask-image:linear-gradient(to right,#000,transparent)}.ice-figure{height:116%;width:41%;object-fit:fill;left:6%;top:-9%;filter:drop-shadow(0 13px 40px #4ba6ba55)}.scene-ice.on .ice-figure{animation:floatIce 13s ease-in-out infinite alternate}.ice-guide{position:absolute;right:6%;top:13%;width:44%;color:#f7f2eb}.ice-guide h2{font:normal clamp(28px,3.8vw,55px)/1.12 'Libre Baskerville',Georgia,serif;letter-spacing:-.04em;margin:6px 0 19px}.ice-guide p{font-size:clamp(12px,1.4vw,18px);line-height:1.55;color:#e6e5e6;max-width:420px}.ice-system{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:center;padding:9px 4px;border-top:1px solid #dbe2e65e;font-size:clamp(12px,1.4vw,18px);transition:transform .6s}.ice-system span{display:grid;place-items:center;height:29px;width:29px;border:1px solid #e3dbe0aa;border-radius:50%;font-family:Georgia,serif}.ice-system b{font-weight:500}.ice-legend{font-size:10px!important;text-transform:uppercase;letter-spacing:.1em;opacity:.85}
+.scene-con{background:linear-gradient(128deg,#442941 0,#68485b 28%,#c5a18e 100%)}.theater{inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.75) sepia(.15) saturate(.88);transform:scale(1.18);transition:transform 19s linear}.scene-con.on .theater{transform:scale(1.04)}.con-shade{position:absolute;inset:0;background:linear-gradient(90deg,#201523a8,transparent 54%,#0d1024d0)}.con-eye{width:clamp(105px,20%,240px);height:auto;aspect-ratio:1;border-radius:50%;right:6%;top:13%;object-fit:cover;box-shadow:0 2px 0 6px #f0d6b7,0 5px 60px #fff1aa55;animation:breath 7s ease-in-out infinite alternate}.con-light{position:absolute;left:28%;top:-14%;width:42%;height:105%;transform:rotate(14deg);background:linear-gradient(90deg,transparent,#ffe3b227,transparent);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);animation:spot 8s ease-in-out infinite alternate}.con-headline{position:absolute;top:13%;left:7%;font:normal clamp(40px,6.5vw,92px) 'Libre Baskerville',serif;letter-spacing:-.06em;color:#fff4e8;text-shadow:0 7px 28px #150a1f76}.con-now{position:absolute;top:34%;left:8%;font-size:clamp(12px,1.45vw,17px);color:#f4e4da;letter-spacing:.15em;text-transform:uppercase}.con-wave{position:absolute;right:10%;bottom:28%;display:flex;align-items:center;gap:6px;height:35px}.con-wave i{display:block;width:3px;height:20%;background:#ffebde;border-radius:4px;animation:waves .85s ease-in-out infinite alternate;animation-play-state:paused}.screen.playing .con-wave i{animation-play-state:running}.con-wave i:nth-child(2n){animation-delay:.3s;height:65%}.con-wave i:nth-child(3n){animation-delay:.5s;height:95%}
+.scene-pre{background:#ad8d7a}.pre-wall{inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.76) saturate(.85);transform:scale(1.17);transition:transform 20s linear}.scene-pre.on .pre-wall{transform:scale(1.02)}.pre-shade{position:absolute;inset:0;background:linear-gradient(90deg,#1e112d70,transparent 50%,#25192ecf)}.pre-paper{width:clamp(150px,25%,320px);aspect-ratio:1;right:10%;top:9%;border-radius:50%;border:6px solid #fff0d5a1;box-shadow:0 12px 50px #231c3370;animation:paperfloat 6s ease-in-out infinite alternate}.pre-title{position:absolute;top:18%;left:7%;font:normal clamp(34px,5.4vw,72px) 'Libre Baskerville',Georgia,serif;letter-spacing:-.05em;text-shadow:0 6px 30px #0009;color:#fff8f1}.memory-card{position:absolute;left:26%;top:44%;padding:12px 21px;transform:rotate(-7deg);font:italic clamp(13px,1.7vw,22px) 'Libre Baskerville',serif;background:#fff8eb;color:#655262;box-shadow:0 14px 40px #130f1980;animation:memory 9s ease-in-out infinite alternate}
+.scene-un{background:radial-gradient(circle at 65% 28%,#8f82a5,#51436c 35%,#211b3a 86%)}.dream-art{inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;filter:brightness(.73) saturate(.95);transform:scale(1.16);transition:transform 22s linear}.scene-un.on .dream-art{transform:scale(1.01)}.un-shade{position:absolute;inset:0;background:linear-gradient(90deg,#17182d6e,transparent 50%,#17112791)}.un-orb{position:absolute;top:14%;right:8%;width:clamp(125px,23%,260px);aspect-ratio:1;border:5px solid #e8d3aa7d;border-radius:50%;object-fit:cover;box-shadow:0 0 80px #e9bb9c55;animation:breath 10s ease-in-out infinite alternate}.un-title{position:absolute;top:14%;left:7%;font:normal clamp(35px,6vw,85px) 'Libre Baskerville',serif;letter-spacing:-.055em;text-shadow:0 5px 32px #201833;color:#fff3e5}.un-stars{position:absolute;inset:0;background-image:radial-gradient(1.2px 1.2px at 14% 23%,#fff6e8bb 90%,transparent),radial-gradient(1.6px 1.6px at 33% 17%,#ffe0d2b7 90%,transparent),radial-gradient(1.5px 1.5px at 62% 31%,#fff1edc7 90%,transparent),radial-gradient(2px 2px at 81% 18%,#fff6eead 90%,transparent);animation:stars 7s ease-in-out infinite alternate}
+.scene-recap{background:radial-gradient(ellipse at 35% 5%,#b8cbd3,#2a4c63 46%,#101d3e 100%)}.recap-ice{height:116%;left:6%;top:-8%;width:35%;object-fit:fill;animation:floatIce 12s ease-in-out infinite alternate}.recap-panel{position:absolute;right:8%;top:12%;width:48%;color:#f5f0ef}.recap-panel h2{font:normal clamp(25px,4vw,53px) 'Libre Baskerville',Georgia,serif;line-height:1.14;letter-spacing:-.04em;margin:0 0 17px}.recap-pill{padding:clamp(8px,1.2vw,17px) 16px;border:1px solid #d8d5dd66;border-radius:10px;margin:9px 0;background:#0e254837;display:flex;align-items:center;gap:14px;transition:background .5s,transform .5s,box-shadow .5s;font-size:clamp(12px,1.4vw,17px)}.recap-pill i{font:italic 17px Georgia,serif;color:#e7cfaa}.recap-pill.sel{background:#e8d8bfef;color:#252039;box-shadow:0 10px 35px #f7d9ab36;transform:translateX(-8px)}.recap-pill.sel i{color:#563d69}
+.scene-end{background:radial-gradient(circle at 75% 24%,#b69caf,#80657f 48%,#382b4c 100%)}.end-freud{height:118%;left:3%;bottom:-20%;width:36%;object-fit:cover;filter:sepia(.25);mask-image:linear-gradient(90deg,#000 70%,transparent)}.end-couch{position:absolute;left:38%;right:2%;height:19%;width:61%;bottom:4%;object-fit:cover;opacity:.36;mix-blend-mode:multiply}.end-line{position:absolute;top:24%;right:8%;width:46%;font:normal clamp(32px,5vw,67px)/1.15 'Libre Baskerville',Georgia,serif;color:#fff1e9;letter-spacing:-.05em}.end-small{position:absolute;top:55%;right:8%;width:46%;color:#f5dbcb;font-size:clamp(12px,1.45vw,18px);line-height:1.5}
+.text-ribbon{position:absolute;bottom:5.2%;left:4%;width:77%;z-index:21;pointer-events:none;transition:opacity .25s,transform .25s;color:#fff}.text-ribbon.changed{opacity:0;transform:translateY(15px)}.ribbon-label{letter-spacing:.18em;font-size:clamp(9px,.9vw,12px);font-weight:800;color:#eed8be;text-transform:uppercase;margin-bottom:6px}.ribbon-title{font:normal clamp(18px,2.8vw,35px)/1.13 'Libre Baskerville',Georgia,serif;letter-spacing:-.028em;text-shadow:0 3px 15px #0006;margin:0 0 4px}.ribbon-sub{font-size:clamp(10px,1.15vw,15px);color:#fff9;letter-spacing:.01em;line-height:1.4}
+.screen .mini-brand{position:absolute;right:3%;bottom:5%;z-index:22;font:normal 10px Georgia,serif;color:#f4deda9c;letter-spacing:.09em;text-align:right}
+.control-area{background:#fffdf9;border-top:1px solid #e1d7dc;padding:16px 20px 18px}.control-row{display:flex;gap:14px;align-items:center}.transport{border:0;background:#614775;color:white;border-radius:50%;width:48px;height:48px;display:grid;place-items:center;box-shadow:0 5px 18px #4431562b;flex:0 0 48px;transition:transform .15s}.transport:hover{transform:scale(1.04)}.transport svg{width:19px;height:19px;fill:currentColor}.play-head{flex:1;min-width:0}.above-slider{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px;align-items:center}.cue-now{font-weight:700;color:#514160;font-size:13px;max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.time{font-size:12px;font-variant-numeric:tabular-nums;color:#7c6c7f;white-space:nowrap}.seek{display:block;width:100%;accent-color:#705386;cursor:pointer;height:6px;margin:0}.util{display:flex;gap:9px;align-items:center}.util button{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;border:0;background:transparent;color:#725a7d}.util button:hover{background:#efe5ee}.util button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.speed{border:1px solid #e7dfe5;border-radius:8px;padding:5px 4px;background:#fffdfa;color:#5b4768;font-size:12px;max-width:69px}.chapters{display:flex;overflow-x:auto;gap:7px;padding:14px 0 0;scrollbar-width:thin}.chapter{border:1px solid #e4d7df;background:#fbf8f6;color:#675768;border-radius:999px;font-size:11px;padding:7px 11px;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;transition:background .25s}.chapter.active{background:#66527a;color:#fff;border-color:#66527a}.chapter-time{opacity:.64;font-variant-numeric:tabular-nums}
+.below-note{font-size:12px;color:#80717f;margin:16px 3px 0;line-height:1.5}.below-note b{color:#5e4c68}.quiz{margin-top:20px;background:#fcfaf7;border:1px solid #e0d5df;border-radius:22px;padding:clamp(20px,3vw,33px);box-shadow:0 5px 20px #68546a0b}.quiz-grid{display:grid;grid-template-columns:140px 1fr;gap:20px;align-items:center}.quiz-icon{width:135px;height:135px;border-radius:50%;object-fit:cover;filter:saturate(.8);box-shadow:0 0 0 9px #eee3ee}.quiz-eyebrow{font-size:11px;letter-spacing:.18em;color:#7e638c;font-weight:800;text-transform:uppercase}.quiz h2{font:normal clamp(21px,2.6vw,28px) 'Libre Baskerville',Georgia,serif;margin:7px 0 13px;line-height:1.45;letter-spacing:-.03em}.options{display:flex;gap:8px;flex-wrap:wrap}.options button{padding:10px 12px;border:1px solid #cdbed2;border-radius:11px;background:#fff;color:#473850;font-size:13px}.options button:hover{border-color:#6b4d77}.options button.wrong{background:#fff0eb;color:#863b43;border-color:#ce9ca4}.options button.right{background:#e4f2e4;color:#305d38;border-color:#9dc5a2}.quiz-feedback{font-size:13px;color:#5c4e62;margin:12px 0 0;min-height:18px}.small-print{font-size:11px;color:#8a7c87;margin-top:16px}
+@keyframes rise{from{transform:translateY(24px) scale(1.06)}to{transform:translateY(0) scale(1)}}@keyframes floatIce{from{transform:translateY(8px) rotate(-.6deg)}to{transform:translateY(-6px) rotate(.4deg)}}@keyframes breath{to{transform:scale(1.045);filter:brightness(1.1)}}@keyframes paperfloat{from{transform:translateY(0) rotate(0)}to{transform:translateY(6px) rotate(2deg)}}@keyframes memory{to{transform:translateY(-20px) rotate(-1deg)}}@keyframes spot{to{transform:translate(20px,4px) rotate(11deg)}}@keyframes waves{to{height:100%}}@keyframes stars{to{opacity:.45}}
+@media(max-width:700px){.wrap{padding:14px 11px 40px}.masthead{padding:0 4px 14px}.top-label{font-size:9px}.lesson-title{font-size:12px}.player{border-radius:18px}.screen{aspect-ratio:4/5}.intro-arch{width:70%;left:-12%;height:75%;top:0}.intro-freud{width:70%;height:79%;left:-14%;top:5%;opacity:.85}.intro-right{width:65%;right:4%;top:12%;text-align:right}.intro-right h1{font-size:clamp(27px,6vw,48px)}.intro-rule{margin-left:auto}.intro-chapter{font-size:9px}.intro-couch{width:100%;height:18%;left:0}.ice-figure{width:57%;height:85%;left:-10%;top:6%}.ice-portrait{display:none}.ice-guide{top:17%;right:3%;width:54%}.ice-guide h2{font-size:clamp(21px,5.1vw,35px)}.ice-guide p{font-size:11px;margin:10px 0}.ice-system{grid-template-columns:22px 1fr;gap:6px;font-size:clamp(10px,2.4vw,14px)}.ice-system span{width:22px;height:22px;font-size:12px}.ice-legend{font-size:9px!important}.ice-system,.ice-legend{display:none}.ice-guide{width:50%;right:2%;top:12%}.ice-guide h2{font-size:clamp(23px,5.2vw,32px)}.con-headline,.pre-title,.un-title{top:15%;left:5%;font-size:clamp(33px,8vw,53px)}.con-now{top:29%}.con-eye{width:35%;top:40%;right:4%}.pre-paper{width:39%;top:44%;right:5%}.memory-card{left:7%;top:46%}.un-orb{width:36%;top:39%;right:3%}.recap-ice{width:59%;height:89%;left:-14%;top:4%}.recap-panel{right:2%;top:18%;width:58%}.recap-panel h2{font-size:clamp(20px,5.2vw,36px)}.recap-pill{font-size:11px;margin:7px 0;padding:8px}.recap-pill i{font-size:12px}.end-freud{width:67%;height:89%;bottom:0;left:-13%;opacity:.75}.end-line{width:64%;right:4%;top:23%;font-size:clamp(31px,7vw,46px);text-align:right}.end-small{top:57%;right:4%;width:52%;font-size:13px;text-align:right}.text-ribbon{bottom:6%;left:5%;width:87%}.ribbon-title{font-size:clamp(21px,4.8vw,31px)}.ribbon-sub{font-size:12px}.screen .mini-brand{display:none}.control-area{padding:15px 13px}.util{gap:1px}.control-row{gap:9px}.util button{width:30px}.transport{height:43px;width:43px;flex-basis:43px}.quiz-grid{grid-template-columns:1fr}.quiz-icon{display:none}.quiz{margin-top:13px}.below-note{font-size:11px}}
+@media(max-width:400px){.screen{aspect-ratio:3/4}.speed{max-width:58px}.util button{width:25px}.control-row{gap:6px}.ribbon-title{font-size:19px}.ribbon-sub{font-size:11px}.intro-right h1{font-size:29px}.recap-pill{padding:5px 7px;margin:4px 0}}
+@media(prefers-reduced-motion:reduce){*,*:after,*:before{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+.wrap{max-width:100%;padding:6px 0 18px}
+.masthead,.lesson-title{display:none}
+.player{box-shadow:0 8px 30px #44395223}
+.audio-alert{padding:5px 20px 14px;color:#6f5875;font-size:13px;line-height:1.4}
+.audio-alert.error{color:#a13f47}
+.audio-alert[hidden]{display:none}
+.audio-retry{border:1px solid #8d7095;background:#faf7fb;color:#432d59;padding:7px 10px;border-radius:8px;margin-left:5px}
+button:disabled{cursor:wait;opacity:.64}
+@media(max-width:700px){.wrap{padding:0 0 10px}.player{border-radius:17px}.audio-alert{padding:6px 12px 13px}}
 </style>
 </head>
 <body>
-<main class="wrap">
- <div class="stage" id="stage" data-mode="intro">
-  <div class="haze a"></div><div class="haze b"></div>
-  <div class="titles">
-   <div class="kicker" id="section">Ateliê de Psicanálise · Formação Freudiana</div>
-   <h2 id="scene-title">Os três sistemas psíquicos</h2>
-   <p class="summary" id="scene-text">Um mapa animado para compreender a primeira tópica de Freud.</p>
+<div class="wrap">
+ <div class="masthead"><div class="brand"><span class="brand-mark">ψ</span><span>ATELIÊ DE PSICANÁLISE</span></div><div class="top-label">AULA INTERATIVA · FREUD</div></div>
+ <p class="lesson-title">Primeira tópica <strong> / </strong> Uma viagem pelos três sistemas psíquicos</p>
+ <div class="player" id="player">
+  <div class="screen" id="screen" aria-label="Animação ilustrada da primeira tópica de Freud">
+   <section class="scene scene-intro on" data-view="intro" aria-hidden="false">
+    <div class="intro-arch"></div><img class="s-art intro-freud" alt="" src="./assets/atelier-freud-ilustracao-01.webp"><img class="s-art intro-couch" alt="" src="./assets/atelier-freud-ilustracao-02.webp">
+    <div class="intro-right"><div class="kicker">SIGMUND FREUD</div><h1>A Primeira Tópica</h1><div class="intro-rule"></div><div class="intro-chapter">Consciente<br>Pré-consciente<br>Inconsciente</div></div>
+   </section>
+   <section class="scene scene-ice" data-view="ice" aria-hidden="true">
+    <img class="s-art ice-portrait" alt="" src="./assets/atelier-freud-ilustracao-01.webp"><img class="s-art ice-figure" alt="" src="./assets/atelier-freud-ilustracao-03.webp">
+    <div class="ice-guide"><div class="ribbon-label">O aparelho psíquico</div><h2>O visível e o que escapa</h2><p>Três sistemas. Diferentes modos de funcionamento.</p>
+    <div class="ice-system"><span>Ⅰ</span><b>Consciente</b></div><div class="ice-system"><span>Ⅱ</span><b>Pré-consciente</b></div><div class="ice-system"><span>Ⅲ</span><b>Inconsciente</b></div><p class="ice-legend">Iceberg: metáfora didática, não mapa anatômico</p></div>
+   </section>
+   <section class="scene scene-con" data-view="con" aria-hidden="true">
+     <img class="s-art theater" alt="" src="./assets/atelier-freud-ilustracao-04.webp"><div class="con-shade"></div><div class="con-light"></div><div class="con-headline">Consciente</div><div class="con-now">Aquilo que está em cena</div><img class="s-art con-eye" alt="" src="./assets/atelier-freud-ilustracao-05.webp"><div class="con-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+   </section>
+   <section class="scene scene-pre" data-view="pre" aria-hidden="true">
+     <img class="s-art pre-wall" alt="" src="./assets/atelier-freud-ilustracao-06.webp"><div class="pre-shade"></div><div class="pre-title">Pré-consciente</div><img class="s-art pre-paper" alt="" src="./assets/atelier-freud-ilustracao-07.webp"><div class="memory-card">Uma lembrança...</div>
+   </section>
+   <section class="scene scene-un" data-view="un" aria-hidden="true">
+     <img class="s-art dream-art" alt="" src="./assets/atelier-freud-ilustracao-08.webp"><div class="un-shade"></div><div class="un-stars"></div><div class="un-title">Inconsciente</div><img class="s-art un-orb" alt="" src="./assets/atelier-freud-ilustracao-09.webp">
+   </section>
+   <section class="scene scene-recap" data-view="recap" aria-hidden="true">
+     <img class="s-art recap-ice" alt="" src="./assets/atelier-freud-ilustracao-03.webp"><div class="recap-panel"><h2>Três sistemas.<br>Uma dinâmica.</h2><div class="recap-pill" data-focus="con"><i>01</i> Consciente</div><div class="recap-pill" data-focus="pre"><i>02</i> Pré-consciente</div><div class="recap-pill" data-focus="un"><i>03</i> Inconsciente</div></div>
+   </section>
+   <section class="scene scene-end" data-view="end" aria-hidden="true">
+      <img class="s-art end-freud" alt="" src="./assets/atelier-freud-ilustracao-01.webp"><img class="s-art end-couch" alt="" src="./assets/atelier-freud-ilustracao-02.webp"><div class="end-line">O que escapa à consciência?</div><div class="end-small">Observe, compare, questione. Continue a aula nas interações abaixo.</div>
+   </section>
+   <div class="fade-bottom"></div>
+   <div class="text-ribbon" id="ribbon" aria-live="off"><div class="ribbon-label" id="rlabel">ABERTURA</div><div class="ribbon-title" id="rtitle">A Primeira Tópica de Freud</div><div class="ribbon-sub" id="rsub">O que existe além da consciência?</div></div>
+   <div class="mini-brand">ATELIÊ<br>DE PSICANÁLISE</div>
   </div>
-  <div class="diagram" aria-label="Esquema didático dos sistemas da primeira tópica">
-   <div class="system con"><div class="symbol"><span class="glyph">Cs.</span></div><strong>Consciente</strong><small>Agora</small></div>
-   <div class="system pre"><div class="symbol"><span class="glyph">Pcs.</span></div><strong>Pré-consciente</strong><small>Acessível</small></div>
-   <div class="system un"><div class="symbol"><span class="glyph">Ics.</span></div><strong>Inconsciente</strong><small>Dinâmico</small></div>
+  <div class="control-area">
+   <audio id="audio" preload="metadata" preload="none" playsinline></audio>
+   <div class="control-row">
+    <button class="transport" id="play" disabled aria-label="Reproduzir a aula"><svg id="playIcon" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3.5v13l11-6.5z"></path></svg></button>
+    <div class="play-head"><div class="above-slider"><span class="cue-now" id="cueLabel">A Primeira Tópica de Freud</span><span class="time" id="clock">0:00 / 4:28</span></div><input class="seek" id="seek" type="range" min="0" max="268.042" value="0" step=".05" aria-label="Ir para o momento da narração"></div>
+    <div class="util">
+      <button id="mute" aria-label="Silenciar áudio" title="Ativar ou silenciar"><svg viewBox="0 0 24 24"><path d="M11 5 6.5 9H3v6h3.5L11 19V5Z"/><path id="soundPath" d="M15 8a5 5 0 0 1 0 8 M18 5a9 9 0 0 1 0 14"/></svg></button>
+      <select class="speed" id="speed" aria-label="Velocidade da narração"><option value="0.8">0,8×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option></select>
+      <button id="fullscreen" aria-label="Tela cheia" title="Tela cheia"><svg viewBox="0 0 24 24"><path d="M8 3H4a1 1 0 0 0-1 1v4 M16 3h4a1 1 0 0 1 1 1v4 M3 16v4a1 1 0 0 0 1 1h4 M21 16v4a1 1 0 0 1-1 1h-4"/></svg></button>
+    </div>
+   </div>
+   <div class="chapters" id="chapters" role="group" aria-label="Pular para um capítulo da aula">
+    <button class="chapter active" data-time="0">Abertura <span class="chapter-time">0:00</span></button>
+    <button class="chapter" data-time="26">Os três sistemas <span class="chapter-time">0:26</span></button>
+    <button class="chapter" data-time="53">Consciente <span class="chapter-time">0:53</span></button>
+    <button class="chapter" data-time="88">Pré-consciente <span class="chapter-time">1:28</span></button>
+    <button class="chapter" data-time="129">Inconsciente <span class="chapter-time">2:09</span></button>
+    <button class="chapter" data-time="192">Síntese <span class="chapter-time">3:12</span></button>
+    <button class="chapter" data-time="234">Encerramento <span class="chapter-time">3:54</span></button>
+   </div>
+  <div class="audio-alert" id="audio-status" role="status" aria-live="polite">Preparando a narração…</div><button class="audio-retry" type="button" id="audio-retry" hidden>Carregar novamente</button>
   </div>
-  <div class="ribbon"><span>Percepção atual</span><span>Lembrança recuperável</span><span>Processo primário</span></div>
-  <div class="legend">Esquema conceitual: os sistemas não correspondem a regiões anatômicas do cérebro.</div>
  </div>
- <div class="frame">
-  <audio id="narration" preload="metadata"></audio>
-  <div class="controls">
-   <button type="button" class="play" id="play" aria-label="Iniciar ou pausar narração" disabled>Carregando…</button>
-   <span class="clock" id="clock">0:00 / 4:28</span>
-   <select class="speed" id="speed" aria-label="Velocidade de reprodução"><option value="0.8">0,8×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option></select>
-  </div>
-  <input class="seek" id="seek" type="range" min="0" max="268" step=".1" value="0" aria-label="Avançar ou retroceder na narração">
-  <div class="chapter" id="chapter">Parte: <strong>Introdução</strong></div>
-  <div class="status" id="status" role="status" aria-live="polite">Preparando a narração e as cenas sincronizadas…</div>
-  <div class="message" id="load-message" hidden>Não foi possível carregar o áudio. Confira sua conexão e <button type="button" id="retry-audio">tente novamente</button>.</div>
- </div>
-</main>
+ <p class="below-note">As cenas acompanham <b>o tempo da narração original</b>: pausa, avanço e mudança de velocidade preservam a sincronização. A imagem do iceberg funciona como recurso didático, não como diagrama anatômico formulado por Freud.</p>
+ <div class="small-print">Ateliê de Psicanálise · Aula sobre a primeira tópica freudiana · Narração: arquivo original enviado para o projeto.</div>
+</div>
 <script>
-(function(){
-"use strict";
-const A=document.getElementById("narration"),S=document.getElementById("stage"),T=document.getElementById("scene-title"),
-D=document.getElementById("scene-text"),K=document.getElementById("section"),C=document.getElementById("chapter"),
-P=document.getElementById("play"),R=document.getElementById("seek"),W=document.getElementById("clock"),
-M=document.getElementById("load-message"),ST=document.getElementById("status");
-const cues=[
- [0,"intro","Apresentação","Os três sistemas psíquicos","Ateliê de Psicanálise · A primeira tópica de Freud."],
- [7,"intro","Ponto de partida","A consciência explica tudo?","A hipótese freudiana começa com os limites do que sabemos sobre nós mesmos."],
- [17,"intro","Pergunta orientadora","E o que não percebemos?","Pensamentos, sentimentos e desejos podem produzir efeitos fora da consciência atual."],
- [26,"all","O aparelho psíquico","Um modelo para investigar","Freud propõe um modelo para pensar sistemas e relações entre processos psíquicos."],
- [34,"all","Primeira tópica","Três sistemas","Inconsciente, pré-consciente e consciente."],
- [40,"all","Cuidado conceitual","Não são lugares no cérebro","Os três sistemas são conceitos teóricos, não compartimentos anatômicos."],
- [53,"con","Sistema consciente","Aquilo de que temos consciência","O campo da experiência psíquica no momento presente."],
- [59,"con","Exemplo cotidiano","A voz, as palavras, as ideias","Enquanto você escuta, percebe algo e presta atenção."],
- [72,"con","O instante vivido","A experiência atual","O conteúdo que está presente na consciência agora."],
- [79,"con","Um limite fundamental","A consciência é transitória","Não podemos estar conscientes de todas as lembranças ao mesmo tempo."],
- [88,"pre","Sistema pré-consciente","O que pode chegar à consciência?","Representações não conscientes agora, mas acessíveis sob certas condições."],
- [94,"memory","Um exemplo","Sua primeira professora","Uma lembrança que não estava em sua atenção pode ser evocada por uma pergunta."],
- [106,"memory","A recuperação da lembrança","Do pré-consciente ao consciente","Uma representação pode tornar-se consciente quando recordada."],
- [111,"pre","Condições de acesso","Não está consciente agora","Isso não significa que esteja recalcada."],
- [121,"pre","Uma distinção decisiva","Nem tudo é recalque","Não estar consciente de algo não é o mesmo que estar recalcado."],
- [129,"un","Sistema inconsciente","Mais que memórias esquecidas","O inconsciente freudiano não é simplesmente um depósito de lembranças."],
- [139,"un","Um funcionamento próprio","Dinâmica inconsciente","Há processos psíquicos que não seguem a mesma lógica da consciência."],
- [147,"un","Processo primário","Condensação e deslocamento","Diferentes representações podem se combinar e deslocar intensidades."],
- [156,"repression","Obstáculos dinâmicos","Recalque e defesa","Certas representações encontram obstáculos ao acesso à consciência."],
- [165,"clinical","Exemplo clínico","Uma angústia sem explicação imediata","Uma experiência intensa pode motivar investigação clínica — sem diagnósticos automáticos."],
- [175,"clinical","Prudência na escuta","Não concluir precipitadamente","Uma angústia não prova, por si só, a existência de um desejo recalcado."],
- [182,"clinical","Associações do sujeito","Investigar, em vez de presumir","A história e as associações do sujeito orientam a investigação."],
- [192,"all","Síntese","Três sistemas em relação","Os sistemas se distinguem, mas não funcionam isoladamente."],
- [199,"con","Consciência","Experiência presente","O que se percebe ou experimenta agora."],
- [203,"pre","Pré-consciente","Potencialmente acessível","Representações que podem alcançar a consciência."],
- [208,"un","Inconsciente sistemático","Uma lógica própria","Não basta decidir acessar um conteúdo recalcado."],
- [218,"all","Cuidado conceitual","Não são três gavetas","A tópica é uma hipótese sobre funcionamento, relações e conflito."],
- [226,"all","Relações entre processos","Organização e conflito","Freud procura explicar como processos se articulam na vida psíquica."],
- [234,"all","Ideia central","O não consciente também atua","Não ter consciência de algo não significa que não participe da vida psíquica."],
- [246,"final","Vamos explorar?","Agora é sua vez","Use o esquema interativo para explorar as diferenças."],
- [257,"final","Atividade seguinte","Observe e compare","Depois da narração, você poderá responder aos desafios da aula."]
-];
-let last=-1,ready=false,savedURL=null,audioLoading=false;
-const total=268.042449;
-const fmt=n=>{n=Math.max(0,Math.floor(n||0));return Math.floor(n/60)+":"+String(n%60).padStart(2,"0")};
-function cue(t){
- let lo=0,hi=cues.length-1;
- while(lo<hi){let m=Math.ceil((lo+hi)/2);if(cues[m][0]<=t)lo=m;else hi=m-1}
- return lo;
+(()=>{'use strict';
+const CUES=[[0,"intro","A Primeira Tópica de Freud","O que existe além da consciência?","ABERTURA"],[7,"intro","Toda a mente está à vista?","A consciência não explica tudo.","A PERGUNTA"],[17,"intro","O que escapa à consciência?","Freud investiga seus efeitos.","O PROBLEMA"],[26,"ice","Três sistemas em relação","Uma proposta para pensar a vida psíquica.","O MODELO"],[34,"ice","Consciente · Pré-consciente · Inconsciente","Três modos de funcionamento.","OS SISTEMAS"],[40,"ice","Um modelo, não um mapa do cérebro","O iceberg é apenas uma metáfora visual.","IMPORTANTE"],[53,"con","Consciente","O que percebemos neste instante.","EM FOCO"],[59,"con","A voz. As palavras. As ideias.","A experiência presente ganha destaque.","AGORA"],[72,"con","A atenção se transforma","O que está consciente pode mudar.","MOVIMENTO"],[79,"con","Nem tudo está em foco","E nem tudo que está fora foi recalcado.","UM LIMITE"],[88,"pre","Pré-consciente","O que pode se tornar consciente.","A MEMÓRIA"],[94,"pre","Uma lembrança pode retornar","O nome de uma antiga professora.","UM EXEMPLO"],[106,"pre","Recordar é reencontrar","Às vezes, uma pergunta abre o caminho.","ACESSO"],[121,"pre","Ausente não significa recalcado","Uma distinção fundamental.","DIFERENÇA"],[129,"un","Inconsciente","Mais que um depósito de esquecimentos.","O OUTRO LADO"],[139,"un","Uma dinâmica própria","Desejos e conflitos também produzem efeitos.","FUNCIONAMENTO"],[147,"un","Condensação e deslocamento","Processos da lógica inconsciente.","PROCESSO PRIMÁRIO"],[156,"un","Obstáculos à consciência","O recalque não cede à simples vontade.","RECALQUE"],[165,"un","Quando o afeto surpreende","Nem toda angústia possui sentido evidente.","NA CLÍNICA"],[175,"un","Interpretar não é adivinhar","A escuta vem antes da conclusão.","CUIDADO"],[182,"un","Cada sujeito, uma história","Associações, lembranças e singularidade.","ESCUTA ANALÍTICA"],[192,"recap","Três sistemas em relação","Nenhum funciona como ilha isolada.","SÍNTESE"],[199,"recap","Consciente","Aquilo que é vivido agora.","EM FOCO"],[203,"recap","Pré-consciente","Conteúdos potencialmente acessíveis.","PODE EMERGIR"],[208,"recap","Inconsciente","Processos que não se revelam diretamente.","ALÉM DO IMEDIATO"],[218,"recap","Não são três gavetas","A tópica descreve relações, não lugares.","UMA DISTINÇÃO"],[226,"recap","Um aparelho em movimento","Passagens, obstáculos e conflitos.","DINÂMICA"],[234,"end","O não consciente também participa","Mesmo quando não percebemos.","PARA PENSAR"],[246,"end","Retome os três sistemas","O que os aproxima e o que os distingue?","RECAPITULAÇÃO"],[257,"end","E o que escapa ao seu olhar?","Agora, experimente a atividade interativa.","PRÓXIMA ETAPA"]];
+const audio=document.getElementById('audio'); const screen=document.getElementById('screen');
+const player=document.getElementById('player'); const play=document.getElementById('play');
+const seek=document.getElementById('seek'); const clock=document.getElementById('clock');
+const ribbon=document.getElementById('ribbon'); const scenes=[...document.querySelectorAll('.scene')];
+const buttons=[...document.querySelectorAll('.chapter')];
+const rlabel=document.getElementById('rlabel'),rtitle=document.getElementById('rtitle'),rsub=document.getElementById('rsub');
+const cueLabel=document.getElementById('cueLabel'); let cueIndex=-1,view='intro',frame=null,swapTimer=null,dragging=false;
+const DURATION=268.042;const format=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
+function setIcon(){play.querySelector('svg').innerHTML=audio.paused?'<path d="M5 3.5v13l11-6.5z"></path>':'<rect x="4.5" y="3.5" width="4" height="13" rx="1"></rect><rect x="11.5" y="3.5" width="4" height="13" rx="1"></rect>';play.setAttribute('aria-label',audio.paused?'Reproduzir a aula':'Pausar a aula');screen.classList.toggle('playing',!audio.paused)}
+function render(t){t=Math.max(0,Math.min(DURATION,t));let i=CUES.length-1;while(i>0&&CUES[i][0]>t)i--; const [start,nextView,title,sub,label]=CUES[i];
+ if(i!==cueIndex){cueIndex=i;cueLabel.textContent=title;clearTimeout(swapTimer);ribbon.classList.add('changed');swapTimer=setTimeout(()=>{rlabel.textContent=label;rtitle.textContent=title;rsub.textContent=sub;ribbon.classList.remove('changed')},115)}
+ if(nextView!==view){view=nextView;scenes.forEach(s=>{const is=s.dataset.view===view;s.classList.toggle('on',is);s.setAttribute('aria-hidden',String(!is))})}
+ if(!dragging)seek.value=t;clock.textContent=format(t)+' / '+format(Number.isFinite(audio.duration)?audio.duration:DURATION);
+ const chapterIndex=[[0,0],[26,1],[53,2],[88,3],[129,4],[192,5],[234,6]].reduce((acc,[time,index])=>t>=time?index:acc,0);buttons.forEach((b,j)=>b.classList.toggle('active',j===chapterIndex));
+ const focused=t>=199&&t<203?'con':t>=203&&t<208?'pre':t>=208&&t<218?'un':'';
+ document.querySelectorAll('.recap-pill').forEach(p=>p.classList.toggle('sel',p.dataset.focus===focused));
 }
-function update(t){
- if(!Number.isFinite(t))t=0;
- const i=cue(t);if(i!==last){
-  last=i;const x=cues[i];S.dataset.mode=x[1];K.textContent="Ateliê de Psicanálise · "+x[2];
-  T.textContent=x[3];D.textContent=x[4];C.textContent="Parte: "+x[2];
- }
- if(document.activeElement!==R)R.value=t;
- const duration=Number.isFinite(A.duration)?A.duration:total;
- R.max=duration;W.textContent=fmt(t)+" / "+fmt(duration);
- if(ready)P.textContent=A.paused?"▶ Reproduzir":"Ⅱ Pausar";
-}
-A.addEventListener("timeupdate",()=>update(A.currentTime));
-A.addEventListener("seeking",()=>update(A.currentTime));
-A.addEventListener("loadedmetadata",()=>{
- ready=true;P.disabled=false;M.hidden=true;ST.textContent="Narração pronta. Reproduza para ver a animação sincronizada.";update(A.currentTime);
-});
-A.addEventListener("play",()=>update(A.currentTime));
-A.addEventListener("pause",()=>update(A.currentTime));
-A.addEventListener("ended",()=>{
- ST.textContent="Narração concluída. Continue para a exploração interativa.";P.textContent="↻ Rever narração";
- if(window.parent!==window)window.parent.postMessage({type:"atelie-sistemas-narracao-finalizada"},window.location.origin);
-});
-A.addEventListener("error",()=>{if(!ready){M.hidden=false;ST.textContent="Não foi possível reproduzir a narração.";P.disabled=true; }});
-P.addEventListener("click",async()=>{
- if(!ready)return;
- if(A.ended)A.currentTime=0;
- try{if(A.paused)await A.play();else A.pause()}
- catch{ST.textContent="O navegador bloqueou a reprodução. Toque novamente em Reproduzir."}
-});
-R.addEventListener("input",()=>{const t=Number(R.value);if(ready)A.currentTime=t;else update(t)});
-document.getElementById("speed").addEventListener("change",e=>A.playbackRate=Number(e.target.value)||1);
-/* As doze partes são apenas uma forma de hospedar o MP3 original no GitHub.
-   O navegador reúne os bytes e reproduz tudo como um único áudio. */
-async function loadNarration(){
- if(audioLoading)return;
- audioLoading=true;ready=false;P.disabled=true;P.textContent="Carregando…";
- ST.textContent="Preparando a narração com áudio e animações sincronizados…";
- M.hidden=true;
- try{
-  const partSize=12;
-  const pieces=await Promise.all(Array.from({length:partSize},async(_,i)=>{
-   const file="./assets/narracao-tres-sistemas-"+String(i+1).padStart(2,"0")+".b64";
-   const response=await fetch(file,{cache:"force-cache"});
-   if(!response.ok)throw Error("Não foi possível ler a parte "+(i+1)+": "+response.status);
-   return (await response.text()).trim();
-  }));
-  const binary=atob(pieces.join(""));
-  const bytes=new Uint8Array(binary.length);
-  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
-  if(bytes.length<4000000)throw Error("Narração incompleta");
-  if(savedURL)URL.revokeObjectURL(savedURL);
-  savedURL=URL.createObjectURL(new Blob([bytes],{type:"audio/mpeg"}));
-  A.src=savedURL;
-  A.load();
- }catch(err){
-  console.error("Ateliê: falha ao carregar narração",err);
-  M.hidden=false;P.textContent="Indisponível";
-  ST.textContent="Falha no carregamento da narração. Use Tentar novamente.";
- }finally{audioLoading=false}
-}
-document.getElementById("retry-audio").addEventListener("click",loadNarration);
-window.addEventListener("resize",reportHeight);
+function tick(){render(audio.currentTime);if(!audio.paused){frame=requestAnimationFrame(tick)}else{frame=null}}
+function stopTick(){if(frame!==null){cancelAnimationFrame(frame);frame=null}}
+async function toggle(){if(audio.paused){try{await audio.play()}catch(e){console.warn('Reprodução não iniciada:',e)}}else{audio.pause()}}
+play.addEventListener('click',toggle);
+audio.addEventListener('play',()=>{setIcon();stopTick();tick()});audio.addEventListener('pause',()=>{setIcon();stopTick();render(audio.currentTime)});
+audio.addEventListener('ended',()=>{setIcon();stopTick();render(audio.currentTime)});audio.addEventListener('seeked',()=>render(audio.currentTime));
+audio.addEventListener('loadedmetadata',()=>{seek.max=audio.duration||DURATION;render(0)});
+seek.addEventListener('input',()=>{dragging=true;const t=Number(seek.value);audio.currentTime=t;render(t)});seek.addEventListener('change',()=>{dragging=false;render(audio.currentTime)});
+buttons.forEach(b=>b.addEventListener('click',()=>{audio.currentTime=Number(b.dataset.time);render(audio.currentTime)}));
+document.getElementById('speed').addEventListener('change',e=>audio.playbackRate=Number(e.target.value));
+document.getElementById('mute').addEventListener('click',()=>{audio.muted=!audio.muted;document.getElementById('mute').style.opacity=audio.muted?'.43':'1';document.getElementById('mute').setAttribute('aria-label',audio.muted?'Ativar áudio':'Silenciar áudio')});
+document.getElementById('fullscreen').addEventListener('click',()=>{if(document.fullscreenElement){document.exitFullscreen?.()}else{player.requestFullscreen?.()}});
+document.addEventListener('keydown',e=>{if(e.target.matches('input,select,button'))return;if(e.code==='Space'){e.preventDefault();toggle()}if(e.code==='ArrowRight')audio.currentTime=Math.min(DURATION,audio.currentTime+5);if(e.code==='ArrowLeft')audio.currentTime=Math.max(0,audio.currentTime-5)});
+document.querySelectorAll('.options button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.options button').forEach(b=>b.classList.remove('wrong','right'));const yes=btn.dataset.correct==='yes';btn.classList.add(yes?'right':'wrong');document.getElementById('feedback').textContent=yes?'Correto. O pré-consciente compreende conteúdos não presentes na consciência, mas que podem ser evocados.':'Não exatamente. Pense no conteúdo que pode ser evocado sem necessariamente enfrentar uma barreira de recalque.'}));
+setIcon();render(0);
+
+const status=document.getElementById('audio-status');
+const retry=document.getElementById('audio-retry');
+let objectURL=null;
+let loading=false;
 function reportHeight(){
  if(window.parent===window)return;
  const height=Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight));
- window.parent.postMessage({type:"atelie-sistemas-altura",height},location.origin);
+ window.parent.postMessage({type:'atelie-sistemas-altura',height},location.origin);
 }
-if("ResizeObserver" in window)new ResizeObserver(reportHeight).observe(document.body);
-window.addEventListener("load",reportHeight);
-loadNarration();
-update(0);
+async function prepareNarration(){
+ if(loading)return;
+ loading=true;retry.hidden=true;play.disabled=true;status.classList.remove('error');
+ status.hidden=false;status.textContent='Preparando a narração da aula…';
+ try{
+   const parts=await Promise.all(Array.from({length:12},async(_,i)=>{
+     const filename='./assets/narracao-tres-sistemas-'+String(i+1).padStart(2,'0')+'.b64';
+     const response=await fetch(filename,{cache:'force-cache'});
+     if(!response.ok)throw new Error('Erro ao carregar áudio: '+response.status);
+     return (await response.text()).trim();
+   }));
+   const binary=atob(parts.join(''));
+   if(binary.length<4000000)throw new Error('O áudio está incompleto');
+   const bytes=new Uint8Array(binary.length);
+   for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+   if(objectURL)URL.revokeObjectURL(objectURL);
+   objectURL=URL.createObjectURL(new Blob([bytes],{type:'audio/mpeg'}));
+   audio.src=objectURL;
+   audio.load();
+ }catch(e){
+   console.error('Erro no áudio do Ateliê',e);
+   status.classList.add('error');
+   status.textContent='Não foi possível carregar o áudio. Verifique sua conexão e tente novamente.';
+   retry.hidden=false;
+ }finally{loading=false}
+}
+audio.addEventListener('loadedmetadata',()=>{
+ play.disabled=false;status.textContent='Narração pronta. Toque em Reproduzir.';
+});
+audio.addEventListener('error',()=>{
+ play.disabled=true;status.classList.add('error');status.textContent='Falha na reprodução. Tente carregar novamente.';
+ retry.hidden=false;
+});
+audio.addEventListener('playing',()=>{status.hidden=true;reportHeight()});
+audio.addEventListener('ended',()=>{
+ status.hidden=false;status.textContent='A narração terminou. Continue para a atividade interativa.';
+ if(window.parent!==window)window.parent.postMessage({type:'atelie-sistemas-narracao-finalizada'},location.origin);
+ reportHeight();
+});
+retry.addEventListener('click',prepareNarration);
+window.addEventListener('load',reportHeight);
+window.addEventListener('resize',reportHeight);
+if('ResizeObserver' in window)new ResizeObserver(reportHeight).observe(document.body);
+prepareNarration();
 })();
 </script>
 </body>
