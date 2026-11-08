@@ -147,6 +147,43 @@ function lessonPager(course,ctx){
   '<div class="journey-pager-end"><span class="overline">Fim do percurso</span><p>Você chegou à última aula disponível. Isso não registra conclusão automaticamente.</p></div>')+
  '</nav>';
 }
+/* Apresentação de uma experiência de aprendizagem progressiva publicada no próprio Ateliê.
+ * Usa apenas arquivos HTML locais ao diretório da aula e preserva o cabeçalho/caderno do aluno. */
+function interactiveLessonEmbed(lesson,contentURL){
+ const raw=lesson?.metadata?.interactivePage;
+ if(typeof raw!=="string"||!/^\.\/[A-Za-z0-9_/-]+\.html$/.test(raw)||!contentURL)
+   return reader(lesson,{sourceURL:contentURL,showHeading:false});
+ let target,base;
+ try{
+   base=new URL(".",contentURL);
+   target=new URL(raw,contentURL);
+   if(target.origin!==base.origin||!target.pathname.startsWith(base.pathname)||target.search||target.hash)
+     throw new Error("Caminho de aula fora do diretório permitido");
+ }catch{
+   return reader(lesson,{sourceURL:contentURL,showHeading:false});
+ }
+ const src=e(target.href);
+ return '<section class="interactive-lesson-shell" aria-label="Atividade progressiva">'+
+   '<iframe data-atelie-lesson-frame title="'+e(lesson.title)+' — atividades interativas" '+
+   'src="'+src+'" loading="eager" referrerpolicy="strict-origin-when-cross-origin" '+
+   'style="display:block;width:100%;height:1500px;min-height:600px;border:0;border-radius:18px;background:#f4f0eb;" '+
+   'allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'+
+   '<p class="hint" style="margin-top:8px">Se a aula não abrir neste espaço, '+
+   '<a href="'+src+'" target="_blank" rel="noopener noreferrer">abra a experiência interativa em outra guia</a>.</p>'+
+   '</section>';
+}
+window.addEventListener("message",event=>{
+ if(event.origin!==window.location.origin||event.data?.type!=="atelie-lesson-height")return;
+ const height=Number(event.data.height);
+ if(!Number.isFinite(height)||height<350||height>30000)return;
+ for(const frame of document.querySelectorAll("iframe[data-atelie-lesson-frame]")){
+   if(frame.contentWindow===event.source){
+     frame.style.height=Math.ceil(height+8)+"px";
+     break;
+   }
+ }
+});
+
 async function lessonPage(cid,lid){
  let record;
  try{record=await learnerContentRepository.getPublishedLesson(cid,lid);}
@@ -178,7 +215,7 @@ async function lessonPage(cid,lid){
  '<div class="lesson-header-info"><div><span class="overline">Aula '+(displayIndex+1)+' de '+displayTotal+' no programa</span>'+
  pageHead("Jornada do aluno",e(lesson.title),lesson.summary)+'</div>'+
  (lesson.estimatedMinutes?badge(lesson.estimatedMinutes+" minutos · estimativa","purple"):'')+'</div>'+
- reader(lesson,{sourceURL:contentURL,showHeading:false})+
+ (lesson?.metadata?.interactivePage ? interactiveLessonEmbed(lesson,contentURL) : reader(lesson,{sourceURL:contentURL,showHeading:false}))+
  await lessonNotebook(cid,lid)+
  lessonPager(course,context)+
  '<details class="journey-course-drawer"><summary>Consultar programa do curso</summary>'+modules(course,false,lid)+'</details>'+
