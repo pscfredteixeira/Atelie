@@ -29,19 +29,34 @@
     .newly-unlocked{animation:reveal .65s ease both}@keyframes reveal{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
     @media(max-width:560px){.shell{width:min(100% - 24px,860px)}.mast{padding-top:20px}.small-tag{display:none}.intro{padding-top:29px}.step{padding-left:38px}.timeline:before{left:15px}.dot{left:-1px;width:32px;height:32px;font-size:.85rem;top:17px}.panel-inner{padding:19px 16px}.systems{gap:5px}.system-tab{padding:10px 3px;min-height:97px}.system-tab b{font-size:.88rem}.history{grid-template-columns:58px 1fr;padding:11px 9px;gap:8px}.actions .btn{width:100%}footer{flex-direction:column}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.newly-unlocked{animation:none}*{transition:none!important}}
+    /* Aula vertical em cartões, sem numeração lateral nem etapas futuras visíveis. */
+    .intro{padding:26px 0 16px}
+    .intro h1{margin:5px 0 0;font-size:clamp(2.25rem,5.4vw,3.7rem)}
+    .progress-wrap{margin:16px 0 0}
+    .timeline{padding:0}
+    .timeline::before,.step .dot,.panel-heading{display:none!important}
+    .step{padding-left:0;margin:16px 0 22px}
+    .step.locked,.step.planned{display:none!important}
+    .step .panel-inner>h2{margin:2px 0 20px}
+    .step.reveal{animation:tileOpen .72s cubic-bezier(.2,.9,.25,1) both}
+    @keyframes tileOpen{from{opacity:0;transform:translateY(-22px) scale(.986)}to{opacity:1;transform:translateY(0) scale(1)}}
+    #q1[hidden],#video-fallback[hidden],#video-gate[hidden]{display:none!important}
+    .video-gate{margin:17px 0 0;padding:12px 14px;border-radius:12px;border:1px solid #e4d8ec;background:#f7f2f9;color:#65516e;font-size:.89rem;text-align:center}
+    .video-fallback{margin:12px auto 0;display:block;border:0;background:none;color:var(--accent-dark);text-decoration:underline;cursor:pointer;font-size:.82rem;text-align:center}
+    #q1:not([hidden]){animation:tileOpen .5s ease both}
+    @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
+    @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
   </style>
 </head>
 <body>
   <header class="mast shell"><div class="brand">Ateliê de Psicanálise</div><div class="small-tag">FORMAÇÃO FREUDIANA · TESTE SEM LOGIN</div></header>
   <main class="shell">
     <section class="intro" aria-labelledby="title">
-      <div class="eyebrow">Unidade 01 · Fundamentos da psicanálise</div>
       <h1 id="title">A primeira tópica de Freud</h1>
-      <p>Uma aula construída em etapas. Assista, leia, explore e responda: cada compreensão abre o próximo quadradinho.</p><p style="font-size:.86rem;margin-top:12px;color:#675f71">Versão de teste em HTML independente: não exige conta, senha ou Firebase. Seu progresso é salvo somente neste navegador.</p>
+
       <div class="progress-wrap" aria-label="Progresso dos três primeiros quadradinhos">
         <div class="progress-head"><span>Seu progresso nesta versão</span><span id="progress-label">0 de 3 etapas</span></div>
         <div class="track" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" id="progressbar"><div id="progress-fill"></div></div>
-        <div class="roadmap"><span>Introdução</span><span>Fundamentação</span><span>Os sistemas</span></div>
       </div>
     </section>
 
@@ -51,12 +66,12 @@
         <div class="panel"><div class="panel-inner">
           <div class="panel-heading"><span class="kicker">Quadradinho 01 · abertura</span><span class="pill" id="badge-1">Disponível</span></div>
           <h2 id="step1-title">O que existe além da consciência?</h2>
-          <p class="lead">Comecemos com uma pergunta: será que tudo aquilo que influencia nossos desejos e decisões é conhecido por nós?</p>
           <div class="video">
-            <iframe src="https://www.youtube-nocookie.com/embed/1gYNfeSIjNI" title="Vídeo de apresentação: A primeira tópica de Freud" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <iframe id="video-introducao" src="https://www.youtube-nocookie.com/embed/1gYNfeSIjNI?enablejsapi=1&amp;playsinline=1" title="Vídeo de apresentação: A primeira tópica de Freud" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
-          <p class="under-video">Se o vídeo não carregar, <a href="https://youtu.be/1gYNfeSIjNI" target="_blank" rel="noopener noreferrer">assista no YouTube</a> e retorne à pergunta.</p>
-          <div class="quiz" id="q1">
+          <div class="video-gate" id="video-gate" role="status" aria-live="polite">Assista ao vídeo para liberar a pergunta.</div>
+          <button type="button" class="video-fallback" id="video-fallback" hidden>Não foi possível detectar o fim do vídeo? Liberar pergunta</button>
+          <div class="quiz" id="q1" hidden>
             <div class="quiz-top">✦ Desafio 01 · compreensão do vídeo</div>
             <h3>Por que Freud considerou necessário investigar processos psíquicos inconscientes?</h3>
             <div class="answers" role="group" aria-label="Alternativas do desafio 1">
@@ -172,10 +187,6 @@
           </div>
         </div></div>
       </section>
-      <div class="step locked planned" aria-label="Próxima etapa em preparação">
-        <div class="dot" aria-hidden="true">4</div>
-        <div class="locked-shelf"><strong>Próxima etapa em elaboração</strong><div>O funcionamento do inconsciente, processo primário, condensação e deslocamento.</div></div>
-      </div>
     </div>
   </main>
   <footer class="shell"><div><strong>Ateliê de Psicanálise · Protótipo de aula</strong><br>Bibliografia de referência: Freud, <em>A interpretação dos sonhos</em> (1900), cap. VII; <em>O inconsciente</em> (1915).<br>O progresso é salvo neste navegador; não é sincronizado entre dispositivos.</div><button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
@@ -183,9 +194,9 @@
 (()=>{
   'use strict';
   const STORAGE_KEY='atelie-primeira-topica-2026-v1';
-  const defaultState=()=>({passed:[],visited:['ics']});
+  const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false});
   let state;
-  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t))}:defaultState()}catch{state=defaultState()}
+  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1')}:defaultState()}catch{state=defaultState()}
   const $=s=>document.querySelector(s);
   const quizzes={
     q1:{right:'c',tips:{a:'Freud propôs um modelo psíquico, não uma localização anatômica das lembranças.',b:'É justamente o contrário: a consciência não explica, sozinha, toda a vida psíquica.',c:'Correto: Freud formulou a hipótese de processos inconscientes para compreender efeitos psíquicos que não se esgotam na consciência.',d:'Os sonhos foram um caminho central da investigação freudiana, não algo que ele quis abandonar.'}},
@@ -206,11 +217,15 @@
     const fb=box.querySelector('.feedback');if(isDone){fb.hidden=false;fb.className='feedback good';fb.textContent='✓ '+quizzes[id].tips[quizzes[id].right]}
   }
   function markStep(num,active,complete){const st=$('#step-'+num),content=$('#content-'+num),hint=$('#hint-'+num),badge=$('#badge-'+num);if(num===1){st.classList.toggle('complete',complete);badge.textContent=complete?'✓ Concluído':'Disponível';badge.className='pill'+(complete?' done':'');return}
-    const wasLocked=st.classList.contains('locked');st.classList.toggle('locked',!active);st.classList.toggle('complete',complete);content.hidden=!active;hint.hidden=active;badge.textContent=complete?'✓ Concluído':(active?'Aberto':'🔒 Bloqueado');badge.className='pill'+(complete?' done':(!active?' lock':''));if(active&&wasLocked){content.classList.remove('newly-unlocked');void content.offsetWidth;content.classList.add('newly-unlocked')}
+    const wasLocked=st.classList.contains('locked');st.classList.toggle('locked',!active);st.classList.toggle('complete',complete);content.hidden=!active;hint.hidden=active;badge.textContent=complete?'✓ Concluído':(active?'Aberto':'🔒 Bloqueado');badge.className='pill'+(complete?' done':(!active?' lock':''));if(active&&wasLocked){st.classList.remove('reveal');void st.offsetWidth;st.classList.add('reveal');st.addEventListener('animationend',()=>st.classList.remove('reveal'),{once:true})}
   }
   function render(){
     const c1=passed('q1'), c2=hasStep3(), c3=complete3();
     markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3(),c3);
+    const videoDone=state.videoFinished||c1;
+    $('#q1').hidden=!videoDone;
+    $('#video-gate').hidden=videoDone;
+    if(videoDone)$('#video-fallback').hidden=true;
     Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
     const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
     $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
@@ -232,6 +247,42 @@
   const tabs=[...document.querySelectorAll('.system-tab')];
   function showSystem(id){tabs.forEach(t=>{t.classList.toggle('active',t.dataset.system===id);t.setAttribute('aria-selected',String(t.dataset.system===id))});$('#system-title').textContent=systemData[id].title;$('#system-desc').textContent=systemData[id].text;if(!state.visited.includes(id)){state.visited.push(id);save();render()}}
   tabs.forEach((t,i)=>{t.addEventListener('click',()=>showSystem(t.dataset.system));t.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const n=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowLeft'?-1:1)+tabs.length)%tabs.length;tabs[n].focus();showSystem(tabs[n].dataset.system)}})});
+
+  /* O player do YouTube informa o final do vídeo por meio da IFrame Player API.
+     Se a API estiver bloqueada por navegador/rede, uma liberação manual evita travar o estudo. */
+  let playerReady=false;
+  function unlockVideoQuiz(){
+    if(state.videoFinished||passed('q1'))return;
+    state.videoFinished=true;
+    save();
+    render();
+    $('#q1').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'nearest'});
+  }
+  function showVideoFallback(){if(!state.videoFinished&&!passed('q1'))$('#video-fallback').hidden=false}
+  $('#video-fallback').addEventListener('click',unlockVideoQuiz);
+  const playerFrame=$('#video-introducao');
+  try{
+    if(location.protocol==='http:'||location.protocol==='https:'){
+      const url=new URL(playerFrame.src);
+      url.searchParams.set('origin',location.origin);
+      playerFrame.src=url.href;
+    }
+  }catch{}
+  window.onYouTubeIframeAPIReady=()=>{
+    try{
+      new YT.Player('video-introducao',{events:{
+        onReady:()=>{playerReady=true;},
+        onStateChange:(event)=>{if(event.data===YT.PlayerState.ENDED)unlockVideoQuiz();},
+        onError:showVideoFallback
+      }});
+    }catch{showVideoFallback()}
+  };
+  const ytApi=document.createElement('script');
+  ytApi.src='https://www.youtube.com/iframe_api';
+  ytApi.async=true;
+  ytApi.onerror=showVideoFallback;
+  document.head.appendChild(ytApi);
+  setTimeout(()=>{if(!playerReady)showVideoFallback()},12000);
   $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
   render();
 })();
