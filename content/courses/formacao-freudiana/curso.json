@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-formacao-freudiana",
   "slug": "formacao-freudiana",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "Formação Freudiana",
   "icon": "✦",
   "subtitle": "Estudo sistemático da obra de Sigmund Freud",
-  "description": "Percurso de leitura e aprofundamento sobre os textos e as transformações conceituais da obra de Freud. O curso reúne dez aulas previstas, com conteúdo, referências e atividades ainda em preparação.",
+  "description": "Percurso de leitura de Freud. A aula interativa sobre a primeira tópica já está disponível; outras dez aulas previstas estão em preparação.",
   "objectives": [
     "Acompanhar os problemas teóricos e clínicos que atravessam diferentes momentos da obra de Freud",
     "Reconhecer mudanças e continuidades entre as formulações freudianas",
@@ -20,73 +20,90 @@
   ],
   "modules": [
     {
+      "id": "modulo-formacao-freudiana-primeira-topica",
+      "title": "A primeira tópica de Freud",
+      "description": "Aula progressiva com vídeo de apresentação, desafios, fundamentação e exploração dos sistemas psíquicos.",
+      "position": 1,
+      "lessons": [
+        {
+          "id": "aula-primeira-topica-freud",
+          "title": "A primeira tópica de Freud",
+          "summary": "3 etapas interativas disponíveis: introdução, origem da tópica e funcionamento dos sistemas.",
+          "path": "./aulas/primeira-topica.json",
+          "position": 1,
+          "status": "published",
+          "estimatedMinutes": 25
+        }
+      ]
+    },
+    {
       "id": "modulo-formacao-freudiana-01",
       "title": "As origens da investigação freudiana",
       "description": "O contexto científico do fim do século XIX, a histeria e o desenvolvimento da escuta clínica.",
-      "position": 1,
+      "position": 2,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-02",
       "title": "Da hipnose à associação livre",
       "description": "As questões que levaram Freud a rever técnicas e a formular novos caminhos de investigação.",
-      "position": 2,
+      "position": 3,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-03",
       "title": "A interpretação dos sonhos",
       "description": "Sonho, trabalho do sonho, desejo e o papel de uma teoria do aparelho psíquico.",
-      "position": 3,
+      "position": 4,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-04",
       "title": "Vida cotidiana e formações do inconsciente",
       "description": "Lapsos, esquecimentos, chistes e os limites de interpretações automáticas.",
-      "position": 4,
+      "position": 5,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-05",
       "title": "Sexualidade infantil e teoria das pulsões",
       "description": "Leitura contextualizada dos Três ensaios e das mudanças posteriores na teoria pulsional.",
-      "position": 5,
+      "position": 6,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-06",
       "title": "Metapsicologia: recalque e inconsciente",
       "description": "As formulações de 1915 e a relação entre representação, conflito, defesa e sistemas psíquicos.",
-      "position": 6,
+      "position": 7,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-07",
       "title": "Narcisismo, identificação e constituição do eu",
       "description": "Articulações entre investimento libidinal, ideais, identificação e laços sociais.",
-      "position": 7,
+      "position": 8,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-08",
       "title": "Transferência, resistência e repetição",
       "description": "Problemas de técnica, relação analítica e elaboração na prática clínica freudiana.",
-      "position": 8,
+      "position": 9,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-09",
       "title": "Além do princípio do prazer e a segunda tópica",
       "description": "As reformulações dos anos 1920, incluindo pulsões, repetição, eu, isso e supereu.",
-      "position": 9,
+      "position": 10,
       "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-10",
       "title": "Psicanálise, cultura e os textos tardios",
       "description": "Religião, civilização, mal-estar, limites clínicos e questões abertas na obra tardia.",
-      "position": 10,
+      "position": 11,
       "lessons": []
     }
   ]
