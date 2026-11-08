@@ -80,6 +80,33 @@
     .word-exercise.solved .word-feedback{color:#276850}
     .word-stage.is-new{animation:tileOpen .65s ease both}
     @media(max-width:560px){.word-stage{padding:18px 14px}.word-exercise{padding:15px 12px}.word-sentence{line-height:2.9}.word-slot{min-width:105px;padding:6px 8px;font-size:.78rem}.word-chip{font-size:.82rem;padding:9px 12px}.word-check{width:100%}}
+
+    /* Conquista exibida apenas após completar todas as atividades da versão atual. */
+    #lesson-achievement[hidden]{display:none!important}
+    .achievement{position:relative;overflow:hidden;margin:32px 0 26px;padding:clamp(27px,5vw,55px);border:1px solid #d6c3a2;border-radius:26px;background:radial-gradient(circle at 83% 8%,#e8d8eb 0,transparent 42%),linear-gradient(140deg,#fffdf9 0%,#f5edf8 58%,#f8f1e8 100%);box-shadow:0 22px 54px rgba(69,47,87,.12);scroll-margin-top:30px}
+    .achievement:before{content:"";position:absolute;inset:10px;border:1px solid rgba(194,163,106,.42);border-radius:19px;pointer-events:none}
+    .achievement:after{content:"✧";position:absolute;right:30px;top:19px;color:#b99c68;font-size:27px;pointer-events:none}
+    .achievement-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,310px);align-items:center;gap:clamp(20px,4vw,45px);position:relative;z-index:1}
+    .achievement-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7b618a;font-size:.72rem;letter-spacing:.18em;font-weight:850;text-transform:uppercase}
+    .achievement-eyebrow:before{content:"✦";color:#b79a65;font-size:15px}
+    .achievement h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,4.5vw,3.15rem);line-height:1.14;color:#342641;margin:12px 0 14px}
+    .achievement-message{color:#55495e;font-size:clamp(.99rem,1.8vw,1.1rem);line-height:1.75;max-width:520px;margin:0 0 18px}
+    .achievement-status{display:flex;align-items:center;gap:9px;font-weight:760;color:#5b4670;font-size:.9rem;margin:0 0 23px}
+    .achievement-status:before{content:"✓";display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:50%;background:#e8f0e6;color:#2c684d}
+    .achievement-medal{margin:0;display:grid;justify-items:center;gap:7px}
+    .achievement-medal img{display:block;width:min(100%,295px);height:auto;filter:drop-shadow(0 20px 19px rgba(69,45,82,.20))}
+    .achievement-medal figcaption{font-size:.74rem;letter-spacing:.10em;text-transform:uppercase;font-weight:750;color:#836f83;text-align:center}
+    .achievement-actions{display:flex;flex-wrap:wrap;gap:9px}
+    .achievement-actions a,.achievement-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:10px;text-decoration:none;font-size:.88rem;font-weight:750;border:1px solid #6a527e;cursor:pointer}
+    .achievement-actions .achievement-download{background:#624a78;color:#fff}
+    .achievement-actions .achievement-download:hover{background:#4a365e}
+    .achievement-actions .achievement-review{background:transparent;color:#5c476f}
+    .achievement-actions .achievement-review:hover{background:#ebe2ef}
+    .achievement-note{font-size:.76rem;color:#887987;line-height:1.5;margin:18px 0 0}
+    .achievement.earned{animation:achievementReveal .85s cubic-bezier(.18,.88,.24,1) both}
+    @keyframes achievementReveal{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:700px){.achievement{margin:24px 0;padding:30px 24px 33px}.achievement:before{inset:8px}.achievement-grid{grid-template-columns:1fr;gap:14px}.achievement-medal{grid-row:1}.achievement-medal img{width:min(100%,235px)}.achievement-copy{text-align:center}.achievement h2{margin-top:9px}.achievement-status,.achievement-actions{justify-content:center}.achievement-actions a,.achievement-actions button{flex:1 1 160px}.achievement-message{margin-inline:auto}}
+    @media(prefers-reduced-motion:reduce){.achievement.earned{animation:none}}
     #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
     #third-video-player iframe{max-width:100%;display:block}
   </style>
@@ -282,6 +309,26 @@
         </div></div>
       </section>
     </div>
+
+    <section id="lesson-achievement" class="achievement" hidden aria-labelledby="achievement-title">
+      <div class="achievement-grid">
+        <div class="achievement-copy">
+          <span class="achievement-eyebrow">Conquista desbloqueada</span>
+          <h2 id="achievement-title">Parabéns pela conclusão!</h2>
+          <p class="achievement-message">Você concluiu os estudos, as interações e os desafios da versão atual de <strong>A primeira tópica de Freud</strong>. Esta insígnia marca seu percurso pelo Ateliê de Psicanálise.</p>
+          <p class="achievement-status">Insígnia conquistada</p>
+          <div class="achievement-actions">
+            <a class="achievement-download" href="./assets/insignia-primeira-topica-freud.png" download="insignia-primeira-topica-freud.png">Baixar insígnia em PNG</a>
+            <button type="button" class="achievement-review" id="achievement-review">Rever a aula</button>
+          </div>
+          <p class="achievement-note">A conquista fica disponível neste navegador enquanto o progresso estiver salvo. As demais etapas do curso ainda estão em desenvolvimento.</p>
+        </div>
+        <figure class="achievement-medal">
+          <img src="./assets/insignia-primeira-topica-freud.png" alt="Insígnia roxa e dourada de Aula Concluída, com retrato de Freud, símbolo psi e louros" loading="lazy" width="800" height="800">
+          <figcaption>A primeira tópica de Freud</figcaption>
+        </figure>
+      </div>
+    </section>
   </main>
   <footer class="shell"><div><strong>Ateliê de Psicanálise · Protótipo de aula</strong><br>Bibliografia de referência: Freud, <em>A interpretação dos sonhos</em> (1900), cap. VII; <em>O inconsciente</em> (1915).<br>O progresso é salvo neste navegador; não é sincronizado entre dispositivos.</div><button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
 <script>
@@ -293,6 +340,8 @@
   try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b'),wordsCompleted:Array.isArray(x.wordsCompleted)?x.wordsCompleted.filter(n=>Number.isInteger(n)&&n>=1&&n<=4):(x.passed.includes('q2a')&&x.passed.includes('q2b')?[1,2,3,4]:[])}:defaultState()}catch{state=defaultState()}
   const $=s=>document.querySelector(s);
   let narrationFailed=false;
+  let achievementFirstRender=true;
+  let achievementWasComplete=false;
   const quizzes={
     q1:{right:'c',tips:{a:'Freud propôs um modelo psíquico, não uma localização anatômica das lembranças.',b:'É justamente o contrário: a consciência não explica, sozinha, toda a vida psíquica.',c:'Correto: Freud formulou a hipótese de processos inconscientes para compreender efeitos psíquicos que não se esgotam na consciência.',d:'Os sonhos foram um caminho central da investigação freudiana, não algo que ele quis abandonar.'}},
     q2a:{right:'b',tips:{a:'Freud ressalta que os lugares psíquicos de seu esquema não são estruturas anatômicas.',b:'Exato. A tópica é uma construção metapsicológica para pensar sistemas, relações e modos de funcionamento.',c:'Essa ideia não corresponde à teoria freudiana da primeira tópica.'}},
@@ -336,6 +385,14 @@
     $('#gate-2').textContent=c2?'✓ Etapa concluída. Explore agora os três sistemas.':'Acerte as duas perguntas para desbloquear o esquema interativo.';
     $('#gate-3').textContent=c3?'✓ Protótipo concluído. A próxima etapa será adicionada na continuação da aula.':'Explore os três sistemas e acerte as duas perguntas para concluir este protótipo.';
     $('#tab-counter').textContent='Sistemas explorados: '+new Set(state.visited).size+' de 3';
+    const award=$('#lesson-achievement');
+    award.hidden=!c3;
+    if(c3&&!achievementWasComplete&&!achievementFirstRender){
+      award.classList.remove('earned');void award.offsetWidth;award.classList.add('earned');
+      requestAnimationFrame(()=>award.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
+    }
+    achievementWasComplete=c3;
+    achievementFirstRender=false;
   }
 
   const WORD_STAGE_COUNT=4;
@@ -591,6 +648,7 @@
   ytApi.onerror=showVideoFallback;
   document.head.appendChild(ytApi);
   setTimeout(()=>{if(!playerReady)showVideoFallback()},12000);
+  $('#achievement-review').addEventListener('click',()=>$('#step-1').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
   $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
   render();
 })();
