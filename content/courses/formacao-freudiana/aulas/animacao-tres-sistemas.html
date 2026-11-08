@@ -139,6 +139,9 @@ setIcon();render(0);
 
 const status=document.getElementById('audio-status');
 const retry=document.getElementById('audio-retry');
+function reportNarrationFailure(){
+ if(window.parent!==window)window.parent.postMessage({type:'atelie-sistemas-erro-narracao'},location.origin);
+}
 let objectURL=null;
 let loading=false;
 function reportHeight(){
@@ -172,6 +175,7 @@ async function prepareNarration(){
    status.classList.add('error');
    status.textContent='Não foi possível carregar o áudio. Verifique sua conexão e tente novamente.';
    retry.hidden=false;
+   reportNarrationFailure();
  }finally{loading=false}
 }
 audio.addEventListener('loadedmetadata',()=>{
@@ -180,6 +184,7 @@ audio.addEventListener('loadedmetadata',()=>{
 audio.addEventListener('error',()=>{
  play.disabled=true;status.classList.add('error');status.textContent='Falha na reprodução. Tente carregar novamente.';
  retry.hidden=false;
+ reportNarrationFailure();
 });
 audio.addEventListener('playing',()=>{status.hidden=true;reportHeight()});
 audio.addEventListener('ended',()=>{
