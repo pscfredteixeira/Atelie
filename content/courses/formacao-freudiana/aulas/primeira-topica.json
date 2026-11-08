@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-primeira-topica-freud",
+  "courseId": "curso-formacao-freudiana",
+  "moduleId": "modulo-formacao-freudiana-primeira-topica",
+  "slug": "primeira-topica-de-freud",
+  "revision": 1,
+  "status": "published",
+  "title": "A primeira tópica de Freud",
+  "summary": "Aula interativa: do problema clínico à distinção entre inconsciente, pré-consciente e consciente. Vídeo, leituras e desafios que desbloqueiam cada etapa.",
+  "estimatedMinutes": 25,
+  "objectives": [
+    "Explicar o problema clínico e teórico que fundamenta a primeira tópica.",
+    "Distinguir os sistemas inconsciente, pré-consciente e consciente.",
+    "Reconhecer que um conteúdo não consciente não é necessariamente recalcado.",
+    "Compreender que a tópica é um modelo metapsicológico, não um mapa anatômico."
+  ],
+  "metadata": {
+    "interactivePage": "./primeira-topica.html",
+    "stagesAvailable": 3,
+    "stagesPlanned": 10,
+    "videoUrl": "https://youtu.be/1gYNfeSIjNI"
+  },
+  "blocks": [],
+  "references": [
+    {
+      "id": "freud1900",
+      "author": "Freud, Sigmund",
+      "title": "A interpretação dos sonhos (capítulo VII)",
+      "year": 1900
+    },
+    {
+      "id": "freud1915",
+      "author": "Freud, Sigmund",
+      "title": "O inconsciente",
+      "year": 1915
+    }
+  ]
+}
