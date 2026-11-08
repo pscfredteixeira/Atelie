@@ -46,7 +46,13 @@
     #q1:not([hidden]){animation:tileOpen .5s ease both}
     @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
     @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
-    #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
+    #third-audio-skip[hidden],#interactive-system-area[hidden],#third-video-launch[hidden],#third-video-player[hidden]{display:none!important}
+    .narration-launch{padding:clamp(23px,5vw,38px);border:1px solid #d8c8df;border-radius:18px;background:linear-gradient(135deg,#f9f5fb 0%,#eee6f1 100%);text-align:left;margin:0 0 12px}
+    .narration-kicker{color:#6a5082;font-weight:800;letter-spacing:.12em;font-size:.73rem}
+    .narration-launch h3{font-family:Georgia,serif;font-size:clamp(1.4rem,3vw,1.8rem);font-weight:400;margin:10px 0}
+    .narration-launch p{max-width:560px;color:#60536c;font-size:.97rem;margin:0 0 20px;line-height:1.55}
+    #third-video-player iframe{max-width:100%;display:block}
+    @media(max-width:560px){.narration-launch{padding:22px 18px}.narration-launch .btn{width:100%}}
   </style>
 </head>
 <body>
@@ -151,8 +157,16 @@
           <p class="hint" id="hint-3">Conclua os dois desafios da etapa anterior para explorar o esquema.</p>
           <div class="step-content" id="content-3" hidden>
             <div class="systems-narration" aria-label="Narração animada sobre os três sistemas">
-              <iframe id="animated-system-iframe" src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html?v=20261108-responsive" title="Animação narrada: os três sistemas psíquicos" loading="eager" allow="autoplay; fullscreen" allowfullscreen style="display:block;border:0;width:100%;height:640px;border-radius:17px;background:#f4f0eb;"></iframe>
-              <button type="button" class="btn secondary" id="third-audio-skip" style="margin:12px 0 18px;">Continuar para o esquema interativo</button>
+              <div id="third-video-launch" class="narration-launch">
+                <span class="narration-kicker">PRÓXIMA ETAPA · ANIMAÇÃO NARRADA</span>
+                <h3>Os três sistemas psíquicos</h3>
+                <p>Você concluiu a fundamentação. Agora, explore o consciente, o pré-consciente e o inconsciente em uma apresentação de 4 minutos e 28 segundos.</p>
+                <button type="button" class="btn" id="third-video-start">Abrir animação narrada</button>
+              </div>
+              <div id="third-video-player" hidden>
+                <iframe id="animated-system-iframe" data-src="./content/courses/formacao-freudiana/aulas/animacao-tres-sistemas.html?v=20261108-responsive" title="Animação narrada: os três sistemas psíquicos" loading="lazy" allow="autoplay; fullscreen" allowfullscreen style="display:block;border:0;width:100%;height:420px;border-radius:17px;background:#f4f0eb;"></iframe>
+              </div>
+              <button type="button" class="btn secondary" id="third-audio-skip" hidden style="margin:12px 0 18px;">Não foi possível reproduzir? Continuar para a atividade</button>
             </div>
             <div id="interactive-system-area" hidden>
             <p class="lead">Clique nos três sistemas para investigar suas diferenças. Depois, resolva as situações propostas.</p>
@@ -201,11 +215,12 @@
 (()=>{
   'use strict';
   const STORAGE_KEY='atelie-primeira-topica-2026-v1';
-  const previewThird=new URLSearchParams(location.search).get('preview')==='3';
   const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false});
   let state;
   try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b')}:defaultState()}catch{state=defaultState()}
   const $=s=>document.querySelector(s);
+  let narrationOpened=false;
+  let narrationFailed=false;
   const quizzes={
     q1:{right:'c',tips:{a:'Freud propôs um modelo psíquico, não uma localização anatômica das lembranças.',b:'É justamente o contrário: a consciência não explica, sozinha, toda a vida psíquica.',c:'Correto: Freud formulou a hipótese de processos inconscientes para compreender efeitos psíquicos que não se esgotam na consciência.',d:'Os sonhos foram um caminho central da investigação freudiana, não algo que ele quis abandonar.'}},
     q2a:{right:'b',tips:{a:'Freud ressalta que os lugares psíquicos de seu esquema não são estruturas anatômicas.',b:'Exato. A tópica é uma construção metapsicológica para pensar sistemas, relações e modos de funcionamento.',c:'Essa ideia não corresponde à teoria freudiana da primeira tópica.'}},
@@ -229,13 +244,16 @@
   }
   function render(){
     const c1=passed('q1'), c2=hasStep3(), c3=complete3();
-    markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3()||previewThird,c3);
+    markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3(),c3);
     const videoDone=state.videoFinished||c1;
     $('#q1').hidden=!videoDone;
     $('#video-gate').hidden=videoDone;
     if(videoDone)$('#video-fallback').hidden=true;
     $('#interactive-system-area').hidden=!state.thirdAudioDone;
-    $('#third-audio-skip').hidden=state.thirdAudioDone;
+    $('#third-video-launch').hidden=narrationOpened;
+    $('#third-video-player').hidden=!narrationOpened;
+    $('#third-video-start').textContent=state.thirdAudioDone?'Rever a animação':'Abrir animação narrada';
+    $('#third-audio-skip').hidden=!narrationFailed||state.thirdAudioDone;
     Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
     const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
     $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
@@ -294,6 +312,14 @@
     save();render();
     $('#interactive-system-area').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'nearest'});
   }
+  // O conteúdo do vídeo só é baixado quando o aluno conclui as etapas e o abre.
+  $('#third-video-start').addEventListener('click',()=>{
+    if(!hasStep3()||narrationOpened)return;
+    narrationOpened=true;
+    const frame=$('#animated-system-iframe');
+    frame.src=frame.dataset.src;
+    render();
+  });
   $('#third-audio-skip').addEventListener('click',showThirdSystems);
   window.addEventListener('message',ev=>{
     if(location.protocol.startsWith('http')&&ev.origin!==location.origin)return;
@@ -304,7 +330,10 @@
       if(Number.isFinite(height)&&height>=300&&height<=2000)iframe.style.height=(height+2)+'px';
       return;
     }
-    if(ev.data&&ev.data.type==='atelie-sistemas-narracao-finalizada')showThirdSystems();
+    if(ev.data&&ev.data.type==='atelie-sistemas-narracao-finalizada'&&hasStep3())showThirdSystems();
+    if(ev.data&&ev.data.type==='atelie-sistemas-erro-narracao'&&hasStep3()){
+      narrationFailed=true;render();
+    }
   });
   const ytApi=document.createElement('script');
   ytApi.src='https://www.youtube.com/iframe_api';
@@ -314,7 +343,6 @@
   setTimeout(()=>{if(!playerReady)showVideoFallback()},12000);
   $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
   render();
-  if(previewThird)window.addEventListener('load',()=>setTimeout(()=>document.getElementById('step-3')?.scrollIntoView({behavior:'auto',block:'start'}),220));
 })();
 </script>
 <script>
