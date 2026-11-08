@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee9e2">
+  <meta name="description" content="Ateliê de Psicanálise: aula progressiva e interativa sobre a primeira tópica de Freud.">
+  <title>Ateliê de Psicanálise • A primeira tópica de Freud</title>
+  <script>if(window.parent!==window){document.documentElement.classList.add("embedded-in-atelie");}</script>
+  <style>
+    html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mast{display:none}html.embedded-in-atelie .intro{padding:15px 0 25px}html.embedded-in-atelie .intro h1{display:none}html.embedded-in-atelie .shell{width:min(100% - 18px,860px)}html.embedded-in-atelie footer{padding-bottom:15px}
+
+    :root{--bg:#f4f0eb;--paper:#fffdfa;--ink:#29243a;--muted:#675f71;--accent:#755c9a;--accent-dark:#544075;--pale:#eee7f5;--line:#ded5e2;--good:#276850;--good-bg:#e7f3ea;--bad:#8b443e;--bad-bg:#f9ebe8;--shadow:0 10px 32px rgba(39,29,46,.07);--radius:20px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 90% 24% at 100% 0%,#e9e2f0 0%,transparent 84%),var(--bg);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.65}
+    button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}a:hover{text-decoration-thickness:2px} button:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
+    .shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #dcd5dc}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted);text-align:right}
+    .intro{padding:42px 0 28px}.eyebrow{color:var(--accent-dark);letter-spacing:.16em;font-size:.76rem;text-transform:uppercase;font-weight:800}.intro h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.08;letter-spacing:-.028em;font-size:clamp(2.4rem,5.2vw,4.2rem);max-width:740px;margin:13px 0 18px}.intro>p{max-width:670px;color:var(--muted);font-size:1.06rem;margin:0}
+    .progress-wrap{margin:23px 0 3px;padding:17px 19px;background:rgba(255,253,250,.8);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:650;font-size:.88rem}.progress-head span:last-child{color:var(--accent-dark);font-variant-numeric:tabular-nums}.track{height:7px;background:#e5dfea;border-radius:30px;margin-top:11px;overflow:hidden}.track>div{width:0;height:100%;background:linear-gradient(90deg,#8062a6,#b699c7);transition:width .45s ease;border-radius:inherit}.roadmap{display:flex;gap:6px;color:var(--muted);font-size:.75rem;justify-content:space-between;margin-top:9px}.roadmap span:last-child{text-align:right}
+    .timeline{position:relative;padding:12px 0 30px}.timeline:before{content:"";position:absolute;top:35px;bottom:110px;left:23px;width:2px;background:repeating-linear-gradient(to bottom,#c9b8d6 0,#c9b8d6 8px,transparent 8px,transparent 15px)}
+    .step{position:relative;padding-left:56px;margin:15px 0 28px;scroll-margin-top:20px}.dot{position:absolute;left:5px;top:19px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid #bba6ca;background:var(--bg);color:var(--accent-dark);font-weight:800;z-index:1}.step.complete .dot{background:var(--good);border-color:var(--good);color:#fff}.step.locked .dot,.step.planned .dot{color:#948b9a;border-color:#d8d0da}
+    .panel{background:var(--paper);border:1px solid #e5dce5;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-inner{padding:clamp(20px,3.5vw,33px)}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.kicker{font-weight:800;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-dark)}.pill{display:inline-flex;align-items:center;gap:5px;background:#f1edf5;color:#604a7c;border-radius:100px;padding:3px 10px;font-size:.72rem;font-weight:800;white-space:nowrap}.pill.done{background:var(--good-bg);color:var(--good)}.pill.lock{background:#eeebef;color:#7d7581}
+    h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(1.65rem,3.4vw,2.3rem);line-height:1.2;margin:5px 0 14px;letter-spacing:-.015em}h3{font-size:1.13rem;line-height:1.25;margin:24px 0 7px}.lead{font-size:1.1rem;color:#4f465b}.body-text p{margin:0 0 13px}.aside{border-left:3px solid #ac91c7;padding:14px 18px;margin:20px 0;background:#f6f0f8;color:#463753;border-radius:0 12px 12px 0}.aside strong{color:#39284a}.video{aspect-ratio:16/9;position:relative;border-radius:13px;overflow:hidden;background:#211c2c}.video iframe{width:100%;height:100%;border:0;display:block}.under-video{font-size:.87rem;color:var(--muted);margin:10px 0 22px}.separator{border:0;border-top:1px solid var(--line);margin:24px 0}.quiz{margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}.quiz-top{display:flex;align-items:center;gap:8px;color:var(--accent-dark);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800}.quiz h3{font-family:Georgia,serif;font-weight:400;font-size:1.25rem;margin:8px 0 17px;line-height:1.4}.answers{display:grid;gap:9px}.answer{width:100%;padding:13px 15px;text-align:left;border:1.5px solid #e0d9e4;border-radius:11px;background:#fff;line-height:1.45;color:var(--ink);display:flex;align-items:flex-start;gap:11px;transition:border-color .12s,background .12s}.answer:hover:not(:disabled){border-color:#bca6d0;background:#faf6fd}.answer[aria-pressed="true"]{border-color:var(--accent);background:#f3edf9}.answer .letter{flex:none;font-size:.75rem;display:grid;place-items:center;width:25px;height:25px;border:1px solid #d6c8df;border-radius:50%;font-weight:850;color:var(--accent-dark)}.answer:disabled{cursor:default;opacity:.82}.answer.right{border-color:var(--good);background:var(--good-bg);opacity:1}.answer.wrong{border-color:var(--bad);background:var(--bad-bg);opacity:1}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}.btn{border:0;color:#fff;background:var(--accent-dark);font-weight:750;border-radius:11px;padding:12px 19px;min-height:46px}.btn:hover:not(:disabled){background:#3e3059}.btn:disabled{background:#c9bfd1;cursor:not-allowed}.btn.secondary{background:#eee9f1;color:var(--accent-dark)}.btn.secondary:hover{background:#e5dce9}.feedback{margin-top:14px;padding:13px 16px;border-radius:12px;background:#f1ecf5;color:#453852;font-size:.94rem;border:1px solid #e1d5e7}.feedback.good{background:var(--good-bg);border-color:#b2d5c0;color:#205842}.feedback.bad{background:var(--bad-bg);border-color:#ebc9bf;color:#703630}.feedback[hidden]{display:none}.step-gate{margin-top:20px;padding:14px 16px;background:#eeedf4;color:#4f435f;border:1px dashed #c7b9cf;border-radius:12px;font-size:.9rem}
+    .locked .panel{background:#faf8fa;box-shadow:none;border-style:dashed;border-color:#d8cfdc}.locked h2{color:#86808a}.locked .hint{font-size:.93rem;color:#817989}.step-content[hidden]{display:none !important}.chapter-num{font-size:.78rem;color:var(--muted)}
+    .mini-timeline{margin:18px 0 22px;display:grid;gap:8px}.history{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:12px 15px;border-radius:12px;background:#f7f3f8}.history .year{font-family:Georgia,serif;font-weight:600;color:var(--accent-dark);font-size:1.3rem;line-height:1.1}.history p{margin:0;font-size:.92rem}
+    .systems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 15px}.system-tab{min-height:118px;border-radius:14px;border:1px solid #d8cadf;background:#f8f4f9;padding:16px 9px;text-align:center;color:var(--ink);display:grid;gap:5px;place-content:center}.system-tab span{color:#73617f;font-size:.77rem;letter-spacing:.12em;font-weight:800}.system-tab b{font-family:Georgia,serif;font-size:clamp(.95rem,2.1vw,1.3rem);font-weight:500}.system-tab:hover{background:#f0e9f5}.system-tab.active{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}.system-tab.active span{color:#e8dcef}.system-panel{border:1px solid #d8cadf;background:#f7f2f9;border-radius:14px;padding:19px;min-height:150px}.system-panel h3{font-family:Georgia,serif;margin:0 0 8px;font-size:1.35rem;font-weight:400}.system-panel p{margin:0}.note{font-size:.82rem;color:var(--muted);margin:10px 0 0}.tab-counter{font-size:.8rem;color:var(--muted);margin:8px 0}.locked-shelf{text-align:center;background:#fffdfa;border:1px dashed #d4ccd6;border-radius:15px;padding:22px;color:var(--muted);margin:12px 0 50px}.locked-shelf strong{color:var(--ink)}
+    footer{border-top:1px solid #d8cfd8;padding:26px 0 55px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start}footer div{font-size:.84rem;color:var(--muted)}.reset{border:1px solid #cdbed5;background:transparent;padding:10px 13px;border-radius:10px;color:var(--accent-dark);font-weight:750;white-space:nowrap}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .newly-unlocked{animation:reveal .65s ease both}@keyframes reveal{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(max-width:560px){.shell{width:min(100% - 24px,860px)}.mast{padding-top:20px}.small-tag{display:none}.intro{padding-top:29px}.step{padding-left:38px}.timeline:before{left:15px}.dot{left:-1px;width:32px;height:32px;font-size:.85rem;top:17px}.panel-inner{padding:19px 16px}.systems{gap:5px}.system-tab{padding:10px 3px;min-height:97px}.system-tab b{font-size:.88rem}.history{grid-template-columns:58px 1fr;padding:11px 9px;gap:8px}.actions .btn{width:100%}footer{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.newly-unlocked{animation:none}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="mast shell"><div class="brand">Ateliê de Psicanálise</div><div class="small-tag">FORMAÇÃO FREUDIANA · AULA INTERATIVA</div></header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow">Unidade 01 · Fundamentos da psicanálise</div>
+      <h1 id="title">A primeira tópica de Freud</h1>
+      <p>Uma aula construída em etapas. Assista, leia, explore e responda: cada compreensão abre o próximo quadradinho.</p>
+      <div class="progress-wrap" aria-label="Progresso dos três primeiros quadradinhos">
+        <div class="progress-head"><span>Seu progresso nesta versão</span><span id="progress-label">0 de 3 etapas</span></div>
+        <div class="track" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" id="progressbar"><div id="progress-fill"></div></div>
+        <div class="roadmap"><span>Introdução</span><span>Fundamentação</span><span>Os sistemas</span></div>
+      </div>
+    </section>
+
+    <div class="timeline">
+      <section class="step" id="step-1" aria-labelledby="step1-title">
+        <div class="dot" aria-hidden="true">1</div>
+        <div class="panel"><div class="panel-inner">
+          <div class="panel-heading"><span class="kicker">Quadradinho 01 · abertura</span><span class="pill" id="badge-1">Disponível</span></div>
+          <h2 id="step1-title">O que existe além da consciência?</h2>
+          <p class="lead">Comecemos com uma pergunta: será que tudo aquilo que influencia nossos desejos e decisões é conhecido por nós?</p>
+          <div class="video">
+            <iframe src="https://www.youtube-nocookie.com/embed/1gYNfeSIjNI" title="Vídeo de apresentação: A primeira tópica de Freud" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <p class="under-video">Se o vídeo não carregar, <a href="https://youtu.be/1gYNfeSIjNI" target="_blank" rel="noopener noreferrer">assista no YouTube</a> e retorne à pergunta.</p>
+          <div class="quiz" id="q1">
+            <div class="quiz-top">✦ Desafio 01 · compreensão do vídeo</div>
+            <h3>Por que Freud considerou necessário investigar processos psíquicos inconscientes?</h3>
+            <div class="answers" role="group" aria-label="Alternativas do desafio 1">
+              <button type="button" class="answer" data-choice="a" aria-pressed="false"><span class="letter">A</span><span>Para localizar lembranças em regiões específicas do cérebro.</span></button>
+              <button type="button" class="answer" data-choice="b" aria-pressed="false"><span class="letter">B</span><span>Porque os pensamentos conscientes explicariam toda a vida psíquica.</span></button>
+              <button type="button" class="answer" data-choice="c" aria-pressed="false"><span class="letter">C</span><span>Porque alguns processos fora da consciência produzem efeitos na vida psíquica.</span></button>
+              <button type="button" class="answer" data-choice="d" aria-pressed="false"><span class="letter">D</span><span>Para substituir o estudo dos sonhos por uma teoria exclusivamente biológica.</span></button>
+            </div>
+            <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+            <div class="feedback" role="status" aria-live="polite" hidden></div>
+          </div>
+          <div class="step-gate" id="gate-1">✓ Ao acertar, o conteúdo histórico e conceitual será liberado abaixo.</div>
+        </div></div>
+      </section>
+
+      <section class="step locked" id="step-2" aria-labelledby="step2-title">
+        <div class="dot" aria-hidden="true">2</div>
+        <div class="panel"><div class="panel-inner">
+          <div class="panel-heading"><span class="kicker">Quadradinho 02 · fundamentação</span><span class="pill lock" id="badge-2">🔒 Bloqueado</span></div>
+          <h2 id="step2-title">Por que Freud criou a primeira tópica?</h2>
+          <p class="hint" id="hint-2">Responda corretamente ao desafio anterior para abrir esta etapa.</p>
+          <div class="step-content" id="content-2" hidden>
+            <div class="body-text">
+              <p class="lead">A primeira tópica não nasce de uma curiosidade sobre o cérebro. Ela nasce de um problema clínico: como compreender fenômenos que parecem escapar à vontade e ao conhecimento consciente do sujeito?</p>
+              <h3>1. O problema clínico</h3>
+              <p>Nos estudos sobre os sintomas histéricos e, depois, na investigação dos sonhos, Freud se deparou com experiências que não se explicavam satisfatoriamente pelo que uma pessoa sabia ou conseguia contar a respeito de si. Certos sintomas, ideias e lembranças podiam estar ligados a conflitos que não eram reconhecidos conscientemente.</p>
+              <p>Isso não significa que todo esquecimento, sonho ou sintoma tenha necessariamente uma causa recalcada. Significa que Freud passou a considerar a hipótese de <strong>processos psíquicos que atuam sem se apresentar diretamente à consciência</strong>.</p>
+              <div class="aside"><strong>Exemplo para pensar.</strong> Uma pessoa se surpreende com a intensidade de sua reação a uma crítica aparentemente pequena. O relato consciente pode não esclarecer tudo. Na escuta analítica, investigaríamos suas associações e sua história, sem decidir previamente qual seria a causa.</div>
+              <h3>2. O que significa “tópica”?</h3>
+              <p>A palavra vem da ideia de <em>lugares</em> ou <em>posições</em>. Freud utiliza uma representação teórica do aparelho psíquico por sistemas distintos, com modos de funcionamento e relações entre si. Esses “lugares” não são compartimentos anatômicos.</p>
+              <p>No capítulo VII de <em>A interpretação dos sonhos</em>, Freud propõe uma organização que permite pensar as condições de passagem, transformação e impedimento entre processos inconscientes, pré-conscientes e conscientes.</p>
+              <div class="aside"><strong>Distinção essencial.</strong> A primeira tópica é um <em>modelo de funcionamento</em>, não uma imagem literal da mente nem um mapa de regiões cerebrais.</div>
+              <h3>3. Como a formulação se desenvolveu</h3>
+              <div class="mini-timeline">
+                <div class="history"><div class="year">1895</div><p><strong>Estudos sobre a histeria.</strong> O trabalho clínico de Freud e Breuer ajuda a formular problemas ligados à memória, à defesa e aos sintomas.</p></div>
+                <div class="history"><div class="year">1900</div><p><strong>A interpretação dos sonhos.</strong> Especialmente no capítulo VII, Freud apresenta uma formulação decisiva do aparelho psíquico em sistemas.</p></div>
+                <div class="history"><div class="year">1915</div><p><strong>O inconsciente.</strong> Freud aprofunda as distinções entre sentidos descritivo, dinâmico e sistemático do inconsciente.</p></div>
+              </div>
+              <h3>4. Por que três sistemas?</h3>
+              <p>Estar fora da consciência <strong>não é sempre a mesma coisa</strong>. Podemos não estar pensando agora em um nome e recuperá-lo quando alguém pergunta. Mas há também representações que, na teoria freudiana, encontram obstáculos dinâmicos ao acesso à consciência. Essa diferença sustenta a distinção entre pré-consciente e inconsciente em sentido sistemático.</p>
+              <p>A consciência, por sua vez, diz respeito à experiência psíquica atual. Nas próximas etapas, vamos estudar essas distinções sem imaginar os sistemas como gavetas imóveis.</p>
+              <div class="aside"><strong>Pergunta orientadora.</strong> O que diferencia algo que simplesmente não está em nossa atenção de algo que sofre uma defesa inconsciente?</div>
+            </div>
+            <div class="quiz" id="q2a">
+              <div class="quiz-top">✦ Desafio 02 · fundamento teórico</div>
+              <h3>Na primeira tópica, o que significa falar em “lugares psíquicos”?</h3>
+              <div class="answers" role="group" aria-label="Alternativas do desafio 2">
+                <button type="button" class="answer" data-choice="a" aria-pressed="false"><span class="letter">A</span><span>Três áreas anatômicas que podem ser vistas diretamente num exame cerebral.</span></button>
+                <button type="button" class="answer" data-choice="b" aria-pressed="false"><span class="letter">B</span><span>Um modelo teórico de sistemas e relações entre processos psíquicos.</span></button>
+                <button type="button" class="answer" data-choice="c" aria-pressed="false"><span class="letter">C</span><span>Três personalidades independentes vivendo no mesmo indivíduo.</span></button>
+              </div>
+              <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+              <div class="feedback" role="status" aria-live="polite" hidden></div>
+            </div>
+            <div class="quiz" id="q2b">
+              <div class="quiz-top">✦ Desafio 03 · raciocínio</div>
+              <h3>Qual afirmação é mais coerente com o problema que levou Freud à formulação da tópica?</h3>
+              <div class="answers" role="group" aria-label="Alternativas do desafio 3">
+                <button type="button" class="answer" data-choice="a" aria-pressed="false"><span class="letter">A</span><span>O que não está consciente no momento é sempre produto de recalque.</span></button>
+                <button type="button" class="answer" data-choice="b" aria-pressed="false"><span class="letter">B</span><span>Os fenômenos psíquicos só têm importância quando a pessoa os relata conscientemente.</span></button>
+                <button type="button" class="answer" data-choice="c" aria-pressed="false"><span class="letter">C</span><span>A ausência de consciência atual não basta para explicar todos os diferentes modos de funcionamento psíquico.</span></button>
+              </div>
+              <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+              <div class="feedback" role="status" aria-live="polite" hidden></div>
+            </div>
+            <div class="step-gate" id="gate-2">Responda corretamente às duas perguntas para abrir o esquema interativo.</div>
+          </div>
+        </div></div>
+      </section>
+
+      <section class="step locked" id="step-3" aria-labelledby="step3-title">
+        <div class="dot" aria-hidden="true">3</div>
+        <div class="panel"><div class="panel-inner">
+          <div class="panel-heading"><span class="kicker">Quadradinho 03 · exploração visual</span><span class="pill lock" id="badge-3">🔒 Bloqueado</span></div>
+          <h2 id="step3-title">Os três sistemas psíquicos</h2>
+          <p class="hint" id="hint-3">Conclua os dois desafios da etapa anterior para explorar o esquema.</p>
+          <div class="step-content" id="content-3" hidden>
+            <p class="lead">Clique nos três sistemas para investigar suas diferenças. Depois, resolva as situações propostas.</p>
+            <div class="systems" role="tablist" aria-label="Sistemas da primeira tópica">
+              <button type="button" class="system-tab active" role="tab" aria-selected="true" aria-controls="system-panel" data-system="ics"><span>Ics.</span><b>Inconsciente</b></button>
+              <button type="button" class="system-tab" role="tab" aria-selected="false" aria-controls="system-panel" data-system="pcs"><span>Pcs.</span><b>Pré-consciente</b></button>
+              <button type="button" class="system-tab" role="tab" aria-selected="false" aria-controls="system-panel" data-system="cs"><span>Cs.</span><b>Consciente</b></button>
+            </div>
+            <div id="system-panel" class="system-panel" role="tabpanel" aria-live="polite">
+              <h3 id="system-title">Inconsciente (Ics.)</h3>
+              <p id="system-desc">No sentido sistemático da primeira tópica, designa um modo de funcionamento psíquico marcado por processos como condensação e deslocamento; conteúdos recalcados não se tornam conscientes apenas pela decisão de lembrá-los.</p>
+            </div>
+            <div class="tab-counter" id="tab-counter">Sistemas explorados: 1 de 3</div>
+            <p class="note">O desenho é didático: esses sistemas não correspondem a salas físicas, camadas cerebrais nem a uma sequência obrigatória para todos os fenômenos.</p>
+            <div class="quiz" id="q3a">
+              <div class="quiz-top">✦ Desafio 04 · aplicar conceitos</div>
+              <h3>Uma pessoa não pensava no nome de sua antiga professora, mas o recorda imediatamente quando alguém pergunta. O exemplo ilustra melhor:</h3>
+              <div class="answers" role="group" aria-label="Alternativas do desafio 4">
+                <button type="button" class="answer" data-choice="a" aria-pressed="false"><span class="letter">A</span><span>Uma representação pré-consciente que se tornou consciente.</span></button>
+                <button type="button" class="answer" data-choice="b" aria-pressed="false"><span class="letter">B</span><span>Necessariamente um desejo recalcado.</span></button>
+                <button type="button" class="answer" data-choice="c" aria-pressed="false"><span class="letter">C</span><span>A impossibilidade de acessar lembranças pela atenção.</span></button>
+              </div>
+              <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+              <div class="feedback" role="status" aria-live="polite" hidden></div>
+            </div>
+            <div class="quiz" id="q3b">
+              <div class="quiz-top">✦ Desafio 05 · distinção teórica</div>
+              <h3>Qual afirmação evita confundir o pré-consciente com o inconsciente recalcado?</h3>
+              <div class="answers" role="group" aria-label="Alternativas do desafio 5">
+                <button type="button" class="answer" data-choice="a" aria-pressed="false"><span class="letter">A</span><span>Ambos são sempre inacessíveis à consciência.</span></button>
+                <button type="button" class="answer" data-choice="b" aria-pressed="false"><span class="letter">B</span><span>O pré-consciente pode tornar-se consciente em determinadas condições; o recalcado encontra obstáculos dinâmicos.</span></button>
+                <button type="button" class="answer" data-choice="c" aria-pressed="false"><span class="letter">C</span><span>Tudo o que não é consciente está necessariamente recalcado.</span></button>
+              </div>
+              <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+              <div class="feedback" role="status" aria-live="polite" hidden></div>
+            </div>
+            <div class="step-gate" id="gate-3">Explore os três sistemas e acerte as duas perguntas para concluir esta primeira versão.</div>
+          </div>
+        </div></div>
+      </section>
+      <div class="step locked planned" aria-label="Próxima etapa em preparação">
+        <div class="dot" aria-hidden="true">4</div>
+        <div class="locked-shelf"><strong>Próxima etapa em elaboração</strong><div>O funcionamento do inconsciente, processo primário, condensação e deslocamento.</div></div>
+      </div>
+    </div>
+  </main>
+  <footer class="shell"><div><strong>Ateliê de Psicanálise · Protótipo de aula</strong><br>Bibliografia de referência: Freud, <em>A interpretação dos sonhos</em> (1900), cap. VII; <em>O inconsciente</em> (1915).<br>O progresso é salvo neste navegador; não é sincronizado entre dispositivos.</div><button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
+<script>
+(()=>{
+  'use strict';
+  const STORAGE_KEY='atelie-primeira-topica-2026-v1';
+  const defaultState=()=>({passed:[],visited:['ics']});
+  let state;
+  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t))}:defaultState()}catch{state=defaultState()}
+  const $=s=>document.querySelector(s);
+  const quizzes={
+    q1:{right:'c',tips:{a:'Freud propôs um modelo psíquico, não uma localização anatômica das lembranças.',b:'É justamente o contrário: a consciência não explica, sozinha, toda a vida psíquica.',c:'Correto: Freud formulou a hipótese de processos inconscientes para compreender efeitos psíquicos que não se esgotam na consciência.',d:'Os sonhos foram um caminho central da investigação freudiana, não algo que ele quis abandonar.'}},
+    q2a:{right:'b',tips:{a:'Freud ressalta que os lugares psíquicos de seu esquema não são estruturas anatômicas.',b:'Exato. A tópica é uma construção metapsicológica para pensar sistemas, relações e modos de funcionamento.',c:'Essa ideia não corresponde à teoria freudiana da primeira tópica.'}},
+    q2b:{right:'c',tips:{a:'Nem tudo o que está fora da consciência é recalcado. A distinção entre pré-consciente e inconsciente é importante.',b:'A pesquisa clínica de Freud considera justamente processos cujos efeitos não se reduzem ao que a pessoa sabe dizer de si.',c:'Correto. A primeira tópica distingue modos e condições de acesso à consciência, em vez de agrupar tudo sob um único rótulo.'}},
+    q3a:{right:'a',tips:{a:'Correto. A lembrança estava fora da atenção atual, mas pôde ser recuperada. É um bom exemplo didático de pré-consciente.',b:'Não há elementos para afirmar que se trate de recalque. Uma lembrança acessível não é, por isso, um desejo recalcado.',c:'O exemplo mostra justamente que a lembrança se tornou consciente quando solicitada.'}},
+    q3b:{right:'b',tips:{a:'O pré-consciente pode, em certas condições, alcançar a consciência. A frase apaga essa diferença.',b:'Exatamente. A diferença não é simplesmente estar ou não consciente agora, mas envolver condições distintas de acesso.',c:'O inconsciente em sentido descritivo é mais amplo do que o conjunto de conteúdos recalcados.'}}
+  };
+  function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
+  function passed(id){return state.passed.includes(id)}
+  function hasStep2(){return passed('q1')}
+  function hasStep3(){return passed('q2a')&&passed('q2b')}
+  function complete3(){return hasStep3()&&passed('q3a')&&passed('q3b')&&['ics','pcs','cs'].every(x=>state.visited.includes(x))}
+  function updateQuiz(id){
+    const box=$('#'+id);const isDone=passed(id);const answers=[...box.querySelectorAll('.answer')];
+    answers.forEach(b=>{b.disabled=isDone;b.classList.toggle('right',isDone&&b.dataset.choice===quizzes[id].right);if(isDone)b.setAttribute('aria-pressed',String(b.dataset.choice===quizzes[id].right));});
+    const btn=box.querySelector('.verify');btn.hidden=isDone; if(!isDone) btn.disabled=!answers.some(b=>b.getAttribute('aria-pressed')==='true');
+    const fb=box.querySelector('.feedback');if(isDone){fb.hidden=false;fb.className='feedback good';fb.textContent='✓ '+quizzes[id].tips[quizzes[id].right]}
+  }
+  function markStep(num,active,complete){const st=$('#step-'+num),content=$('#content-'+num),hint=$('#hint-'+num),badge=$('#badge-'+num);if(num===1){st.classList.toggle('complete',complete);badge.textContent=complete?'✓ Concluído':'Disponível';badge.className='pill'+(complete?' done':'');return}
+    const wasLocked=st.classList.contains('locked');st.classList.toggle('locked',!active);st.classList.toggle('complete',complete);content.hidden=!active;hint.hidden=active;badge.textContent=complete?'✓ Concluído':(active?'Aberto':'🔒 Bloqueado');badge.className='pill'+(complete?' done':(!active?' lock':''));if(active&&wasLocked){content.classList.remove('newly-unlocked');void content.offsetWidth;content.classList.add('newly-unlocked')}
+  }
+  function render(){
+    const c1=passed('q1'), c2=hasStep3(), c3=complete3();
+    markStep(1,true,c1);markStep(2,hasStep2(),c2);markStep(3,hasStep3(),c3);
+    Object.keys(quizzes).forEach(id=>{const accessible=id==='q1'||(id.startsWith('q2')&&hasStep2())||(id.startsWith('q3')&&hasStep3());if(accessible)updateQuiz(id)});
+    const count=Number(c1)+Number(c2)+Number(c3);$('#progress-label').textContent=count+' de 3 etapas';$('#progress-fill').style.width=((count/3)*100)+'%';$('#progressbar').setAttribute('aria-valuenow',String(count));
+    $('#gate-1').textContent=c1?'✓ Etapa concluída. O próximo quadradinho está aberto.':'Responda corretamente para desbloquear a fundamentação.';
+    $('#gate-2').textContent=c2?'✓ Etapa concluída. Explore agora os três sistemas.':'Acerte as duas perguntas para desbloquear o esquema interativo.';
+    $('#gate-3').textContent=c3?'✓ Protótipo concluído. A próxima etapa será adicionada na continuação da aula.':'Explore os três sistemas e acerte as duas perguntas para concluir este protótipo.';
+    $('#tab-counter').textContent='Sistemas explorados: '+new Set(state.visited).size+' de 3';
+  }
+  document.querySelectorAll('.quiz').forEach(box=>{
+    const id=box.id;const opts=[...box.querySelectorAll('.answer')];const verify=box.querySelector('.verify');
+    opts.forEach(o=>o.addEventListener('click',()=>{if(passed(id))return;opts.forEach(x=>{x.setAttribute('aria-pressed',String(x===o));x.classList.remove('wrong','right')});verify.disabled=false;const fb=box.querySelector('.feedback');fb.hidden=true;fb.textContent=''}));
+    verify.addEventListener('click',()=>{
+      const selected=opts.find(b=>b.getAttribute('aria-pressed')==='true');if(!selected)return;
+      const answer=selected.dataset.choice;const ok=answer===quizzes[id].right;const fb=box.querySelector('.feedback');fb.hidden=false;fb.className='feedback '+(ok?'good':'bad');fb.textContent=(ok?'✓ ':'↺ ')+quizzes[id].tips[answer];
+      opts.forEach(x=>x.classList.toggle('wrong',!ok&&x===selected));
+      if(ok){const wasStep2=hasStep2(),wasStep3=hasStep3();state.passed.push(id);save();render();if(!wasStep2&&hasStep2())$('#step-2').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});else if(!wasStep3&&hasStep3())$('#step-3').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'})}else{verify.textContent='Tentar novamente';verify.disabled=true;opts.forEach(x=>x.setAttribute('aria-pressed','false'))}
+    });
+  });
+  const systemData={ics:{title:'Inconsciente (Ics.)',text:'No sentido sistemático da primeira tópica, designa um modo de funcionamento psíquico marcado por processos como condensação e deslocamento; conteúdos recalcados não se tornam conscientes apenas pela decisão de lembrá-los.'},pcs:{title:'Pré-consciente (Pcs.)',text:'Representações que não estão conscientes neste instante, mas podem tornar-se conscientes sob certas condições, como a atenção. Não se deve confundir simplesmente não pensar em algo agora com recalque.'},cs:{title:'Consciente (Cs.)',text:'Diz respeito à experiência psíquica presente: aquilo de que temos consciência agora. É transitório e não coincide com a totalidade da vida psíquica.'}};
+  const tabs=[...document.querySelectorAll('.system-tab')];
+  function showSystem(id){tabs.forEach(t=>{t.classList.toggle('active',t.dataset.system===id);t.setAttribute('aria-selected',String(t.dataset.system===id))});$('#system-title').textContent=systemData[id].title;$('#system-desc').textContent=systemData[id].text;if(!state.visited.includes(id)){state.visited.push(id);save();render()}}
+  tabs.forEach((t,i)=>{t.addEventListener('click',()=>showSystem(t.dataset.system));t.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const n=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowLeft'?-1:1)+tabs.length)%tabs.length;tabs[n].focus();showSystem(tabs[n].dataset.system)}})});
+  $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
+  render();
+})();
+</script>
+<script>
+(function(){
+ if(window.parent===window)return;
+ const report=()=>{
+   const height=Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight));
+   window.parent.postMessage({type:"atelie-lesson-height",height:height},window.location.origin);
+ };
+ window.addEventListener("load",report);
+ window.addEventListener("resize",report);
+ if("ResizeObserver" in window)new ResizeObserver(report).observe(document.body);
+ report();
+})();
+</script>
+</body>
+</html>
