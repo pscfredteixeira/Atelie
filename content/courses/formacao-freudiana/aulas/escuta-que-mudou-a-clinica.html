@@ -52,7 +52,7 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   <p>O tratamento de Bertha não foi a cura simples e definitiva que algumas versões da história sugerem. Mas ele ajudou a colocar uma questão decisiva: que relação pode existir entre uma experiência vivida, aquilo que não conseguimos dizer e a maneira como o sofrimento se manifesta?</p>
   <p>Nossa aula começa aí. Vamos conhecer a medicina daquela época, examinar o caso de Anna O., investigar a passagem da hipnose para novas formas de escuta e entender como esses problemas prepararam o terreno para a teoria freudiana. Mais do que decorar datas e nomes, eu quero propor uma pergunta para acompanhar todo o percurso: o que muda na clínica quando deixamos de tratar a fala como um detalhe e começamos a levá-la a sério?</p>
   </details>
-  <div class="actions"><button class="btn" id="advance-1" type="button">Começar a exploração histórica →</button></div>
+  
  </div></div>
 </section>
 <section class="step" id="stage-2" data-stage="2" hidden>
@@ -187,7 +187,10 @@ let st={...INIT};
 try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&typeof x==='object')st={...INIT,...x}}catch(e){}
 ['done','spots','files','times','concepts','passed'].forEach(k=>{if(!Array.isArray(st[k]))st[k]=[]});
 if(!st.choices||typeof st.choices!=='object')st.choices={};
-st.unlocked=Math.max(1,Math.min(6,Number(st.unlocked)||1));
+st.unlocked=Math.max(2,Math.min(6,Number(st.unlocked)||1));
+// O Momento 01 é uma abertura: não exige botão nem bloqueia o próximo quadradinho.
+// Marcamos a introdução como percorrida automaticamente sem avançar a rolagem.
+if(!st.done.includes(1))st.done.push(1);
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
 let sentHeight=0;
@@ -202,7 +205,7 @@ function refresh(){
  $('#finish').hidden=!st.done.includes(6);save();reportProgress();setTimeout(reportHeight,80);
 }
 function complete(n,scrollNext=true){if(st.done.includes(n))return;st.done.push(n);st.unlocked=Math.max(st.unlocked,Math.min(6,n+1));refresh();if(n<6&&scrollNext)setTimeout(()=>$('#stage-'+(n+1)).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),150)}
-$('#advance-1').addEventListener('click',()=>complete(1));
+
 /* Integra o novo consultório HTML independente e mantém a progressão do curso. */
 const roomFrame=$('#room-1880-frame');
 window.addEventListener('message',event=>{
