@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-formacao-freudiana",
   "slug": "formacao-freudiana",
-  "revision": 4,
+  "revision": 5,
   "status": "published",
   "title": "Formação Freudiana",
   "icon": "✦",
   "subtitle": "Estudo sistemático da obra de Sigmund Freud",
-  "description": "Percurso de leitura de Freud. Três aulas interativas disponíveis: a escuta psicanalítica nascente, o nascimento da psicanálise e a primeira tópica. Outras nove aulas estão em preparação.",
+  "description": "Percurso de Freud com duas aulas interativas: A escuta que mudou a clínica (seis momentos) e A primeira tópica de Freud (três momentos). Nove outras aulas em preparação.",
   "objectives": [
     "Acompanhar os problemas teóricos e clínicos que atravessam diferentes momentos da obra de Freud",
     "Reconhecer mudanças e continuidades entre as formulações freudianas",
@@ -28,7 +28,7 @@
         {
           "id": "aula-escuta-que-mudou-a-clinica",
           "title": "A escuta que mudou a clínica",
-          "summary": "Nove etapas interativas: histeria, Breuer, Anna O., método catártico, transferência e Estudos sobre a Histeria.",
+          "summary": "Seis momentos interativos: vídeo provisório, consultório, Anna O., linha histórica, conceitos e síntese clínica.",
           "path": "./aulas/escuta-que-mudou-a-clinica.json",
           "position": 1,
           "status": "published",
