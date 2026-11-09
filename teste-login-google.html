@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#29212d">
+<meta name="robots" content="noindex,nofollow">
+<title>Teste de login com Google · Ateliê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--ink:#35293d;--purple:#604870;--line:#e6dce6;--muted:#776b7b}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#f9f5f0,#f7f0f8);font:15px/1.65 "DM Sans",system-ui,sans-serif;color:var(--ink)}
+a,button{font:inherit}
+a{color:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+:focus-visible{outline:3px solid #a77fbe;outline-offset:3px}
+header{background:#29212e;color:#f7edf2}
+.head{max-width:1050px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px 25px}
+.brand{font:500 32px/1 "Fraunces",Georgia,serif;text-decoration:none;letter-spacing:-.04em}
+.brand:after{content:"";display:block;height:3px;background:#d28c65;width:33%;margin:6px 0 0 auto}
+.back{font-size:12px;font-weight:700;text-decoration:none;color:#ebdfe8}
+.back:hover{text-decoration:underline}
+main{max-width:1050px;margin:auto;padding:55px 25px 70px}
+.kicker{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:800;color:#825e8b}
+h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:450;letter-spacing:-.04em;line-height:1.15}
+h1{font-size:clamp(38px,6vw,60px);margin:12px 0 18px}
+.lead{font-size:15px;color:#706475;max-width:740px;margin:0 0 31px;line-height:1.8}
+.layout{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(260px,.88fr);align-items:start;gap:22px}
+.panel{background:#fffdfc;border:1px solid var(--line);border-radius:21px;padding:clamp(22px,3vw,34px);box-shadow:0 18px 36px #3a234e0a}
+.titlebar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+h2{font-size:28px;margin:0}
+.tag{font-size:10px;font-weight:800;padding:6px 10px;color:#675171;border-radius:100px;background:#f1e9f2;white-space:nowrap}
+.status{padding:17px;border-radius:13px;border:1px solid #e1d5e4;background:#f8f3f9;margin-bottom:20px;display:flex;gap:11px;align-items:flex-start}
+.status[data-kind=ok]{background:#eff7f0;border-color:#bcd7c5}
+.status[data-kind=error]{background:#fff4f4;border-color:#e3bec5}
+.status-icon{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;background:#e5d8e9;color:#634a73;font-size:17px;font-weight:850}
+.status[data-kind=ok] .status-icon{background:#d4eadb;color:#286e48}
+.status[data-kind=error] .status-icon{background:#f1dadd;color:#a04552}
+.status strong{display:block;font-size:14px}
+.status p{font-size:12px;color:#756b77;margin:3px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:9px}
+.actions button{border-radius:10px;padding:11px 14px;min-height:46px;font-size:12px;font-weight:800}
+.primary{background:var(--purple);color:white;border:1px solid var(--purple)}
+.primary:hover:not(:disabled){background:#4c355b}
+.secondary{background:white;color:var(--purple);border:1px solid #b8a5bd}
+.secondary:hover:not(:disabled){background:#f5edf6}
+.profile{background:#f8f4f8;border:1px solid #e2d6e3;padding:18px;border-radius:13px;margin-top:21px}
+.profile[hidden],.errorbox[hidden]{display:none!important}
+.profile small{display:block;color:#8b738e;text-transform:uppercase;font-size:10px;letter-spacing:.1em;font-weight:800}
+.profile h3{font:450 23px/1.3 "Fraunces",Georgia,serif;margin:5px 0 4px}
+.profile p{margin:0;color:#796c7a;font-size:12px;overflow-wrap:anywhere}
+.errorbox{margin-top:17px;border:1px solid #e1bfc4;background:#fff5f6;border-radius:12px;padding:15px;color:#713b46;font-size:12px}
+.errorbox strong{display:block;font-size:13px;margin-bottom:5px}
+.errorbox code{display:block;margin-top:8px;overflow-wrap:anywhere}
+.note{font-size:12px;color:#756b79;line-height:1.75;margin:21px 0 0}
+.diagnostic{margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
+.diaghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.diaghead h3{font:450 20px/1.3 "Fraunces",Georgia,serif;margin:0 0 10px}
+.copy{border:1px solid #dbd0df;background:white;color:#5b4767;border-radius:8px;padding:7px 10px;font-size:11px;font-weight:800}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#302735;color:#f2e6f5;font:12px/1.75 ui-monospace,Consolas,monospace;padding:16px;border-radius:11px;max-height:280px;overflow:auto;margin:0}
+.steps{padding:0;margin:16px 0;list-style:none;display:grid;gap:15px}
+.steps li{display:flex;align-items:start;gap:11px;font-size:13px;line-height:1.6;color:#6b5e70}
+.check{display:grid;place-items:center;width:24px;height:24px;flex:none;background:#eee5f0;color:#76578b;font-size:12px;font-weight:800;border-radius:50%}
+.check.done{background:#dbece0;color:#336e4b}
+.aside-note{border-top:1px solid var(--line);padding-top:17px;color:#796d7b;font-size:12px;margin:20px 0 0}
+footer{max-width:1050px;margin:auto;padding:0 25px 30px;color:#928694;font-size:11px}
+@media(max-width:740px){.layout{grid-template-columns:1fr}main{padding:35px 17px 55px}.head{padding:17px}.panel{padding:24px 20px}}
+@media(max-width:460px){.actions{display:grid;grid-template-columns:1fr}.actions button{width:100%}.tag{font-size:9px}.titlebar h2{font-size:24px}}
+</style>
+</head>
+<body>
+<header><div class="head"><a href="./index.html" class="brand">Ateliê</a><a href="./index.html" class="back">Voltar à plataforma ↗</a></div></header>
+<main>
+<div class="kicker">Laboratório técnico · Acesso dos alunos</div>
+<h1>Teste de login com Google</h1>
+<p class="lead">Vamos verificar o Firebase Authentication em uma página independente. O Ateliê principal continua aberto, sem exigir conta. Aqui não salvamos exercícios, anotações nem outros dados no Firestore.</p>
+<div class="layout">
+<section class="panel" aria-labelledby="authHeading">
+ <div class="titlebar"><h2 id="authHeading">Sua sessão</h2><span class="tag">Firebase Authentication</span></div>
+ <div class="status" id="status" data-kind="wait" role="status" aria-live="polite"><span class="status-icon" id="statusIcon">⋯</span><div><strong id="statusTitle">Carregando o Firebase</strong><p id="statusText">Verificando a conexão com o serviço.</p></div></div>
+ <div class="actions">
+  <button type="button" class="primary" id="login" disabled>Entrar com Google</button>
+  <button type="button" class="secondary" id="logout" disabled>Sair da conta</button>
+  <button type="button" class="secondary" id="reload">Verificar sessão novamente</button>
+ </div>
+ <div class="profile" id="profile" hidden><small>Conta autenticada</small><h3 id="userName"></h3><p id="userEmail"></p><p id="persistInfo"></p></div>
+ <div class="errorbox" id="errorBox" hidden role="alert"><strong id="errorTitle"></strong><span id="errorHelp"></span><code id="errorCode"></code></div>
+ <p class="note">O login ocorre pelo Google e pelo Firebase. Esta página não pede sua senha nem envia informações para nosso banco de dados. A conta de autenticação pode ser criada pelo Firebase no primeiro acesso.</p>
+ <div class="diagnostic">
+  <div class="diaghead"><h3>Diagnóstico técnico</h3><button class="copy" id="copy" type="button">Copiar diagnóstico</button></div>
+  <pre id="report">Iniciando teste…</pre><p class="note" id="copyStatus">O diagnóstico não inclui nome, e-mail, identificador da conta, senha ou tokens.</p>
+ </div>
+</section>
+<aside class="panel">
+ <h2>O que vamos testar?</h2>
+ <ol class="steps">
+  <li><span class="check" id="stepSdk">1</span>O navegador carrega o SDK do Firebase.</li>
+  <li><span class="check" id="stepApp">2</span>O projeto <strong>ateliepsi</strong> inicializa corretamente.</li>
+  <li><span class="check" id="stepAuth">3</span>A conta Google é reconhecida pelo Firebase.</li>
+  <li><span class="check" id="stepPersist">4</span>Após atualizar esta página, a sessão permanece ativa.</li>
+ </ol>
+ <p class="aside-note"><strong>Faça o teste:</strong> entre com Google, atualize usando “Verificar sessão novamente” e, por último, saia da conta. O status de cada etapa aparecerá ao lado.</p>
+ <p class="aside-note"><strong>No iPhone:</strong> abra esta página diretamente no Safari, fora do navegador integrado do ChatGPT ou de outras redes sociais, para evitar bloqueios à janela do Google.</p>
+ <p class="aside-note"><strong>Importante:</strong> esta página é independente e não está vinculada ao banco de progresso dos alunos.</p>
+</aside>
+</div>
+</main>
+<footer>Ateliê de Psicanálise · Página de teste da autenticação · GitHub Pages</footer>
+<script type="module">
+const $=id=>document.getElementById(id);
+let service='carregando',authState='desconhecida',phase='inicialização',errorCode='nenhum',auth,signInWithPopup,GoogleAuthProvider,signOut;
+const persistedKey='atelie-auth-test-active-v1';
+let previousSession=false;
+try{previousSession=sessionStorage.getItem(persistedKey)==='1'}catch{}
+function show(kind,title,message){
+ $('status').dataset.kind=kind;
+ $('statusIcon').textContent=kind==='ok'?'✓':kind==='error'?'!':'⋯';
+ $('statusTitle').textContent=title;
+ $('statusText').textContent=message;
+}
+function check(id,done){const el=$(id);el.classList.toggle('done',!!done);el.textContent=done?'✓':id==='stepSdk'?'1':id==='stepApp'?'2':id==='stepAuth'?'3':'4'}
+function report(){
+ $('report').textContent=['Projeto: ateliepsi','Página: '+location.hostname+location.pathname,'SDK Firebase: '+service,'Autenticação: '+authState,'Etapa: '+phase,'Erro: '+errorCode,'Firestore: não utilizado neste teste'].join('\n');
+}
+function fail(err,where){
+ const code=typeof err?.code==='string'?err.code:'erro/desconhecido';
+ errorCode=code;phase=where;authState='falha';
+ const help={
+ 'auth/unauthorized-domain':['Domínio não autorizado','Confira Authentication → Settings → Authorized domains: pscfredteixeira.github.io.'],
+ 'auth/configuration-not-found':['Configuração não encontrada','Verifique se o Firebase Authentication está inicializado no projeto ateliepsi e se a configuração Web é a correta.'],
+ 'auth/operation-not-allowed':['Provedor desabilitado','Confira se Google está ativado e salvo em Authentication → Sign-in method.'],
+ 'auth/invalid-api-key':['Chave Web inválida','Confira as configurações do aplicativo Web no projeto Firebase.'],
+ 'auth/invalid-oauth-client-id':['Cliente OAuth inválido','Revise as credenciais OAuth do Google e o provedor Google no Firebase.'],
+ 'auth/popup-blocked':['Janela bloqueada','Abra o teste diretamente no Safari ou Chrome e permita o popup.'],
+ 'auth/popup-closed-by-user':['Login interrompido','A janela foi fechada antes de concluir. Tente novamente.'],
+ 'auth/cancelled-popup-request':['Solicitação cancelada','Aguarde a janela atual terminar antes de tentar novamente.'],
+ 'auth/network-request-failed':['Falha de conexão','Verifique a internet e bloqueadores de conteúdo.'],
+ 'auth/web-storage-unsupported':['Armazenamento bloqueado','Abra a página no navegador normal e confira as configurações de privacidade.']
+ };
+ const item=help[code]||['Erro na autenticação','Copie o diagnóstico abaixo para investigarmos o código retornado pelo Firebase.'];
+ $('errorTitle').textContent=item[0];
+ $('errorHelp').textContent=item[1];
+ $('errorCode').textContent='Código: '+code;
+ $('errorBox').hidden=false;
+ $('login').disabled=!auth;
+ show('error',item[0],'Falha durante '+where+'.');
+ report();
+}
+$('reload').addEventListener('click',()=>location.reload());
+$('copy').addEventListener('click',async()=>{
+ try{await navigator.clipboard.writeText($('report').textContent);$('copyStatus').textContent='Copiado. Pode colar este diagnóstico na conversa.'}
+ catch{$('copyStatus').textContent='Não foi possível copiar automaticamente. Selecione o texto do diagnóstico para copiar.'}
+});
+$('login').addEventListener('click',async()=>{
+ if(!auth)return;
+ $('login').disabled=true;
+ $('errorBox').hidden=true;
+ errorCode='nenhum';phase='abertura da janela Google';
+ show('wait','Abrindo o Google','Escolha sua conta na janela que aparecer.');
+ report();
+ try{await signInWithPopup(auth,new GoogleAuthProvider())}
+ catch(err){fail(err,'login com Google')}
+ finally{if(!auth.currentUser)$('login').disabled=false}
+});
+$('logout').addEventListener('click',async()=>{
+ if(!auth)return;
+ $('logout').disabled=true;phase='saída da conta';
+ show('wait','Encerrando sessão','Aguardando confirmação do Firebase.');
+ try{await signOut(auth)}catch(err){fail(err,'saída da conta')}
+});
+async function init(){
+ try{
+  const prefix='https://www.gstatic.com/firebasejs/12.5.0/';
+  const [cfg,appSDK,authSDK]=await Promise.all([
+    import('./firebase-config.js'),import(prefix+'firebase-app.js'),import(prefix+'firebase-auth.js')
+  ]);
+  service='carregado';check('stepSdk',true);
+  if(cfg.firebaseConfig?.projectId!=='ateliepsi')throw Object.assign(new Error('Projeto incorreto'),{code:'auth/configuration-not-found'});
+  const app=appSDK.initializeApp(cfg.firebaseConfig);
+  auth=authSDK.getAuth(app);
+  signInWithPopup=authSDK.signInWithPopup;GoogleAuthProvider=authSDK.GoogleAuthProvider;signOut=authSDK.signOut;
+  service='inicializado';check('stepApp',true);phase='verificação da sessão';report();
+  authSDK.onAuthStateChanged(auth,user=>{
+    errorCode='nenhum';phase='sessão verificada';$('errorBox').hidden=true;
+    if(user){
+      authState='autenticada';
+      show('ok','Login confirmado','O Firebase reconheceu sua conta Google.');
+      $('userName').textContent=user.displayName||'Conta Google';
+      $('userEmail').textContent=user.email||'E-mail não informado';
+      $('persistInfo').textContent=previousSession?'✓ Sessão recuperada após atualização.':'Atualize a página para conferir a persistência.';
+      $('profile').hidden=false;$('login').disabled=true;$('logout').disabled=false;
+      check('stepAuth',true);check('stepPersist',previousSession);
+      try{sessionStorage.setItem(persistedKey,'1')}catch{}
+    }else{
+      authState='não autenticada';
+      show('wait','Firebase pronto','Clique em Entrar com Google para iniciar o teste.');
+      $('profile').hidden=true;$('login').disabled=false;$('logout').disabled=true;
+      check('stepAuth',false);check('stepPersist',false);
+      try{sessionStorage.removeItem(persistedKey)}catch{}
+    }
+    report();
+  },err=>fail(err,'restauração da sessão'));
+ }catch(err){service='falha na inicialização';fail(err,'carregamento do Firebase')}
+}
+report();init();
+</script>
+</body></html>
