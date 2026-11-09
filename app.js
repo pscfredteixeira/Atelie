@@ -221,15 +221,42 @@ function lessonView(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return freu
 function studyIndex(){return COURSES.flatMap(c=>c.slug==='formacao-freudiana'?
  FREUD_LESSONS.map(l=>({id:l.id,title:l.title,course:c.title,route:l.route})):
  [{id:c.lesson,title:lesson(c.lesson).title,course:c.title,route:'#/aula/'+c.lesson}]);}
+const ATELIE_BADGES=[
+ {id:'escuta-que-mudou-a-clinica',title:'A escuta que mudou a clínica',image:'assets/insignia-escuta-que-mudou-a-clinica.webp',alt:'Insígnia roxa e dourada sobre a origem da escuta psicanalítica'},
+ {id:'primeira-topica-freud',title:'A primeira tópica de Freud',image:'assets/insignia-primeira-topica-freud.png',alt:'Insígnia roxa e dourada com retrato de Freud'}
+];
+function studyStorageStatus(){
+ if(!activeUid)return 'Seu progresso está salvo somente neste navegador.';
+ if(conflict)return 'Há duas versões do progresso. Escolha a que deseja manter antes de sincronizar.';
+ const pending=Boolean(localStorage.getItem(pendingKey(activeUid)));
+ if(pending||!window.AtelieCloud?.ready)return 'Progresso deste dispositivo: sincronização com a conta ainda pendente.';
+ return 'Progresso sincronizado com sua conta Google pelo Firestore.';
+}
+function achievementsView(){
+ const earned=ATELIE_BADGES.filter(b=>state.completed.includes(b.id)).length;
+ return '<section class="personal-achievements" aria-labelledby="achievementTitle">'+
+  '<div class="personal-achievements-heading"><div><span class="eyebrow">CONQUISTAS PESSOAIS</span>'+
+  '<h2 id="achievementTitle">Minhas insígnias</h2></div>'+
+  '<span class="achievement-summary">'+earned+' de '+ATELIE_BADGES.length+' conquistadas</span></div>'+
+  '<p class="personal-achievement-note">'+esc(studyStorageStatus())+' As insígnias indicam conclusão de atividades, não certificação profissional.</p>'+
+  '<div class="personal-badge-grid">'+ATELIE_BADGES.map(b=>{
+   const unlocked=state.completed.includes(b.id);
+   return '<article class="personal-badge-card'+(unlocked?' is-earned':'')+'">'+
+    (unlocked?'<img loading="lazy" src="'+esc(b.image)+'" alt="'+esc(b.alt)+'" width="168" height="168">':
+     '<div class="personal-badge-locked" aria-label="Insígnia ainda não conquistada">'+icon('graduation')+'</div>')+
+    '<div><span class="personal-badge-state">'+(unlocked?'INSÍGNIA CONQUISTADA':'AINDA NÃO CONQUISTADA')+'</span>'+
+    '<h3>'+esc(b.title)+'</h3><a href="#/aula/'+esc(b.id)+'" class="section-link">'+(unlocked?'Rever aula':'Estudar aula')+' '+icon('arrow')+'</a></div></article>';
+  }).join('')+'</div></section>';
+}
 function progressView(){
  const all=studyIndex(),n=all.filter(l=>state.completed.includes(l.id)).length;
- return heading('MEU ESTUDO','Progresso','Acompanhamento local das aulas disponíveis. Marcar como concluída não certifica aprendizagem.')+
+ return heading('MEU ESTUDO','Progresso',studyStorageStatus()+' Concluir uma aula não equivale a uma certificação profissional.')+
  '<div class="progress-head"><strong>'+n+' de '+all.length+'</strong><p>Aulas concluídas</p>'+
  '<div class="progress-bar" role="progressbar" aria-valuenow="'+n+'" aria-valuemin="0" aria-valuemax="'+all.length+
  '" aria-label="Aulas concluídas"><span style="width:'+(n/all.length*100)+'%"></span></div></div>'+
  '<div class="intro-grid">'+all.map(l=>'<article class="info-card"><span class="eyebrow">'+
  (state.completed.includes(l.id)?'CONCLUÍDA':'EM ABERTO')+'</span><h2>'+esc(l.course)+'</h2><p>'+esc(l.title)+
- '</p><a href="'+l.route+'" class="section-link">'+(state.completed.includes(l.id)?'Revisar aula':'Começar aula')+' '+icon('arrow')+'</a></article>').join('')+'</div>';
+ '</p><a href="'+l.route+'" class="section-link">'+(state.completed.includes(l.id)?'Revisar aula':'Começar aula')+' '+icon('arrow')+'</a></article>').join('')+'</div>'+achievementsView();
 }
 function notebookView(){
  const all=studyIndex();
@@ -278,7 +305,7 @@ function profileView(){
     '<small>Este telefone fica restrito ao seu cadastro, sem divulgação pública.</small></div>'+
     '<div class="profile-form-actions"><button class="btn btn-primary" id="profileSave" type="submit" '+(ready?'':'disabled')+'>Salvar alterações</button>'+
     '<span class="profile-form-status" id="profileSaveStatus" role="status" aria-live="polite">'+esc(profileNotice)+'</span></div>'+
-   '</form></section></div>';
+   '</form></section></div>'+achievementsView();
 }
 function savedView(){const cs=COURSES.filter(c=>state.saved.includes(c.slug));return heading('MEU ESTUDO','Cursos salvos','Se você entrar com Google e o Firestore estiver configurado, seus favoritos poderão ser sincronizados entre dispositivos.')+(cs.length?'<div class="course-grid">'+cs.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Você ainda não salvou cursos.</h2><p>Abra um curso e selecione “Salvar curso”.</p><a class="btn btn-primary" href="#/cursos">Explorar cursos</a></div>')}
 function trails(){return heading('PERCURSOS','Trilhas de estudo','Por enquanto, estes percursos são apenas portas de entrada para as três aulas fictícias.')+'<div class="intro-grid">'+COURSES.map((c,i)=>'<article class="info-card"><span class="eyebrow">TRILHA 0'+(i+1)+'</span><h2>'+esc(c.title)+'</h2><p>'+esc(c.subtitle)+'</p><a class="section-link" href="#/aula/'+c.lesson+'">Experimentar aula '+icon('arrow')+'</a></article>').join('')+'</div>'}
