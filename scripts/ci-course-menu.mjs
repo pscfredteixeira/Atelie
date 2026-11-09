@@ -26,15 +26,15 @@ try{
  await mobile.locator('.course-drawer-module').nth(1).locator('summary').click();
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).evaluate(e=>e.open),true,'Segundo módulo abre');
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).locator('a[href="#/aula/primeira-topica-freud"]').count(),1);
- assert.equal(await mobile.locator('#searchForm').isVisible(),false,'Busca não aparece na aula');
- assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).position),'static','Progresso não flutua');
+ assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca disponível na visão geral do curso');
+ // O progresso da aula só é mostrado após o login; esta etapa ainda está na visão geral do curso.
  await mobile.locator('#sidebarClose').click();
  assert.equal(await mobile.locator('#menuToggle').getAttribute('aria-expanded'),'false');
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebar').evaluate(e=>{e.scrollTop=600});
- await mobile.locator('#sidebarClose').click({force:true});
+ await mobile.locator('#sidebarClose').evaluate(button=>button.click()); // fechar mesmo após rolar o menu
  await mobile.locator('#menuToggle').click();
- await mobile.waitForTimeout(70);
+ await mobile.waitForTimeout(450); // aguardar transição completa do drawer
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'Reabrir o menu deve restaurar o topo');
  assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'Seletor presente após reabrir');
  await mobile.locator('#sidebarClose').click();
@@ -44,6 +44,7 @@ try{
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca continua disponível fora da aula');
  await mobile.locator('.course-program-module a[href="#/aula/escuta-que-mudou-a-clinica"]').click();
  await mobile.locator('[data-profile-login]').waitFor();
+ assert.equal(await mobile.locator('#searchForm').isVisible(),false,'Busca não aparece dentro da aula');
  assert.match(mobile.url(),/#\/aula\/escuta-que-mudou-a-clinica/);
  console.log('OK — Seletor, acordeões e links de aula no celular.');
  const desktop=await browser.newPage({viewport:{width:1440,height:900}});

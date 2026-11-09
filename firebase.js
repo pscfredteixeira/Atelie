@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, getDocFromServer, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
+import { getFirestore, doc, collection, getDoc, getDocFromServer, getDocsFromServer, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
 
 // Firebase Web config is public. Never publish service account credentials.
 import {firebaseConfig} from './firebase-config.js';
@@ -75,6 +75,17 @@ const cloud = {
     cloud.profileStatus = 'ready';
     signal('atelie-cloud-profile', { uid, status: 'ready', profile: payload });
     return payload;
+  },
+  async loadEnrollments() {
+    const user = cloud.user;
+    if (!user) throw new Error('Entre com Google para consultar suas matrículas.');
+    const uid = user.uid, expectedSession = session;
+    // Leitura apenas; a ativação depende de rotina administrativa confiável.
+    const snapshot = await getDocsFromServer(collection(db, 'users', uid, 'enrollments'));
+    if (session !== expectedSession || cloud.user?.uid !== uid) {
+      throw new Error('A conta mudou durante a consulta de matrículas.');
+    }
+    return snapshot.docs.map(item => ({ ...item.data(), courseId: item.id }));
   },
   login() {
     // The app runs on GitHub Pages, not Firebase Hosting.

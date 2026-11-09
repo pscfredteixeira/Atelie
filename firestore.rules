@@ -98,6 +98,17 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Matrículas acadêmicas por curso, somente leitura para o próprio estudante.
+    // O navegador NÃO pode criar, renovar, suspender ou alterar vencimentos.
+    // Escritas administrativas futuras usarão backend confiável / Admin SDK.
+    match /users/{userId}/enrollments/{courseId} {
+      function isEnrollmentOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      allow get, list: if isEnrollmentOwner();
+      allow create, update, delete: if false;
+    }
+
     // Perfil pessoal do estudante. Só a conta do próprio UID pode
     // ler ou alterar este documento. Não há acesso por lista de usuários.
     match /users/{userId}/profile/{docId} {
