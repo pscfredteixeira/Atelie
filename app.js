@@ -203,17 +203,97 @@ function freudLessonView(id=FREUD_FIRST_ID){
   (next?'<a class="btn btn-primary" href="'+next.route+'">Próxima aula: '+esc(next.title)+' →</a>':'')+
   '</nav>'+(videoFirst?'</div>':'')+'</div>';
 }
-function freudSidebarNav(path){
- const isLesson=path.includes('/aula/')||path.includes('/aulas/');
- const current=path.includes(FREUD_SECOND_ID)?FREUD_SECOND_ID:path.includes(FREUD_FIRST_ID)?FREUD_FIRST_ID:'';
- return '<p class="sidebar-caption">FORMAÇÃO FREUDIANA</p>'+
- '<nav aria-label="Aulas do curso Formação Freudiana" class="freud-sidebar-links">'+
- '<a href="'+FREUD_COURSE_ROUTE+'" class="freud-sidebar-link'+(!isLesson?' is-selected':'')+'">Visão geral do curso</a>'+
- FREUD_LESSONS.map((l,i)=>'<a href="'+l.route+'" class="freud-sidebar-link'+(current===l.id?' is-selected':'')+'"><span>'+
- String(i+1).padStart(2,'0')+'</span> '+esc(l.title)+'</a>').join('')+'</nav>'+
- '<details class="freud-sidebar-upcoming"><summary>Outras 9 aulas</summary><ol>'+
- FREUD_PROGRAM.slice(2).map((t,i)=>'<li><span>'+String(i+3).padStart(2,'0')+'</span> '+esc(t)+'</li>').join('')+
- '</ol></details>';
+/* Menu de cursos com módulos expansíveis — mantém as rotas existentes das aulas.
+ * Os títulos seguem os programas do acervo; itens sem página no app não fingem ser links.
+ */
+const ATELIE_COURSE_MODULES={
+ 'formacao-freudiana':[
+  {title:'As origens da investigação freudiana',lessons:[
+   {title:'A escuta que mudou a clínica',href:'#/aula/escuta-que-mudou-a-clinica',id:'escuta-que-mudou-a-clinica'},
+   {title:'Da histeria ao nascimento da psicanálise',href:'content/courses/formacao-freudiana/aulas/da-histeria-ao-nascimento-da-psicanalise.html',note:'Aula independente'}]},
+  {title:'A primeira tópica de Freud',lessons:[
+   {title:'A primeira tópica de Freud',href:'#/aula/primeira-topica-freud',id:'primeira-topica-freud'}]},
+  {title:'Da hipnose à associação livre',lessons:[]},
+  {title:'A interpretação dos sonhos',lessons:[]},
+  {title:'Vida cotidiana e formações do inconsciente',lessons:[]},
+  {title:'Sexualidade infantil e teoria das pulsões',lessons:[]},
+  {title:'Metapsicologia: recalque e inconsciente',lessons:[]},
+  {title:'Narcisismo, identificação e constituição do eu',lessons:[]},
+  {title:'Transferência, resistência e repetição',lessons:[]},
+  {title:'Além do princípio do prazer e a segunda tópica',lessons:[]},
+  {title:'Psicanálise, cultura e os textos tardios',lessons:[]}
+ ],
+ 'introducao-a-psicanalise':[
+  {title:'O que é psicanálise?',lessons:[
+   {title:'A escuta começa por uma pergunta',href:'#/aula/escuta',id:'escuta',note:'Aula demonstrativa'}]},
+  {title:'Freud e o nascimento da psicanálise',lessons:[]},
+  {title:'A descoberta do inconsciente',lessons:[]},
+  {title:'Sonhos, lapsos e formações do inconsciente',lessons:[]},
+  {title:'Conflito, defesa e recalque',lessons:[]},
+  {title:'Sexualidade, pulsão e desejo',lessons:[]},
+  {title:'Sintoma, repetição e transferência',lessons:[]},
+  {title:'A psicanálise como prática de escuta',lessons:[]}
+ ],
+ 'fundamentos-da-psicanalise':[
+  {title:'Conflito e defesa',lessons:[
+   {title:'Quando duas vontades se encontram',href:'#/aula/conflito-exemplo',id:'conflito-exemplo',note:'Aula demonstrativa'},
+   {title:'O recalque em Freud',note:'Em preparação no aplicativo'},
+   {title:'O retorno do recalcado',note:'Em preparação no aplicativo'}]}
+ ]
+};
+let selectedCourseSlug='formacao-freudiana';
+const courseMenuOpenModules=new Set();
+function inferSidebarCourse(path){
+ if(path.startsWith('/curso/')){
+  const slug=path.split('/')[2];
+  return ATELIE_COURSE_MODULES[slug]?slug:null;
+ }
+ if(path.startsWith('/cursos/curso-formacao-freudiana'))return 'formacao-freudiana';
+ if(path.startsWith('/aula/')){
+  const id=path.split('/')[2];
+  if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return 'formacao-freudiana';
+  const item=LESSONS[id];
+  return item?COURSES[item.course]?.slug:null;
+ }
+ return null;
+}
+function courseModulesMarkup(slug,path){
+ const modules=ATELIE_COURSE_MODULES[slug]||[];
+ return '<div class="course-drawer-modules" aria-label="Módulos e aulas">'+modules.map((m,i)=>{
+  const key=slug+':'+i;
+  const active=m.lessons.some(l=>l.href?.startsWith('#')&&l.href==='#'+path);
+  const opened=courseMenuOpenModules.has(key)||active||(!courseMenuOpenModules.size&&i===0);
+  return '<details class="course-drawer-module" data-course-module="'+esc(key)+'"'+(opened?' open':'')+'>'+
+   '<summary><span class="course-drawer-module-label">Módulo '+String(i+1).padStart(2,'0')+'</span>'+
+   '<span class="course-drawer-module-title">'+esc(m.title)+'</span>'+
+   '<span class="course-drawer-chevron" aria-hidden="true">'+icon('chevron')+'</span></summary>'+
+   '<div class="course-drawer-module-content">'+
+   (m.lessons.length?m.lessons.map((l,j)=>{
+    const isCurrent=l.href?.startsWith('#')&&l.href==='#'+path;
+    const done=l.id&&state.completed.includes(l.id);
+    const status=done?'Concluída':l.note||(l.href?'Aula disponível':'Em preparação');
+    if(!l.href)return '<div class="course-drawer-lesson unavailable"><span class="course-drawer-lesson-no">'+String(j+1).padStart(2,'0')+'</span>'+
+     '<span><strong>'+esc(l.title)+'</strong><small>'+esc(status)+'</small></span></div>';
+    return '<a class="course-drawer-lesson'+(isCurrent?' is-current':'')+'" href="'+esc(l.href)+'"'+(isCurrent?' aria-current="page"':'')+'>'+
+     '<span class="course-drawer-lesson-no">'+(done?'✓':String(j+1).padStart(2,'0'))+'</span>'+
+     '<span><strong>'+esc(l.title)+'</strong><small>'+esc(status)+'</small></span></a>';
+   }).join(''):'<p class="course-drawer-pending">Aulas em preparação</p>')+
+   '</div></details>';
+ }).join('')+'</div>';
+}
+function renderCourseNavigation(path=parseRoute().path){
+ const container=$('#courseContextNav');if(!container)return;
+ const context=inferSidebarCourse(path);
+ if(context)selectedCourseSlug=context;
+ if(!ATELIE_COURSE_MODULES[selectedCourseSlug])selectedCourseSlug='formacao-freudiana';
+ const slug=selectedCourseSlug;
+ container.hidden=false;
+ container.innerHTML='<div class="course-drawer-picker"><label for="sidebarCourseSelect">Selecione o curso</label>'+
+  '<div class="course-drawer-select-wrap"><select id="sidebarCourseSelect" aria-label="Selecione o curso">'+
+  COURSES.map(c=>'<option value="'+esc(c.slug)+'"'+(c.slug===slug?' selected':'')+'>'+esc(c.title)+'</option>').join('')+
+  '</select>'+icon('chevron')+'</div>'+
+  '<a class="course-drawer-overview" href="#/curso/'+esc(slug)+'">Visão geral do curso '+icon('arrow')+'</a></div>'+
+  courseModulesMarkup(slug,path);
 }
 function courseView(slug){const c=getCourse(slug);if(!c)return notFound();if(slug==='formacao-freudiana')return freudCourseView(c);const l=lesson(c.lesson);const isSaved=state.saved.includes(slug);const done=state.completed.includes(c.lesson);return '<div class="course-heading"><div><a class="back-link" href="#/cursos">← Voltar aos cursos</a><div style="margin-top:25px"><span class="eyebrow">CURSO · DEMONSTRAÇÃO</span></div><h1>'+esc(c.title)+'</h1><p>'+esc(c.description)+'</p><p class="muted-note">1 aula ilustrativa · '+l.minutes+' minutos estimados · '+(done?'Concluída':'Ainda não concluída')+'</p><div class="course-actions"><button class="saved-btn" data-save="'+c.slug+'" aria-pressed="'+isSaved+'">'+icon(isSaved?'check':'heart')+(isSaved?'Curso salvo':'Salvar curso')+'</button><a class="btn btn-primary" href="#/aula/'+c.lesson+'">'+icon('book')+' Abrir aula de exemplo</a></div></div><img src="'+c.image+'" alt=""></div><div class="section-bar"><h2>Programa demonstrativo</h2></div><section class="module"><div class="module-header"><span class="module-no">01</span><div><h3>Experimentação da plataforma</h3><p>Conteúdo fictício que será substituído quando a proposta pedagógica estiver definida.</p></div></div><div class="lesson-list"><div class="lesson"><div><div class="lesson-title">'+esc(l.title)+'</div><span>'+l.minutes+' min · quiz e caderno · '+(done?'concluída':'disponível')+'</span></div><a href="#/aula/'+c.lesson+'">Estudar →</a></div></div></section>'}
 function lessonView(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return freudLessonView(id);if(!Object.hasOwn(LESSONS,id))return notFound();const l=lesson(id),c=COURSES[l.course],selected=state.answers[id],done=state.completed.includes(id),valid=Number.isInteger(selected);return '<div class="reading"><a class="back-link" href="#/curso/'+c.slug+'">← Voltar ao curso</a>'+heading('AULA ILUSTRATIVA',l.title,c.title+' · '+l.minutes+' minutos')+'<div class="notice"><strong>Conteúdo fictício para testes.</strong> Esta aula não foi importada de outro repositório e será substituída depois.</div><article class="reading-panel"><span class="eyebrow">PARA COMEÇAR</span><h2>'+esc(l.prompt)+'</h2><p>'+esc(l.intro)+'</p><div class="mini-rule"></div><h3>'+esc(l.topic)+'</h3><p>'+esc(l.text)+'</p></article><section class="reading-panel quiz-panel"><span class="eyebrow">ATIVIDADE · 1 PERGUNTA</span><h2>'+esc(l.quiz.question)+'</h2><div class="quiz-options">'+l.quiz.options.map((op,i)=>'<button class="quiz-option" type="button" data-answer="'+id+'" data-index="'+i+'" aria-pressed="'+(i===selected)+'">'+String.fromCharCode(65+i)+' · '+esc(op)+'</button>').join('')+'</div>'+(valid?'<p class="quiz-feedback" role="status"><strong>'+(selected===l.quiz.answer?'Resposta correta.':'Vamos pensar mais um pouco.')+'</strong> '+esc(l.quiz.explanation)+'</p>':'<p class="muted-note">Escolha uma alternativa para conferir a resposta.</p>')+'</section><section class="reading-panel"><span class="eyebrow">CADERNO DE ESTUDOS</span><h2>Suas anotações</h2><label for="lessonNote" class="form-label">O que você gostaria de registrar?</label><textarea id="lessonNote" data-note="'+id+'" maxlength="5000" rows="5" placeholder="Anote suas perguntas e ideias...">'+esc(state.notes[id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Salvo automaticamente neste navegador'+(window.AtelieCloud?.user?' e na sua conta':'')+'.</p><div class="lesson-controls"><button type="button" class="btn btn-primary" data-complete="'+id+'">'+icon(done?'check':'graduation')+(done?'Marcar como não concluída':'Concluir aula')+'</button><a class="btn btn-outline" href="#/progresso">Meu progresso</a></div></section></div>'}
@@ -315,9 +395,20 @@ function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return he
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;const courseNav=$('#courseContextNav');if(courseNav){const freudContext=path==='/curso/formacao-freudiana'||path==='/aula/primeira-topica-freud'||path.startsWith('/cursos/curso-formacao-freudiana');courseNav.hidden=!freudContext;if(freudContext)courseNav.innerHTML=freudSidebarNav(path);}document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
-function closeMenu(){$('#sidebar').classList.remove('is-open');$('#overlay').hidden=true;$('#menuToggle').setAttribute('aria-expanded','false')}
-function toggleMenu(){const opened=$('#sidebar').classList.toggle('is-open');$('#overlay').hidden=!opened;$('#menuToggle').setAttribute('aria-expanded',String(opened))}
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;renderCourseNavigation(path);document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
+function closeMenu(){
+ $('#sidebar').classList.remove('is-open');
+ $('#overlay').hidden=true;
+ $('#menuToggle').setAttribute('aria-expanded','false');
+ document.body.classList.remove('course-drawer-visible');
+}
+function toggleMenu(){
+ const opened=$('#sidebar').classList.toggle('is-open');
+ $('#overlay').hidden=!opened;
+ $('#menuToggle').setAttribute('aria-expanded',String(opened));
+ document.body.classList.toggle('course-drawer-visible',opened);
+ if(opened&&matchMedia('(max-width:790px)').matches)$('#sidebarClose')?.focus({preventScroll:true});
+}
 document.addEventListener('click',e=>{
  const sv=e.target.closest('[data-save]');if(sv){const v=sv.dataset.save;state.saved=state.saved.includes(v)?state.saved.filter(x=>x!==v):[...state.saved,v];saveState();render();return}
  const filter=e.target.closest('[data-filter]');if(filter){courseFilter=filter.dataset.filter;render();return}
@@ -329,7 +420,25 @@ let noteTimer;
 document.addEventListener('input',e=>{const note=e.target.closest('[data-note]');if(!note)return;state.notes[note.dataset.note]=note.value.slice(0,5000);saveState();clearTimeout(noteTimer);const status=$('#noteSaveStatus');if(status)status.textContent='Anotação salva neste dispositivo.';});
 document.addEventListener('submit',e=>{const f=e.target.closest('#editorForm');if(!f)return;e.preventDefault();const id=f.dataset.edit;const vals=new FormData(f);state.drafts[id]={title:String(vals.get('title')||'').trim(),intro:String(vals.get('intro')||'').trim(),text:String(vals.get('text')||'').trim()};saveState();$('#editorStatus').textContent='Rascunho salvo neste navegador. Veja a aula para conferir.'});
 $('#searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#globalSearch').value.trim();courseFilter='all';location.hash='#/cursos'+(q?'?q='+encodeURIComponent(q):'');render()});
-$('#menuToggle').addEventListener('click',toggleMenu);$('#overlay').addEventListener('click',closeMenu);
+$('#menuToggle').addEventListener('click',toggleMenu);
+$('#sidebarClose').addEventListener('click',()=>{closeMenu();$('#menuToggle').focus({preventScroll:true});});
+$('#overlay').addEventListener('click',closeMenu);
+document.addEventListener('change',event=>{
+ if(event.target.id!=='sidebarCourseSelect')return;
+ const slug=event.target.value;
+ if(!ATELIE_COURSE_MODULES[slug])return;
+ selectedCourseSlug=slug;
+ courseMenuOpenModules.clear();
+ courseMenuOpenModules.add(slug+':0');
+ renderCourseNavigation();
+ $('#sidebarCourseSelect')?.focus({preventScroll:true});
+});
+document.addEventListener('toggle',event=>{
+ const module=event.target;
+ if(!event.isTrusted||!module?.matches?.('[data-course-module]'))return;
+ const key=module.dataset.courseModule;
+ if(module.open)courseMenuOpenModules.add(key);else courseMenuOpenModules.delete(key);
+},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!e.altKey&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$('#globalSearch').focus()}});
 $('#loginButton')?.addEventListener('click', async () => {
  if (demoMode && !activeUid) { exitDemo(); return; }
