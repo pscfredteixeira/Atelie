@@ -177,7 +177,7 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
    <div class="tiny" role="status" id="note-status">Suas notas permanecem neste dispositivo.</div>
   </div>
   <div class="actions"><button class="btn" id="advance-6" type="button" disabled>Concluir a experiência →</button></div>
-  <div class="finish" id="finish" hidden><span class="overline">Percurso concluído</span><h3>Você chegou à pergunta que abre a próxima aula.</h3><p>Se o sofrimento pode produzir efeitos além do que a pessoa conhece conscientemente, como Freud formulará um modelo para pensar esses processos?</p><p><strong>Próxima aula:</strong> A primeira tópica de Freud.</p><a href="../../../primeira-topica.html" class="btn outline" id="next-lesson" hidden>Ir para a próxima aula</a></div>
+  <div class="finish" id="finish" hidden><span class="overline">Percurso concluído</span><h3>Você chegou à pergunta que abre a próxima aula.</h3><p>Se o sofrimento pode produzir efeitos além do que a pessoa conhece conscientemente, como Freud formulará um modelo para pensar esses processos?</p><p><strong>Próxima aula:</strong> A primeira tópica de Freud.</p><a href="../../../../#/aula/primeira-topica-freud" target="_top" class="btn outline" id="next-lesson">Ir para a próxima aula</a></div>
  </div></div>
 </section>
 <details class="sources">
@@ -233,7 +233,6 @@ const documents=[
 ];
 function selectFile(i){if(!st.files.includes(i))st.files.push(i);$$('[data-file]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.file)===i)));$('#file-panel').innerHTML='<h3>'+documents[i].title+'</h3><p>'+documents[i].body+'</p>';$('#file-count').textContent=st.files.length+' de 3 documentos explorados';updateQuiz(3);save();reportHeight()}
 $$('[data-file]').forEach(b=>b.addEventListener('click',()=>selectFile(Number(b.dataset.file))));
-selectFile(0);
 const quizzes={
  3:{correct:1,explain:['A. Incorreta: Freud não conduziu o tratamento de Bertha Pappenheim.','B. Correta: o caso foi atendido por Breuer e discutido depois com Freud.','C. Incorreta: o caso ocupa lugar importante nos Estudos sobre a Histeria (1895), embora sua narrativa exija leitura crítica.']},
  5:{correct:1,explain:['A. Incorreta: o mesmo sintoma não autoriza significados universais ou interpretações prontas.','B. Correta: as hipóteses devem ser construídas historicamente e articuladas à singularidade do caso.','C. Incorreta: as formulações de 1895 antecedem e diferem das reformulações metapsicológicas de 1915 e 1923.']},
@@ -271,6 +270,7 @@ $$('[data-concept]').forEach(b=>{const i=Number(b.dataset.concept);b.addEventLis
 $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
 $('#reflection').value=st.reflection||'';
 $('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Reflexão salva neste navegador.';reportHeight()});
+selectFile(0);
 if(st.done.includes(6))$('#finish').hidden=false;
 if('ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
 if('MutationObserver'in window)new MutationObserver(reportHeight).observe(document.body,{attributes:true,childList:true,subtree:true});
