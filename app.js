@@ -183,7 +183,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
   ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v=curso-integrado-20261109-hotspots-corrigidos-v9" title="Aula interativa '+esc(l.title)+
+  '?v=curso-integrado-20261109-progresso-automatico-v10" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
   '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
@@ -380,6 +380,20 @@ window.addEventListener('message',event=>{
  if(!frame||event.source!==frame.contentWindow)return;
  const data=event.data;
  if(!data||typeof data!=='object')return;
+ if(data.type==='atelie-lesson-reset'&&data.lessonId==='aula-escuta-que-mudou-a-clinica'){
+   // Zera apenas esta aula: outras aulas, trilhas e demais anotações permanecem.
+   state.completed=state.completed.filter(id=>id!==FREUD_FIRST_ID);
+   if(state.notes&&Object.prototype.hasOwnProperty.call(state.notes,FREUD_FIRST_ID))delete state.notes[FREUD_FIRST_ID];
+   saveState();
+   const textarea=$('#lessonNote');
+   if(textarea)textarea.value='';
+   const meter=$('#freudLiveSegments'),value=$('#freudLiveCount'),extras=$('#freudLessonExtras');
+   if(meter)meter.setAttribute('aria-valuenow','0');
+   document.querySelectorAll('#freudLiveSegments [data-progress-step]').forEach(segment=>segment.classList.remove('done'));
+   if(value)value.textContent='0 de 6 etapas';
+   if(extras)extras.hidden=true;
+   return;
+ }
  if(data.type==='atelie-lesson-height'){
    const height=Number(data.height);
    if(Number.isFinite(height)&&height>=100&&height<=30000){
