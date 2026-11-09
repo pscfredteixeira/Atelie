@@ -211,7 +211,7 @@ body:not(.account-progress-ready) main.container{display:none!important}
 'use strict';
 const LESSON_ID='escuta-que-mudou-a-clinica';
 const INIT={unlocked:1,done:[],spots:[],files:[],times:[],concepts:[],choices:{},passed:[],reflection:''};
-let st={...INIT},accountReady=false,hydrating=false,pendingReset=false;
+let st={...INIT},accountReady=false,hydrating=false,pendingReset=false,lastRequestId=0,resetRequestId=0;
 // A versão anterior liberava o Momento 02 antes de assistir ao vídeo.
 // Guardar o progresso anterior, mas bloquear as atividades até o evento real de fim.
 const resumeUnlock=Math.max(2,Math.min(6,Number(st.resumeUnlock)||Number(st.unlocked)||2));
@@ -226,7 +226,7 @@ const save=()=>{
  if(!accountReady||hydrating)return;
  if(parent===window){$('#cloudLessonStatus').textContent='Abra esta aula pelo Ateliê, com sua conta Google.';return;}
  $('#cloudLessonStatus').textContent='Salvando seu progresso no Firestore...';
- parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(st))},location.origin);
+ parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(st)),requestId:++lastRequestId},location.origin);
 };
 let sentHeight=0;
 function reportHeight(){
@@ -426,6 +426,7 @@ if(st.videoWatched){
 $('#reset-entire-lesson').addEventListener('click',()=>{
  if(!accountReady||!window.confirm('Reiniciar seu progresso nesta aula na conta Google? Esta ação substituirá as etapas já salvas no Firestore.'))return;
  pendingReset=true;
+ resetRequestId=lastRequestId+1;
  st={...INIT,done:[],spots:[],files:[],times:[],concepts:[],choices:{},passed:[]};
  save();
  $('#cloudLessonStatus').textContent='Reiniciando esta aula na sua conta...';
@@ -468,8 +469,9 @@ window.addEventListener('message',event=>{
  if(msg.lessonId!==LESSON_ID)return;
  if(msg.type==='atelie-progress-load')applyAccountProgress(msg.state);
  if(msg.type==='atelie-progress-saved'){
+  if(event.data.requestId!==lastRequestId)return;
   $('#cloudLessonStatus').textContent='Progresso salvo na sua conta Google.';
-  if(pendingReset){pendingReset=false;location.reload();}
+  if(pendingReset&&event.data.requestId===resetRequestId){pendingReset=false;location.reload();}
  }
  if(msg.type==='atelie-progress-error'){
   $('#cloudLessonStatus').textContent='Não foi possível acessar ou salvar o progresso no Firestore ('+String(msg.errorCode||'erro')+'). Confira sua conexão e as regras do Firebase.';
