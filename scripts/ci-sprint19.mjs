@@ -7,8 +7,6 @@ const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 try {
   await page.route('https://www.gstatic.com/firebasejs/**', route => route.abort());
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
-  await page.locator('#entryGate').waitFor({ state: 'visible' });
-  await page.locator('#gateDemoButton').click();
   await page.locator('.course-card').first().waitFor();
 
   // Anonymous data remain separate and must not leak to a logged-in account.
