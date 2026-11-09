@@ -174,9 +174,9 @@ function freudLessonView(id=FREUD_FIRST_ID){
  'Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
  return '<div class="freud-reading"><a class="back-link" href="'+FREUD_COURSE_ROUTE+'">← Voltar à Formação Freudiana</a>'+
  '<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
- ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>'+
+ ' DE 11</span><h1>'+esc(l.title)+'</h1>'+(i===0?'':'<p>'+esc(intro)+'</p>')+'</header>'+
  '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
- '?v=curso-integrado-20261109-seis-momentos-v2" title="Aula interativa '+esc(l.title)+
+ '?v=curso-integrado-20261109-abertura-limpa-v4" title="Aula interativa '+esc(l.title)+
  '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
  '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
  '<label class="form-label" for="lessonNote">O que você gostaria de guardar desta aula?</label>'+
