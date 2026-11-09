@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-formacao-freudiana",
   "slug": "formacao-freudiana",
-  "revision": 3,
+  "revision": 4,
   "status": "published",
   "title": "Formação Freudiana",
   "icon": "✦",
   "subtitle": "Estudo sistemático da obra de Sigmund Freud",
-  "description": "Percurso de leitura de Freud. Duas aulas interativas disponíveis: as origens da escuta psicanalítica e a primeira tópica. Outras nove aulas previstas estão em preparação.",
+  "description": "Percurso de leitura de Freud. Três aulas interativas disponíveis: a escuta psicanalítica nascente, o nascimento da psicanálise e a primeira tópica. Outras nove aulas estão em preparação.",
   "objectives": [
     "Acompanhar os problemas teóricos e clínicos que atravessam diferentes momentos da obra de Freud",
     "Reconhecer mudanças e continuidades entre as formulações freudianas",
@@ -22,7 +22,7 @@
     {
       "id": "modulo-formacao-freudiana-01",
       "title": "As origens da investigação freudiana",
-      "description": "A escuta que mudou a clínica: Freud, Breuer, o caso Anna O., o método catártico e os primeiros problemas da psicanálise.",
+      "description": "Da histeria ao nascimento da psicanálise: Breuer, Anna O., o método catártico, a vida de Freud e os primeiros marcos teóricos.",
       "position": 1,
       "lessons": [
         {
@@ -31,6 +31,15 @@
           "summary": "Nove etapas interativas: histeria, Breuer, Anna O., método catártico, transferência e Estudos sobre a Histeria.",
           "path": "./aulas/escuta-que-mudou-a-clinica.json",
           "position": 1,
+          "status": "published",
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "aula-da-histeria-ao-nascimento-da-psicanalise",
+          "title": "Da histeria ao nascimento da psicanálise",
+          "summary": "9 quadradinhos progressivos: escuta, Anna O., abreação, Martha e as obras de 1893, 1895 e 1900.",
+          "path": "./aulas/da-histeria-ao-nascimento-da-psicanalise.json",
+          "position": 2,
           "status": "published",
           "estimatedMinutes": 35
         }
