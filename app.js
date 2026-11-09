@@ -160,19 +160,12 @@ function freudCourseView(c){
  return '<div class="course-heading freud-course-heading"><div><a class="back-link" href="#/cursos">← Voltar aos cursos</a>'+
  '<div style="margin-top:25px"><span class="eyebrow">FORMAÇÃO FREUDIANA · PERCURSO DE ESTUDOS</span></div>'+
  '<h1>'+esc(c.title)+'</h1><p>'+esc(c.description)+'</p>'+
- '<p class="muted-note">11 aulas no programa · 2 disponíveis para estudar · '+done+' de 2 concluídas</p>'+
+ '<p class="muted-note">11 módulos no programa · 2 aulas integradas · '+done+' de 2 concluídas</p>'+
  '<div class="course-actions"><button class="saved-btn" data-save="'+c.slug+'" aria-pressed="'+saved+'">'+icon(saved?'check':'heart')+
  (saved?'Curso salvo':'Salvar curso')+'</button><a class="btn btn-primary" href="'+FREUD_LESSON_ROUTE+'">'+icon('book')+' Começar aula 01</a></div></div>'+
  '<img src="assets/cover-freud.svg" alt="Capa da Formação Freudiana"></div>'+
  '<div class="section-bar"><h2>Programa do curso</h2><span class="freud-program-caption">Aulas organizadas em sequência</span></div>'+
- '<div class="freud-course-program">'+FREUD_PROGRAM.map((title,i)=>{
-  const l=FREUD_LESSONS[i],completed=l&&state.completed.includes(l.id);
-  return '<div class="freud-course-item'+(l?' freud-course-item-ready':'')+'"><span class="freud-course-no">'+
-  String(i+1).padStart(2,'0')+'</span><div class="freud-course-item-copy"><strong>'+esc(title)+'</strong><small>'+
-  (l?(completed?'Concluída':'Disponível')+' · '+l.stages+' etapas interativas':'Conteúdo em preparação')+'</small></div>'+
-  (l?'<a class="freud-course-open" href="'+l.route+'">'+(completed?'Rever':'Estudar')+' →</a>':
-  '<span class="freud-course-pending">Em preparação</span>')+'</div>';
- }).join('')+'</div>'+
+ courseProgramAccordion(c.slug)+
  '<p class="freud-course-disclaimer">As aulas disponíveis são experiências independentes. A conclusão das etapas não certifica o curso completo.</p>';
 }
 function freudLessonView(id=FREUD_FIRST_ID){
@@ -281,6 +274,26 @@ function courseModulesMarkup(slug,path){
    '</div></details>';
  }).join('')+'</div>';
 }
+function courseProgramAccordion(slug){
+ const modules=ATELIE_COURSE_MODULES[slug]||[];
+ return '<div class="course-program-accordion" aria-label="Programa do curso por módulos">'+modules.map((m,i)=>{
+  return '<details class="course-program-module"'+(i===0?' open':'')+'>'+
+   '<summary><span class="course-program-module-no">'+String(i+1).padStart(2,'0')+'</span>'+
+   '<span class="course-program-module-copy"><small>MÓDULO '+String(i+1).padStart(2,'0')+'</small>'+
+   '<strong>'+esc(m.title)+'</strong><em>'+(!m.lessons.length?'Conteúdo em preparação':m.lessons.filter(l=>l.href).length+' aula(s) acessível(is)')+'</em></span>'+
+   '<span class="course-program-chevron" aria-hidden="true">'+icon('chevron')+'</span></summary>'+
+   '<div class="course-program-lessons">'+
+   (m.lessons.length?m.lessons.map((l,j)=>{
+    const done=l.id&&state.completed.includes(l.id);
+    return '<div class="course-program-lesson">'+
+     '<span class="course-program-lesson-no">'+String(j+1).padStart(2,'0')+'</span>'+
+     '<div><strong>'+esc(l.title)+'</strong><small>'+esc(done?'Concluída':l.note||(l.href?'Disponível':'Em preparação'))+'</small></div>'+
+     (l.href?'<a href="'+esc(l.href)+'" class="course-program-open">'+(done?'Rever':'Estudar')+' '+icon('arrow')+'</a>':'<span class="course-program-unavailable">Em preparação</span>')+
+     '</div>';
+   }).join(''):'<p class="course-program-empty">Novas aulas serão adicionadas a este módulo.</p>')+
+   '</div></details>';
+ }).join('')+'</div>';
+}
 function renderCourseNavigation(path=parseRoute().path){
  const container=$('#courseContextNav');if(!container)return;
  const context=inferSidebarCourse(path);
@@ -295,7 +308,20 @@ function renderCourseNavigation(path=parseRoute().path){
   '<a class="course-drawer-overview" href="#/curso/'+esc(slug)+'">Visão geral do curso '+icon('arrow')+'</a></div>'+
   courseModulesMarkup(slug,path);
 }
-function courseView(slug){const c=getCourse(slug);if(!c)return notFound();if(slug==='formacao-freudiana')return freudCourseView(c);const l=lesson(c.lesson);const isSaved=state.saved.includes(slug);const done=state.completed.includes(c.lesson);return '<div class="course-heading"><div><a class="back-link" href="#/cursos">← Voltar aos cursos</a><div style="margin-top:25px"><span class="eyebrow">CURSO · DEMONSTRAÇÃO</span></div><h1>'+esc(c.title)+'</h1><p>'+esc(c.description)+'</p><p class="muted-note">1 aula ilustrativa · '+l.minutes+' minutos estimados · '+(done?'Concluída':'Ainda não concluída')+'</p><div class="course-actions"><button class="saved-btn" data-save="'+c.slug+'" aria-pressed="'+isSaved+'">'+icon(isSaved?'check':'heart')+(isSaved?'Curso salvo':'Salvar curso')+'</button><a class="btn btn-primary" href="#/aula/'+c.lesson+'">'+icon('book')+' Abrir aula de exemplo</a></div></div><img src="'+c.image+'" alt=""></div><div class="section-bar"><h2>Programa demonstrativo</h2></div><section class="module"><div class="module-header"><span class="module-no">01</span><div><h3>Experimentação da plataforma</h3><p>Conteúdo fictício que será substituído quando a proposta pedagógica estiver definida.</p></div></div><div class="lesson-list"><div class="lesson"><div><div class="lesson-title">'+esc(l.title)+'</div><span>'+l.minutes+' min · quiz e caderno · '+(done?'concluída':'disponível')+'</span></div><a href="#/aula/'+c.lesson+'">Estudar →</a></div></div></section>'}
+function courseView(slug){
+ const c=getCourse(slug);if(!c)return notFound();
+ if(slug==='formacao-freudiana')return freudCourseView(c);
+ const l=lesson(c.lesson),isSaved=state.saved.includes(slug),done=state.completed.includes(c.lesson);
+ return '<div class="course-heading"><div><a class="back-link" href="#/cursos">← Voltar aos cursos</a>'+
+  '<div style="margin-top:25px"><span class="eyebrow">CURSO · DEMONSTRAÇÃO</span></div>'+
+  '<h1>'+esc(c.title)+'</h1><p>'+esc(c.description)+'</p>'+
+  '<p class="muted-note">Programa em desenvolvimento · '+(done?'1 aula concluída':'Aulas para conhecer')+'</p>'+
+  '<div class="course-actions"><button class="saved-btn" data-save="'+c.slug+'" aria-pressed="'+isSaved+'">'+icon(isSaved?'check':'heart')+
+  (isSaved?'Curso salvo':'Salvar curso')+'</button><a class="btn btn-primary" href="#/aula/'+c.lesson+'">'+icon('book')+' Abrir aula demonstrativa</a></div></div>'+
+  '<img src="'+esc(c.image)+'" alt=""></div>'+
+  '<div class="section-bar"><h2>Módulos do curso</h2><span class="freud-program-caption">Expanda para ver as aulas</span></div>'+
+  courseProgramAccordion(slug);
+}
 function lessonView(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return freudLessonView(id);if(!Object.hasOwn(LESSONS,id))return notFound();const l=lesson(id),c=COURSES[l.course],selected=state.answers[id],done=state.completed.includes(id),valid=Number.isInteger(selected);return '<div class="reading"><a class="back-link" href="#/curso/'+c.slug+'">← Voltar ao curso</a>'+heading('AULA ILUSTRATIVA',l.title,c.title+' · '+l.minutes+' minutos')+'<div class="notice"><strong>Conteúdo fictício para testes.</strong> Esta aula não foi importada de outro repositório e será substituída depois.</div><article class="reading-panel"><span class="eyebrow">PARA COMEÇAR</span><h2>'+esc(l.prompt)+'</h2><p>'+esc(l.intro)+'</p><div class="mini-rule"></div><h3>'+esc(l.topic)+'</h3><p>'+esc(l.text)+'</p></article><section class="reading-panel quiz-panel"><span class="eyebrow">ATIVIDADE · 1 PERGUNTA</span><h2>'+esc(l.quiz.question)+'</h2><div class="quiz-options">'+l.quiz.options.map((op,i)=>'<button class="quiz-option" type="button" data-answer="'+id+'" data-index="'+i+'" aria-pressed="'+(i===selected)+'">'+String.fromCharCode(65+i)+' · '+esc(op)+'</button>').join('')+'</div>'+(valid?'<p class="quiz-feedback" role="status"><strong>'+(selected===l.quiz.answer?'Resposta correta.':'Vamos pensar mais um pouco.')+'</strong> '+esc(l.quiz.explanation)+'</p>':'<p class="muted-note">Escolha uma alternativa para conferir a resposta.</p>')+'</section><section class="reading-panel"><span class="eyebrow">CADERNO DE ESTUDOS</span><h2>Suas anotações</h2><label for="lessonNote" class="form-label">O que você gostaria de registrar?</label><textarea id="lessonNote" data-note="'+id+'" maxlength="5000" rows="5" placeholder="Anote suas perguntas e ideias...">'+esc(state.notes[id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Salvo automaticamente neste navegador'+(window.AtelieCloud?.user?' e na sua conta':'')+'.</p><div class="lesson-controls"><button type="button" class="btn btn-primary" data-complete="'+id+'">'+icon(done?'check':'graduation')+(done?'Marcar como não concluída':'Concluir aula')+'</button><a class="btn btn-outline" href="#/progresso">Meu progresso</a></div></section></div>'}
 
 function studyIndex(){return COURSES.flatMap(c=>c.slug==='formacao-freudiana'?
