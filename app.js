@@ -454,6 +454,7 @@ window.addEventListener('atelie-cloud-auth', e => {
 window.addEventListener('atelie-cloud-profile', e=>{
  const info=e.detail||{};
  if(info.uid&&info.uid!==activeUid)return;
+ const alreadyReady=personalProfileStatus==='ready';
  personalProfileStatus=info.status||'error';
  personalProfile=personalProfileStatus==='ready'?info.profile||null:null;
  if(personalProfileStatus==='error'){
@@ -461,7 +462,9 @@ window.addEventListener('atelie-cloud-profile', e=>{
    'O Firestore negou o acesso. Publique as regras de perfil no Console do Firebase.':
    'Falha ao carregar o perfil: '+String(info.errorCode||'desconhecida');
  }
- if(location.hash.startsWith('#/perfil'))render();
+ // Salvar campos não deve recriar o formulário nem levar a página ao topo.
+ // Ao carregar pela primeira vez ou recuperar erro, a tela é atualizada.
+ if(location.hash.startsWith('#/perfil')&&!(alreadyReady&&personalProfileStatus==='ready'))render();
 });
 window.addEventListener('atelie-cloud-loaded', e => {
  if (!activeUid || e.detail.uid !== activeUid) return;
