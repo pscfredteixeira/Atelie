@@ -60,11 +60,8 @@ const data=[
  {title:'O enigma da histeria',body:'A categoria histórica da “histeria” reunia sintomas muito variados. Alguns não eram esclarecidos pelos modelos neurológicos então disponíveis. Isso não significava que as pessoas estivessem fingindo, nem dispensava investigação médica.',question:'Como pesquisar uma manifestação que não se deixa reduzir a uma lesão demonstrável?'},
  {title:'A fala ganha importância',body:'Nas experiências clínicas relatadas por Breuer e, depois, na investigação de Freud, lembranças, afetos e relatos dos pacientes ganharam relevância. A psicanálise ainda não existia pronta: as perguntas estavam sendo construídas.',question:'O que muda quando a história narrada pela pessoa passa a fazer parte da investigação clínica?'}
 ];
-const ROOM_KEY='atelie-room-1880-v2';
-let persisted={};try{persisted=JSON.parse(localStorage.getItem(ROOM_KEY)||'{}')||{}}catch(e){}
-let index=-1,visited=new Set(Array.isArray(persisted.visited)?persisted.visited.filter(v=>Number.isInteger(v)&&v>=0&&v<3):[]);
-let justFinished=false;
-if(visited.size===3)persisted.completed=true;
+let persisted={completed:false},accountReady=false;
+let index=-1,visited=new Set(),justFinished=false;
 const room=$('#room'),panel=$('#panel');
 let lastHeight=0;
 const send=(type,details={})=>{if(parent!==window)parent.postMessage({type,...details},location.origin)};
@@ -76,7 +73,7 @@ function reportSize(){
  const h=Math.ceil(Math.max(200,wrap.getBoundingClientRect().bottom+window.scrollY+margin));
  if(Number.isFinite(h)&&Math.abs(h-lastHeight)>4){lastHeight=h;send('atelie-room-height',{height:h});}
 }
-const save=()=>{try{localStorage.setItem(ROOM_KEY,JSON.stringify({visited:[...visited],completed:persisted.completed===true}))}catch(e){}};
+const save=()=>{if(accountReady)send('atelie-room-progress',{visited:[...visited],completed:persisted.completed===true})};
 window.addEventListener('load',reportSize);window.addEventListener('resize',reportSize);
 if('ResizeObserver' in window)new ResizeObserver(reportSize).observe(document.body);
 setTimeout(reportSize,200);
@@ -93,6 +90,7 @@ function markComplete(){
  save();send('atelie-room-complete',{completed:true});setTimeout(reportSize,40);
 }
 function open(i){
+ if(!accountReady)return;
  index=(i+data.length)%data.length;visited.add(index);
  room.classList.add('is-open');panel.hidden=false;
  const item=data[index];
@@ -119,19 +117,23 @@ $('#reset').addEventListener('click',()=>{
  save();setTimeout(reportSize,60);
 });
 updateDiscovery();
-if(persisted.completed===true){
- $('#completed').hidden=false;
- send('atelie-room-complete',{completed:true,restored:true});
-}
-// Confirma a etapa concluída mesmo quando o iframe é restaurado do cache.
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==parent)return;
- if(event.data?.type!=='atelie-room-request-state')return;
+ if(event.data?.type!=='atelie-room-account-load')return;
+ const payload=event.data;
+ visited=new Set(Array.isArray(payload.visited)?
+   payload.visited.filter(v=>Number.isInteger(v)&&v>=0&&v<3):[]);
+ persisted.completed=payload.completed===true||visited.size===3;
+ accountReady=true;
+ root.style.visibility='visible';
+ updateDiscovery();
+ $('#completed').hidden=!persisted.completed;
  lastHeight=0;reportSize();
- if(persisted.completed===true||visited.size===3){
-  send('atelie-room-complete',{completed:true,restored:true});
- }
+ // A aula principal recebe a confirmação, mas nada é armazenado aqui.
+ if(persisted.completed)send('atelie-room-complete',{completed:true,restored:true});
 });
+root.style.visibility='hidden';
+send('atelie-room-request-state');
 setTimeout(reportSize,400);
 })();
 </script></body></html>
