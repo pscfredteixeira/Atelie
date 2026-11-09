@@ -26,7 +26,7 @@ try{
  await mobile.locator('.course-drawer-module').nth(1).locator('summary').click();
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).evaluate(e=>e.open),true,'Segundo módulo abre');
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).locator('a[href="#/aula/primeira-topica-freud"]').count(),1);
- assert.equal(await mobile.locator('#searchForm').isVisible(),false,'Busca não aparece na aula');
+ assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca disponível na visão geral do curso');
  assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).position),'static','Progresso não flutua');
  await mobile.locator('#sidebarClose').click();
  assert.equal(await mobile.locator('#menuToggle').getAttribute('aria-expanded'),'false');
@@ -44,6 +44,7 @@ try{
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca continua disponível fora da aula');
  await mobile.locator('.course-program-module a[href="#/aula/escuta-que-mudou-a-clinica"]').click();
  await mobile.locator('[data-profile-login]').waitFor();
+ assert.equal(await mobile.locator('#searchForm').isVisible(),false,'Busca não aparece dentro da aula');
  assert.match(mobile.url(),/#\/aula\/escuta-que-mudou-a-clinica/);
  console.log('OK — Seletor, acordeões e links de aula no celular.');
  const desktop=await browser.newPage({viewport:{width:1440,height:900}});
