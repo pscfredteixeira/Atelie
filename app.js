@@ -429,11 +429,22 @@ function closeMenu(){
  document.body.classList.remove('course-drawer-visible');
 }
 function toggleMenu(){
- const opened=$('#sidebar').classList.toggle('is-open');
+ const drawer=$('#sidebar');
+ const opened=drawer.classList.toggle('is-open');
  $('#overlay').hidden=!opened;
  $('#menuToggle').setAttribute('aria-expanded',String(opened));
  document.body.classList.toggle('course-drawer-visible',opened);
- if(opened&&matchMedia('(max-width:790px)').matches)$('#sidebarClose')?.focus({preventScroll:true});
+ if(opened){
+  // O Safari preservava a rolagem anterior do menu e escondia o seletor.
+  drawer.scrollTop=0;
+  // Revalidar a navegação caso o usuário tenha trocado de rota.
+  renderCourseNavigation(parseRoute().path);
+  requestAnimationFrame(()=>{
+   if(!drawer.classList.contains('is-open'))return;
+   drawer.scrollTop=0;
+   $('#sidebarClose')?.focus({preventScroll:true});
+  });
+ }
 }
 document.addEventListener('click',e=>{
  const sv=e.target.closest('[data-save]');if(sv){const v=sv.dataset.save;state.saved=state.saved.includes(v)?state.saved.filter(x=>x!==v):[...state.saved,v];saveState();render();return}
