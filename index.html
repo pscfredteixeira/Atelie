@@ -10,8 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" media="(min-width: 1025px)" href="assets/hero-escultura-hd.jpg?v=atelie-banner-hd-20261102">
-  <link rel="stylesheet" href="styles.css?v=titulo-e-percurso-primeira-topica-20261109-v8">
-  <script src="app.js?v=imagem-e-insignia-20261109-v11" defer></script>
+  <link rel="stylesheet" href="styles.css?v=perfil-firestore-20261109-v1">
+  <script type="module" src="firebase.js?v=perfil-firestore-20261109-v1"></script>
+  <script src="app.js?v=perfil-firestore-20261109-v1" defer></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -30,6 +31,7 @@
 <symbol id="i-notebook" viewBox="0 0 24 24"><rect x="5" y="2" width="16" height="20" rx="2"/><path d="M9 2v20m4-14h5m-5 4h5"/></symbol>
 <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></symbol>
 <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 20c.5 2 3.5 2 4 0"/></symbol>
 </svg>
 <a class="skip" id="skipLink" href="#main">Pular para o conteúdo</a>
@@ -51,6 +53,7 @@
       <p class="sidebar-caption">MEU ESTUDO</p>
       <nav aria-label="Menu do estudante">
         <a href="#/salvos" data-nav="/salvos" class="nav-link"><svg><use href="#i-heart"/></svg> Cursos salvos <span class="count" id="savedCount">0</span></a>
+        <a href="#/perfil" data-nav="/perfil" class="nav-link"><svg><use href="#i-user"/></svg> Meu perfil</a>
         <a href="#/caderno" data-nav="/caderno" class="nav-link"><svg><use href="#i-notebook"/></svg> Meu caderno</a>
         <a href="#/progresso" data-nav="/progresso" class="nav-link"><svg><use href="#i-graduation"/></svg> Progresso</a>
         <a href="#/estudio" data-nav="/estudio" class="nav-link"><svg><use href="#i-spark"/></svg> Estúdio (teste)</a>
@@ -70,7 +73,7 @@
         <input id="globalSearch" type="search" autocomplete="off" placeholder="Buscar cursos, autores, assuntos...">
         <kbd>/</kbd>
       </form>
-      
+      <a class="account-shortcut" id="accountShortcut" href="#/perfil" aria-label="Entrar com Google e abrir meu perfil">Entrar com Google</a>
     </header>
     <main id="main" class="main" tabindex="-1">
       <div class="loading"><span class="eyebrow">ATELIÊ</span><h1>Preparando seu espaço de estudo.</h1></div>
