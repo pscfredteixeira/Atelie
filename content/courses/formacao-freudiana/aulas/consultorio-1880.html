@@ -61,7 +61,14 @@ if(visited.size===3)persisted.completed=true;
 const room=$('#room'),panel=$('#panel');
 let lastHeight=0;
 const send=(type,details={})=>{if(parent!==window)parent.postMessage({type,...details},location.origin)};
-function reportSize(){const h=Math.ceil(Math.max(document.documentElement.scrollHeight,document.body.scrollHeight));if(Math.abs(h-lastHeight)>4){lastHeight=h;send('atelie-room-height',{height:h})}}
+function reportSize(){
+ // Evita medir a altura do próprio iframe (antes fixado em 900px).
+ const wrap=document.querySelector('.wrap');
+ if(!wrap)return;
+ const margin=parseFloat(getComputedStyle(wrap).marginBottom)||0;
+ const h=Math.ceil(Math.max(200,wrap.getBoundingClientRect().bottom+window.scrollY+margin));
+ if(Number.isFinite(h)&&Math.abs(h-lastHeight)>4){lastHeight=h;send('atelie-room-height',{height:h});}
+}
 const save=()=>{try{localStorage.setItem(ROOM_KEY,JSON.stringify({visited:[...visited],completed:persisted.completed===true}))}catch(e){}};
 window.addEventListener('load',reportSize);window.addEventListener('resize',reportSize);
 if('ResizeObserver' in window)new ResizeObserver(reportSize).observe(document.body);
