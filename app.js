@@ -143,7 +143,7 @@ const FREUD_PROGRAM=[
 const FREUD_COURSE_ROUTE='#/curso/formacao-freudiana';
 const FREUD_FIRST_ID='escuta-que-mudou-a-clinica',FREUD_SECOND_ID='primeira-topica-freud';
 const FREUD_LESSONS=[
- {id:FREUD_FIRST_ID,title:FREUD_PROGRAM[0],route:'#/aula/'+FREUD_FIRST_ID,stages:9,file:'escuta-que-mudou-a-clinica.html'},
+ {id:FREUD_FIRST_ID,title:FREUD_PROGRAM[0],route:'#/aula/'+FREUD_FIRST_ID,stages:6,file:'escuta-que-mudou-a-clinica.html'},
  {id:FREUD_SECOND_ID,title:FREUD_PROGRAM[1],route:'#/aula/'+FREUD_SECOND_ID,stages:3,file:'primeira-topica.html'}
 ];
 const FREUD_LESSON_ROUTE=FREUD_LESSONS[0].route;
@@ -176,7 +176,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
  '<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
  ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>'+
  '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
- '?v=curso-integrado-20261109" title="Aula interativa '+esc(l.title)+
+ '?v=curso-integrado-20261109-seis-momentos-v2" title="Aula interativa '+esc(l.title)+
  '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
  '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
  '<label class="form-label" for="lessonNote">O que você gostaria de guardar desta aula?</label>'+
