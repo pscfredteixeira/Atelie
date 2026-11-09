@@ -173,6 +173,33 @@
  .freud-lesson-frame{margin:0 -2px;width:calc(100% + 4px)}
 }
 
+/* Consistência com a Aula A primeira tópica de Freud:
+   título acima do percurso, largura e tipografia da introdução,
+   seis indicadores de progresso que ficam visíveis durante o estudo. */
+.freud-video-first{max-width:860px}
+.freud-video-first .freud-opening-heading{margin:0 0 0;padding:16px 0 10px}
+.freud-video-first .freud-opening-heading h1{
+ font:400 clamp(2.25rem,5.4vw,3.7rem)/1.08 Georgia,"Times New Roman",serif;
+ letter-spacing:-.028em;color:#29243a;margin:5px 0 0
+}
+.freud-video-first .freud-live-progress{
+ margin:15px 0 16px;padding:17px 19px;
+ background:rgba(255,253,250,.97);border:1px solid #ded5e2;
+ box-shadow:none;border-radius:16px
+}
+.freud-video-first .freud-live-heading{font-size:.88rem;letter-spacing:normal;font-weight:650;color:#29243a}
+.freud-video-first .freud-live-heading strong{font-size:.88rem;color:#544075}
+.freud-progress-segments{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-top:12px}
+.freud-progress-segments span{display:block;height:9px;border-radius:10px;background:#e6dfeb;border:1px solid #e1d7e7;transition:background .3s,box-shadow .3s}
+.freud-progress-segments span.done{background:linear-gradient(90deg,#71548e,#a989c2);border-color:transparent;box-shadow:0 1px 3px #6f53863a}
+@media(max-width:560px){
+ .freud-video-first .freud-opening-heading{padding:12px 0 8px}
+ .freud-video-first .freud-opening-heading h1{font-size:clamp(2.05rem,8vw,2.65rem)}
+ .freud-video-first .freud-live-progress{margin:13px 0 12px;padding:14px 15px}
+ .freud-progress-segments{gap:4px}
+ .freud-progress-segments span{height:8px}
+}
+
 /* Formação Freudiana · aula vídeo primeiro (sem áreas reservadas de 900px). */
 .freud-video-first{max-width:1180px;margin:0 auto}
 .freud-video-first .freud-lesson-frame{height:330px;min-height:0;margin:0;width:100%;display:block}
