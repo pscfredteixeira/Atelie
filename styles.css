@@ -395,3 +395,51 @@ a.course-drawer-lesson:hover{background:#443949;color:#fff}
  .course-drawer-module-title{font-size:15px}
  .course-drawer-select-wrap select{font-size:14px}
 }
+
+
+/* Programa expandido dentro das páginas dos cursos. */
+.course-program-accordion{display:grid;gap:12px;margin:14px 0 27px}
+.course-program-module{border:1px solid #e2d6e2;border-radius:15px;
+ background:#fffdfc;overflow:hidden;box-shadow:0 5px 16px rgba(72,50,77,.045)}
+.course-program-module[open]{border-color:#cbb5d0}
+.course-program-module summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+ gap:15px;min-height:92px;padding:18px 21px}
+.course-program-module summary::-webkit-details-marker{display:none}
+.course-program-module summary:hover{background:#faf4fa}
+.course-program-module summary:focus-visible{outline:2px solid #b99ad0;outline-offset:-4px}
+.course-program-module-no{display:grid;place-items:center;flex:0 0 44px;height:44px;
+ border-radius:13px;background:#eee5ef;color:#634a71;font-size:12px;font-weight:800}
+.course-program-module-copy{min-width:0;flex:1;display:grid;gap:3px}
+.course-program-module-copy small{color:#85698b;font-size:10px;font-weight:800;letter-spacing:.12em}
+.course-program-module-copy strong{font:500 clamp(17px,2.1vw,23px)/1.28 var(--serif);
+ color:#352b3b;overflow-wrap:anywhere}
+.course-program-module-copy em{font:normal 11px/1.5 'DM Sans',sans-serif;color:#817280}
+.course-program-chevron{display:flex;align-items:center;justify-content:center;
+ width:34px;height:34px;background:#f1e9f2;border-radius:9px;color:#644d70}
+.course-program-chevron svg{height:18px;width:18px;transition:transform .2s}
+.course-program-module[open] .course-program-chevron svg{transform:rotate(180deg)}
+.course-program-lessons{padding:4px 20px 19px 79px;display:grid;gap:8px}
+.course-program-lesson{display:flex;align-items:center;gap:11px;
+ background:#f7f3f7;border-radius:11px;padding:13px 14px;min-width:0}
+.course-program-lesson-no{display:grid;place-items:center;flex:0 0 27px;height:27px;
+ border-radius:9px;background:#e5d8e8;color:#6e5375;font-size:11px;font-weight:800}
+.course-program-lesson>div{flex:1;min-width:0}
+.course-program-lesson strong{display:block;font-size:13px;color:#342b38;line-height:1.4;overflow-wrap:anywhere}
+.course-program-lesson small{display:block;color:#827183;font-size:11px;line-height:1.4;margin-top:4px}
+.course-program-open{display:inline-flex;align-items:center;gap:6px;justify-content:center;
+ padding:10px 13px;border-radius:9px;background:#5b3d67;color:#fff;font-weight:750;font-size:12px;white-space:nowrap}
+.course-program-open:hover{background:#775184}
+.course-program-open svg{width:14px;height:14px}
+.course-program-unavailable{font-size:11px;color:#8c818c;white-space:nowrap}
+.course-program-empty{font-size:12px;line-height:1.6;color:#847987;margin:5px 0;padding:6px 0}
+@media(max-width:590px){
+ .course-program-module summary{min-height:88px;padding:13px 12px;gap:10px}
+ .course-program-module-no{flex-basis:35px;height:35px;border-radius:10px}
+ .course-program-module-copy strong{font-size:18px}
+ .course-program-chevron{width:30px;height:30px}
+ .course-program-lessons{padding:0 10px 13px 12px}
+ .course-program-lesson{gap:8px;padding:12px 10px;flex-wrap:wrap}
+ .course-program-lesson>div{flex:1 1 180px}
+ .course-program-open{padding:9px 10px;margin-left:36px}
+ .course-program-unavailable{margin-left:36px}
+}
