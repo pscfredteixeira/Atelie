@@ -47,7 +47,7 @@ try{
   concepts:[0,1,2,3],choices:{'3':1,'5':0,'6':1},passed:[3,5,6],reflection:'Registro da conta A',
   videoWatched:true,resumeUnlock:6,roomCompletedEarly:false
  };
- await frame.contentFrame().evaluate(data=>{
+ await frame.contentFrame().locator('body').evaluate((_,data)=>{
   parent.postMessage({type:'atelie-progress-save',lessonId:'escuta-que-mudou-a-clinica',state:data,requestId:8},location.origin);
  },payload);
  await page.waitForFunction(()=>window.__lessonProgress.A['escuta-que-mudou-a-clinica']?.done.includes(6));
