@@ -43,3 +43,30 @@ A autenticação do Firebase valida a identidade de quem usa o serviço. As regr
 - Os rascunhos do Estúdio são **locais**, não são publicados nem enviados para o Firestore.
 
 **Limitações do Sprint 19:** Console e regras requerem configuração e publicação manual pela conta do responsável. O CI testa navegação e simula sincronização; não comprova a conexão real com o projeto Firebase. Login por redirecionamento pode exigir configuração extra em navegadores com restrições de armazenamento entre domínios, como versões recentes do Safari. Prefira testar o popup primeiro.
+
+
+## Meu perfil — primeira etapa do cadastro pessoal (09/11/2026)
+
+A área **Meu perfil** está disponível em `#/perfil`, no menu de estudantes e no atalho no alto do site. Ela não exige que a pessoa tenha concluído uma aula.
+
+- **Firebase Authentication:** autentica via conta Google. Nome, foto e e-mail são exibidos como dados somente leitura, provenientes da autenticação.
+- **Cloud Firestore:** salva somente `preferredName` (nome de preferência, até 80 caracteres), `phone` (opcional, até 30 caracteres) e `updatedAt` (inteiro) no documento `users/{uid}/profile/main`.
+- O documento de perfil é independente de `users/{uid}/state/atelier`, que guarda o progresso dos estudos.
+- Nenhum campo de saúde, notas clínicas, prontuário ou informações de sessões deve ser inserido nesse cadastro. Uma área de pacientes clínicos exigiria uma avaliação específica de privacidade/LGPD e controles adicionais.
+- As regras `firestore.rules` limitam a leitura e a escrita do perfil ao UID do usuário autenticado. Consultar ou editar o perfil de outra conta deve resultar em `permission-denied`.
+- Nome, foto e e-mail do Google não são modificados pelo formulário do Ateliê. E-mail de autenticação deve ser gerenciado pela conta Google.
+
+### Publicação das regras — etapa indispensável
+
+**Editar `firestore.rules` no GitHub NÃO publica regras no Firestore.** Antes de testar a gravação real, quem administra o projeto precisa:
+
+1. Abrir https://console.firebase.google.com/project/ateliepsi/firestore/rules
+2. Garantir que o banco Firestore Database foi criado no projeto `ateliepsi`.
+3. Conferir o arquivo atual [firestore.rules](firestore.rules) **por inteiro**, copiar o conteúdo atualizado para a aba **Regras** e clicar em **Publicar**.
+4. Testar com uma conta Google: entrar no Ateliê, abrir `#/perfil`, editar os dois campos e observar a mensagem **Alterações salvas no banco de dados**.
+5. Atualizar o navegador: os valores devem permanecer. Repetir em outro navegador usando a mesma conta.
+6. Entrar com uma segunda conta para confirmar que ela não enxerga o perfil nem o progresso da primeira.
+
+As novas regras também atualizam os identificadores de conclusão e notas para as aulas `escuta-que-mudou-a-clinica` e `primeira-topica-freud`. Sem a atualização publicada, a sincronização desses estudos pode retornar `permission-denied`.
+
+**Diagnóstico:** se aparecer “O Firestore recusou a consulta” ou “não autorizou a gravação”, primeiro verifique a publicação das regras e o UID da conta. Não altere as regras para `allow read, write: if true` para contornar o erro.
