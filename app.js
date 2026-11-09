@@ -67,6 +67,9 @@ let cloudMessage = '';
 let syncTimer;
 let syncing = false;
 let conflict = null;
+let personalProfile = null;
+let personalProfileStatus = 'signed-out';
+let profileNotice = '';
 
 function queueCloudSync(delay = 700) {
  clearTimeout(syncTimer);
@@ -122,6 +125,11 @@ function renderStatus() {
  }
  const btn = $('#loginButton');
  if (btn) btn.textContent = activeUid ? 'Sair da conta' : 'Acesso local';
+ const profileLink=$('#accountShortcut');
+ if(profileLink){
+  profileLink.textContent=activeUid?(window.AtelieCloud?.user?.displayName?.split(' ')[0]||'Meu perfil'):'Entrar com Google';
+  profileLink.setAttribute('aria-label',activeUid?'Abrir meu perfil':'Entrar com Google e abrir meu perfil');
+ }
  const actions = $('#syncConflict');
  if (actions) actions.hidden = !conflict;
 }
@@ -230,6 +238,48 @@ function notebookView(){
  '</h2><p class="note-preview">'+esc(state.notes[l.id]?.trim()||'Você ainda não escreveu uma anotação nesta aula.')+
  '</p><a class="section-link" href="'+l.route+'">Abrir caderno '+icon('arrow')+'</a></article>').join('')+'</div>';
 }
+
+function profileView(){
+ const user=window.AtelieCloud?.user;
+ if(!activeUid||!user)return heading('CONTA PESSOAL','Meu perfil','Entre com Google para consultar e atualizar seus dados no Ateliê.')+
+  '<section class="profile-signin-panel"><span class="profile-signin-icon" aria-hidden="true">ψ</span>'+
+  '<h2>Seu espaço pessoal de estudos</h2><p>Entre com sua conta Google. Você poderá salvar um nome de preferência e um telefone opcional; seus dados não ficam visíveis para outros alunos.</p>'+
+  '<button type="button" class="btn btn-primary" data-profile-login>Entrar com Google</button>'+
+  '<p id="profileLoginStatus" class="profile-form-status" role="status" aria-live="polite"></p></section>';
+ const fullName=String(user.displayName||'Não informado'),email=String(user.email||'Não informado');
+ const photo=typeof user.photoURL==='string'&&user.photoURL.startsWith('https://')?user.photoURL:null;
+ const ready=personalProfileStatus==='ready';
+ const preferredName=ready?String(personalProfile?.preferredName||''):'';
+ const phone=ready?String(personalProfile?.phone||''):'';
+ const loadMessage=ready?'Os dados abaixo são pessoais e podem ser alterados. Nome e e-mail da conta Google permanecem sob controle do Google.':
+  personalProfileStatus==='loading'?'Consultando seus dados no Firestore...':
+  'Não foi possível ler os dados no banco. Não alteraremos seu cadastro enquanto houver esse problema.';
+ return heading('ÁREA PESSOAL','Meu perfil','Consulte e atualize seu cadastro vinculado à conta Google.')+
+  '<div class="profile-layout"><aside class="profile-identity-panel">'+
+  '<div class="profile-identity-head">'+
+   (photo?'<img class="profile-avatar" src="'+esc(photo)+'" alt="Foto da conta Google" referrerpolicy="no-referrer">':
+    '<span class="profile-avatar profile-avatar-fallback" aria-hidden="true">ψ</span>')+
+   '<div><span class="profile-source">Conta Google conectada</span><h2>'+esc(fullName)+'</h2><p>'+esc(email)+'</p></div></div>'+
+  '<div class="profile-metadata"><span class="profile-label">Nome na conta Google</span><strong>'+esc(fullName)+'</strong></div>'+
+  '<div class="profile-metadata"><span class="profile-label">E-mail de acesso</span><strong>'+esc(email)+'</strong><small>Gerenciado na sua conta Google.</small></div>'+
+  '<p class="profile-safety">Esta área é para cadastro do usuário, não para prontuários nem informações clínicas.</p>'+
+  '<button class="profile-logout" type="button" data-profile-logout>Sair da conta</button></aside>'+
+  '<section class="profile-edit-panel" aria-labelledby="profileEditHeading">'+
+   '<div class="profile-edit-heading"><div><span class="eyebrow">CADASTRO DO ATELIÊ</span><h2 id="profileEditHeading">Informações editáveis</h2></div>'+
+   '<span class="profile-state-badge">'+(ready?'Perfil disponível':personalProfileStatus==='loading'?'Carregando':'Conexão pendente')+'</span></div>'+
+   '<p>'+esc(loadMessage)+'</p>'+
+   (personalProfileStatus==='error'?'<button type="button" data-profile-retry class="btn btn-outline">Tentar novamente</button>':'')+
+   '<form id="profileForm" autocomplete="on">'+
+    '<div class="profile-form-field"><label for="profilePreferredName">Nome de preferência</label>'+
+    '<input id="profilePreferredName" name="preferredName" type="text" maxlength="80" autocomplete="nickname" placeholder="Como deseja ser chamado" value="'+esc(preferredName)+'" '+(ready?'':'disabled')+'>'+
+    '<small>Não altera o nome da conta Google.</small></div>'+
+    '<div class="profile-form-field"><label for="profilePhone">Telefone (opcional)</label>'+
+    '<input id="profilePhone" name="phone" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="(11) 99999-9999" value="'+esc(phone)+'" '+(ready?'':'disabled')+'>'+
+    '<small>Este telefone fica restrito ao seu cadastro, sem divulgação pública.</small></div>'+
+    '<div class="profile-form-actions"><button class="btn btn-primary" id="profileSave" type="submit" '+(ready?'':'disabled')+'>Salvar alterações</button>'+
+    '<span class="profile-form-status" id="profileSaveStatus" role="status" aria-live="polite">'+esc(profileNotice)+'</span></div>'+
+   '</form></section></div>';
+}
 function savedView(){const cs=COURSES.filter(c=>state.saved.includes(c.slug));return heading('MEU ESTUDO','Cursos salvos','Se você entrar com Google e o Firestore estiver configurado, seus favoritos poderão ser sincronizados entre dispositivos.')+(cs.length?'<div class="course-grid">'+cs.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Você ainda não salvou cursos.</h2><p>Abra um curso e selecione “Salvar curso”.</p><a class="btn btn-primary" href="#/cursos">Explorar cursos</a></div>')}
 function trails(){return heading('PERCURSOS','Trilhas de estudo','Por enquanto, estes percursos são apenas portas de entrada para as três aulas fictícias.')+'<div class="intro-grid">'+COURSES.map((c,i)=>'<article class="info-card"><span class="eyebrow">TRILHA 0'+(i+1)+'</span><h2>'+esc(c.title)+'</h2><p>'+esc(c.subtitle)+'</p><a class="section-link" href="#/aula/'+c.lesson+'">Experimentar aula '+icon('arrow')+'</a></article>').join('')+'</div>'}
 function library(){return heading('BIBLIOTECA','Espaço de referências','A biblioteca será planejada posteriormente. Esta tela é uma estrutura funcional para futura organização de textos, links e leituras.')+'<div class="highlight-panel"><span class="eyebrow">EM DESENVOLVIMENTO</span><h2>As referências virão depois.</h2><p>Por enquanto, vamos testar a navegação, as aulas, os quizzes, o caderno e o progresso.</p></div>'}
@@ -238,7 +288,7 @@ function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return he
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;const courseNav=$('#courseContextNav');if(courseNav){const freudContext=path==='/curso/formacao-freudiana'||path==='/aula/primeira-topica-freud'||path.startsWith('/cursos/curso-formacao-freudiana');courseNav.hidden=!freudContext;if(freudContext)courseNav.innerHTML=freudSidebarNav(path);}document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}$('#main').innerHTML=html;const courseNav=$('#courseContextNav');if(courseNav){const freudContext=path==='/curso/formacao-freudiana'||path==='/aula/primeira-topica-freud'||path.startsWith('/cursos/curso-formacao-freudiana');courseNav.hidden=!freudContext;if(freudContext)courseNav.innerHTML=freudSidebarNav(path);}document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
 function closeMenu(){$('#sidebar').classList.remove('is-open');$('#overlay').hidden=true;$('#menuToggle').setAttribute('aria-expanded','false')}
 function toggleMenu(){const opened=$('#sidebar').classList.toggle('is-open');$('#overlay').hidden=!opened;$('#menuToggle').setAttribute('aria-expanded',String(opened))}
 document.addEventListener('click',e=>{
