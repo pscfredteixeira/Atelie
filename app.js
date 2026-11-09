@@ -290,7 +290,7 @@ const ATELIE_BADGES=[
 function studyStorageStatus(){
  if(!activeUid)return 'Entre com Google para consultar seu progresso pessoal.';
  if(!appCloudLoaded)return 'Carregando dados da sua conta Google...';
- if(pendingAccountSave)return 'Alterações aguardando confirmação do Firestore.';
+ if(pendingAccountSave||pendingLessonWrites.size||writingLessonIds.size)return 'Há alterações ainda não confirmadas pelo Firestore. Aguarde a confirmação antes de sair.';
  return 'Progresso e conquistas vinculados à sua conta Google no Firestore.';
 }
 function achievementsView(){
@@ -798,6 +798,12 @@ window.addEventListener('message',event=>{
    if(extras)extras.hidden=count===0;
  }else if(data.type==='atelie-lesson-progress'){
   // O estado permanente é atualizado apenas depois da confirmação de escrita.
+ }
+});
+window.addEventListener('beforeunload',event=>{
+ if(pendingAccountSave||pendingLessonWrites.size||writingLessonIds.size){
+  event.preventDefault();
+  event.returnValue='';
  }
 });
 window.addEventListener('hashchange',render);
