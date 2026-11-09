@@ -58,9 +58,15 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
  .achievement-message{font-size:.98rem}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+/* Só mostra interações depois que o Firestore da conta for carregado. */
+body:not(.account-progress-ready) main.container{display:none!important}
+.account-progress-status{width:min(960px,calc(100% - 24px));margin:20px auto;
+ border:1px solid #e1d5e4;background:#fffdfd;color:#594365;border-radius:12px;
+ padding:13px 16px;font:600 14px/1.5 Arial,sans-serif}
 </style>
 </head>
 <body>
+<p class="account-progress-status" id="cloudLessonStatus" role="status" aria-live="polite">Carregando seu progresso pessoal do Firestore...</p>
 <main class="container">
 <section class="step" id="stage-1" data-stage="1" aria-label="Vídeo de abertura">
   <div class="media media-opening"><iframe id="introVideo" src="https://www.youtube-nocookie.com/embed/Gf2XqDKo3xM?playsinline=1&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fpscfredteixeira.github.io" title="A escuta que mudou a clínica — vídeo de abertura" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
@@ -203,12 +209,9 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
 <script>
 (function(){
 'use strict';
-const KEY='atelie-escuta-seis-momentos-v1';
+const LESSON_ID='escuta-que-mudou-a-clinica';
 const INIT={unlocked:1,done:[],spots:[],files:[],times:[],concepts:[],choices:{},passed:[],reflection:''};
-let st={...INIT};
-try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&typeof x==='object')st={...INIT,...x}}catch(e){}
-['done','spots','files','times','concepts','passed'].forEach(k=>{if(!Array.isArray(st[k]))st[k]=[]});
-if(!st.choices||typeof st.choices!=='object')st.choices={};
+let st={...INIT},accountReady=false,hydrating=false,pendingReset=false;
 // A versão anterior liberava o Momento 02 antes de assistir ao vídeo.
 // Guardar o progresso anterior, mas bloquear as atividades até o evento real de fim.
 const resumeUnlock=Math.max(2,Math.min(6,Number(st.resumeUnlock)||Number(st.unlocked)||2));
@@ -219,7 +222,12 @@ if(st.videoWatched===true){
  st.resumeUnlock=resumeUnlock;st.unlocked=1;st.done=st.done.filter(n=>n!==1);
 }
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const save=()=>{
+ if(!accountReady||hydrating)return;
+ if(parent===window){$('#cloudLessonStatus').textContent='Abra esta aula pelo Ateliê, com sua conta Google.';return;}
+ $('#cloudLessonStatus').textContent='Salvando seu progresso no Firestore...';
+ parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(st))},location.origin);
+};
 let sentHeight=0;
 function reportHeight(){
  if(parent===window)return;
@@ -229,7 +237,7 @@ function reportHeight(){
  const height=Math.ceil(Math.max(100,bottom+8));
  if(Number.isFinite(height)&&Math.abs(height-sentHeight)>4){sentHeight=height;parent.postMessage({type:'atelie-lesson-height',height},location.origin);}
 }
-function reportProgress(){if(parent!==window)parent.postMessage({type:'atelie-lesson-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:st.done.includes(6)},location.origin)}
+function reportProgress(){if(accountReady&&parent!==window)parent.postMessage({type:'atelie-lesson-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:st.done.includes(6)},location.origin)}
 function refresh(){
  for(let n=1;n<=6;n++){
   const el=$('#stage-'+n),complete=st.done.includes(n);el.hidden=n>st.unlocked;
@@ -237,7 +245,7 @@ function refresh(){
   if(badge){badge.textContent=complete?'✓ Concluído':'Disponível';badge.classList.toggle('done',complete);}
  }
  const count=st.videoWatched===true?new Set(st.done.filter(n=>n>=1&&n<=6)).size:0;
- if(parent!==window)parent.postMessage({type:'atelie-lesson-stage-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:count,total:6},location.origin);
+ if(accountReady&&parent!==window)parent.postMessage({type:'atelie-lesson-stage-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:count,total:6},location.origin);
  $('#historicalSources').hidden=st.unlocked<6;
  $('#finish').hidden=!st.done.includes(6);save();reportProgress();setTimeout(reportHeight,80);
 }
@@ -268,7 +276,10 @@ const roomFrame=$('#room-1880-frame');
 // Uma consulta de estado garante que progresso salvo apareça no site mesmo
 // após atualização do Safari, quando mensagens de carregamento podem se perder.
 function requestRoomProgress(){
- if(roomFrame?.contentWindow)roomFrame.contentWindow.postMessage({type:'atelie-room-request-state'},location.origin);
+ if(!accountReady)return;
+ if(roomFrame?.contentWindow)roomFrame.contentWindow.postMessage({
+  type:'atelie-room-account-load',visited:st.spots,completed:st.done.includes(2)
+ },location.origin);
 }
 roomFrame?.addEventListener('load',requestRoomProgress);
 if(roomFrame?.contentDocument?.readyState==='complete')setTimeout(requestRoomProgress,0);
@@ -283,7 +294,11 @@ window.addEventListener('message',event=>{
    setTimeout(reportHeight,90);
   }
  }
- if(msg.type==='atelie-room-complete'&&msg.completed===true){
+ if(msg.type==='atelie-room-progress'&&accountReady){
+  st.spots=Array.isArray(msg.visited)?msg.visited.filter(n=>Number.isInteger(n)&&n>=0&&n<=2):[];
+  save();
+ }
+ if(msg.type==='atelie-room-complete'&&msg.completed===true&&accountReady){
   st.spots=[0,1,2];
   if(!st.videoWatched){st.roomCompletedEarly=true;save();return;}
   save();
@@ -399,7 +414,7 @@ $$('[data-concept]').forEach(b=>{
 });
 $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
 $('#reflection').value=st.reflection||'';
-$('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Reflexão salva neste navegador.';reportHeight()});
+$('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Salvando reflexão na sua conta Google...';reportHeight()});
 selectFile(0);
 // Migração de quem acertou os quizzes, mas ficou preso em botões antigos.
 if(st.videoWatched){
@@ -409,15 +424,58 @@ if(st.videoWatched){
  if(st.passed.includes(6)&&st.done.includes(5))autoAdvanceForQuiz(6);
 }
 $('#reset-entire-lesson').addEventListener('click',()=>{
- if(!window.confirm('Reiniciar esta aula do começo? O vídeo, os exercícios e o progresso desta aula serão zerados. As demais aulas não serão alteradas.'))return;
- try{
-  localStorage.removeItem(KEY);
-  localStorage.removeItem('atelie-room-1880-v2');
- }catch(e){console.warn('Não foi possível limpar o armazenamento.',e)}
- if(parent!==window)parent.postMessage({type:'atelie-lesson-reset',lessonId:'aula-escuta-que-mudou-a-clinica'},location.origin);
- // Reabre o vídeo e bloqueia novamente todos os quadradinhos.
- window.location.reload();
+ if(!accountReady||!window.confirm('Reiniciar seu progresso nesta aula na conta Google? Esta ação substituirá as etapas já salvas no Firestore.'))return;
+ pendingReset=true;
+ st={...INIT,done:[],spots:[],files:[],times:[],concepts:[],choices:{},passed:[]};
+ save();
+ $('#cloudLessonStatus').textContent='Reiniciando esta aula na sua conta...';
 });
+function applyAccountProgress(value){
+ const data=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+ const clean={...INIT,...data};
+ for(const field of ['done','spots','files','times','concepts','passed'])if(!Array.isArray(clean[field]))clean[field]=[];
+ if(!clean.choices||typeof clean.choices!=='object'||Array.isArray(clean.choices))clean.choices={};
+ clean.reflection=typeof clean.reflection==='string'?clean.reflection.slice(0,5000):'';
+ clean.videoWatched=clean.videoWatched===true;
+ if(clean.videoWatched){
+  clean.unlocked=Math.max(2,Math.min(6,Number(clean.unlocked)||2));
+  if(!clean.done.includes(1))clean.done.push(1);
+ }else{
+  clean.unlocked=1;clean.done=clean.done.filter(n=>n!==1);
+ }
+ hydrating=true;
+ st=clean;
+ accountReady=true;
+ document.body.classList.add('account-progress-ready');
+ $('#cloudLessonStatus').textContent='Progresso vinculado à sua conta Google.';
+ $('#reflection').value=st.reflection;
+ $$('[data-time]').forEach(b=>b.classList.toggle('seen',st.times.includes(Number(b.dataset.time))));
+ $$('[data-concept]').forEach(b=>b.classList.toggle('seen',st.concepts.includes(Number(b.dataset.concept))));
+ $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
+ $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
+ $('#quiz-3').hidden=st.files.length<3;
+ $('#quiz-5').hidden=st.concepts.length<4;
+ [3,5,6].forEach(updateQuiz);
+ selectFile(st.files[st.files.length-1]??0);
+ refresh();
+ requestRoomProgress();
+ hydrating=false;
+ reportHeight();
+}
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||event.source!==parent||!event.data)return;
+ const msg=event.data;
+ if(msg.lessonId!==LESSON_ID)return;
+ if(msg.type==='atelie-progress-load')applyAccountProgress(msg.state);
+ if(msg.type==='atelie-progress-saved'){
+  $('#cloudLessonStatus').textContent='Progresso salvo na sua conta Google.';
+  if(pendingReset){pendingReset=false;location.reload();}
+ }
+ if(msg.type==='atelie-progress-error'){
+  $('#cloudLessonStatus').textContent='Não foi possível acessar ou salvar o progresso no Firestore ('+String(msg.errorCode||'erro')+'). Confira sua conexão e as regras do Firebase.';
+ }
+});
+if(parent!==window)parent.postMessage({type:'atelie-progress-request',lessonId:LESSON_ID},location.origin);
 if(st.done.includes(6))$('#finish').hidden=false;
 if('ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
 if('MutationObserver'in window)new MutationObserver(reportHeight).observe(document.body,{attributes:true,childList:true,subtree:true});
