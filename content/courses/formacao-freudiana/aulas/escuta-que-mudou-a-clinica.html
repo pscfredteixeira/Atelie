@@ -23,6 +23,11 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
 .notes textarea{width:100%;border:1px solid #d6c9d9;border-radius:13px;min-height:100px;padding:15px;color:var(--ink);background:#fff;resize:vertical}.finish{background:#edf7ee;border:1px solid #a5c9ae;border-radius:18px;padding:25px;margin:20px 0}.finish h3{color:#245b40}
 .sources{margin:13px 0 35px;padding:23px;background:#fdfbf8;border:1px solid var(--line);border-radius:16px}.sources summary{font-weight:750;cursor:pointer;color:var(--deep)}.sources ul{padding-left:19px}.sources li{margin:8px 0}.footer{padding:28px 0 50px;display:flex;justify-content:space-between;gap:13px;font-size:.81rem;color:var(--muted)}
 @media(max-width:690px){.container{width:min(100% - 22px,960px)}.top{padding-top:16px}.top-meta{display:none}.hero{padding:25px 0 12px}.step-inner{padding:21px 17px}.step-card{border-radius:17px}.columns,.dossier,.case{grid-template-columns:1fr}.dossier{gap:14px}.portraits{grid-template-columns:1fr 1fr}.portrait img{height:175px}.scene{aspect-ratio:1.22/1}.scene svg{height:100%;object-fit:cover}.chronology{grid-template-columns:repeat(2,1fr)}.concepts{grid-template-columns:1fr 1fr}.concept{font-size:1.1rem;padding:13px}.hotspot{width:40px;height:40px}.spot-1{left:23%;top:42%}.spot-2{left:70%;top:35%}.spot-3{left:50%;top:78%}.progress{padding:13px}.actions .btn{width:100%}.footer{display:block}}
+.reset-lesson{margin:14px 0 35px;padding:17px 18px;border:1px solid #e4d8e6;background:#fcf9fa;border-radius:14px;text-align:center}
+.reset-lesson-button{border:1px solid #977a9e;background:transparent;color:#624675;padding:11px 16px;border-radius:11px;font-weight:750}
+.reset-lesson-button:hover{background:#f0e5f2}
+.reset-lesson p{font-size:.8rem;color:#736779;margin:9px 0 0}
+.quiz[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 </head>
@@ -59,18 +64,17 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
       <button type="button" data-file="2" role="tab" aria-selected="false">03 · O que se conta</button>
     </div>
     <div class="file-panel" id="file-panel" role="tabpanel" aria-live="polite"></div>
-    <p class="explorer-label" id="file-count">Explore os três documentos para continuar.</p>
+    <p class="explorer-label" id="file-count">Explore os três documentos. Ao terminar, a questão aparecerá automaticamente.</p>
    </div>
   </div>
-  <div class="quiz" id="quiz-3">
+  <div class="quiz" id="quiz-3" hidden>
    <div class="overline">Verificação crítica</div><h3>Qual afirmação descreve corretamente o papel de Freud no caso Anna O.?</h3>
    <div class="options">
     <button class="option" data-quiz="3" data-choice="0">A. Freud conduziu o tratamento de Bertha Pappenheim e depois o publicou com Breuer.</button>
     <button class="option" data-quiz="3" data-choice="1">B. Breuer tratou Bertha; Freud conheceu o caso por meio dele e participou da elaboração posterior.</button>
     <button class="option" data-quiz="3" data-choice="2">C. Não existem registros que associem Anna O. à história da psicanálise.</button>
-   </div><button class="btn outline" id="verify-3" type="button" disabled>Conferir minha resposta</button><div id="feedback-3" aria-live="polite"></div>
+   </div><div id="feedback-3" aria-live="polite"></div>
   </div>
-  <div class="actions"><button class="btn" id="advance-3" type="button" disabled>Investigar o nascimento da escuta →</button></div>
  </div></div>
 </section>
 <section class="step" id="stage-4" data-stage="4" hidden>
@@ -87,7 +91,6 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   <div class="selected-time" id="time-detail" aria-live="polite">Escolha uma data para conhecer seu significado histórico.</div>
   <p class="explorer-label" id="time-count">0 de 4 marcos explorados</p>
   <div class="takeaway"><strong>Uma distinção indispensável:</strong> o método catártico e a associação livre não são a mesma técnica. A escuta analítica se modifica ao longo do percurso freudiano; ela não pode ser atribuída, já acabada, ao tratamento de Anna O.</div>
-  <div class="actions"><button class="btn" id="advance-4" type="button" disabled>Entrar no laboratório de conceitos →</button></div>
  </div></div>
 </section>
 <section class="step" id="stage-5" data-stage="5" hidden>
@@ -103,15 +106,14 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   </div>
   <div class="concept-detail" id="concept-detail" aria-live="polite"><h3>Escolha um conceito</h3><p>Os termos ganham sentido quando articulados a problemas clínicos e à evolução da teoria freudiana.</p></div>
   <p class="explorer-label" id="concept-count">0 de 4 conceitos explorados</p>
-  <div class="quiz" id="quiz-5">
+  <div class="quiz" id="quiz-5" hidden>
    <div class="overline">Desafio conceitual</div><h3>O que podemos afirmar ao estudar esses primeiros conceitos?</h3>
    <div class="options">
     <button class="option" data-quiz="5" data-choice="0">A. Cada sintoma possui um significado fixo que vale para qualquer pessoa.</button>
     <button class="option" data-quiz="5" data-choice="1">B. A investigação clínica pode construir hipóteses sobre relações entre sintomas, lembranças, afetos e defesa, sem impor conclusões universais.</button>
     <button class="option" data-quiz="5" data-choice="2">C. As ideias sobre a histeria de 1895 já são idênticas à segunda tópica formulada décadas depois.</button>
-   </div><button class="btn outline" id="verify-5" type="button" disabled>Conferir minha resposta</button><div id="feedback-5" aria-live="polite"></div>
+   </div><div id="feedback-5" aria-live="polite"></div>
   </div>
-  <div class="actions"><button class="btn" id="advance-5" type="button" disabled>Chegar à síntese final →</button></div>
  </div></div>
 </section>
 <section class="step" id="stage-6" data-stage="6" hidden>
@@ -131,14 +133,13 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
     <button class="option" data-quiz="6" data-choice="0">A. O sintoma prova que uma lembrança foi recalcada; basta anunciá-la.</button>
     <button class="option" data-quiz="6" data-choice="1">B. A pessoa não sabe a causa, portanto seu sofrimento não tem importância.</button>
     <button class="option" data-quiz="6" data-choice="2">C. O relato merece escuta e investigação, sem antecipar sua causa ou dispensar avaliação adequada.</button>
-   </div><button class="btn outline" id="verify-6" type="button" disabled>Conferir minha resposta</button><div id="feedback-6" aria-live="polite"></div>
+   </div><div id="feedback-6" aria-live="polite"></div>
   </div>
   <div class="notes">
    <h3>Seu caderno de reflexão</h3><label for="reflection">O que muda na clínica quando a fala do paciente é tratada como parte do trabalho, e não como ruído?</label>
    <textarea id="reflection" placeholder="Escreva aqui sua reflexão; ela fica salva neste navegador. Não inclua dados clínicos reais."></textarea>
    <div class="tiny" role="status" id="note-status">Suas notas permanecem neste dispositivo.</div>
   </div>
-  <div class="actions"><button class="btn" id="advance-6" type="button" disabled>Concluir a experiência →</button></div>
   <div class="finish" id="finish" hidden><span class="overline">Percurso concluído</span><h3>Você chegou à pergunta que abre a próxima aula.</h3><p>Se o sofrimento pode produzir efeitos além do que a pessoa conhece conscientemente, como Freud formulará um modelo para pensar esses processos?</p><p><strong>Próxima aula:</strong> A primeira tópica de Freud.</p><a href="../../../../#/aula/primeira-topica-freud" target="_top" class="btn outline" id="next-lesson">Ir para a próxima aula</a></div>
  </div></div>
 </section>
@@ -152,6 +153,10 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
  </ul>
  <p class="tiny">A expressão “histeria” é apresentada como categoria histórica, não como diagnóstico atual. Há controvérsias sobre o curso clínico de Anna O. e sobre versões retrospectivas de sua história. O tratamento foi conduzido por Breuer, não por Freud.</p>
 </details>
+<div class="reset-lesson" aria-label="Ferramenta de teste da aula">
+ <button type="button" class="reset-lesson-button" id="reset-entire-lesson">↺ Reiniciar aula para testes</button>
+ <p>Recomeça o vídeo e zera os exercícios e o progresso desta aula, sem alterar as outras aulas.</p>
+</div>
 </main>
 <script>
 (function(){
@@ -254,24 +259,63 @@ const documents=[
  {title:'O encontro com Josef Breuer',body:'Breuer atendeu Bertha entre 1880 e 1882. Em sua narrativa, relacionou episódios de fala, lembrança e expressão afetiva a alterações nos sintomas. Essa observação alimentou o método catártico, que não era ainda a associação livre freudiana.'},
  {title:'O que o relato não resolve',body:'O caso foi publicado em 1895, anos depois do atendimento. Há controvérsias sobre a evolução do tratamento e sobre uma alegada cura. Freud não tratou Bertha pessoalmente; seu contato com a história ocorreu por intermédio de Breuer.'}
 ];
-function selectFile(i){if(!st.files.includes(i))st.files.push(i);$$('[data-file]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.file)===i)));$('#file-panel').innerHTML='<h3>'+documents[i].title+'</h3><p>'+documents[i].body+'</p>';$('#file-count').textContent=st.files.length+' de 3 documentos explorados';updateQuiz(3);save();reportHeight()}
+function selectFile(i){
+ if(!st.files.includes(i))st.files.push(i);
+ $$('[data-file]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.file)===i)));
+ $('#file-panel').innerHTML='<h3>'+documents[i].title+'</h3><p>'+documents[i].body+'</p>';
+ $('#file-count').textContent=st.files.length+' de 3 documentos explorados';
+ $('#quiz-3').hidden=st.files.length<3;
+ updateQuiz(3);save();reportHeight();
+}
 $$('[data-file]').forEach(b=>b.addEventListener('click',()=>selectFile(Number(b.dataset.file))));
 const quizzes={
  3:{correct:1,explain:['A. Incorreta: Freud não conduziu o tratamento de Bertha Pappenheim.','B. Correta: o caso foi atendido por Breuer e discutido depois com Freud.','C. Incorreta: o caso ocupa lugar importante nos Estudos sobre a Histeria (1895), embora sua narrativa exija leitura crítica.']},
  5:{correct:1,explain:['A. Incorreta: o mesmo sintoma não autoriza significados universais ou interpretações prontas.','B. Correta: as hipóteses devem ser construídas historicamente e articuladas à singularidade do caso.','C. Incorreta: as formulações de 1895 antecedem e diferem das reformulações metapsicológicas de 1915 e 1923.']},
  6:{correct:2,explain:['A. Incorreta: uma fala isolada não demonstra a existência de recalque nem revela seu conteúdo.','B. Incorreta: não saber explicar a causa não torna o sofrimento menos legítimo.','C. Correta: a escuta parte de perguntas e do contexto, sem descartar avaliação médica ou atribuir um sentido automático.']}
 };
+function quizReady(n){
+ return n===3?st.files.length===3:n===5?st.concepts.length===4:true;
+}
 function updateQuiz(n){
- $$('[data-quiz="'+n+'"]').forEach(b=>{const i=Number(b.dataset.choice);b.classList.toggle('selected',st.choices[n]===i);b.classList.toggle('correct',st.passed.includes(n)&&quizzes[n].correct===i);b.disabled=st.passed.includes(n)});
- const ready=n===3?st.files.length===3:n===5?st.concepts.length===4:true;
- $('#verify-'+n).disabled=!ready||!Number.isInteger(st.choices[n])||st.passed.includes(n);
- if(st.passed.includes(n)){const fb=$('#feedback-'+n);fb.className='feedback';fb.innerHTML='<strong>Resposta verificada.</strong><div class="explained">'+quizzes[n].explain.map(x=>'<p>'+x+'</p>').join('')+'</div>'}
- $('#advance-'+n).disabled=!st.passed.includes(n)||st.done.includes(n);
+ const passed=st.passed.includes(n),chosen=st.choices[n],correct=quizzes[n].correct;
+ $$('[data-quiz="'+n+'"]').forEach(b=>{
+  const i=Number(b.dataset.choice);
+  b.classList.toggle('selected',chosen===i);
+  b.classList.toggle('correct',passed&&correct===i);
+  b.classList.toggle('incorrect',!passed&&Number.isInteger(chosen)&&chosen===i&&chosen!==correct);
+  b.disabled=passed;
+ });
+ if(n===3)$('#quiz-3').hidden=!quizReady(3);
+ if(n===5)$('#quiz-5').hidden=!quizReady(5);
+ const feedback=$('#feedback-'+n);
+ if(passed){
+  feedback.className='feedback';
+  feedback.innerHTML='<strong>Boa leitura. Resposta correta.</strong><div class="explained">'+quizzes[n].explain.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+ }
+}
+function autoAdvanceForQuiz(n){
+ if(!st.videoWatched||!st.passed.includes(n)||!quizReady(n))return;
+ if(n===3&&!st.done.includes(2))return;
+ if(n===5&&!st.done.includes(4))return;
+ if(n===6&&!st.done.includes(5))return;
+ if(!st.done.includes(n))complete(n,false);
 }
 [3,5,6].forEach(n=>{
- $$('[data-quiz="'+n+'"]').forEach(b=>b.addEventListener('click',()=>{if(st.passed.includes(n))return;st.choices[n]=Number(b.dataset.choice);updateQuiz(n);save()}));
- $('#verify-'+n).addEventListener('click',()=>{const good=st.choices[n]===quizzes[n].correct;const fb=$('#feedback-'+n);fb.className='feedback'+(good?'':' error');fb.innerHTML='<strong>'+(good?'Boa leitura.':'Sua resposta merece revisão.')+'</strong><div class="explained">'+quizzes[n].explain.map(x=>'<p>'+x+'</p>').join('')+'</div>';if(good&&!st.passed.includes(n))st.passed.push(n);$$('[data-quiz="'+n+'"]').forEach(b=>b.classList.toggle('incorrect',!good&&Number(b.dataset.choice)===st.choices[n]));updateQuiz(n);save();reportHeight()});
- $('#advance-'+n).addEventListener('click',()=>complete(n));updateQuiz(n);
+ $$('[data-quiz="'+n+'"]').forEach(b=>b.addEventListener('click',()=>{
+  if(st.passed.includes(n)||!quizReady(n))return;
+  const choice=Number(b.dataset.choice),good=choice===quizzes[n].correct;
+  st.choices[n]=choice;
+  if(good&&!st.passed.includes(n))st.passed.push(n);
+  const feedback=$('#feedback-'+n);
+  feedback.className='feedback'+(good?'':' error');
+  feedback.innerHTML='<strong>'+(good?'Boa leitura. Resposta correta. O próximo quadradinho já está disponível abaixo.':'Essa alternativa não é a mais adequada. Veja a explicação e tente outra.')+'</strong><div class="explained">'+quizzes[n].explain.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+  updateQuiz(n);
+  if(!good)feedback.className='feedback error';
+  save();
+  if(good)autoAdvanceForQuiz(n);
+  reportHeight();
+ }));
+ updateQuiz(n);
 });
 const times=[
  'Breuer acompanha o caso de Bertha Pappenheim. O tratamento será publicado apenas em 1895, com interpretações posteriores.',
@@ -279,21 +323,59 @@ const times=[
  'Breuer e Freud publicam a comunicação preliminar sobre mecanismos psíquicos de fenômenos histéricos, uma formulação ainda anterior à psicanálise plenamente desenvolvida.',
  'Estudos sobre a Histeria reúne o caso Anna O. narrado por Breuer e casos relatados por Freud. A publicação registra hipóteses em elaboração, não uma teoria final.'
 ];
-$$('[data-time]').forEach(b=>{const i=Number(b.dataset.time);b.addEventListener('click',()=>{if(!st.times.includes(i))st.times.push(i);b.classList.add('seen');$('#time-detail').textContent=times[i];$('#time-count').textContent=st.times.length+' de 4 marcos explorados';$('#advance-4').disabled=st.times.length<4||st.done.includes(4);save();reportHeight()});if(st.times.includes(i))b.classList.add('seen')});
+$$('[data-time]').forEach(b=>{
+ const i=Number(b.dataset.time);
+ b.addEventListener('click',()=>{
+  if(!st.times.includes(i))st.times.push(i);
+  b.classList.add('seen');
+  $('#time-detail').textContent=times[i];
+  $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
+  save();
+  if(st.times.length===4&&st.done.includes(3)&&!st.done.includes(4))complete(4,false);
+  reportHeight();
+ });
+ if(st.times.includes(i))b.classList.add('seen');
+});
 $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
-$('#advance-4').disabled=st.times.length<4||st.done.includes(4);
-$('#advance-4').addEventListener('click',()=>complete(4));
 const concepts=[
  {title:'Sintoma',body:'Os autores investigam se certas manifestações, em determinados casos, podem ser relacionadas a conflitos e experiências narradas. Sintoma não é uma palavra com significado único: depende do caso, do contexto e das limitações do conhecimento disponível.'},
  {title:'Memória',body:'Recordações e lacunas de lembrança entram na investigação clínica. Isso não significa que toda dificuldade de recordar seja recalque, nem que a memória reproduza acontecimentos de modo literal ou infalível.'},
  {title:'Afeto',body:'As hipóteses iniciais exploram relações entre experiências, expressão afetiva e sintomas. O papel do afeto muda nas formulações freudianas posteriores; convém ler cada conceito em sua época.'},
  {title:'Defesa',body:'Freud começa a examinar formas de afastamento ou dificuldade em lidar com certas representações. Daqui se desenvolvem perguntas sobre conflito, resistência e recalque — sem supor que esses conceitos já estavam acabados em 1895.'}
 ];
-$$('[data-concept]').forEach(b=>{const i=Number(b.dataset.concept);b.addEventListener('click',()=>{if(!st.concepts.includes(i))st.concepts.push(i);b.classList.add('seen');$('#concept-detail').innerHTML='<h3>'+concepts[i].title+'</h3><p>'+concepts[i].body+'</p>';$('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';updateQuiz(5);save();reportHeight()});if(st.concepts.includes(i))b.classList.add('seen')});
+$$('[data-concept]').forEach(b=>{
+ const i=Number(b.dataset.concept);
+ b.addEventListener('click',()=>{
+  if(!st.concepts.includes(i))st.concepts.push(i);
+  b.classList.add('seen');
+  $('#concept-detail').innerHTML='<h3>'+concepts[i].title+'</h3><p>'+concepts[i].body+'</p>';
+  $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
+  updateQuiz(5);save();
+  autoAdvanceForQuiz(5);reportHeight();
+ });
+ if(st.concepts.includes(i))b.classList.add('seen');
+});
 $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
 $('#reflection').value=st.reflection||'';
 $('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Reflexão salva neste navegador.';reportHeight()});
 selectFile(0);
+// Migração de quem acertou os quizzes, mas ficou preso em botões antigos.
+if(st.videoWatched){
+ if(st.passed.includes(3)&&st.files.length===3&&st.done.includes(2))autoAdvanceForQuiz(3);
+ if(st.times.length===4&&st.done.includes(3)&&!st.done.includes(4))complete(4,false);
+ if(st.passed.includes(5)&&st.concepts.length===4&&st.done.includes(4))autoAdvanceForQuiz(5);
+ if(st.passed.includes(6)&&st.done.includes(5))autoAdvanceForQuiz(6);
+}
+$('#reset-entire-lesson').addEventListener('click',()=>{
+ if(!window.confirm('Reiniciar esta aula do começo? O vídeo, os exercícios e o progresso desta aula serão zerados. As demais aulas não serão alteradas.'))return;
+ try{
+  localStorage.removeItem(KEY);
+  localStorage.removeItem('atelie-room-1880-v2');
+ }catch(e){console.warn('Não foi possível limpar o armazenamento.',e)}
+ if(parent!==window)parent.postMessage({type:'atelie-lesson-reset',lessonId:'aula-escuta-que-mudou-a-clinica'},location.origin);
+ // Reabre o vídeo e bloqueia novamente todos os quadradinhos.
+ window.location.reload();
+});
 if(st.done.includes(6))$('#finish').hidden=false;
 if('ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
 if('MutationObserver'in window)new MutationObserver(reportHeight).observe(document.body,{attributes:true,childList:true,subtree:true});
