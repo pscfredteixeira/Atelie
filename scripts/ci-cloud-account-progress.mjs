@@ -75,6 +75,7 @@ try{
  console.log('OK — duas contas isoladas e progresso completo restaurado do servidor simulado.');
 
  await page.goto('http://127.0.0.1:4173/#/aula/primeira-topica-freud',{waitUntil:'domcontentloaded'});
+ await page.reload({waitUntil:'domcontentloaded'}); // limpa o Firebase falso usado na primeira aula
  await page.locator('[data-profile-login]').waitFor();
  await page.evaluate(()=>{
   window.__restored={
