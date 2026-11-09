@@ -21,29 +21,36 @@ Conferir no Firebase Console: Authentication → Get started → Sign-in method 
 
 Depois de ativar a autenticação, repita o diagnóstico no pipeline e faça um teste de login Google com conta real. Os testes CI de interface são simulados e não provam o serviço remoto.
 
-## Estrutura de dados
+## Estrutura de dados atual — conta Google como fonte de verdade
 
-A plataforma grava somente estudos pessoais em `users/{uid}/state/atelier`:
-- `saved` — slugs dos cursos fictícios favoritos
-- `completed` — IDs das três aulas demonstrativas concluídas
-- `notes` — anotações da pessoa por aula ilustrativa
-- `answers` — respostas dos três quizzes
-- `updatedAt` — horário numérico local utilizado para conciliação
+O Firebase Authentication identifica cada aluno pelo `uid`. O navegador não é mais usado para guardar os novos registros permanentes de estudo.
 
-A autenticação do Firebase valida a identidade de quem usa o serviço. As regras do Firestore restringem leitura e escrita ao proprietário do `uid`. Elas não concedem edição administrativa de cursos.
+- `users/{uid}/state/atelier`: cursos salvos, aulas concluídas e anotações (`saved`, `completed`, `notes`, `answers`, `updatedAt`).
+- `users/{uid}/lessonProgress/escuta-que-mudou-a-clinica`: seis momentos, vídeo assistido, consultório 1880, documentos, perguntas, linha do tempo, conceitos e reflexão.
+- `users/{uid}/lessonProgress/primeira-topica-freud`: vídeo, respostas, 14 marcos, atividades de palavras, sistemas visitados e áudio.
+- `users/{uid}/profile/main`: nome de preferência e telefone opcional.
 
-## Offline e conflitos
+As telas de aula, caderno, salvos e progresso exigem conta Google. O catálogo público continua acessível sem login. O sistema consulta os documentos do Firestore quando o aluno abre a aula; **não restaura os dados de aulas a partir do armazenamento local**.
 
-- Sem login, dados ficam apenas na chave anônima `ateliepsi-beta-state-v1` do navegador.
-- Com login, dados ficam em chave local separada por `uid`, além de serem sincronizados quando o Firestore está disponível.
-- Nenhum dado anônimo é associado automaticamente à conta para evitar cruzamento entre pessoas no mesmo dispositivo.
-- Se a gravação falhar, a alteração fica pendente no navegador e a plataforma tenta novamente ao recuperar conexão ou reabrir a aba.
-- Se houver versões divergentes e a nuvem tiver `updatedAt` maior, a pessoa escolhe se prefere a cópia da nuvem ou a do dispositivo, evitando sobrescrita silenciosa.
-- Em uso simultâneo em dois dispositivos, o modelo ainda não oferece merge de cada campo. Não use como armazenamento crítico até validar conflitos de edição reais.
-- Os rascunhos do Estúdio são **locais**, não são publicados nem enviados para o Firestore.
+A conclusão geral e a insígnia são atualizadas somente depois de a gravação do estado completo da aula ter sido confirmada pelo Firestore. O status de salvamento é exibido. Em caso de falha, há erro visível; a alteração pode ficar temporariamente na memória da aba, mas **não é considerada salva**.
 
-**Limitações do Sprint 19:** Console e regras requerem configuração e publicação manual pela conta do responsável. O CI testa navegação e simula sincronização; não comprova a conexão real com o projeto Firebase. Login por redirecionamento pode exigir configuração extra em navegadores com restrições de armazenamento entre domínios, como versões recentes do Safari. Prefira testar o popup primeiro.
+## Conexão e disponibilidade
 
+- Sem conexão Google, nenhuma etapa pessoal é aberta.
+- Se a leitura do Firestore falhar, a aula não deve começar com um progresso zerado, evitando sobrescrever acidentalmente o histórico.
+- Em caso de falha de escrita, o site informa que não houve confirmação. Não fechar o navegador com salvamento pendente; uma sessão offline não garante preservação.
+- No uso simultâneo em vários dispositivos, as gravações completas de uma aula seguem ordem de envio **por aba**. Ainda não há reconciliação de edições simultâneas entre dispositivos: a última escrita aceita pode prevalecer. A concorrência precisa de teste real antes do lançamento.
+- O Estúdio de demonstração não é um editor administrativo seguro e não publica nada no banco.
+
+## Transferir progresso antigo
+
+A versão anterior guardava etapas em `localStorage`. Esses registros **não são importados automaticamente**, porque o mesmo dispositivo pode ser usado por pessoas diferentes.
+
+No **Meu perfil**, a opção **Importar minhas etapas antigas** aparece quando o navegador contém um dos registros antigos. O aluno precisa confirmar que o histórico é seu; a importação só grava cada aula quando ainda não houver documento remoto correspondente. Após a confirmação do Firestore, o registro antigo da aula é retirado do armazenamento local. Registros não importados permanecem intactos.
+
+A importação é pontual; todo progresso novo é salvo exclusivamente na conta.
+
+**Atenção:** a publicação do código em GitHub Pages não publica regras do Firebase. Sem as permissões novas do Firestore, as aulas mostrarão erro ao carregar/salvar. Nunca abrir permissões globais para contornar isso.
 
 ## Meu perfil — primeira etapa do cadastro pessoal (09/11/2026)
 
@@ -72,20 +79,23 @@ As novas regras também atualizam os identificadores de conclusão e notas para 
 **Diagnóstico:** se aparecer “O Firestore recusou a consulta” ou “não autorizou a gravação”, primeiro verifique a publicação das regras e o UID da conta. Não altere as regras para `allow read, write: if true` para contornar o erro.
 
  
-## Progresso e insígnias na conta (09/11/2026)
+## Progresso e insígnias por conta — revisão 09/11/2026
 
-A tela `#/perfil` e a tela `#/progresso` agora mostram duas insígnias da Formação Freudiana:
-- **A escuta que mudou a clínica:** `escuta-que-mudou-a-clinica`
-- **A primeira tópica de Freud:** `primeira-topica-freud`
+As duas insígnias da Formação Freudiana pertencem ao aluno autenticado. O Ateliê reconstrói o progresso geral a partir de `state/atelier` e verifica o estado de cada aula na coleção `lessonProgress`.
 
-A conclusão de cada aula é comunicada pela página da aula ao Ateliê principal. O Ateliê inclui o identificador em `state.completed`, salvo no dispositivo e, quando a conta Google está conectada, sincronizado em `users/{uid}/state/atelier` (desde que as regras estejam publicadas e a gravação seja confirmada). As insígnias da conta são reconstituídas desse registro após o login.
+O código fonte e os testes de contrato estão no GitHub; **a ativação remota depende da publicação de `firestore.rules` no Firebase Console pelo administrador**.
 
-A interface distingue **sincronizado**, **pendente** e **apenas neste navegador**. Conclusão/insígnia não é certificado profissional.
+### Etapa obrigatória no Console
 
-**Limite importante:** os micro-passos dos quadradinhos (alternativas, cliques e telas internas das aulas) ainda usam chaves próprias de `localStorage` em cada navegador. **Eles não são retomados em outro dispositivo** nesta fase. Não confundir sincronização do indicador de aula concluída com a persistência integral da atividade.
+1. Abrir https://console.firebase.google.com/project/ateliepsi/firestore/rules
+2. Copiar **o arquivo inteiro** `firestore.rules` atualizado no GitHub. Preservar as regras privadas existentes de `users/{uid}/profile` e `users/{uid}/state`.
+3. Clicar em **Publicar** no Firebase Console e confirmar que a publicação teve sucesso.
+4. Entrar no Ateliê com uma conta Google e abrir a aula “A escuta que mudou a clínica”.
+5. Completar uma interação, verificar a mensagem de progresso salvo, abrir o mesmo usuário em outro navegador e conferir se a etapa foi restaurada.
+6. Repetir com a Primeira Tópica e depois entrar com outro Google para verificar que a segunda conta não recebe o histórico.
 
-Na troca de conta, os dados gerais do Ateliê usam chave local por UID; o estado anônimo não é migrado automaticamente. A conexão Firestore deve ser testada com pelo menos duas contas e dois navegadores.
+As regras permitem somente que um usuário leia e edite seus próprios documentos, sem listagem de registros de outras contas. As respostas e progresso educacional não equivalem a um certificado.
 
-### Testes
+### Testes automatizados
 
-O pipeline em `.github/workflows/quality.yml` usa Playwright e inclui `scripts/ci-profile-badges.mjs` para simular contas diferentes, testar edição do perfil, verificar separação de insígnias e checar a ausência de rolagem lateral em 390 px. Isso **não comprova** a implantação das regras nem autenticação real no Firebase.
+`scripts/ci-cloud-account-progress.mjs` verifica acesso com login, separação de duas contas, restauração de progresso por UID, recuperação da Primeira Tópica e ausência de novas gravações em `localStorage`. Usa Firestore **simulado**; teste real do projeto depende da publicação das regras e do login na conta autorizada.
