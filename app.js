@@ -34,82 +34,63 @@ function normalize(value){
  if(Number.isSafeInteger(value.updatedAt) && value.updatedAt>=0)o.updatedAt=value.updatedAt;
  return o;
 }
-const accountKey = uid => STORE + ':account:' + uid;
-const pendingKey = uid => STORE + ':pending:' + uid;
-function loadLocal(key) {
- try { return normalize(JSON.parse(localStorage.getItem(key) || 'null')); }
- catch { return empty(); }
+// Progresso permanente não vem de localStorage: o servidor é a fonte de verdade.
+let activeUid=null;
+let demoMode=true;
+let state=empty();
+let appCloudLoaded=false;
+let courseFilter='all';
+let cloudMessage='';
+let syncing=false;
+let pendingAccountSave=false;
+let savingAccountVersion=0;
+let syncTimer=null;
+let conflict=null;
+let personalProfile=null;
+let personalProfileStatus='signed-out';
+let profileNotice='';
+const pendingLessonWrites=new Map();
+const writingLessonIds=new Set();
+function updateEntryGate(){
+ const shell=$('#shell');if(shell)shell.hidden=false;
+ const skip=$('#skipLink');if(skip)skip.href='#main';
 }
-let activeUid = null;
-const DEMO_SESSION = 'ateliepsi-demo-entry-v1';
-// Acesso direto temporário: navegação pública sem exigir conta.
-let demoMode = true;
-let state = loadLocal(STORE);
-function updateEntryGate() {
- // A tela de login foi retirada temporariamente; a plataforma está sempre disponível.
- const shell = $('#shell');
- if (shell) shell.hidden = false;
- const skip = $('#skipLink');
- if (skip) skip.href = '#main';
-}
-function enterDemo() {
- demoMode = true;
- try { sessionStorage.setItem(DEMO_SESSION, 'yes'); } catch {}
- updateEntryGate();
- render();
-}
-function exitDemo() {
- demoMode = false;
- try { sessionStorage.removeItem(DEMO_SESSION); } catch {}
- updateEntryGate();
- document.title = 'Entrar · Ateliê';
-}
-
-let courseFilter = 'all';
-let cloudMessage = '';
-let syncTimer;
-let syncing = false;
-let conflict = null;
-let personalProfile = null;
-let personalProfileStatus = 'signed-out';
-let profileNotice = '';
-
-function queueCloudSync(delay = 700) {
+function enterDemo(){render()}
+function exitDemo(){render()}
+function queueCloudSync(delay=350){
  clearTimeout(syncTimer);
- if (!activeUid || conflict || !window.AtelieCloud?.ready) return;
- const uid = activeUid;
- if (!localStorage.getItem(pendingKey(uid))) return;
- syncTimer = setTimeout(async () => {
-   if (uid !== activeUid || conflict || !window.AtelieCloud?.ready || window.AtelieCloud.user?.uid !== uid) return;
-   if (syncing) { queueCloudSync(1000); return; }
-   const version = localStorage.getItem(pendingKey(uid));
-   if (!version) return;
-   syncing = true;
-   cloudMessage = 'Sincronizando alterações...';
-   renderStatus();
-   try {
-     await window.AtelieCloud.save(loadLocal(accountKey(uid)));
-     if (uid === activeUid) {
-       if (localStorage.getItem(pendingKey(uid)) === version) localStorage.removeItem(pendingKey(uid));
-       cloudMessage = 'Alterações sincronizadas com o Firebase.';
-     }
-   } catch (error) {
-     if (uid === activeUid) cloudMessage = 'Não foi possível sincronizar. Seus dados continuam salvos neste dispositivo (' + (error.code || error.message) + ').';
-   } finally {
-     syncing = false;
-     renderStatus();
-     if (activeUid && localStorage.getItem(pendingKey(activeUid)) && window.AtelieCloud?.ready && !conflict && cloudMessage.startsWith('Alterações sincronizadas')) queueCloudSync(100);
+ if(!pendingAccountSave||!activeUid||!appCloudLoaded||!window.AtelieCloud?.ready)return;
+ const uid=activeUid;
+ syncTimer=setTimeout(async()=>{
+  if(uid!==activeUid||!window.AtelieCloud?.ready||!pendingAccountSave||syncing)return;
+  syncing=true;
+  const version=savingAccountVersion,copy=JSON.parse(JSON.stringify(state));
+  cloudMessage='Salvando seus estudos na conta Google...';
+  renderStatus();
+  try{
+   await window.AtelieCloud.save(copy);
+   if(uid!==activeUid)return;
+   if(version===savingAccountVersion)pendingAccountSave=false;
+   cloudMessage=pendingAccountSave?'Há alterações aguardando sincronização.':'Progresso salvo no Firestore da sua conta Google.';
+  }catch(error){
+   if(uid===activeUid){
+    cloudMessage='O Firestore não confirmou o salvamento ('+String(error.code||error.message||'erro')+'). Não saia desta página; tente novamente com conexão.';
    }
- }, delay);
+  }finally{
+   syncing=false;renderStatus();
+   if(uid===activeUid&&pendingAccountSave&&version!==savingAccountVersion)queueCloudSync(100);
+  }
+ },delay);
 }
-function saveState() {
- state.updatedAt = Math.max(Date.now(), (state.updatedAt || 0) + 1);
- try {
-   localStorage.setItem(activeUid ? accountKey(activeUid) : STORE, JSON.stringify(state));
-   if (activeUid) localStorage.setItem(pendingKey(activeUid), String(state.updatedAt));
- } catch {
-   cloudMessage = 'Armazenamento local indisponível. Copie seus dados antes de sair.';
+function saveState(){
+ if(!activeUid||!appCloudLoaded||!window.AtelieCloud?.ready){
+  cloudMessage='Entre com Google e carregue sua conta para salvar alterações.';
+  renderStatus();
+  return;
  }
+ state.updatedAt=Math.max(Date.now(),(state.updatedAt||0)+1);
+ savingAccountVersion++;
+ pendingAccountSave=true;
  queueCloudSync();
  updateSavedCounter();
  renderStatus();
@@ -120,12 +101,10 @@ function updateSavedCounter() {
 }
 function renderStatus() {
  const el = $('#cloudStatus');
- if (el) {
-   const pending = activeUid && localStorage.getItem(pendingKey(activeUid));
-   el.textContent = conflict ? 'Conflito de versões: escolha qual estudo manter.'
-     : pending && window.AtelieCloud?.ready && !syncing ? 'Alterações salvas neste dispositivo · sincronização pendente.'
-     : cloudMessage || (activeUid ? 'Conta conectada.' : 'Seus estudos estão salvos somente neste navegador');
- }
+ if(el)el.textContent=!activeUid?'Entre com Google para salvar o progresso.':
+  !appCloudLoaded?'Carregando o progresso da sua conta...':
+  pendingAccountSave?(syncing?'Salvando no Firestore...':'Salvamento pendente — não confirmado no Firestore.'):
+  cloudMessage||'Progresso vinculado à sua conta Google.';
  const btn = $('#loginButton');
  if (btn) btn.textContent = activeUid ? 'Sair da conta' : 'Acesso local';
  const profileLink=$('#accountShortcut');
@@ -308,11 +287,10 @@ const ATELIE_BADGES=[
  {id:'primeira-topica-freud',title:'A primeira tópica de Freud',image:'assets/insignia-primeira-topica-freud.png',alt:'Insígnia roxa e dourada com retrato de Freud'}
 ];
 function studyStorageStatus(){
- if(!activeUid)return 'Seu progresso está salvo somente neste navegador.';
- if(conflict)return 'Há duas versões do progresso. Escolha a que deseja manter antes de sincronizar.';
- const pending=Boolean(localStorage.getItem(pendingKey(activeUid)));
- if(pending||!window.AtelieCloud?.ready)return 'Progresso deste dispositivo: sincronização com a conta ainda pendente.';
- return 'Progresso sincronizado com sua conta Google pelo Firestore.';
+ if(!activeUid)return 'Entre com Google para consultar seu progresso pessoal.';
+ if(!appCloudLoaded)return 'Carregando dados da sua conta Google...';
+ if(pendingAccountSave)return 'Alterações aguardando confirmação do Firestore.';
+ return 'Progresso e conquistas vinculados à sua conta Google no Firestore.';
 }
 function achievementsView(){
  const earned=ATELIE_BADGES.filter(b=>state.completed.includes(b.id)).length;
@@ -342,7 +320,7 @@ function progressView(){
 }
 function notebookView(){
  const all=studyIndex();
- return heading('MEU ESTUDO','Meu caderno','Anotações por aula, salvas automaticamente neste navegador.')+
+ return heading('MEU ESTUDO','Meu caderno','Anotações por aula vinculadas à sua conta Google.')+
  '<div class="intro-grid">'+all.map(l=>'<article class="info-card"><span class="eyebrow">'+esc(l.course)+'</span><h2>'+esc(l.title)+
  '</h2><p class="note-preview">'+esc(state.notes[l.id]?.trim()||'Você ainda não escreveu uma anotação nesta aula.')+
  '</p><a class="section-link" href="'+l.route+'">Abrir caderno '+icon('arrow')+'</a></article>').join('')+'</div>';
@@ -397,7 +375,19 @@ function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return he
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));$('#main').innerHTML=html;renderCourseNavigation(path);document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));if(path.startsWith('/aula/')&&!activeUid){
+  html=heading('ACESSO ÀS AULAS','Entre para continuar','O progresso de cada etapa pertence à sua conta Google, não ao navegador.')+
+   '<section class="profile-signin-panel"><h2>Seu estudo acompanha sua conta</h2>'+
+   '<p>Entre com Google para carregar e salvar automaticamente seu progresso no Firestore.</p>'+
+   '<button type="button" class="btn btn-primary" data-profile-login>Entrar com Google</button>'+
+   '<p class="profile-form-status" id="profileLoginStatus" role="status"></p></section>';
+ }else if(path.startsWith('/aula/')&&!appCloudLoaded){
+  html=heading('SEU ESTUDO','Carregando sua conta','A aula só abre quando o progresso pessoal for recuperado do Firestore.')+
+   '<section class="profile-signin-panel"><h2>Carregando seu progresso...</h2>'+
+   '<p>Se persistir, confira sua conexão e as regras de segurança do Firebase.</p>'+
+   '<button type="button" class="btn btn-outline" onclick="location.reload()">Tentar novamente</button></section>';
+ }
+ $('#main').innerHTML=html;renderCourseNavigation(path);document.querySelectorAll('[data-nav]').forEach(a=>{const v=a.dataset.nav;const selected=v===path||(path.startsWith('/curso/')&&v==='/cursos')||(path.startsWith('/aula/')&&v==='/cursos')||(path.startsWith('/estudio/')&&v==='/estudio');if(selected)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});updateSavedCounter();renderStatus();const inp=$('#globalSearch');if(document.activeElement!==inp)inp.value=q;closeMenu();window.scrollTo({top:0,behavior:'instant'});document.title=(path==='/'?'Ateliê':path.replaceAll('/',' ').trim()+' · Ateliê')}
 function closeMenu(){
  $('#sidebar').classList.remove('is-open');
  $('#overlay').hidden=true;
@@ -587,18 +577,20 @@ window.addEventListener('atelie-cloud-state', e => {
    if (gateStatus) gateStatus.textContent = cloudMessage;
  }
 });
-window.addEventListener('atelie-cloud-auth', e => {
- activeUid = e.detail.uid || null;
- personalProfile = null;
- personalProfileStatus = activeUid ? 'loading' : 'signed-out';
- profileNotice = '';
- if (activeUid) {
-   demoMode = false;
-   try { sessionStorage.removeItem(DEMO_SESSION); } catch {}
- }
- conflict = null;
+window.addEventListener('atelie-cloud-auth',e=>{
+ activeUid=e.detail.uid||null;
+ personalProfile=null;
+ personalProfileStatus=activeUid?'loading':'signed-out';
+ profileNotice='';
+ appCloudLoaded=false;
+ pendingAccountSave=false;
+ savingAccountVersion=0;
+ pendingLessonWrites.clear();
+ writingLessonIds.clear();
  clearTimeout(syncTimer);
- state = loadLocal(activeUid ? accountKey(activeUid) : STORE);
+ state=empty();
+ conflict=null;
+ cloudMessage=activeUid?'Carregando estudos do Firestore...':'Faça login para guardar seu progresso.';
  render();
 });
 window.addEventListener('atelie-cloud-profile', e=>{
@@ -616,70 +608,74 @@ window.addEventListener('atelie-cloud-profile', e=>{
  // Ao carregar pela primeira vez ou recuperar erro, a tela é atualizada.
  if(location.hash.startsWith('#/perfil')&&!(alreadyReady&&personalProfileStatus==='ready'))render();
 });
-window.addEventListener('atelie-cloud-loaded', e => {
- if (!activeUid || e.detail.uid !== activeUid) return;
- const local = loadLocal(accountKey(activeUid));
- const remote = normalize(e.detail.state);
- const pending = localStorage.getItem(pendingKey(activeUid));
- if (pending && e.detail.exists && remote.updatedAt > local.updatedAt) {
-   conflict = { uid: activeUid, remote };
-   state = local;
-   cloudMessage = 'Existe uma versão mais recente na nuvem. Escolha qual deseja manter.';
-   render();
-   return;
- }
- if (pending) state = local;
- else if (e.detail.exists) state = { ...remote, drafts: local.drafts };
- else state = local;
- try { localStorage.setItem(accountKey(activeUid), JSON.stringify(state)); } catch {}
- render();
- queueCloudSync(100);
-});
-window.addEventListener('atelie-cloud-ready', e => {
- if (e.detail.uid === activeUid) queueCloudSync(100);
-});
-window.addEventListener('online', () => queueCloudSync(500));
-document.addEventListener('visibilitychange', () => { if (!document.hidden) queueCloudSync(500); });
-document.addEventListener('click', e => {
- const choice = e.target.closest('[data-conflict]');
- if (!choice || !conflict || conflict.uid !== activeUid) return;
- const { remote } = conflict;
- conflict = null;
- if (choice.dataset.conflict === 'cloud') {
-   state = { ...remote, drafts: state.drafts };
-   try {
-     localStorage.setItem(accountKey(activeUid), JSON.stringify(state));
-     localStorage.removeItem(pendingKey(activeUid));
-   } catch {}
-   cloudMessage = 'Versão da nuvem restaurada neste dispositivo.';
-   render();
-   return;
- }
- state.updatedAt = Math.max(state.updatedAt, remote.updatedAt);
- saveState();
- cloudMessage = 'Versão deste dispositivo escolhida para sincronizar.';
+window.addEventListener('atelie-cloud-loaded',e=>{
+ if(!activeUid||e.detail.uid!==activeUid)return;
+ state=normalize(e.detail.state);
+ appCloudLoaded=true;
+ cloudMessage='Estudos recuperados do Firestore da sua conta.';
  render();
 });
-
+window.addEventListener('atelie-cloud-ready',e=>{
+ if(e.detail.uid===activeUid&&pendingAccountSave)queueCloudSync(80);
+});
+window.addEventListener('online',()=>{if(pendingAccountSave)queueCloudSync(100);});
+// A sessão não é persistida pelo app no navegador. O Firebase Authentication
+// recupera a sessão Google; toda leitura de conteúdo pessoal vem do servidor.
+async function sendLessonProgress(lessonId,progress,frame){
+ if(!activeUid||!appCloudLoaded||!window.AtelieCloud?.user||
+    window.AtelieCloud.user.uid!==activeUid)return;
+ if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))return;
+ const copy=JSON.parse(JSON.stringify(progress));
+ if(JSON.stringify(copy).length>15000)return;
+ pendingLessonWrites.set(lessonId,copy);
+ if(writingLessonIds.has(lessonId))return;
+ writingLessonIds.add(lessonId);
+ const uid=activeUid;
+ try{
+  while(pendingLessonWrites.has(lessonId)&&activeUid===uid){
+   const current=pendingLessonWrites.get(lessonId);
+   pendingLessonWrites.delete(lessonId);
+   try{
+    await window.AtelieCloud.saveLessonProgress(lessonId,current);
+    if(uid!==activeUid)return;
+    frame?.contentWindow?.postMessage({type:'atelie-progress-saved',lessonId},location.origin);
+   }catch(error){
+    if(uid!==activeUid)return;
+    pendingLessonWrites.set(lessonId,current);
+    frame?.contentWindow?.postMessage({type:'atelie-progress-error',lessonId,errorCode:String(error.code||error.message||'erro')},location.origin);
+    cloudMessage='Não foi possível gravar uma etapa da aula no Firestore. Verifique a conexão e as regras de segurança.';
+    renderStatus();
+    break;
+   }
+  }
+ }finally{writingLessonIds.delete(lessonId)}
+}
+window.addEventListener('online',()=>{
+ const frame=$('#freudLessonFrame'),lessonId=parseRoute().path.split('/aula/')[1];
+ if(frame&&pendingLessonWrites.has(lessonId))sendLessonProgress(lessonId,pendingLessonWrites.get(lessonId),frame);
+});
 window.addEventListener('message',event=>{
  if(event.origin!==window.location.origin)return;
  const frame=$('#freudLessonFrame');
  if(!frame||event.source!==frame.contentWindow)return;
  const data=event.data;
  if(!data||typeof data!=='object')return;
- if(data.type==='atelie-lesson-reset'&&data.lessonId==='aula-escuta-que-mudou-a-clinica'){
-   // Zera apenas esta aula: outras aulas, trilhas e demais anotações permanecem.
-   state.completed=state.completed.filter(id=>id!==FREUD_FIRST_ID);
-   if(state.notes&&Object.prototype.hasOwnProperty.call(state.notes,FREUD_FIRST_ID))delete state.notes[FREUD_FIRST_ID];
-   saveState();
-   const textarea=$('#lessonNote');
-   if(textarea)textarea.value='';
-   const meter=$('#freudLiveSegments'),value=$('#freudLiveCount'),extras=$('#freudLessonExtras');
-   if(meter)meter.setAttribute('aria-valuenow','0');
-   document.querySelectorAll('#freudLiveSegments [data-progress-step]').forEach(segment=>segment.classList.remove('done'));
-   if(value)value.textContent='0 de 6 etapas';
-   if(extras)extras.hidden=true;
-   return;
+ const routeLessonId=parseRoute().path.split('/aula/')[1];
+ if(data.type==='atelie-progress-request'){
+  if(data.lessonId!==routeLessonId||!appCloudLoaded||!activeUid)return;
+  const uid=activeUid,windowFrame=frame;
+  window.AtelieCloud.loadLessonProgress(routeLessonId).then(progress=>{
+   if(uid!==activeUid||frame!==windowFrame||parseRoute().path!==('/aula/'+routeLessonId))return;
+   windowFrame.contentWindow?.postMessage({type:'atelie-progress-load',lessonId:routeLessonId,state:progress},location.origin);
+  }).catch(error=>{
+   if(uid!==activeUid)return;
+   windowFrame.contentWindow?.postMessage({type:'atelie-progress-error',lessonId:routeLessonId,errorCode:String(error.code||error.message||'erro')},location.origin);
+  });
+  return;
+ }
+ if(data.type==='atelie-progress-save'){
+  if(data.lessonId===routeLessonId&&data.state&&typeof data.state==='object')sendLessonProgress(routeLessonId,data.state,frame);
+  return;
  }
  if(data.type==='atelie-lesson-height'){
    const height=Number(data.height);
