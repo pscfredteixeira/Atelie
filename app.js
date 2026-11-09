@@ -326,6 +326,52 @@ function notebookView(){
  '</p><a class="section-link" href="'+l.route+'">Abrir caderno '+icon('arrow')+'</a></article>').join('')+'</div>';
 }
 
+/* Importação pontual e voluntária: nunca usar esses dados antigos como
+   origem do progresso durante o estudo. Só copiar com consentimento ao Firestore. */
+const LEGACY_PROGRESS_KEYS=['atelie-escuta-seis-momentos-v1','atelie-primeira-topica-2026-v1'];
+function hasLegacyProgress(){
+ try{return LEGACY_PROGRESS_KEYS.some(key=>localStorage.getItem(key)!==null)}catch{return false}
+}
+function legacyTransferView(){
+ if(!activeUid||!appCloudLoaded||!hasLegacyProgress())return '';
+ return '<section class="personal-achievements" aria-labelledby="legacyTitle">'+
+ '<span class="eyebrow">TRANSFERÊNCIA OPCIONAL</span><h2 id="legacyTitle">Progresso anterior neste dispositivo</h2>'+
+ '<p>Detectamos etapas salvas pelo sistema antigo. Se elas forem suas, você pode transferi-las para a conta Google conectada. O Ateliê não substituirá um progresso já existente no Firestore.</p>'+
+ '<button type="button" class="btn btn-outline" id="importLegacyProgress">Importar minhas etapas antigas</button>'+
+ '<p class="profile-form-status" id="legacyImportStatus" role="status" aria-live="polite"></p></section>';
+}
+function readLegacy(key){
+ try{const value=JSON.parse(localStorage.getItem(key)||'null');
+  return value&&typeof value==='object'&&!Array.isArray(value)?value:null;
+ }catch{return null}
+}
+function legacyEscuta(x){
+ const keys=(v,max)=>Array.isArray(v)?[...new Set(v.filter(n=>Number.isInteger(n)&&n>=0&&n<max))]:[];
+ const done=Array.isArray(x.done)?[...new Set(x.done.filter(n=>Number.isInteger(n)&&n>=1&&n<=6))]:[];
+ const visited=readLegacy('atelie-room-1880-v2');
+ const spots=keys(x.spots,3);
+ if(!spots.length&&visited)spots.push(...keys(visited.visited,3));
+ return {
+  unlocked:Math.max(1,Math.min(6,Number.isInteger(x.unlocked)?x.unlocked:1)),
+  done,spots,files:keys(x.files,3),times:keys(x.times,4),
+  concepts:keys(x.concepts,4),
+  choices:Object.fromEntries(Object.entries(x.choices||{}).filter(([k,v])=>['3','5','6'].includes(k)&&Number.isInteger(v)&&v>=0&&v<=2)),
+  passed:Array.isArray(x.passed)?x.passed.filter(n=>[3,5,6].includes(n)):[],
+  reflection:typeof x.reflection==='string'?x.reflection.slice(0,5000):'',
+  videoWatched:x.videoWatched===true,
+  resumeUnlock:Math.max(1,Math.min(6,Number.isInteger(x.resumeUnlock)?x.resumeUnlock:2)),
+  roomCompletedEarly:x.roomCompletedEarly===true
+ };
+}
+function legacyTopica(x){
+ return{
+  passed:Array.isArray(x.passed)?[...new Set(x.passed.filter(v=>['q1','q2a','q2b','q3a','q3b'].includes(v)))]:[],
+  visited:Array.isArray(x.visited)?[...new Set(x.visited.filter(v=>['ics','pcs','cs'].includes(v)))]:['ics'],
+  videoFinished:x.videoFinished===true||Array.isArray(x.passed)&&x.passed.includes('q1'),
+  thirdAudioDone:x.thirdAudioDone===true,
+  wordsCompleted:Array.isArray(x.wordsCompleted)?[...new Set(x.wordsCompleted.filter(n=>Number.isInteger(n)&&n>=1&&n<=4))]:[]
+ };
+}
 function profileView(){
  const user=window.AtelieCloud?.user;
  if(!activeUid||!user)return heading('CONTA PESSOAL','Meu perfil','Entre com Google para consultar e atualizar seus dados no Ateliê.')+
@@ -365,7 +411,7 @@ function profileView(){
     '<small>Este telefone fica restrito ao seu cadastro, sem divulgação pública.</small></div>'+
     '<div class="profile-form-actions"><button class="btn btn-primary" id="profileSave" type="submit" '+(ready?'':'disabled')+'>Salvar alterações</button>'+
     '<span class="profile-form-status" id="profileSaveStatus" role="status" aria-live="polite">'+esc(profileNotice)+'</span></div>'+
-   '</form></section></div>'+achievementsView();
+   '</form></section></div>'+legacyTransferView()+achievementsView();
 }
 function savedView(){const cs=PUBLISHED_COURSES().filter(c=>state.saved.includes(c.slug));return heading('MEU ESTUDO','Cursos salvos','Se você entrar com Google e o Firestore estiver configurado, seus favoritos poderão ser sincronizados entre dispositivos.')+(cs.length?'<div class="course-grid">'+cs.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Você ainda não salvou cursos.</h2><p>Abra um curso e selecione “Salvar curso”.</p><a class="btn btn-primary" href="#/cursos">Explorar cursos</a></div>')}
 function trails(){return heading('PERCURSOS','Trilhas de estudo','Percursos disponíveis para estudo.')+'<div class="intro-grid">'+PUBLISHED_COURSES().map((c,i)=>'<article class="info-card"><span class="eyebrow">TRILHA 0'+(i+1)+'</span><h2>'+esc(c.title)+'</h2><p>'+esc(c.subtitle)+'</p><a class="section-link" href="#/aula/'+c.lesson+'">Experimentar aula '+icon('arrow')+'</a></article>').join('')+'</div>'}
@@ -482,6 +528,42 @@ function googleLoginError(error) {
  }
 }
 
+document.addEventListener('click',async e=>{
+ const btn=e.target.closest('#importLegacyProgress');
+ if(!btn)return;
+ if(!activeUid||!appCloudLoaded||!window.AtelieCloud?.ready)return;
+ if(!confirm('Importar para sua conta Google apenas as etapas antigas que pertencem a você? Nenhum registro existente no Firestore será sobrescrito.'))return;
+ const uid=activeUid,status=$('#legacyImportStatus');btn.disabled=true;
+ if(status)status.textContent='Verificando o progresso na sua conta...';
+ let imported=0,skipped=0;
+ for(const [lessonId,key,converter] of [
+  ['escuta-que-mudou-a-clinica',LEGACY_PROGRESS_KEYS[0],legacyEscuta],
+  ['primeira-topica-freud',LEGACY_PROGRESS_KEYS[1],legacyTopica]
+ ]){
+  if(uid!==activeUid)break;
+  const old=readLegacy(key);
+  if(!old)continue;
+  try{
+   const existing=await window.AtelieCloud.loadLessonProgress(lessonId);
+   if(existing!==null){skipped++;continue}
+   const restored=converter(old);
+   await window.AtelieCloud.saveLessonProgress(lessonId,restored);
+   if(uid!==activeUid)break;
+   confirmedLessonCompletion(lessonId,restored);
+   localStorage.removeItem(key);
+   if(lessonId==='escuta-que-mudou-a-clinica')localStorage.removeItem('atelie-room-1880-v2');
+   imported++;
+  }catch(error){
+   if(status)status.textContent='A importação foi interrompida: '+String(error.code||error.message||'Falha no Firestore')+'. Os dados não importados foram preservados.';
+   btn.disabled=false;return;
+  }
+ }
+ if(uid!==activeUid)return;
+ const finalMessage=imported+' aula(s) importada(s) para sua conta. '+(skipped?skipped+' já tinha(m) progresso remoto e não foi(ram) alterada(s).':'');
+ if(status)status.textContent=finalMessage;
+ btn.disabled=false;
+ renderStatus();
+});
 document.addEventListener('click',async e=>{
  const login=e.target.closest('[data-profile-login]');
  const retry=e.target.closest('[data-profile-retry]');
