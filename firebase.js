@@ -3,14 +3,7 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
 
 // Firebase Web config is public. Never publish service account credentials.
-const firebaseConfig = {
-  apiKey: 'AIzaSyA02-Pw2iFJ2ebooWkQdlKG7869RwG-blA',
-  authDomain: 'ateliepsi.firebaseapp.com',
-  projectId: 'ateliepsi',
-  storageBucket: 'ateliepsi.firebasestorage.app',
-  messagingSenderId: '599058974240',
-  appId: '1:599058974240:web:0dd136bd2242cfd5f65e45',
-};
+import {firebaseConfig} from './firebase-config.js';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
