@@ -2,7 +2,8 @@
 <html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4efed">
-<title>Ateliê de Psicanálise · O consultório de 1880 — Protótipo interativo</title>
+<title>Ateliê de Psicanálise · O consultório de 1880</title>
+<script>if(window.parent!==window)document.documentElement.classList.add("embedded-in-atelie");</script>
 <style>
 :root {--paper:#fffcf8;--ink:#2b2035;--plum:#643d71;--lav:#f3eaf5;--muted:#685d70;--line:#e7dbe6;--good:#29674f;--gold:#c8a97a}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 95% 2%,#eee3ef,transparent 35%),#f4efec;color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -20,6 +21,12 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #e4b8f
 @media (max-width:700px){.wrap{margin:10px auto 25px}.card{padding:17px 12px 20px;border-radius:17px}.lead{font-size:.95rem;margin-bottom:10px}.intro-line{margin:8px 0 13px;font-size:.8rem}.room{border-radius:14px;aspect-ratio:1010/634;transition:min-height .18s}.room.is-open{aspect-ratio:auto;min-height:505px}.room .photo{background-size:100% auto;background-position:center top}.room.is-open .photo{filter:brightness(.69)}.room.is-open::after{background:linear-gradient(180deg,transparent,#251a2b 80%)}.spot{width:47px;height:47px}.room.is-open .spot{visibility:hidden}.room .tip{left:6px;right:6px;bottom:6px;max-width:none;width:max-content;margin:auto;font-size:.65rem;padding:4px 10px}.panel{top:12px;left:12px;right:12px;width:auto;max-height:calc(100% - 24px);border-radius:16px;padding:18px 16px}.panel p{font-size:.9rem}.panel h2{font-size:1.64rem}.panel-nav{margin-top:12px}.bottom{align-items:stretch;gap:13px}.cta{width:100%;min-height:49px}.progress{justify-content:center;width:100%}.credit{font-size:.73rem}.panel .question{font-size:.85rem}}
 @media(max-width:350px){.room.is-open{min-height:550px}.panel h2{font-size:1.46rem}.panel p{font-size:.86rem}.panel{padding:14px}.panel .question{margin:10px 0}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+/* Layout integrado: foto e pontos ocupam a mesma largura do vídeo na aula. */
+html.embedded-in-atelie body{background:transparent}
+html.embedded-in-atelie .wrap{width:100%;max-width:none;margin:0}
+html.embedded-in-atelie .card{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+html.embedded-in-atelie .room{width:100%;max-width:100%}
+html.embedded-in-atelie .completed{margin-bottom:10px}
 </style></head><body>
 <main class="wrap"><section class="card" aria-labelledby="scene-title">
 <div class="eyebrow">Momento 02 · exploração visual</div>
@@ -75,8 +82,8 @@ if('ResizeObserver' in window)new ResizeObserver(reportSize).observe(document.bo
 setTimeout(reportSize,200);
 
 function updateDiscovery(){
- $('[data-dot]').forEach(e=>e.classList.toggle('done',visited.has(Number(e.dataset.dot))));
- $('[data-spot]').forEach(e=>e.setAttribute('aria-pressed',String(visited.has(Number(e.dataset.spot)))));
+ $$('[data-dot]').forEach(e=>e.classList.toggle('done',visited.has(Number(e.dataset.dot))));
+ $$('[data-spot]').forEach(e=>e.setAttribute('aria-pressed',String(visited.has(Number(e.dataset.spot)))));
  $('#counter').textContent=visited.size===3?'3 de 3 · exploração concluída':visited.size+' de 3 descobertas exploradas';
 }
 function markComplete(){
@@ -116,6 +123,15 @@ if(persisted.completed===true){
  $('#completed').hidden=false;
  send('atelie-room-complete',{completed:true,restored:true});
 }
+// Confirma a etapa concluída mesmo quando o iframe é restaurado do cache.
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||event.source!==parent)return;
+ if(event.data?.type!=='atelie-room-request-state')return;
+ lastHeight=0;reportSize();
+ if(persisted.completed===true||visited.size===3){
+  send('atelie-room-complete',{completed:true,restored:true});
+ }
+});
 setTimeout(reportSize,400);
 })();
 </script></body></html>
