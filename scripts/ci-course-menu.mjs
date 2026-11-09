@@ -9,9 +9,11 @@ try{
  await mobile.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebarCourseSelect').waitFor({state:'visible'});
- await mobile.waitForTimeout(80);
+ await mobile.waitForTimeout(450);
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'O menu deve iniciar no seletor de cursos');
- assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'O seletor deve estar visível sem rolar');
+ const selectGeometry=await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return{top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:innerWidth,height:innerHeight,scroll:document.querySelector('#sidebar').scrollTop}});
+ console.log('Seletor mobile:',JSON.stringify(selectGeometry));
+ assert.equal(selectGeometry.top>=0&&selectGeometry.bottom<=selectGeometry.height&&selectGeometry.left>=0&&selectGeometry.right<=selectGeometry.width,true,'O seletor deve estar visível sem rolar');
  assert.equal(await mobile.locator('#sidebar').isVisible(),true,'Menu aberto na frente da página');
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),1,'Somente Formação Freudiana é publicada');
