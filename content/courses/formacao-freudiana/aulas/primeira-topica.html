@@ -114,9 +114,15 @@
     @media(prefers-reduced-motion:reduce){.achievement.earned{animation:none}}
     #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
     #third-video-player iframe{max-width:100%;display:block}
+/* Conteúdo pessoal somente após autenticação e leitura no Firestore. */
+body:not(.account-progress-ready) header.mast,body:not(.account-progress-ready) main.shell,
+body:not(.account-progress-ready) footer.shell{display:none!important}
+.account-progress-status{padding:15px 18px;max-width:800px;margin:25px auto;border-radius:12px;
+ background:#fffdfa;color:#5b4569;border:1px solid #dfd4e3;font:600 14px/1.5 Arial,sans-serif}
   </style>
 </head>
 <body>
+<p class="account-progress-status" id="cloudLessonStatus" role="status" aria-live="polite">Carregando seu progresso da conta Google...</p>
   <header class="mast shell"><div class="brand">Ateliê de Psicanálise</div><div class="small-tag">FORMAÇÃO FREUDIANA · AULA INTERATIVA</div></header>
   <main class="shell">
     <section class="intro" aria-labelledby="title">
@@ -326,7 +332,7 @@
           <div class="achievement-actions">
             <button type="button" class="achievement-review" id="achievement-review">Rever a aula</button>
           </div>
-          <p class="achievement-note">A conquista fica disponível neste navegador enquanto o progresso estiver salvo. As demais etapas do curso ainda estão em desenvolvimento.</p>
+          <p class="achievement-note">A conquista pertence à sua conta Google quando a gravação for confirmada pelo Firestore. As demais etapas do curso ainda estão em desenvolvimento.</p>
         </div>
         <figure class="achievement-medal">
           <img src="../../../../assets/insignia-primeira-topica-freud.png" alt="Insígnia roxa e dourada de Aula Concluída, com retrato de Freud, símbolo psi e louros" loading="lazy" width="800" height="800">
@@ -335,14 +341,13 @@
       </div>
     </section>
   </main>
-  <footer class="shell"><div><strong>Ateliê de Psicanálise · Protótipo de aula</strong><br>Bibliografia de referência: Freud, <em>A interpretação dos sonhos</em> (1900), cap. VII; <em>O inconsciente</em> (1915).<br>Os passos detalhados ficam neste navegador. A conclusão pode aparecer em Minhas insígnias quando a conta Google estiver sincronizada.</div><button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
+  <footer class="shell"><div><strong>Ateliê de Psicanálise · Protótipo de aula</strong><br>Bibliografia de referência: Freud, <em>A interpretação dos sonhos</em> (1900), cap. VII; <em>O inconsciente</em> (1915).<br>Todas as etapas são vinculadas à conta Google e persistidas no Firestore após confirmação do servidor.</div><button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
 <script>
 (()=>{
   'use strict';
-  const STORAGE_KEY='atelie-primeira-topica-2026-v1';
+  const LESSON_ID='primeira-topica-freud';
   const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false,wordsCompleted:[]});
-  let state;
-  try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');state=x&&Array.isArray(x.passed)&&Array.isArray(x.visited)?{passed:x.passed.filter(t=>typeof t==='string'),visited:x.visited.filter(t=>['ics','pcs','cs'].includes(t)),videoFinished:x.videoFinished===true||x.passed.includes('q1'),thirdAudioDone:x.thirdAudioDone===true||x.passed.includes('q3a')||x.passed.includes('q3b'),wordsCompleted:Array.isArray(x.wordsCompleted)?x.wordsCompleted.filter(n=>Number.isInteger(n)&&n>=1&&n<=4):(x.passed.includes('q2a')&&x.passed.includes('q2b')?[1,2,3,4]:[])}:defaultState()}catch{state=defaultState()}
+  let state=defaultState(),accountReady=false,pendingReset=false;
   const $=s=>document.querySelector(s);
   let narrationFailed=false;
   let achievementFirstRender=true;
@@ -354,7 +359,12 @@
     q3a:{right:'a',tips:{a:'Correto. A lembrança estava fora da atenção atual, mas pôde ser recuperada. É um bom exemplo didático de pré-consciente.',b:'Não há elementos para afirmar que se trate de recalque. Uma lembrança acessível não é, por isso, um desejo recalcado.',c:'O exemplo mostra justamente que a lembrança se tornou consciente quando solicitada.'}},
     q3b:{right:'b',tips:{a:'O pré-consciente pode, em certas condições, alcançar a consciência. A frase apaga essa diferença.',b:'Exatamente. A diferença não é simplesmente estar ou não consciente agora, mas envolver condições distintas de acesso.',c:'O inconsciente em sentido descritivo é mais amplo do que o conjunto de conteúdos recalcados.'}}
   };
-  function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
+  function save(){
+ if(!accountReady)return;
+ if(window.parent===window){$('#cloudLessonStatus').textContent='Abra a aula pelo Ateliê e faça login no Google.';return}
+ $('#cloudLessonStatus').textContent='Salvando seu progresso no Firestore...';
+ window.parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(state))},location.origin);
+}
   function passed(id){return state.passed.includes(id)}
   function hasStep2(){return passed('q1')}
   function hasStep3(){return passed('q2a')&&passed('q2b')}
@@ -423,7 +433,7 @@
     }
     achievementWasComplete=c3;
     achievementFirstRender=false;
-    if(window.parent!==window){
+    if(accountReady&&window.parent!==window){
       window.parent.postMessage({
         type:'atelie-lesson-progress',
         lessonId:'aula-primeira-topica-freud',
@@ -686,7 +696,40 @@
   document.head.appendChild(ytApi);
   setTimeout(()=>{if(!playerReady)showVideoFallback()},12000);
   $('#achievement-review').addEventListener('click',()=>$('#step-1').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
-  $('#reset').addEventListener('click',()=>{if(!confirm('Deseja apagar as respostas e reiniciar os três quadradinhos neste navegador?'))return;state=defaultState();save();location.reload()});
+  $('#reset').addEventListener('click',()=>{
+    if(!accountReady||!confirm('Deseja reiniciar as etapas desta aula na sua conta Google?'))return;
+    pendingReset=true;
+    state=defaultState();
+    save();
+  });
+  function applyAccountProgress(value){
+    const x=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+    state={
+      passed:Array.isArray(x.passed)?x.passed.filter(t=>['q1','q2a','q2b','q3a','q3b'].includes(t)):[],
+      visited:Array.isArray(x.visited)?x.visited.filter(t=>['ics','pcs','cs'].includes(t)):['ics'],
+      videoFinished:x.videoFinished===true,
+      thirdAudioDone:x.thirdAudioDone===true,
+      wordsCompleted:Array.isArray(x.wordsCompleted)?x.wordsCompleted.filter(n=>Number.isInteger(n)&&n>=1&&n<=4):[]
+    };
+    accountReady=true;
+    document.body.classList.add('account-progress-ready');
+    $('#cloudLessonStatus').textContent='Progresso vinculado à sua conta Google.';
+    for(const id of Object.keys(quizzes))updateQuiz(id);
+    render();
+  }
+  window.addEventListener('message',event=>{
+    if(event.origin!==location.origin||event.source!==parent||!event.data)return;
+    if(event.data.lessonId!==LESSON_ID)return;
+    if(event.data.type==='atelie-progress-load')applyAccountProgress(event.data.state);
+    if(event.data.type==='atelie-progress-saved'){
+      $('#cloudLessonStatus').textContent='Progresso salvo na sua conta Google.';
+      if(pendingReset){pendingReset=false;location.reload();}
+    }
+    if(event.data.type==='atelie-progress-error'){
+      $('#cloudLessonStatus').textContent='O Firestore não confirmou o progresso ('+String(event.data.errorCode||'erro')+'). Confira sua conexão e as regras de acesso.';
+    }
+  });
+  if(parent!==window)parent.postMessage({type:'atelie-progress-request',lessonId:LESSON_ID},location.origin);
   render();
 })();
 </script>
