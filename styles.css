@@ -460,3 +460,13 @@ a.course-drawer-lesson:hover{background:#443949;color:#fff}
  #sidebar .course-drawer-picker{display:block;position:relative;z-index:1}
  #sidebar #sidebarCourseSelect{max-width:100%}
 }
+
+/* Aulas: busca só no catálogo; barra de progresso no fluxo normal, sem flutuar. */
+body.is-lesson-page .topbar .search-form{display:none!important}
+.freud-live-progress,
+.freud-video-first .freud-live-progress{
+ position:static!important;top:auto!important;z-index:auto!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+ box-shadow:none!important
+}
+/* A navegação de estudos mantém o cabeçalho e os dados de acesso. */
