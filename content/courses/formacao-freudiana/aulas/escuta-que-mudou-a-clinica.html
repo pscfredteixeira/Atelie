@@ -142,7 +142,7 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   <div class="finish" id="finish" hidden><span class="overline">Percurso concluído</span><h3>Você chegou à pergunta que abre a próxima aula.</h3><p>Se o sofrimento pode produzir efeitos além do que a pessoa conhece conscientemente, como Freud formulará um modelo para pensar esses processos?</p><p><strong>Próxima aula:</strong> A primeira tópica de Freud.</p><a href="../../../../#/aula/primeira-topica-freud" target="_top" class="btn outline" id="next-lesson">Ir para a próxima aula</a></div>
  </div></div>
 </section>
-<details class="sources">
+<details class="sources" id="historicalSources" hidden>
  <summary>Fontes históricas e cuidados de leitura</summary>
  <ul>
   <li>Breuer, Josef; Freud, Sigmund. <em>Estudos sobre a Histeria</em> (1895).</li>
@@ -153,7 +153,6 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
  <p class="tiny">A expressão “histeria” é apresentada como categoria histórica, não como diagnóstico atual. Há controvérsias sobre o curso clínico de Anna O. e sobre versões retrospectivas de sua história. O tratamento foi conduzido por Breuer, não por Freud.</p>
 </details>
 </main>
-<footer class="container footer"><span>Ateliê de Psicanálise · Formação Freudiana</span><span>Projeto pedagógico em elaboração · 6 momentos interativos</span></footer>
 <script>
 (function(){
 'use strict';
@@ -178,7 +177,7 @@ let sentHeight=0;
 function reportHeight(){
  if(parent===window)return;
  // Medir conteúdo real, não o tamanho do viewport herdado do iframe.
- const end=document.querySelector('footer.footer');
+ const end=document.querySelector('main.container');
  const bottom=end?end.getBoundingClientRect().bottom+window.scrollY:document.body.getBoundingClientRect().bottom+window.scrollY;
  const height=Math.ceil(Math.max(100,bottom+8));
  if(Number.isFinite(height)&&Math.abs(height-sentHeight)>4){sentHeight=height;parent.postMessage({type:'atelie-lesson-height',height},location.origin);}
@@ -192,6 +191,7 @@ function refresh(){
  }
  const count=st.videoWatched===true?new Set(st.done.filter(n=>n>=1&&n<=6)).size:0;
  if(parent!==window)parent.postMessage({type:'atelie-lesson-stage-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:count,total:6},location.origin);
+ $('#historicalSources').hidden=st.unlocked<6;
  $('#finish').hidden=!st.done.includes(6);save();reportProgress();setTimeout(reportHeight,80);
 }
 function complete(n,scrollNext=true){if(st.done.includes(n))return;st.done.push(n);st.unlocked=Math.max(st.unlocked,Math.min(6,n+1));refresh();if(n<6&&scrollNext)setTimeout(()=>$('#stage-'+(n+1)).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),150)}
@@ -201,6 +201,7 @@ function onIntroEnded(){
  if(st.videoWatched===true)return;
  st.videoWatched=true;st.unlocked=Math.max(st.unlocked,Math.min(6,Number(st.resumeUnlock)||2));
  complete(1);
+ if(st.roomCompletedEarly&&!st.done.includes(2))complete(2,false);
 }
 let ytInitialized=false;
 function attachVideoEvents(){
@@ -227,8 +228,9 @@ window.addEventListener('message',event=>{
   }
  }
  if(msg.type==='atelie-room-complete'&&msg.completed===true){
-  st.spots=[0,1,2];save();
-  // Libera a próxima etapa sem interromper a leitura do terceiro painel.
+  st.spots=[0,1,2];
+  if(!st.videoWatched){st.roomCompletedEarly=true;save();return;}
+  save();
   if(!st.done.includes(2))complete(2,false);
  }
  if(msg.type==='atelie-room-next'&&st.done.includes(2)){
