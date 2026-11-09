@@ -253,7 +253,7 @@ function profileView(){
  const phone=ready?String(personalProfile?.phone||''):'';
  const loadMessage=ready?'Os dados abaixo são pessoais e podem ser alterados. Nome e e-mail da conta Google permanecem sob controle do Google.':
   personalProfileStatus==='loading'?'Consultando seus dados no Firestore...':
-  'Não foi possível ler os dados no banco. Não alteraremos seu cadastro enquanto houver esse problema.';
+  (profileNotice||'Não foi possível ler os dados no banco. Não alteraremos seu cadastro enquanto houver esse problema.');
  return heading('ÁREA PESSOAL','Meu perfil','Consulte e atualize seu cadastro vinculado à conta Google.')+
   '<div class="profile-layout"><aside class="profile-identity-panel">'+
   '<div class="profile-identity-head">'+
@@ -342,6 +342,75 @@ function googleLoginError(error) {
     return 'Não foi possível entrar. Código: ' + (code || error?.message || 'desconhecido') + '. Você ainda pode explorar a demonstração.';
  }
 }
+
+document.addEventListener('click',async e=>{
+ const login=e.target.closest('[data-profile-login]');
+ const retry=e.target.closest('[data-profile-retry]');
+ const logout=e.target.closest('[data-profile-logout]');
+ if(login){
+  const msg=$('#profileLoginStatus');login.disabled=true;
+  if(msg)msg.textContent='Abrindo o acesso do Google...';
+  try{
+   if(!window.AtelieCloud?.login)throw new Error('A integração do Firebase não carregou. Atualize o navegador.');
+   await window.AtelieCloud.login();
+  }catch(error){if(msg)msg.textContent=error?.code?googleLoginError(error):String(error?.message||'Falha ao entrar.')}
+  finally{if(login.isConnected)login.disabled=false;}
+  return;
+ }
+ if(retry){
+  retry.disabled=true;profileNotice='';
+  try{
+   if(!window.AtelieCloud?.loadProfile)throw new Error('Firebase indisponível.');
+   await window.AtelieCloud.loadProfile();
+  }catch(error){
+   profileNotice=error?.code==='permission-denied'?
+    'O Firestore recusou a consulta. As novas regras do perfil precisam ser publicadas no Firebase Console.':
+    'Erro ao carregar o perfil: '+String(error?.code||error?.message||'desconhecido');
+   if(location.hash.startsWith('#/perfil'))render();
+  }
+  return;
+ }
+ if(logout){
+  logout.disabled=true;
+  try{await window.AtelieCloud?.logout();}
+  catch(error){
+   profileNotice='Não foi possível sair: '+String(error?.code||error?.message||'erro');
+   if(location.hash.startsWith('#/perfil'))render();
+  }
+ }
+});
+document.addEventListener('submit',async e=>{
+ const form=e.target.closest('#profileForm');
+ if(!form)return;
+ e.preventDefault();
+ const uid=activeUid,btn=form.querySelector('#profileSave'),status=form.querySelector('#profileSaveStatus');
+ if(!uid||window.AtelieCloud?.user?.uid!==uid){if(status)status.textContent='Entre com Google antes de salvar.';return;}
+ if(personalProfileStatus!=='ready'){if(status)status.textContent='Carregue seu cadastro no banco antes de editá-lo.';return;}
+ const preferredName=String(form.elements.namedItem('preferredName')?.value||'').trim();
+ const phone=String(form.elements.namedItem('phone')?.value||'').trim();
+ if(preferredName.length>80||phone.length>30){if(status)status.textContent='Nome: máximo 80 caracteres. Telefone: máximo 30.';return;}
+ if(btn)btn.disabled=true;
+ if(status)status.textContent='Salvando no Firestore...';
+ try{
+  const data=await window.AtelieCloud.saveProfile({preferredName,phone});
+  if(uid!==activeUid)return;
+  if(!data)throw new Error('A conta mudou durante o salvamento.');
+  profileNotice='Alterações salvas no banco de dados.';
+  if(status)status.textContent=profileNotice;
+ }catch(error){
+  if(uid===activeUid){
+   profileNotice=error?.code==='permission-denied'?
+    'O Firestore não autorizou a gravação. É preciso publicar as novas regras de acesso no Firebase Console.':
+    'Não foi possível salvar: '+String(error?.code||error?.message||'erro');
+   if(status)status.textContent=profileNotice;
+  }
+ }finally{if(btn&&btn.isConnected&&uid===activeUid)btn.disabled=false;}
+});
+document.addEventListener('input',e=>{
+ if(e.target.closest('#profileForm')){
+  const status=$('#profileSaveStatus');if(status)status.textContent='Alterações ainda não salvas.';
+ }
+});
 $('#gateGoogleButton')?.addEventListener('click', async () => {
  const status = $('#gateStatus');
  const btn = $('#gateGoogleButton');
@@ -370,6 +439,9 @@ window.addEventListener('atelie-cloud-state', e => {
 });
 window.addEventListener('atelie-cloud-auth', e => {
  activeUid = e.detail.uid || null;
+ personalProfile = null;
+ personalProfileStatus = activeUid ? 'loading' : 'signed-out';
+ profileNotice = '';
  if (activeUid) {
    demoMode = false;
    try { sessionStorage.removeItem(DEMO_SESSION); } catch {}
@@ -378,6 +450,18 @@ window.addEventListener('atelie-cloud-auth', e => {
  clearTimeout(syncTimer);
  state = loadLocal(activeUid ? accountKey(activeUid) : STORE);
  render();
+});
+window.addEventListener('atelie-cloud-profile', e=>{
+ const info=e.detail||{};
+ if(info.uid&&info.uid!==activeUid)return;
+ personalProfileStatus=info.status||'error';
+ personalProfile=personalProfileStatus==='ready'?info.profile||null:null;
+ if(personalProfileStatus==='error'){
+  profileNotice=info.errorCode==='permission-denied'?
+   'O Firestore negou o acesso. Publique as regras de perfil no Console do Firebase.':
+   'Falha ao carregar o perfil: '+String(info.errorCode||'desconhecida');
+ }
+ if(location.hash.startsWith('#/perfil'))render();
 });
 window.addEventListener('atelie-cloud-loaded', e => {
  if (!activeUid || e.detail.uid !== activeUid) return;
@@ -474,6 +558,11 @@ render();
 if (window.AtelieCloud?.user) {
  const cloud = window.AtelieCloud;
  window.dispatchEvent(new CustomEvent('atelie-cloud-auth', { detail: { uid: cloud.user.uid } }));
+ if(cloud.profileStatus){
+  window.dispatchEvent(new CustomEvent('atelie-cloud-profile',{detail:{
+   uid:cloud.user.uid,status:cloud.profileStatus,profile:cloud.profile
+  }}));
+ }
  if (cloud.snapshot?.uid === cloud.user.uid) {
    window.dispatchEvent(new CustomEvent('atelie-cloud-loaded', { detail: cloud.snapshot }));
    if (cloud.ready) window.dispatchEvent(new CustomEvent('atelie-cloud-ready', { detail: { uid: cloud.user.uid } }));
