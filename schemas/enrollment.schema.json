@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pscfredteixeira.github.io/Atelie/schemas/enrollment.schema.json",
+  "title": "Matrícula acadêmica de um aluno em um curso",
+  "description": "Documento somente leitura para o estudante em users/{uid}/enrollments/{courseId}. Operações administrativas requerem backend confiável.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "courseTitle",
+    "activatedOn",
+    "originalExpiresOn",
+    "expiresOn",
+    "renewalCount",
+    "state",
+    "updatedAt"
+  ],
+  "properties": {
+    "courseTitle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "activatedOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "originalExpiresOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "expiresOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "renewalCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state": {
+      "enum": [
+        "active",
+        "suspended",
+        "cancelled"
+      ]
+    },
+    "lastRenewedOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "updatedAt": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
