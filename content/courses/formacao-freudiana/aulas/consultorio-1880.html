@@ -16,7 +16,7 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #e4b8f
 .tip{position:absolute;z-index:2;left:20px;bottom:15px;max-width:45%;background:rgba(39,25,39,.77);border:1px solid #ffffff6e;border-radius:999px;color:#fff;padding:7px 13px;backdrop-filter:blur(10px);font-size:.79rem;pointer-events:none}.room.is-open .tip{opacity:0}
 .panel{position:absolute;z-index:3;top:18px;right:18px;width:min(43%,440px);color:#2f2139;background:rgba(255,251,247,.975);border:1px solid #ffffffb8;box-shadow:0 16px 48px rgba(26,16,27,.34);border-radius:19px;padding:clamp(17px,2.8vw,29px);max-height:calc(100% - 36px);overflow:auto;animation:appear .23s ease both}
 @keyframes appear{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}.panel[hidden]{display:none}.panel-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.panel-num{font-size:.71rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}.close{display:grid;place-items:center;flex:0 0 43px;border:0;background:#f2e9ef;color:var(--ink);border-radius:50%;width:43px;height:43px;font-size:1.6rem;line-height:1}.close:hover{background:#e3d3e1}.panel h2{font-size:clamp(1.55rem,2.5vw,2rem);margin:8px 0 10px}.panel p{line-height:1.55;font-size:.93rem;color:#55475c}.question{background:#f1e8f2;border-left:3px solid #845b8e;padding:10px 13px;font-size:.88rem;line-height:1.46;border-radius:0 9px 9px 0;margin:16px 0}.question strong{color:#4d3159}.panel-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);margin-top:15px;padding-top:13px}.panel-nav span{font-weight:800;font-size:.83rem;color:var(--plum)}.circle{border:1px solid #d6c7d8;background:#eee5ef;color:var(--plum);border-radius:50%;width:43px;height:43px;font-size:1.5rem;line-height:1}.circle:hover{background:#dccbdc}.circle.next{background:#613d71;color:#fff;border-color:#613d71}.circle.next:hover{background:#4c2e5d}
-.bottom{display:flex;justify-content:space-between;align-items:center;gap:13px;flex-wrap:wrap;margin-top:19px}.progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.83rem}.dots{display:flex;gap:8px}.dot{width:12px;height:12px;display:inline-block;border-radius:50%;background:#e9dfeb;border:1px solid #bba6c0}.dot.done{background:#317a5b;border-color:#317a5b}.cta{border:0;background:#5e386d;color:#fff;padding:12px 22px;border-radius:100px;min-height:45px;font-weight:750}.cta:not(:disabled):hover{background:#472453}.completed{background:#eef6ed;border:1px solid #c4dcc8;border-radius:13px;padding:14px 17px;color:#2c6549;margin-top:15px}.completed[hidden]{display:none}.credit{font-size:.78rem;color:var(--muted);margin-top:13px}.kicker-small{color:var(--muted);font-size:.81rem;margin:8px 0}.reset{border:0;background:none;color:var(--plum);text-decoration:underline;text-underline-offset:3px;font-size:.82rem}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:13px;flex-wrap:wrap;margin-top:19px}.progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.83rem}.dots{display:flex;gap:8px}.dot{width:12px;height:12px;display:inline-block;border-radius:50%;background:#e9dfeb;border:1px solid #bba6c0}.dot.done{background:#317a5b;border-color:#317a5b}.cta{border:0;background:#5e386d;color:#fff;padding:12px 22px;border-radius:100px;min-height:45px;font-weight:750}.cta:not(:disabled):hover{background:#472453}.panel .auto-ready{background:#e9f4eb;color:#275c45;border:1px solid #b8d8c4;border-radius:10px;padding:10px 12px;margin:12px 0;font-size:.85rem;line-height:1.45}.completed{background:#eef6ed;border:1px solid #c4dcc8;border-radius:13px;padding:14px 17px;color:#2c6549;margin-top:15px}.completed[hidden]{display:none}.credit{font-size:.78rem;color:var(--muted);margin-top:13px}.kicker-small{color:var(--muted);font-size:.81rem;margin:8px 0}.reset{border:0;background:none;color:var(--plum);text-decoration:underline;text-underline-offset:3px;font-size:.82rem}
 @media (max-width:700px){.wrap{margin:10px auto 25px}.card{padding:17px 12px 20px;border-radius:17px}.lead{font-size:.95rem;margin-bottom:10px}.intro-line{margin:8px 0 13px;font-size:.8rem}.room{border-radius:14px;aspect-ratio:1010/634;transition:min-height .18s}.room.is-open{aspect-ratio:auto;min-height:505px}.room .photo{background-size:100% auto;background-position:center top}.room.is-open .photo{filter:brightness(.69)}.room.is-open::after{background:linear-gradient(180deg,transparent,#251a2b 80%)}.spot{width:47px;height:47px}.room.is-open .spot{visibility:hidden}.room .tip{left:6px;right:6px;bottom:6px;max-width:none;width:max-content;margin:auto;font-size:.65rem;padding:4px 10px}.panel{top:12px;left:12px;right:12px;width:auto;max-height:calc(100% - 24px);border-radius:16px;padding:18px 16px}.panel p{font-size:.9rem}.panel h2{font-size:1.64rem}.panel-nav{margin-top:12px}.bottom{align-items:stretch;gap:13px}.cta{width:100%;min-height:49px}.progress{justify-content:center;width:100%}.credit{font-size:.73rem}.panel .question{font-size:.85rem}}
 @media(max-width:350px){.room.is-open{min-height:550px}.panel h2{font-size:1.46rem}.panel p{font-size:.86rem}.panel{padding:14px}.panel .question{margin:10px 0}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
@@ -25,7 +25,7 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #e4b8f
 <div class="eyebrow">Momento 02 · exploração visual</div>
 <h1 id="scene-title">O consultório de 1880</h1>
 <p class="lead">Três perguntas ajudam a compreender a mudança de perspectiva que preparou o terreno para a psicanálise. Explore a cena: cada ponto revela uma parte dessa história.</p>
-<p class="intro-line"><span class="intro-icon" aria-hidden="true">↗</span> Toque nos símbolos iluminados. A explicação aparecerá sobre a própria imagem.</p>
+<p class="intro-line"><span class="intro-icon" aria-hidden="true">↗</span> Toque nos três símbolos iluminados. Depois de explorar todos, o próximo quadradinho abre automaticamente.</p>
 <div class="room" id="room" aria-label="Reconstrução artística de um consultório médico vienense do século XIX com três pontos interativos">
   <div class="photo" aria-hidden="true"></div>
   <button type="button" class="spot spot-one" data-spot="0" aria-label="Explorar ponto 1: a medicina da época" aria-pressed="false"></button>
@@ -36,12 +36,12 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #e4b8f
      <div class="panel-top"><span class="panel-num" id="panel-counter">DESCOBERTA 01 DE 03</span><button type="button" class="close" id="panel-close" aria-label="Fechar explicação e voltar à cena">×</button></div>
      <h2 id="panel-title">A medicina da época</h2>
      <p id="panel-body"></p>
-     <div class="question"><strong>Para pensar · </strong><span id="panel-question"></span></div>
+     <div class="question"><strong>Para pensar · </strong><span id="panel-question"></span></div><p id="auto-ready" class="auto-ready" role="status" aria-live="polite" hidden>Você explorou os três pontos. Ao fechar esta explicação, o próximo quadradinho abrirá automaticamente.</p>
      <div class="panel-nav" aria-label="Navegar entre descobertas"><button type="button" class="circle" id="panel-prev" aria-label="Descoberta anterior">‹</button><span id="panel-position">1 de 3</span><button type="button" class="circle next" id="panel-next" aria-label="Próxima descoberta">›</button></div>
   </section>
 </div>
-<div class="bottom"><div class="progress" role="status" aria-live="polite"><span class="dots" aria-hidden="true"><i class="dot" data-dot="0"></i><i class="dot" data-dot="1"></i><i class="dot" data-dot="2"></i></span><span id="counter">0 de 3 descobertas exploradas</span><button type="button" class="reset" id="reset">Recomeçar</button></div><button type="button" class="cta" id="continue" disabled>Explore os 3 pontos para avançar →</button></div>
-<div class="completed" id="completed" hidden><strong>Etapa concluída.</strong> Você examinou três problemas diferentes: a medicina, os limites de certas explicações e o valor da palavra do paciente. No próximo momento, vamos investigar a história de Anna O.</div>
+<div class="bottom"><div class="progress" role="status" aria-live="polite"><span class="dots" aria-hidden="true"><i class="dot" data-dot="0"></i><i class="dot" data-dot="1"></i><i class="dot" data-dot="2"></i></span><span id="counter">0 de 3 descobertas exploradas</span><button type="button" class="reset" id="reset">Recomeçar</button></div></div>
+<div class="completed" id="completed" role="status" aria-live="polite" hidden><strong>Exploração concluída automaticamente.</strong> O quadradinho sobre Anna O. já está liberado na aula completa.</div>
 <p class="credit">Cena cinematográfica gerada para o Ateliê. Reconstrução artística, não fotografia de um consultório real de 1880. Proposta de interação para celular e computador.</p>
 </section></main>
 <script>
@@ -56,6 +56,8 @@ const data=[
 const ROOM_KEY='atelie-room-1880-v2';
 let persisted={};try{persisted=JSON.parse(localStorage.getItem(ROOM_KEY)||'{}')||{}}catch(e){}
 let index=-1,visited=new Set(Array.isArray(persisted.visited)?persisted.visited.filter(v=>Number.isInteger(v)&&v>=0&&v<3):[]);
+let justFinished=false;
+if(visited.size===3)persisted.completed=true;
 const room=$('#room'),panel=$('#panel');
 let lastHeight=0;
 const send=(type,details={})=>{if(parent!==window)parent.postMessage({type,...details},location.origin)};
@@ -64,15 +66,49 @@ const save=()=>{try{localStorage.setItem(ROOM_KEY,JSON.stringify({visited:[...vi
 window.addEventListener('load',reportSize);window.addEventListener('resize',reportSize);
 if('ResizeObserver' in window)new ResizeObserver(reportSize).observe(document.body);
 setTimeout(reportSize,200);
-function open(i){index=(i+data.length)%data.length;visited.add(index);room.classList.add('is-open');panel.hidden=false;const item=data[index];$('#panel-counter').textContent='DESCOBERTA '+String(index+1).padStart(2,'0')+' DE 03';$('#panel-title').textContent=item.title;$('#panel-body').textContent=item.body;$('#panel-question').textContent=item.question;$('#panel-position').textContent=(index+1)+' de 3';$$('[data-dot]').forEach(e=>e.classList.toggle('done',visited.has(Number(e.dataset.dot))));$$('[data-spot]').forEach(e=>e.setAttribute('aria-pressed',String(visited.has(Number(e.dataset.spot)))));$('#counter').textContent=visited.size+' de 3 descobertas exploradas';save();setTimeout(reportSize,30);$('#continue').disabled=visited.size<3;$('#continue').textContent=visited.size===3?'Concluir exploração →':'Explore os 3 pontos para avançar →';$('#panel-close').focus({preventScroll:true})}
-function close(){panel.hidden=true;room.classList.remove('is-open');if(index>=0)root.querySelector('[data-spot="'+index+'"]').focus({preventScroll:true});index=-1;setTimeout(reportSize,30)}
+
+function updateDiscovery(){
+ $('[data-dot]').forEach(e=>e.classList.toggle('done',visited.has(Number(e.dataset.dot))));
+ $('[data-spot]').forEach(e=>e.setAttribute('aria-pressed',String(visited.has(Number(e.dataset.spot)))));
+ $('#counter').textContent=visited.size===3?'3 de 3 · exploração concluída':visited.size+' de 3 descobertas exploradas';
+}
+function markComplete(){
+ if(visited.size!==3||persisted.completed===true)return;
+ persisted.completed=true;justFinished=true;
+ $('#completed').hidden=false;$('#auto-ready').hidden=false;
+ save();send('atelie-room-complete',{completed:true});setTimeout(reportSize,40);
+}
+function open(i){
+ index=(i+data.length)%data.length;visited.add(index);
+ room.classList.add('is-open');panel.hidden=false;
+ const item=data[index];
+ $('#panel-counter').textContent='DESCOBERTA '+String(index+1).padStart(2,'0')+' DE 03';
+ $('#panel-title').textContent=item.title;$('#panel-body').textContent=item.body;
+ $('#panel-question').textContent=item.question;$('#panel-position').textContent=(index+1)+' de 3';
+ updateDiscovery();markComplete();$('#auto-ready').hidden=!justFinished;
+ save();setTimeout(reportSize,30);$('#panel-close').focus({preventScroll:true});
+}
+function close(){
+ panel.hidden=true;room.classList.remove('is-open');
+ if(index>=0)root.querySelector('[data-spot="'+index+'"]').focus({preventScroll:true});
+ index=-1;setTimeout(reportSize,30);
+ if(justFinished){justFinished=false;send('atelie-room-next',{stage:3})}
+}
 $$('[data-spot]').forEach(b=>b.addEventListener('click',()=>open(Number(b.dataset.spot))));
 $('#panel-close').addEventListener('click',close);$('#panel-prev').addEventListener('click',()=>open(index-1));$('#panel-next').addEventListener('click',()=>open(index+1));
 root.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();close()}});
-$('#continue').addEventListener('click',()=>{if(visited.size<3)return;close();$('#completed').hidden=false;$('#continue').disabled=true;$('#continue').textContent='✓ Etapa concluída';persisted.completed=true;save();send('atelie-room-complete',{completed:true});setTimeout(reportSize,50);});
-$('#reset').addEventListener('click',()=>{if(!panel.hidden)close();visited.clear();$$('[data-dot]').forEach(e=>e.classList.remove('done'));$$('[data-spot]').forEach(e=>e.setAttribute('aria-pressed','false'));$('#counter').textContent='0 de 3 descobertas exploradas';$('#continue').disabled=true;$('#continue').textContent='Explore os 3 pontos para avançar →';$('#completed').hidden=true;persisted.completed=false;save();setTimeout(reportSize,60)});
-if(visited.size){$('[data-dot]').forEach(e=>e.classList.toggle('done',visited.has(Number(e.dataset.dot))));$('[data-spot]').forEach(e=>e.setAttribute('aria-pressed',String(visited.has(Number(e.dataset.spot)))));$('#counter').textContent=visited.size+' de 3 descobertas exploradas';$('#continue').disabled=visited.size<3;$('#continue').textContent=visited.size===3?'Concluir exploração →':'Explore os 3 pontos para avançar →';}
-if(persisted.completed===true){$('#completed').hidden=false;$('#continue').disabled=true;$('#continue').textContent='✓ Etapa concluída';}
+$('#reset').addEventListener('click',()=>{
+ if(!panel.hidden)close();
+ visited.clear();updateDiscovery();$('#auto-ready').hidden=true;
+ // Rever não apaga o progresso já registrado.
+ $('#completed').hidden=!persisted.completed;
+ save();setTimeout(reportSize,60);
+});
+updateDiscovery();
+if(persisted.completed===true){
+ $('#completed').hidden=false;
+ send('atelie-room-complete',{completed:true,restored:true});
+}
 setTimeout(reportSize,400);
 })();
 </script></body></html>
