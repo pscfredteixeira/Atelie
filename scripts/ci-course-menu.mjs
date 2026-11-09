@@ -11,7 +11,7 @@ try{
  await mobile.locator('#sidebarCourseSelect').waitFor({state:'visible'});
  await mobile.waitForTimeout(80);
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'O menu deve iniciar no seletor de cursos');
- assert.equal(await mobile.locator('#sidebarCourseSelect').isInViewport(),true,'O seletor deve estar visível sem rolar');
+ assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'O seletor deve estar visível sem rolar');
  assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).visibility),'hidden','Barra de percurso não pode sobrepor o menu');
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),3,'Três cursos no seletor');
@@ -36,7 +36,7 @@ try{
  await mobile.locator('#menuToggle').click();
  await mobile.waitForTimeout(70);
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'Reabrir o menu deve restaurar o topo');
- assert.equal(await mobile.locator('#sidebarCourseSelect').isInViewport(),true,'Seletor presente após reabrir');
+ assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'Seletor presente após reabrir');
  await mobile.locator('#sidebarClose').click();
  await mobile.goto(base+'#/curso/fundamentos-da-psicanalise',{waitUntil:'domcontentloaded'});
  await mobile.locator('.course-program-module').first().waitFor({state:'visible'});
