@@ -375,13 +375,13 @@ function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return he
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));if(path.startsWith('/aula/')&&!activeUid){
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));if((path.startsWith('/aula/')||path.includes('/aulas/aula-'))&&!activeUid){
   html=heading('ACESSO ÀS AULAS','Entre para continuar','O progresso de cada etapa pertence à sua conta Google, não ao navegador.')+
    '<section class="profile-signin-panel"><h2>Seu estudo acompanha sua conta</h2>'+
    '<p>Entre com Google para carregar e salvar automaticamente seu progresso no Firestore.</p>'+
    '<button type="button" class="btn btn-primary" data-profile-login>Entrar com Google</button>'+
    '<p class="profile-form-status" id="profileLoginStatus" role="status"></p></section>';
- }else if(path.startsWith('/aula/')&&!appCloudLoaded){
+ }else if((path.startsWith('/aula/')||path.includes('/aulas/aula-'))&&!appCloudLoaded){
   html=heading('SEU ESTUDO','Carregando sua conta','A aula só abre quando o progresso pessoal for recuperado do Firestore.')+
    '<section class="profile-signin-panel"><h2>Carregando seu progresso...</h2>'+
    '<p>Se persistir, confira sua conexão e as regras de segurança do Firebase.</p>'+
@@ -413,7 +413,7 @@ function toggleMenu(){
  }
 }
 document.addEventListener('click',e=>{
- const sv=e.target.closest('[data-save]');if(sv){const v=sv.dataset.save;state.saved=state.saved.includes(v)?state.saved.filter(x=>x!==v):[...state.saved,v];saveState();render();return}
+ const sv=e.target.closest('[data-save]');if(sv){if(!activeUid||!appCloudLoaded){location.hash='#/perfil';return;}const v=sv.dataset.save;state.saved=state.saved.includes(v)?state.saved.filter(x=>x!==v):[...state.saved,v];saveState();render();return}
  const filter=e.target.closest('[data-filter]');if(filter){courseFilter=filter.dataset.filter;render();return}
  const ans=e.target.closest('[data-answer]');if(ans){const id=ans.dataset.answer;state.answers[id]=Number(ans.dataset.index);saveState();render();return}
  const done=e.target.closest('[data-complete]');if(done){const id=done.dataset.complete;state.completed=state.completed.includes(id)?state.completed.filter(x=>x!==id):[...state.completed,id];saveState();render();return}
@@ -621,6 +621,13 @@ window.addEventListener('atelie-cloud-ready',e=>{
 window.addEventListener('online',()=>{if(pendingAccountSave)queueCloudSync(100);});
 // A sessão não é persistida pelo app no navegador. O Firebase Authentication
 // recupera a sessão Google; toda leitura de conteúdo pessoal vem do servidor.
+function currentLessonId(){
+ const path=parseRoute().path;
+ if(path.startsWith('/aula/'))return path.split('/aula/')[1];
+ if(path.includes('/aulas/aula-escuta-que-mudou-a-clinica'))return 'escuta-que-mudou-a-clinica';
+ if(path.includes('/aulas/aula-primeira-topica-freud'))return 'primeira-topica-freud';
+ return null;
+}
 function confirmedLessonCompletion(lessonId,progress){
  const complete=lessonId==='escuta-que-mudou-a-clinica'
   ?progress?.videoWatched===true&&Array.isArray(progress.done)&&progress.done.includes(6)
@@ -662,7 +669,7 @@ async function sendLessonProgress(lessonId,progress,frame,requestId){
  }finally{writingLessonIds.delete(lessonId)}
 }
 window.addEventListener('online',()=>{
- const frame=$('#freudLessonFrame'),lessonId=parseRoute().path.split('/aula/')[1];
+ const frame=$('#freudLessonFrame'),lessonId=currentLessonId();
  if(frame&&pendingLessonWrites.has(lessonId)){const p=pendingLessonWrites.get(lessonId);sendLessonProgress(lessonId,p.state,frame,p.requestId);}
 });
 window.addEventListener('message',event=>{
@@ -671,12 +678,12 @@ window.addEventListener('message',event=>{
  if(!frame||event.source!==frame.contentWindow)return;
  const data=event.data;
  if(!data||typeof data!=='object')return;
- const routeLessonId=parseRoute().path.split('/aula/')[1];
+ const routeLessonId=currentLessonId();
  if(data.type==='atelie-progress-request'){
   if(data.lessonId!==routeLessonId||!appCloudLoaded||!activeUid)return;
   const uid=activeUid,windowFrame=frame;
   window.AtelieCloud.loadLessonProgress(routeLessonId).then(progress=>{
-   if(uid!==activeUid||frame!==windowFrame||parseRoute().path!==('/aula/'+routeLessonId))return;
+   if(uid!==activeUid||frame!==windowFrame||currentLessonId()!==routeLessonId)return;
    confirmedLessonCompletion(routeLessonId,progress);
    windowFrame.contentWindow?.postMessage({type:'atelie-progress-load',lessonId:routeLessonId,state:progress},location.origin);
   }).catch(error=>{
