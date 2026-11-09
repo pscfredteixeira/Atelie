@@ -83,7 +83,7 @@ function queueCloudSync(delay=350){
  },delay);
 }
 function saveState(){
- if(!activeUid||!appCloudLoaded||!window.AtelieCloud?.ready){
+ if(!activeUid||!appCloudLoaded){
   cloudMessage='Entre com Google e carregue sua conta para salvar alterações.';
   renderStatus();
   return;
@@ -420,7 +420,7 @@ document.addEventListener('click',e=>{
  const reset=e.target.closest('[data-reset]');if(reset&&confirm('Restaurar a aula ilustrativa original neste navegador?')){delete state.drafts[reset.dataset.reset];saveState();render();return}
 });
 let noteTimer;
-document.addEventListener('input',e=>{const note=e.target.closest('[data-note]');if(!note)return;state.notes[note.dataset.note]=note.value.slice(0,5000);saveState();clearTimeout(noteTimer);const status=$('#noteSaveStatus');if(status)status.textContent='Anotação salva neste dispositivo.';});
+document.addEventListener('input',e=>{const note=e.target.closest('[data-note]');if(!note)return;state.notes[note.dataset.note]=note.value.slice(0,5000);saveState();clearTimeout(noteTimer);const status=$('#noteSaveStatus');if(status)status.textContent='Salvando anotação na sua conta Google...';});
 document.addEventListener('submit',e=>{const f=e.target.closest('#editorForm');if(!f)return;e.preventDefault();const id=f.dataset.edit;const vals=new FormData(f);state.drafts[id]={title:String(vals.get('title')||'').trim(),intro:String(vals.get('intro')||'').trim(),text:String(vals.get('text')||'').trim()};saveState();$('#editorStatus').textContent='Rascunho salvo neste navegador. Veja a aula para conferir.'});
 $('#searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#globalSearch').value.trim();courseFilter='all';location.hash='#/cursos'+(q?'?q='+encodeURIComponent(q):'');render()});
 $('#menuToggle').addEventListener('click',toggleMenu);
@@ -621,13 +621,23 @@ window.addEventListener('atelie-cloud-ready',e=>{
 window.addEventListener('online',()=>{if(pendingAccountSave)queueCloudSync(100);});
 // A sessão não é persistida pelo app no navegador. O Firebase Authentication
 // recupera a sessão Google; toda leitura de conteúdo pessoal vem do servidor.
-async function sendLessonProgress(lessonId,progress,frame){
+function confirmedLessonCompletion(lessonId,progress){
+ const complete=lessonId==='escuta-que-mudou-a-clinica'
+  ?progress?.videoWatched===true&&Array.isArray(progress.done)&&progress.done.includes(6)
+  :Array.isArray(progress?.passed)&&['q1','q2a','q2b','q3a','q3b'].every(x=>progress.passed.includes(x))&&
+    ['ics','pcs','cs'].every(x=>Array.isArray(progress.visited)&&progress.visited.includes(x));
+ const previous=state.completed.includes(lessonId);
+ if(complete===previous)return;
+ state.completed=complete?[...state.completed,lessonId]:state.completed.filter(id=>id!==lessonId);
+ saveState();
+}
+async function sendLessonProgress(lessonId,progress,frame,requestId){
  if(!activeUid||!appCloudLoaded||!window.AtelieCloud?.user||
     window.AtelieCloud.user.uid!==activeUid)return;
  if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))return;
  const copy=JSON.parse(JSON.stringify(progress));
  if(JSON.stringify(copy).length>15000)return;
- pendingLessonWrites.set(lessonId,copy);
+ pendingLessonWrites.set(lessonId,{state:copy,requestId});
  if(writingLessonIds.has(lessonId))return;
  writingLessonIds.add(lessonId);
  const uid=activeUid;
@@ -636,13 +646,14 @@ async function sendLessonProgress(lessonId,progress,frame){
    const current=pendingLessonWrites.get(lessonId);
    pendingLessonWrites.delete(lessonId);
    try{
-    await window.AtelieCloud.saveLessonProgress(lessonId,current);
+    await window.AtelieCloud.saveLessonProgress(lessonId,current.state);
     if(uid!==activeUid)return;
-    frame?.contentWindow?.postMessage({type:'atelie-progress-saved',lessonId},location.origin);
+    confirmedLessonCompletion(lessonId,current.state);
+    frame?.contentWindow?.postMessage({type:'atelie-progress-saved',lessonId,requestId:current.requestId},location.origin);
    }catch(error){
     if(uid!==activeUid)return;
     pendingLessonWrites.set(lessonId,current);
-    frame?.contentWindow?.postMessage({type:'atelie-progress-error',lessonId,errorCode:String(error.code||error.message||'erro')},location.origin);
+    frame?.contentWindow?.postMessage({type:'atelie-progress-error',lessonId,requestId:current.requestId,errorCode:String(error.code||error.message||'erro')},location.origin);
     cloudMessage='Não foi possível gravar uma etapa da aula no Firestore. Verifique a conexão e as regras de segurança.';
     renderStatus();
     break;
@@ -652,7 +663,7 @@ async function sendLessonProgress(lessonId,progress,frame){
 }
 window.addEventListener('online',()=>{
  const frame=$('#freudLessonFrame'),lessonId=parseRoute().path.split('/aula/')[1];
- if(frame&&pendingLessonWrites.has(lessonId))sendLessonProgress(lessonId,pendingLessonWrites.get(lessonId),frame);
+ if(frame&&pendingLessonWrites.has(lessonId)){const p=pendingLessonWrites.get(lessonId);sendLessonProgress(lessonId,p.state,frame,p.requestId);}
 });
 window.addEventListener('message',event=>{
  if(event.origin!==window.location.origin)return;
@@ -666,6 +677,7 @@ window.addEventListener('message',event=>{
   const uid=activeUid,windowFrame=frame;
   window.AtelieCloud.loadLessonProgress(routeLessonId).then(progress=>{
    if(uid!==activeUid||frame!==windowFrame||parseRoute().path!==('/aula/'+routeLessonId))return;
+   confirmedLessonCompletion(routeLessonId,progress);
    windowFrame.contentWindow?.postMessage({type:'atelie-progress-load',lessonId:routeLessonId,state:progress},location.origin);
   }).catch(error=>{
    if(uid!==activeUid)return;
@@ -674,7 +686,7 @@ window.addEventListener('message',event=>{
   return;
  }
  if(data.type==='atelie-progress-save'){
-  if(data.lessonId===routeLessonId&&data.state&&typeof data.state==='object')sendLessonProgress(routeLessonId,data.state,frame);
+  if(data.lessonId===routeLessonId&&data.state&&typeof data.state==='object')sendLessonProgress(routeLessonId,data.state,frame,data.requestId);
   return;
  }
  if(data.type==='atelie-lesson-height'){
@@ -691,14 +703,8 @@ window.addEventListener('message',event=>{
    if(value)value.textContent=count+' de 6 etapas';
    const extras=$('#freudLessonExtras');
    if(extras)extras.hidden=count===0;
- }else if(data.type==='atelie-lesson-progress'&&['aula-primeira-topica-freud','aula-escuta-que-mudou-a-clinica'].includes(data.lessonId)){
-   const done=data.completed===true;
-   const id=data.lessonId==='aula-primeira-topica-freud'?FREUD_SECOND_ID:FREUD_FIRST_ID;
-   const was=state.completed.includes(id);
-   if(done!==was){
-     state.completed=done?[...state.completed,id]:state.completed.filter(x=>x!==id);
-     saveState();
-   }
+ }else if(data.type==='atelie-lesson-progress'){
+  // O estado permanente é atualizado apenas depois da confirmação de escrita.
  }
 });
 window.addEventListener('hashchange',render);
