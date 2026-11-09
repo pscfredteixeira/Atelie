@@ -60,7 +60,7 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   <div class="step-inner" style="padding:0">
    <div class="step-head" hidden><span class="number">MOMENTO 02 · EXPLORAÇÃO VISUAL</span><span class="badge" id="badge-2">Disponível</span></div>
    <iframe id="room-1880-frame" title="Exploração visual interativa: O consultório de 1880"
-     src="./consultorio-1880.html?v=20261109-fotografico-v2" loading="eager"
+     src="./consultorio-1880.html?v=20261109-autoavanco-v3" loading="eager"
      scrolling="no" referrerpolicy="strict-origin-when-cross-origin"
      style="width:100%;display:block;height:900px;min-height:520px;max-width:100%;border:0;border-radius:18px;background:#f4efec"></iframe>
   </div>
@@ -201,7 +201,7 @@ function refresh(){
  $('#progress-bar').setAttribute('aria-valuenow',String(count));
  $('#finish').hidden=!st.done.includes(6);save();reportProgress();setTimeout(reportHeight,80);
 }
-function complete(n){if(st.done.includes(n))return;st.done.push(n);st.unlocked=Math.max(st.unlocked,Math.min(6,n+1));refresh();if(n<6)setTimeout(()=>$('#stage-'+(n+1)).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),150)}
+function complete(n,scrollNext=true){if(st.done.includes(n))return;st.done.push(n);st.unlocked=Math.max(st.unlocked,Math.min(6,n+1));refresh();if(n<6&&scrollNext)setTimeout(()=>$('#stage-'+(n+1)).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),150)}
 $('#advance-1').addEventListener('click',()=>complete(1));
 /* Integra o novo consultório HTML independente e mantém a progressão do curso. */
 const roomFrame=$('#room-1880-frame');
@@ -218,7 +218,14 @@ window.addEventListener('message',event=>{
  }
  if(msg.type==='atelie-room-complete'&&msg.completed===true){
   st.spots=[0,1,2];save();
-  if(!st.done.includes(2))complete(2);
+  // Libera a próxima etapa sem interromper a leitura do terceiro painel.
+  if(!st.done.includes(2))complete(2,false);
+ }
+ if(msg.type==='atelie-room-next'&&st.done.includes(2)){
+  const nextStage=$('#stage-3');
+  if(nextStage&&!nextStage.hidden){
+   setTimeout(()=>nextStage.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),150);
+  }
  }
 });
 const documents=[
