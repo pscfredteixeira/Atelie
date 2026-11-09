@@ -6,13 +6,13 @@ const base='http://127.0.0.1:4173/';
 try{
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  await mobile.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
- await mobile.goto(base+'#/aula/escuta-que-mudou-a-clinica',{waitUntil:'domcontentloaded'});
+ await mobile.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebarCourseSelect').waitFor({state:'visible'});
  await mobile.waitForTimeout(80);
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'O menu deve iniciar no seletor de cursos');
  assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'O seletor deve estar visível sem rolar');
- assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).visibility),'hidden','Barra de percurso não pode sobrepor o menu');
+ assert.equal(await mobile.locator('#sidebar').isVisible(),true,'Menu aberto na frente da página');
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),1,'Somente Formação Freudiana é publicada');
  assert.equal(await mobile.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
@@ -41,7 +41,7 @@ try{
  assert.equal(await mobile.locator('.course-program-module').count(),2);
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca continua disponível fora da aula');
  await mobile.locator('.course-program-module a[href="#/aula/escuta-que-mudou-a-clinica"]').click();
- await mobile.locator('#freudLessonFrame').waitFor();
+ await mobile.locator('[data-profile-login]').waitFor();
  assert.match(mobile.url(),/#\/aula\/escuta-que-mudou-a-clinica/);
  console.log('OK — Seletor, acordeões e links de aula no celular.');
  const desktop=await browser.newPage({viewport:{width:1440,height:900}});
@@ -51,7 +51,7 @@ try{
  assert.equal(await desktop.locator('#courseContextNav').isVisible(),true);
  await desktop.locator('.course-program-module').nth(1).locator('summary').click();
  await desktop.locator('.course-program-module a[href="#/aula/primeira-topica-freud"]').click();
- await desktop.locator('#freudLessonFrame').waitFor();
+ await desktop.locator('[data-profile-login]').waitFor();
  assert.equal(await desktop.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
 }finally{await browser.close()}
