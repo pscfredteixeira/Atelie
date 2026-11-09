@@ -70,3 +70,22 @@ A área **Meu perfil** está disponível em `#/perfil`, no menu de estudantes e 
 As novas regras também atualizam os identificadores de conclusão e notas para as aulas `escuta-que-mudou-a-clinica` e `primeira-topica-freud`. Sem a atualização publicada, a sincronização desses estudos pode retornar `permission-denied`.
 
 **Diagnóstico:** se aparecer “O Firestore recusou a consulta” ou “não autorizou a gravação”, primeiro verifique a publicação das regras e o UID da conta. Não altere as regras para `allow read, write: if true` para contornar o erro.
+
+ 
+## Progresso e insígnias na conta (09/11/2026)
+
+A tela `#/perfil` e a tela `#/progresso` agora mostram duas insígnias da Formação Freudiana:
+- **A escuta que mudou a clínica:** `escuta-que-mudou-a-clinica`
+- **A primeira tópica de Freud:** `primeira-topica-freud`
+
+A conclusão de cada aula é comunicada pela página da aula ao Ateliê principal. O Ateliê inclui o identificador em `state.completed`, salvo no dispositivo e, quando a conta Google está conectada, sincronizado em `users/{uid}/state/atelier` (desde que as regras estejam publicadas e a gravação seja confirmada). As insígnias da conta são reconstituídas desse registro após o login.
+
+A interface distingue **sincronizado**, **pendente** e **apenas neste navegador**. Conclusão/insígnia não é certificado profissional.
+
+**Limite importante:** os micro-passos dos quadradinhos (alternativas, cliques e telas internas das aulas) ainda usam chaves próprias de `localStorage` em cada navegador. **Eles não são retomados em outro dispositivo** nesta fase. Não confundir sincronização do indicador de aula concluída com a persistência integral da atividade.
+
+Na troca de conta, os dados gerais do Ateliê usam chave local por UID; o estado anônimo não é migrado automaticamente. A conexão Firestore deve ser testada com pelo menos duas contas e dois navegadores.
+
+### Testes
+
+O pipeline em `.github/workflows/quality.yml` usa Playwright e inclui `scripts/ci-profile-badges.mjs` para simular contas diferentes, testar edição do perfil, verificar separação de insígnias e checar a ausência de rolagem lateral em 390 px. Isso **não comprova** a implantação das regras nem autenticação real no Firebase.
