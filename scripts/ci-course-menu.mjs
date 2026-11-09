@@ -34,7 +34,7 @@ try{
  await mobile.locator('#sidebar').evaluate(e=>{e.scrollTop=600});
  await mobile.locator('#sidebarClose').evaluate(button=>button.click()); // fechar mesmo após rolar o menu
  await mobile.locator('#menuToggle').click();
- await mobile.waitForTimeout(70);
+ await mobile.waitForTimeout(450); // aguardar transição completa do drawer
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'Reabrir o menu deve restaurar o topo');
  assert.equal(await mobile.locator('#sidebarCourseSelect').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth;}),true,'Seletor presente após reabrir');
  await mobile.locator('#sidebarClose').click();
