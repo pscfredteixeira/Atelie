@@ -32,7 +32,7 @@ try{
  assert.equal(await mobile.locator('#menuToggle').getAttribute('aria-expanded'),'false');
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebar').evaluate(e=>{e.scrollTop=600});
- await mobile.locator('#sidebarClose').click({force:true});
+ await mobile.locator('#sidebarClose').evaluate(button=>button.click()); // fechar mesmo após rolar o menu
  await mobile.locator('#menuToggle').click();
  await mobile.waitForTimeout(70);
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'Reabrir o menu deve restaurar o topo');
