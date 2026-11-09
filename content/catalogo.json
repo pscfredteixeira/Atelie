@@ -3,31 +3,13 @@
   "kind": "catalog",
   "courses": [
     {
-      "id": "curso-introducao-psicanalise",
-      "title": "Introdução à Psicanálise",
-      "icon": "ψ",
-      "slug": "introducao-a-psicanalise",
-      "manifest": "./courses/introducao-a-psicanalise/curso.json",
-      "status": "published",
-      "summary": "Oito aulas introdutórias: as duas primeiras já estão disponíveis, com atividades e referências; outras seis seguem em preparação."
-    },
-    {
       "id": "curso-formacao-freudiana",
       "title": "Formação Freudiana",
       "icon": "✦",
       "slug": "formacao-freudiana",
       "manifest": "./courses/formacao-freudiana/curso.json",
       "status": "published",
-      "summary": "Duas aulas interativas: as origens da escuta (seis momentos) e a primeira tópica (três); nove aulas futuras."
-    },
-    {
-      "id": "curso-fundamentos",
-      "title": "Fundamentos da Psicanálise",
-      "slug": "fundamentos-da-psicanalise",
-      "manifest": "./courses/fundamentos/curso.json",
-      "status": "published",
-      "summary": "Uma formação introdutória em três aulas: conflito psíquico, recalque e retorno do recalcado.",
-      "demo": true
+      "summary": "Formação Freudiana com duas aulas interativas publicadas: A escuta que mudou a clínica e A primeira tópica de Freud."
     }
   ]
 }
