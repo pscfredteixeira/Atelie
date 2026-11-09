@@ -443,3 +443,20 @@ a.course-drawer-lesson:hover{background:#443949;color:#fff}
  .course-program-open{padding:9px 10px;margin-left:36px}
  .course-program-unavailable{margin-left:36px}
 }
+
+/* Correção do menu lateral no Safari iOS: nunca competir com a barra fixa de percurso. */
+@media(max-width:790px){
+ #sidebar.sidebar{
+  position:fixed!important;inset:0 auto 0 0;z-index:10010!important;
+  width:min(376px,91vw);height:100vh;height:100dvh;
+  max-height:100vh;max-height:100dvh;min-height:0;
+  overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;isolation:isolate;
+ }
+ #overlay:not([hidden]){position:fixed!important;inset:0;z-index:10009!important}
+ body.course-drawer-visible #freudLiveProgress{visibility:hidden!important}
+ body.course-drawer-visible .freud-lesson-frame{pointer-events:none}
+ #sidebar .course-drawer-heading{position:relative;z-index:1}
+ #sidebar .course-drawer-picker{display:block;position:relative;z-index:1}
+ #sidebar #sidebarCourseSelect{max-width:100%}
+}
