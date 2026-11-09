@@ -172,13 +172,16 @@ function freudLessonView(id=FREUD_FIRST_ID){
  const l=FREUD_LESSONS[i],prev=FREUD_LESSONS[i-1],next=FREUD_LESSONS[i+1];
  const intro='Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
  const videoFirst=i===0;
- const progress=videoFirst?'<div class="freud-live-progress" id="freudLiveProgress" aria-label="Percurso da aula">'+
-  '<div class="freud-live-heading"><span>SEU PERCURSO</span><strong id="freudLiveCount">0 de 6 etapas</strong></div>'+
-  '<div class="freud-live-track" id="freudLiveTrack" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span id="freudLiveFill"></span></div></div>':'';
+ const progress=videoFirst?'<div class="freud-live-progress" id="freudLiveProgress" aria-label="Progresso das atividades da aula">'+
+  '<div class="freud-live-heading"><span>Seu progresso na aula</span><strong id="freudLiveCount">0 de 6 etapas</strong></div>'+
+  '<div class="freud-progress-segments" id="freudLiveSegments" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">'+
+  Array.from({length:6},(_,n)=>'<span data-progress-step="'+n+'" aria-hidden="true"></span>').join('')+'</div></div>':'';
  const backlink=videoFirst?'':'<a class="back-link" href="'+FREUD_COURSE_ROUTE+'">← Voltar à Formação Freudiana</a>';
- const heading=videoFirst?'':'<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
+ const heading=videoFirst?
+  '<header class="freud-lesson-heading freud-opening-heading"><h1>'+esc(l.title)+'</h1></header>':
+  '<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
   ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
- return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+progress+backlink+heading+
+ return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
   '?v=curso-integrado-20261109-video-primeiro-v6" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
@@ -385,9 +388,9 @@ window.addEventListener('message',event=>{
    }
  }else if(data.type==='atelie-lesson-stage-progress'&&data.lessonId==='aula-escuta-que-mudou-a-clinica'){
    const count=Math.max(0,Math.min(6,Math.floor(Number(data.completed)||0)));
-   const meter=$('#freudLiveTrack'),fill=$('#freudLiveFill'),value=$('#freudLiveCount');
+   const meter=$('#freudLiveSegments'),value=$('#freudLiveCount');
    if(meter)meter.setAttribute('aria-valuenow',String(count));
-   if(fill)fill.style.width=(count*100/6)+'%';
+   document.querySelectorAll('#freudLiveSegments [data-progress-step]').forEach((segment,i)=>segment.classList.toggle('done',i<count));
    if(value)value.textContent=count+' de 6 etapas';
    const extras=$('#freudLessonExtras');
    if(extras)extras.hidden=count===0;
