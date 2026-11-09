@@ -41,6 +41,7 @@ jobs:
           node scripts/ci-entry-gate.mjs
           node scripts/ci-login-errors.mjs
           node scripts/ci-profile-badges.mjs
+          node scripts/ci-cloud-account-progress.mjs
           node scripts/ci-course-menu.mjs
       - name: Diagnosticar domínio Firebase Auth (configuração pública)
         if: always()
