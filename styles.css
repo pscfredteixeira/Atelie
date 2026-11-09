@@ -220,3 +220,61 @@
  .freud-video-first .freud-lesson-frame{height:260px}
  .freud-live-heading{font-size:10px}
 }
+
+
+/* Conta Google e perfil pessoal (Firestore) */
+.account-shortcut{display:inline-flex;align-items:center;justify-content:center;flex:none;
+ min-height:41px;padding:10px 16px;background:#f2e8f2;border:1px solid #d5c5d9;
+ border-radius:12px;color:#563e63;font-size:12px;font-weight:800;white-space:nowrap;
+ max-width:165px;overflow:hidden;text-overflow:ellipsis}
+.account-shortcut:hover{background:#e9ddeb;border-color:#b9a3bf}
+.profile-layout{display:grid;grid-template-columns:minmax(245px,.85fr) minmax(0,1.25fr);gap:22px;align-items:start;max-width:1050px}
+.profile-identity-panel,.profile-edit-panel,.profile-signin-panel{
+ background:#fffdfa;border:1px solid #e5dae6;border-radius:21px;padding:clamp(20px,3vw,34px);
+ box-shadow:0 12px 34px rgba(60,35,64,.055)
+}
+.profile-identity-head{display:flex;gap:16px;align-items:center;min-width:0;padding-bottom:25px;border-bottom:1px solid #e8dfe8}
+.profile-identity-head>div{min-width:0}
+.profile-identity-head h2{font:500 clamp(20px,2vw,26px)/1.2 var(--serif);margin:5px 0 7px;overflow-wrap:anywhere}
+.profile-identity-head p{font-size:13px;color:#726675;overflow-wrap:anywhere;margin:0}
+.profile-avatar{display:block;width:72px;height:72px;flex:0 0 72px;border-radius:50%;object-fit:cover;border:3px solid #f1e8f1}
+.profile-avatar-fallback{display:grid;place-items:center;background:#e8dced;color:#634776;font:400 33px/1 var(--serif)}
+.profile-source,.profile-label{display:block;font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.07em;color:#805b87}
+.profile-metadata{padding:18px 0 16px;border-bottom:1px solid #eee5ec;overflow-wrap:anywhere}
+.profile-metadata strong{display:block;font-size:14px;line-height:1.5;font-weight:650;color:#332639;margin-top:6px}
+.profile-metadata small{display:block;margin-top:5px;color:#847784;font-size:12px}
+.profile-safety{font-size:12px;line-height:1.65;color:#786c7b;margin:20px 0}
+.profile-logout{border:1px solid #c2adca;border-radius:11px;padding:10px 16px;background:#fffdfa;color:#613f70;font-weight:750;font-size:13px}
+.profile-logout:hover{background:#f4eaf5}
+.profile-edit-heading{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.profile-edit-heading h2{font:500 clamp(24px,2.7vw,33px)/1.2 var(--serif);margin:8px 0 16px;color:#2d2132}
+.profile-edit-panel>p{font-size:13px;line-height:1.65;color:#74677b;margin:0 0 20px}
+.profile-state-badge{border-radius:99px;background:#f2edf2;border:1px solid #e2d6e1;padding:6px 10px;
+ color:#72527b;font-size:10px;font-weight:800;white-space:nowrap}
+.profile-form-field{margin:19px 0}
+.profile-form-field label{display:block;font-size:13px;font-weight:800;color:#4d3d54;margin-bottom:8px}
+.profile-form-field input{display:block;width:100%;height:49px;padding:12px 14px;
+ border-radius:11px;border:1px solid #cbbccd;background:#fff;color:#342739;font-size:14px}
+.profile-form-field input:disabled{background:#f6f2f4;color:#90848e}
+.profile-form-field small{display:block;font-size:11px;color:#817582;line-height:1.6;margin-top:7px}
+.profile-form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin-top:24px}
+.profile-form-status{color:#644d6b;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.profile-signin-panel{max-width:710px;text-align:center;padding:clamp(30px,5vw,57px)}
+.profile-signin-icon{display:grid;place-items:center;width:72px;height:72px;border-radius:20px;margin:0 auto 22px;
+ font:400 45px/1 var(--serif);background:#f1e8f2;color:#735481}
+.profile-signin-panel h2{font:500 clamp(24px,3.6vw,36px)/1.2 var(--serif);color:#34283d;margin:0 0 15px}
+.profile-signin-panel p{font-size:14px;line-height:1.7;color:#746877;max-width:520px;margin:0 auto 25px}
+.profile-signin-panel .profile-form-status{margin:17px auto 0}
+@media(max-width:900px){.profile-layout{grid-template-columns:1fr}}
+@media(max-width:790px){
+ .account-shortcut{order:2;font-size:11px;padding:8px 11px;min-height:37px;max-width:132px}
+ .topbar .search-form{order:3}
+}
+@media(max-width:560px){
+ .profile-layout{gap:14px}.profile-identity-panel,.profile-edit-panel{padding:20px 17px;border-radius:17px}
+ .profile-identity-head{gap:13px}.profile-avatar{width:56px;height:56px;flex-basis:56px}
+ .profile-edit-heading{flex-wrap:wrap}.profile-edit-heading h2{margin-bottom:8px}
+ .profile-form-actions{display:grid;gap:10px}.profile-form-actions button{width:100%}
+ .profile-signin-panel{padding:26px 20px}
+}
+@media(max-width:380px){.account-shortcut{max-width:118px;font-size:10px;padding:7px 8px}}
