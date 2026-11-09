@@ -127,7 +127,7 @@ function renderStatus() {
  if (btn) btn.textContent = activeUid ? 'Sair da conta' : 'Acesso local';
  const profileLink=$('#accountShortcut');
  if(profileLink){
-  profileLink.textContent=activeUid?(window.AtelieCloud?.user?.displayName?.split(' ')[0]||'Meu perfil'):'Entrar com Google';
+  profileLink.textContent=activeUid?(personalProfile?.preferredName||window.AtelieCloud?.user?.displayName?.split(' ')[0]||'Meu perfil'):'Entrar com Google';
   profileLink.setAttribute('aria-label',activeUid?'Abrir meu perfil':'Entrar com Google e abrir meu perfil');
  }
  const actions = $('#syncConflict');
@@ -397,6 +397,7 @@ document.addEventListener('submit',async e=>{
   if(!data)throw new Error('A conta mudou durante o salvamento.');
   profileNotice='Alterações salvas no banco de dados.';
   if(status)status.textContent=profileNotice;
+  renderStatus();
  }catch(error){
   if(uid===activeUid){
    profileNotice=error?.code==='permission-denied'?
