@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
+import { getFirestore, doc, getDoc, getDocFromServer, setDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
 
 // Firebase Web config is public. Never publish service account credentials.
 import {firebaseConfig} from './firebase-config.js';
@@ -17,6 +17,27 @@ const cloud = {
   snapshot: null,
   profile: null,
   profileStatus: 'signed-out',
+  // As interações das aulas pertencem exclusivamente ao UID da conta.
+  async loadLessonProgress(lessonId) {
+    const user=cloud.user;
+    if(!user)throw new Error('Entre com Google para acessar seu progresso.');
+    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))throw new Error('Aula não autorizada.');
+    const uid=user.uid, seq=session;
+    const snap=await getDocFromServer(doc(db,'users',uid,'lessonProgress',lessonId));
+    if(seq!==session||cloud.user?.uid!==uid)throw new Error('A conta mudou durante o carregamento.');
+    return snap.exists()?snap.data().state:null;
+  },
+  async saveLessonProgress(lessonId,progress) {
+    const user=cloud.user;
+    if(!user)throw new Error('Entre com Google antes de salvar.');
+    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))throw new Error('Aula não autorizada.');
+    if(!progress||typeof progress!=='object'||Array.isArray(progress))throw new Error('Progresso inválido.');
+    const uid=user.uid,seq=session;
+    // Somente a última alteração confirmada pelo servidor é considerada salva.
+    await setDoc(doc(db,'users',uid,'lessonProgress',lessonId),{schemaVersion:1,state:progress,updatedAt:Date.now()});
+    if(seq!==session||cloud.user?.uid!==uid)throw new Error('A conta mudou durante o salvamento.');
+    return true;
+  },
   async loadProfile() {
     const user = cloud.user;
     if (!user) throw new Error('Entre com sua conta Google para consultar o perfil.');
@@ -97,7 +118,7 @@ onAuthStateChanged(auth, async user => {
   cloud.loadProfile().catch(() => {});
   emit('Conta conectada · verificando seus estudos na nuvem...');
   try {
-    const snap = await getDoc(doc(db, 'users', user.uid, 'state', 'atelier'));
+    const snap = await getDocFromServer(doc(db, 'users', user.uid, 'state', 'atelier'));
     if (currentSession !== session || cloud.user?.uid !== user.uid) return;
     cloud.snapshot = { uid: user.uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null };
     signal('atelie-cloud-loaded', cloud.snapshot);
@@ -117,7 +138,7 @@ window.addEventListener('online', () => {
     // Recheck the server by signing in state observer is not guaranteed.
     const uid = cloud.user.uid;
     const expectedSession = session;
-    getDoc(doc(db, 'users', uid, 'state', 'atelier')).then(snap => {
+    getDocFromServer(doc(db, 'users', uid, 'state', 'atelier')).then(snap => {
       if (session !== expectedSession || cloud.user?.uid !== uid) return;
       cloud.ready = true;
       cloud.snapshot = { uid, exists: snap.exists(), state: snap.exists() ? snap.data() : null };
