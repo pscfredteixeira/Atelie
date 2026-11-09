@@ -294,10 +294,10 @@ function courseProgramAccordion(slug){
    '</div></details>';
  }).join('')+'</div>';
 }
-function renderCourseNavigation(path=parseRoute().path){
+function renderCourseNavigation(path=parseRoute().path,preserveSelectedCourse=false){
  const container=$('#courseContextNav');if(!container)return;
  const context=inferSidebarCourse(path);
- if(context)selectedCourseSlug=context;
+ if(context&&!preserveSelectedCourse)selectedCourseSlug=context;
  if(!ATELIE_COURSE_MODULES[selectedCourseSlug])selectedCourseSlug='formacao-freudiana';
  const slug=selectedCourseSlug;
  container.hidden=false;
@@ -456,7 +456,7 @@ document.addEventListener('change',event=>{
  selectedCourseSlug=slug;
  courseMenuOpenModules.clear();
  courseMenuOpenModules.add(slug+':0');
- renderCourseNavigation();
+ renderCourseNavigation(parseRoute().path,true);
  $('#sidebarCourseSelect')?.focus({preventScroll:true});
 });
 document.addEventListener('toggle',event=>{
