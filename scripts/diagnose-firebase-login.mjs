@@ -1,13 +1,20 @@
 /* Diagnóstico seguro: consulta apenas a configuração pública do Firebase Auth. */
 import fs from 'node:fs/promises';
-const js=await fs.readFile('firebase.js','utf8');
+const js=await fs.readFile('firebase-config.js','utf8');
 const key=js.match(/apiKey:\s*['"]([^'"]+)['"]/)?.[1];
 const expectedProjectNumber=js.match(/messagingSenderId:\s*['"]([^'"]+)['"]/)?.[1];
 if(!key)throw new Error('Firebase API key ausente no arquivo de configuração.');
 const url = new URL('https://identitytoolkit.googleapis.com/v1/projects');
 url.searchParams.set('key', key);
-const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
-const data=await response.json().catch(()=>({}));
+let response,data;
+try{
+ response=await fetch(url,{signal:AbortSignal.timeout(15000)});
+ data=await response.json().catch(()=>({}));
+}catch(error){
+ console.warn('Diagnóstico Firebase Auth indisponível nesta execução ('+String(error.code||error.cause?.code||error.message).slice(0,130)+').');
+ console.warn('Não equivale a falha do login no navegador. Confira no Firebase Console.');
+ process.exit(0);
+}
 if(!response.ok){
  console.log('Config pública Firebase Auth: indisponível. HTTP '+response.status+', código '+(data.error?.status||'não informado')+', motivo '+String(data.error?.message||'não informado').replaceAll(key,'[chave omitida]').slice(0,250));
  if(data.error?.message==='CONFIGURATION_NOT_FOUND') console.warn('VERIFICAR: Authentication → Começar / Google, e se o projeto e a Web API Key correspondem.');
