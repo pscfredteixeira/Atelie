@@ -478,6 +478,7 @@ window.addEventListener('message',event=>{
  }
 });
 if(parent!==window)parent.postMessage({type:'atelie-progress-request',lessonId:LESSON_ID},location.origin);
+ else document.querySelector('#cloudLessonStatus').textContent='Abra esta aula pelo Ateliê e entre com sua conta Google para carregar o progresso.';
 if(st.done.includes(6))$('#finish').hidden=false;
 if('ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
 if('MutationObserver'in window)new MutationObserver(reportHeight).observe(document.body,{attributes:true,childList:true,subtree:true});
