@@ -732,6 +732,7 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
     }
   });
   if(parent!==window)parent.postMessage({type:'atelie-progress-request',lessonId:LESSON_ID},location.origin);
+ else document.querySelector('#cloudLessonStatus').textContent='Abra esta aula pelo Ateliê e entre com sua conta Google para carregar o progresso.';
   render();
 })();
 </script>
