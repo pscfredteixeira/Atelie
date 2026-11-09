@@ -40,6 +40,64 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Microetapas das duas aulas. Não há fallback para dados de outro UID.
+    // No cliente, a conclusão é formativa, não constitui certificação.
+    match /users/{userId}/lessonProgress/{lessonId} {
+      function owner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function knownLesson() {
+        return lessonId in ['escuta-que-mudou-a-clinica','primeira-topica-freud'];
+      }
+      function validEscuta(p) {
+        return p.keys().hasOnly([
+          'unlocked','done','spots','files','times','concepts','choices','passed',
+          'reflection','videoWatched','resumeUnlock','roomCompletedEarly'
+        ])
+        && p.keys().hasAll(['unlocked','done','spots','files','times','concepts','choices','passed','reflection'])
+        && p.unlocked is int && p.unlocked >= 1 && p.unlocked <= 6
+        && p.done is list && p.done.size() <= 6 && p.done.hasOnly([1,2,3,4,5,6])
+        && p.spots is list && p.spots.size() <= 3 && p.spots.hasOnly([0,1,2])
+        && p.files is list && p.files.size() <= 3 && p.files.hasOnly([0,1,2])
+        && p.times is list && p.times.size() <= 4 && p.times.hasOnly([0,1,2,3])
+        && p.concepts is list && p.concepts.size() <= 4 && p.concepts.hasOnly([0,1,2,3])
+        && p.choices is map && p.choices.size() <= 3
+        && p.choices.keys().hasOnly(['3','5','6'])
+        && p.passed is list && p.passed.size() <= 3 && p.passed.hasOnly([3,5,6])
+        && p.reflection is string && p.reflection.size() <= 5000
+        && p.get('videoWatched',false) is bool
+        && p.get('roomCompletedEarly',false) is bool
+        && p.get('resumeUnlock',2) is int;
+      }
+      function validTopica(p) {
+        return p.keys().hasOnly(['passed','visited','videoFinished','thirdAudioDone','wordsCompleted'])
+        && p.keys().hasAll(['passed','visited','videoFinished','thirdAudioDone','wordsCompleted'])
+        && p.passed is list && p.passed.size() <= 5
+        && p.passed.hasOnly(['q1','q2a','q2b','q3a','q3b'])
+        && p.visited is list && p.visited.size() <= 3
+        && p.visited.hasOnly(['ics','pcs','cs'])
+        && p.videoFinished is bool && p.thirdAudioDone is bool
+        && p.wordsCompleted is list && p.wordsCompleted.size() <= 4
+        && p.wordsCompleted.hasOnly([1,2,3,4]);
+      }
+      function validDocument() {
+        return request.resource.data.keys().hasOnly(['schemaVersion','state','updatedAt'])
+        && request.resource.data.keys().hasAll(['schemaVersion','state','updatedAt'])
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.updatedAt is int
+        && request.resource.data.updatedAt >= 0
+        && request.resource.data.state is map
+        && (
+          (lessonId == 'escuta-que-mudou-a-clinica' && validEscuta(request.resource.data.state))
+          || (lessonId == 'primeira-topica-freud' && validTopica(request.resource.data.state))
+        );
+      }
+      allow get: if owner() && knownLesson();
+      allow list: if false;
+      allow create, update: if owner() && knownLesson() && validDocument();
+      allow delete: if false;
+    }
+
     // Perfil pessoal do estudante. Só a conta do próprio UID pode
     // ler ou alterar este documento. Não há acesso por lista de usuários.
     match /users/{userId}/profile/{docId} {
