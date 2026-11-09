@@ -51,6 +51,7 @@ let personalProfileStatus='signed-out';
 let profileNotice='';
 const pendingLessonWrites=new Map();
 const writingLessonIds=new Set();
+let accountGeneration=0;
 function updateEntryGate(){
  const shell=$('#shell');if(shell)shell.hidden=false;
  const skip=$('#skipLink');if(skip)skip.href='#main';
@@ -662,6 +663,8 @@ window.addEventListener('atelie-cloud-state', e => {
 });
 window.addEventListener('atelie-cloud-auth',e=>{
  activeUid=e.detail.uid||null;
+ accountGeneration++;
+ syncing=false;
  personalProfile=null;
  personalProfileStatus=activeUid?'loading':'signed-out';
  profileNotice='';
@@ -730,7 +733,7 @@ async function sendLessonProgress(lessonId,progress,frame,requestId){
  pendingLessonWrites.set(lessonId,{state:copy,requestId});
  if(writingLessonIds.has(lessonId))return;
  writingLessonIds.add(lessonId);
- const uid=activeUid;
+ const uid=activeUid,gen=accountGeneration;
  try{
   while(pendingLessonWrites.has(lessonId)&&activeUid===uid){
    const current=pendingLessonWrites.get(lessonId);
@@ -749,7 +752,7 @@ async function sendLessonProgress(lessonId,progress,frame,requestId){
     break;
    }
   }
- }finally{writingLessonIds.delete(lessonId)}
+ }finally{if(gen===accountGeneration)writingLessonIds.delete(lessonId)}
 }
 window.addEventListener('online',()=>{
  const frame=$('#freudLessonFrame'),lessonId=currentLessonId();
