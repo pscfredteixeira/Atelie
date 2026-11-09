@@ -347,7 +347,7 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
   'use strict';
   const LESSON_ID='primeira-topica-freud';
   const defaultState=()=>({passed:[],visited:['ics'],videoFinished:false,thirdAudioDone:false,wordsCompleted:[]});
-  let state=defaultState(),accountReady=false,pendingReset=false;
+  let state=defaultState(),accountReady=false,pendingReset=false,lastRequestId=0,resetRequestId=0;
   const $=s=>document.querySelector(s);
   let narrationFailed=false;
   let achievementFirstRender=true;
@@ -363,7 +363,7 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
  if(!accountReady)return;
  if(window.parent===window){$('#cloudLessonStatus').textContent='Abra a aula pelo Ateliê e faça login no Google.';return}
  $('#cloudLessonStatus').textContent='Salvando seu progresso no Firestore...';
- window.parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(state))},location.origin);
+ window.parent.postMessage({type:'atelie-progress-save',lessonId:LESSON_ID,state:JSON.parse(JSON.stringify(state)),requestId:++lastRequestId},location.origin);
 }
   function passed(id){return state.passed.includes(id)}
   function hasStep2(){return passed('q1')}
@@ -699,6 +699,7 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
   $('#reset').addEventListener('click',()=>{
     if(!accountReady||!confirm('Deseja reiniciar as etapas desta aula na sua conta Google?'))return;
     pendingReset=true;
+    resetRequestId=lastRequestId+1;
     state=defaultState();
     save();
   });
@@ -722,8 +723,9 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
     if(event.data.lessonId!==LESSON_ID)return;
     if(event.data.type==='atelie-progress-load')applyAccountProgress(event.data.state);
     if(event.data.type==='atelie-progress-saved'){
+      if(event.data.requestId!==lastRequestId)return;
       $('#cloudLessonStatus').textContent='Progresso salvo na sua conta Google.';
-      if(pendingReset){pendingReset=false;location.reload();}
+      if(pendingReset&&event.data.requestId===resetRequestId){pendingReset=false;location.reload();}
     }
     if(event.data.type==='atelie-progress-error'){
       $('#cloudLessonStatus').textContent='O Firestore não confirmou o progresso ('+String(event.data.errorCode||'erro')+'). Confira sua conexão e as regras de acesso.';
