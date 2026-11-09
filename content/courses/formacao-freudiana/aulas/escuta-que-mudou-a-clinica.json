@@ -5,10 +5,10 @@
   "courseId": "curso-formacao-freudiana",
   "moduleId": "modulo-formacao-freudiana-01",
   "slug": "escuta-que-mudou-a-clinica",
-  "revision": 2,
+  "revision": 3,
   "status": "published",
   "title": "A escuta que mudou a clínica",
-  "summary": "Percurso histórico-clínico cocriável em seis momentos: vídeo do professor (provisório), consultório de 1880, arquivo Anna O., origem da escuta, laboratório de conceitos e síntese clínica.",
+  "summary": "Percurso histórico-clínico cocriável em seis momentos: vídeo de abertura do professor, consultório de 1880, arquivo Anna O., origem da escuta, laboratório de conceitos e síntese clínica.",
   "estimatedMinutes": 35,
   "objectives": [
     "Situar o surgimento da psicanálise no contexto médico e social da Viena do século XIX.",
@@ -22,9 +22,9 @@
     "stagesAvailable": 6,
     "source": "Adaptação didática original em português a partir de transcrição de palestra; com correções historiográficas.",
     "stagesPlanned": 6,
-    "videoUrl": "https://youtu.be/1gYNfeSIjNI",
-    "videoIsPlaceholder": true,
-    "narration": "A voz do professor será gravada posteriormente. Nenhuma narração automática."
+    "videoUrl": "https://youtu.be/Gf2XqDKo3xM",
+    "videoIsPlaceholder": false,
+    "narration": "Vídeo de abertura gravado pelo professor; não utilizar narração automática."
   },
   "blocks": [],
   "references": [
