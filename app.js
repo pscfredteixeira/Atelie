@@ -170,22 +170,27 @@ function freudCourseView(c){
 function freudLessonView(id=FREUD_FIRST_ID){
  const i=FREUD_LESSONS.findIndex(l=>l.id===id);if(i<0)return notFound();
  const l=FREUD_LESSONS[i],prev=FREUD_LESSONS[i-1],next=FREUD_LESSONS[i+1];
- const intro=i===0?'Investigue a origem da escuta psicanalítica com atividades progressivas, linha do tempo e análise histórica.':
- 'Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
- return '<div class="freud-reading"><a class="back-link" href="'+FREUD_COURSE_ROUTE+'">← Voltar à Formação Freudiana</a>'+
- '<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
- ' DE 11</span><h1>'+esc(l.title)+'</h1>'+(i===0?'':'<p>'+esc(intro)+'</p>')+'</header>'+
- '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
- '?v=curso-integrado-20261109-abertura-limpa-v4" title="Aula interativa '+esc(l.title)+
- '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
- '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
- '<label class="form-label" for="lessonNote">O que você gostaria de guardar desta aula?</label>'+
- '<textarea id="lessonNote" data-note="'+l.id+'" maxlength="5000" rows="5" placeholder="Escreva suas dúvidas, ideias e associações...">'+
- esc(state.notes[l.id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Suas anotações são salvas no Ateliê.</p></section>'+
- '<nav class="lesson-controls" aria-label="Navegação entre aulas">'+
- (prev?'<a class="btn btn-outline" href="'+prev.route+'">← Aula anterior: '+esc(prev.title)+'</a>':'')+
- (next?'<a class="btn btn-primary" href="'+next.route+'">Próxima aula: '+esc(next.title)+' →</a>':'')+
- '</nav></div>';
+ const intro='Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
+ const videoFirst=i===0;
+ const progress=videoFirst?'<div class="freud-live-progress" id="freudLiveProgress" aria-label="Percurso da aula">'+
+  '<div class="freud-live-heading"><span>SEU PERCURSO</span><strong id="freudLiveCount">0 de 6 etapas</strong></div>'+
+  '<div class="freud-live-track" id="freudLiveTrack" role="progressbar" aria-label="Etapas concluídas" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span id="freudLiveFill"></span></div></div>':'';
+ const backlink=videoFirst?'':'<a class="back-link" href="'+FREUD_COURSE_ROUTE+'">← Voltar à Formação Freudiana</a>';
+ const heading=videoFirst?'':'<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
+  ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
+ return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+progress+backlink+heading+
+  '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
+  '?v=curso-integrado-20261109-video-primeiro-v6" title="Aula interativa '+esc(l.title)+
+  '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
+  (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
+  '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
+  '<label class="form-label" for="lessonNote">O que você gostaria de guardar desta aula?</label>'+
+  '<textarea id="lessonNote" data-note="'+l.id+'" maxlength="5000" rows="5" placeholder="Escreva suas dúvidas, ideias e associações...">'+
+  esc(state.notes[l.id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Suas anotações são salvas no Ateliê.</p></section>'+
+  '<nav class="lesson-controls" aria-label="Navegação entre aulas">'+
+  (prev?'<a class="btn btn-outline" href="'+prev.route+'">← Aula anterior: '+esc(prev.title)+'</a>':'')+
+  (next?'<a class="btn btn-primary" href="'+next.route+'">Próxima aula: '+esc(next.title)+' →</a>':'')+
+  '</nav>'+(videoFirst?'</div>':'')+'</div>';
 }
 function freudSidebarNav(path){
  const isLesson=path.includes('/aula/')||path.includes('/aulas/');
@@ -374,10 +379,18 @@ window.addEventListener('message',event=>{
  if(!data||typeof data!=='object')return;
  if(data.type==='atelie-lesson-height'){
    const height=Number(data.height);
-   if(Number.isFinite(height)&&height>=250&&height<=30000){
-     const next=Math.ceil(height+4);
+   if(Number.isFinite(height)&&height>=100&&height<=30000){
+     const next=Math.ceil(height+3);
      if(frame.style.height!==next+'px')frame.style.height=next+'px';
    }
+ }else if(data.type==='atelie-lesson-stage-progress'&&data.lessonId==='aula-escuta-que-mudou-a-clinica'){
+   const count=Math.max(0,Math.min(6,Math.floor(Number(data.completed)||0)));
+   const meter=$('#freudLiveTrack'),fill=$('#freudLiveFill'),value=$('#freudLiveCount');
+   if(meter)meter.setAttribute('aria-valuenow',String(count));
+   if(fill)fill.style.width=(count*100/6)+'%';
+   if(value)value.textContent=count+' de 6 etapas';
+   const extras=$('#freudLessonExtras');
+   if(extras)extras.hidden=count===0;
  }else if(data.type==='atelie-lesson-progress'&&['aula-primeira-topica-freud','aula-escuta-que-mudou-a-clinica'].includes(data.lessonId)){
    const done=data.completed===true;
    const id=data.lessonId==='aula-primeira-topica-freud'?FREUD_SECOND_ID:FREUD_FIRST_ID;
