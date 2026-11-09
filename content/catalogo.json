@@ -18,7 +18,7 @@
       "slug": "formacao-freudiana",
       "manifest": "./courses/formacao-freudiana/curso.json",
       "status": "published",
-      "summary": "Duas aulas interativas disponíveis: as origens da escuta psicanalítica e a primeira tópica de Freud; nove outras aulas em preparação."
+      "summary": "Duas aulas interativas: as origens da escuta (seis momentos) e a primeira tópica (três); nove aulas futuras."
     },
     {
       "id": "curso-fundamentos",
