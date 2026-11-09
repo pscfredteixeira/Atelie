@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-formacao-freudiana",
   "slug": "formacao-freudiana",
-  "revision": 2,
+  "revision": 3,
   "status": "published",
   "title": "Formação Freudiana",
   "icon": "✦",
   "subtitle": "Estudo sistemático da obra de Sigmund Freud",
-  "description": "Percurso de leitura de Freud. A aula interativa sobre a primeira tópica já está disponível; outras dez aulas previstas estão em preparação.",
+  "description": "Percurso de leitura de Freud. Duas aulas interativas disponíveis: as origens da escuta psicanalítica e a primeira tópica. Outras nove aulas previstas estão em preparação.",
   "objectives": [
     "Acompanhar os problemas teóricos e clínicos que atravessam diferentes momentos da obra de Freud",
     "Reconhecer mudanças e continuidades entre as formulações freudianas",
@@ -20,10 +20,27 @@
   ],
   "modules": [
     {
+      "id": "modulo-formacao-freudiana-01",
+      "title": "As origens da investigação freudiana",
+      "description": "A escuta que mudou a clínica: Freud, Breuer, o caso Anna O., o método catártico e os primeiros problemas da psicanálise.",
+      "position": 1,
+      "lessons": [
+        {
+          "id": "aula-escuta-que-mudou-a-clinica",
+          "title": "A escuta que mudou a clínica",
+          "summary": "Nove etapas interativas: histeria, Breuer, Anna O., método catártico, transferência e Estudos sobre a Histeria.",
+          "path": "./aulas/escuta-que-mudou-a-clinica.json",
+          "position": 1,
+          "status": "published",
+          "estimatedMinutes": 35
+        }
+      ]
+    },
+    {
       "id": "modulo-formacao-freudiana-primeira-topica",
       "title": "A primeira tópica de Freud",
       "description": "Aula progressiva com vídeo de apresentação, desafios, fundamentação e exploração dos sistemas psíquicos.",
-      "position": 1,
+      "position": 2,
       "lessons": [
         {
           "id": "aula-primeira-topica-freud",
@@ -35,13 +52,6 @@
           "estimatedMinutes": 25
         }
       ]
-    },
-    {
-      "id": "modulo-formacao-freudiana-01",
-      "title": "As origens da investigação freudiana",
-      "description": "O contexto científico do fim do século XIX, a histeria e o desenvolvimento da escuta clínica.",
-      "position": 2,
-      "lessons": []
     },
     {
       "id": "modulo-formacao-freudiana-02",
