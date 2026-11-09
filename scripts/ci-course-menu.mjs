@@ -9,6 +9,11 @@ try{
  await mobile.goto(base+'#/aula/escuta-que-mudou-a-clinica',{waitUntil:'domcontentloaded'});
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebarCourseSelect').waitFor({state:'visible'});
+ await mobile.waitForTimeout(80);
+ assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'O menu deve iniciar no seletor de cursos');
+ assert.equal(await mobile.locator('#sidebarCourseSelect').isInViewport(),true,'O seletor deve estar visível sem rolar');
+ assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).visibility),'hidden','Barra de percurso não pode sobrepor o menu');
+ assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),3,'Três cursos no seletor');
  assert.equal(await mobile.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
  assert.equal(await mobile.locator('.course-drawer-module').count(),11,'Onze módulos da Formação Freudiana');
@@ -25,6 +30,14 @@ try{
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).evaluate(e=>e.open),true,'Acordeão de módulo abre');
  await mobile.locator('#sidebarClose').click();
  assert.equal(await mobile.locator('#menuToggle').getAttribute('aria-expanded'),'false');
+ await mobile.locator('#menuToggle').click();
+ await mobile.locator('#sidebar').evaluate(e=>{e.scrollTop=600});
+ await mobile.locator('#sidebarClose').click({force:true});
+ await mobile.locator('#menuToggle').click();
+ await mobile.waitForTimeout(70);
+ assert.equal(await mobile.locator('#sidebar').evaluate(e=>e.scrollTop),0,'Reabrir o menu deve restaurar o topo');
+ assert.equal(await mobile.locator('#sidebarCourseSelect').isInViewport(),true,'Seletor presente após reabrir');
+ await mobile.locator('#sidebarClose').click();
  await mobile.goto(base+'#/curso/fundamentos-da-psicanalise',{waitUntil:'domcontentloaded'});
  await mobile.locator('.course-program-module').first().waitFor({state:'visible'});
  assert.equal(await mobile.locator('.course-program-module').count(),1);
