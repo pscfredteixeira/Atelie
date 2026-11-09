@@ -170,4 +170,22 @@ update();
  setTimeout(report,180);setTimeout(report,1200);
 })();
 </script>
+
+<script>
+/* Comunica conclusão ao Ateliê somente quando as nove atividades foram concluídas. */
+(()=>{
+ if(window.parent===window)return;
+ let last=null;
+ const report=()=>{
+   const done=!!document.querySelector('#certificate.show');
+   if(done===last)return;
+   last=done;
+   window.parent.postMessage({type:'atelie-lesson-progress',lessonId:'aula-escuta-que-mudou-a-clinica',completed:done},location.origin);
+ };
+ document.addEventListener('DOMContentLoaded',report);
+ window.addEventListener('load',report);
+ new MutationObserver(report).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+ report();
+})();
+</script>
 </body></html>
