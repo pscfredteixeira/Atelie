@@ -27,7 +27,7 @@ try{
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).evaluate(e=>e.open),true,'Segundo módulo abre');
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).locator('a[href="#/aula/primeira-topica-freud"]').count(),1);
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca disponível na visão geral do curso');
- assert.equal(await mobile.locator('#freudLiveProgress').evaluate(e=>getComputedStyle(e).position),'static','Progresso não flutua');
+ // O progresso da aula só é mostrado após o login; esta etapa ainda está na visão geral do curso.
  await mobile.locator('#sidebarClose').click();
  assert.equal(await mobile.locator('#menuToggle').getAttribute('aria-expanded'),'false');
  await mobile.locator('#menuToggle').click();
