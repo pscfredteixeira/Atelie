@@ -15,6 +15,46 @@ const cloud = {
   user: null,
   ready: false,
   snapshot: null,
+  profile: null,
+  profileStatus: 'signed-out',
+  async loadProfile() {
+    const user = cloud.user;
+    if (!user) throw new Error('Entre com sua conta Google para consultar o perfil.');
+    const uid = user.uid;
+    const expectedSession = session;
+    cloud.profileStatus = 'loading';
+    signal('atelie-cloud-profile', { uid, status: 'loading' });
+    try {
+      const snap = await getDoc(doc(db, 'users', uid, 'profile', 'main'));
+      if (expectedSession !== session || cloud.user?.uid !== uid) return null;
+      const data = snap.exists() ? snap.data() : null;
+      cloud.profile = data;
+      cloud.profileStatus = 'ready';
+      signal('atelie-cloud-profile', { uid, status: 'ready', profile: data });
+      return data;
+    } catch (error) {
+      if (expectedSession !== session || cloud.user?.uid !== uid) return null;
+      cloud.profileStatus = 'error';
+      signal('atelie-cloud-profile', { uid, status: 'error', errorCode: error?.code || 'unknown' });
+      throw error;
+    }
+  },
+  async saveProfile(fields) {
+    const user = cloud.user;
+    if (!user) throw new Error('Você precisa entrar com Google para editar seu perfil.');
+    if (cloud.profileStatus !== 'ready') throw new Error('O perfil não foi carregado. Verifique a conexão e tente novamente.');
+    const uid = user.uid, expectedSession = session;
+    const preferredName = String(fields?.preferredName ?? '').trim();
+    const phone = String(fields?.phone ?? '').trim();
+    if (preferredName.length > 80 || phone.length > 30) throw new Error('Confira os limites dos campos antes de salvar.');
+    const payload = { preferredName, phone, updatedAt: Date.now() };
+    await setDoc(doc(db, 'users', uid, 'profile', 'main'), payload);
+    if (expectedSession !== session || cloud.user?.uid !== uid) return null;
+    cloud.profile = payload;
+    cloud.profileStatus = 'ready';
+    signal('atelie-cloud-profile', { uid, status: 'ready', profile: payload });
+    return payload;
+  },
   login() {
     // The app runs on GitHub Pages, not Firebase Hosting.
     // Redirect auth via firebaseapp.com may fail in Safari/modern browsers
@@ -44,11 +84,17 @@ onAuthStateChanged(auth, async user => {
   cloud.user = user;
   cloud.ready = false;
   cloud.snapshot = null;
+  cloud.profile = null;
+  cloud.profileStatus = user ? 'loading' : 'signed-out';
   signal('atelie-cloud-auth', { uid: user?.uid ?? null, name: user?.displayName ?? null });
   if (!user) {
+    signal('atelie-cloud-profile', { uid: null, status: 'signed-out' });
     emit('Você está no modo local, sem sincronização na nuvem.');
     return;
   }
+  // Perfil é independente do documento de progresso: um erro em estudos
+  // não deve impedir a pessoa de consultar ou editar seus dados básicos.
+  cloud.loadProfile().catch(() => {});
   emit('Conta conectada · verificando seus estudos na nuvem...');
   try {
     const snap = await getDoc(doc(db, 'users', user.uid, 'state', 'atelier'));
@@ -66,6 +112,7 @@ onAuthStateChanged(auth, async user => {
 }, error => emit('Falha na autenticação: ' + (error.code || error.message)));
 
 window.addEventListener('online', () => {
+  if (cloud.user && cloud.profileStatus === 'error') cloud.loadProfile().catch(() => {});
   if (cloud.user && !cloud.ready) {
     // Recheck the server by signing in state observer is not guaranteed.
     const uid = cloud.user.uid;
