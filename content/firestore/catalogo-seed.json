@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "provider": "Cloud Firestore",
+  "project": "ateliepsi",
+  "purpose": "proposta de importação — NÃO aplicada automaticamente",
+  "documents": [
+    {
+      "path": "courses/curso-formacao-freudiana",
+      "data": {
+        "slug": "formacao-freudiana",
+        "title": "Formação Freudiana",
+        "subtitle": "Estudo sistemático da obra de Sigmund Freud",
+        "description": "Formação Freudiana com duas aulas interativas disponíveis: A escuta que mudou a clínica e A primeira tópica de Freud.",
+        "status": "published",
+        "position": 1,
+        "coverUrl": "assets/cover-freud.svg",
+        "schemaVersion": 1
+      }
+    },
+    {
+      "path": "courses/curso-formacao-freudiana/modules/modulo-formacao-freudiana-01",
+      "data": {
+        "title": "As origens da investigação freudiana",
+        "description": "Da histeria ao nascimento da psicanálise: Breuer, Anna O., o método catártico, a vida de Freud e os primeiros marcos teóricos.",
+        "position": 1,
+        "status": "published"
+      }
+    },
+    {
+      "path": "courses/curso-formacao-freudiana/modules/modulo-formacao-freudiana-01/lessons/aula-escuta-que-mudou-a-clinica",
+      "data": {
+        "slug": "escuta-que-mudou-a-clinica",
+        "title": "A escuta que mudou a clínica",
+        "summary": "Seis momentos interativos: vídeo de abertura publicado, consultório, Anna O., linha histórica, conceitos e síntese clínica.",
+        "position": 1,
+        "status": "published",
+        "estimatedMinutes": 35,
+        "stagesAvailable": 6,
+        "route": "#/aula/escuta-que-mudou-a-clinica",
+        "contentUrl": "content/courses/formacao-freudiana/aulas/escuta-que-mudou-a-clinica.html",
+        "videoUrl": "https://youtu.be/Gf2XqDKo3xM"
+      }
+    },
+    {
+      "path": "courses/curso-formacao-freudiana/modules/modulo-formacao-freudiana-primeira-topica",
+      "data": {
+        "title": "A primeira tópica de Freud",
+        "description": "Aula progressiva com vídeo de apresentação, desafios, fundamentação e exploração dos sistemas psíquicos.",
+        "position": 2,
+        "status": "published"
+      }
+    },
+    {
+      "path": "courses/curso-formacao-freudiana/modules/modulo-formacao-freudiana-primeira-topica/lessons/aula-primeira-topica-freud",
+      "data": {
+        "slug": "primeira-topica-de-freud",
+        "title": "A primeira tópica de Freud",
+        "summary": "3 etapas interativas disponíveis: introdução, origem da tópica e funcionamento dos sistemas.",
+        "position": 1,
+        "status": "published",
+        "estimatedMinutes": 25,
+        "stagesAvailable": 3,
+        "route": "#/aula/primeira-topica-freud",
+        "contentUrl": "content/courses/formacao-freudiana/aulas/primeira-topica.html",
+        "videoUrl": "https://youtu.be/1gYNfeSIjNI"
+      }
+    }
+  ]
+}
