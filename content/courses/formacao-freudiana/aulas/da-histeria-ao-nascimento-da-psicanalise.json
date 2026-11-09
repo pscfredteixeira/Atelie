@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-da-histeria-ao-nascimento-da-psicanalise",
+  "courseId": "curso-formacao-freudiana",
+  "moduleId": "modulo-formacao-freudiana-01",
+  "slug": "da-histeria-ao-nascimento-da-psicanalise",
+  "revision": 1,
+  "status": "published",
+  "title": "Da histeria ao nascimento da psicanálise",
+  "summary": "Nove etapas com imagens, explorações e quizzes sobre escuta, Anna O., abreação, Martha Bernays, a carta aos biógrafos e os marcos editoriais de 1893, 1895 e 1900.",
+  "estimatedMinutes": 35,
+  "objectives": [
+    "Reconhecer o lugar da escuta e da história subjetiva na investigação da histeria.",
+    "Distinguir o atendimento de Anna O. por Breuer da leitura posterior de Freud.",
+    "Explicar a hipótese histórica da abreação sem confundi-la com elaboração psíquica.",
+    "Relacionar o contexto biográfico de Freud e Martha Bernays às primeiras publicações sem reduzir a produção teórica à biografia.",
+    "Situar a Comunicação preliminar (1893), Estudos sobre a Histeria (1895) e A interpretação dos sonhos (1899/1900).",
+    "Problematizar a escolha de uma obra inaugural e a relação crítica com Freud como fundador."
+  ],
+  "metadata": {
+    "interactivePage": "./da-histeria-ao-nascimento-da-psicanalise.html",
+    "stagesAvailable": 9,
+    "source": "Adaptação didática original a partir da transcrição de vídeo fornecida pelo usuário; cronologia revisada e correções historiográficas.",
+    "requiresLogin": false
+  },
+  "blocks": [],
+  "references": [
+    {
+      "id": "breuer-freud-1893",
+      "author": "Josef Breuer e Sigmund Freud",
+      "title": "Sobre o mecanismo psíquico dos fenômenos histéricos: comunicação preliminar",
+      "year": 1893
+    },
+    {
+      "id": "breuer-freud-1895",
+      "author": "Josef Breuer e Sigmund Freud",
+      "title": "Estudos sobre a Histeria",
+      "year": 1895
+    },
+    {
+      "id": "freud-1900-sonhos",
+      "author": "Sigmund Freud",
+      "title": "A interpretação dos sonhos",
+      "year": 1900
+    },
+    {
+      "id": "loc-freud",
+      "author": "Library of Congress",
+      "title": "Sigmund Freud: Conflict & Culture — Anna O. and Free Association"
+    },
+    {
+      "id": "freud-museum-martha",
+      "author": "Freud Museum London",
+      "title": "Martha Bernays: o amor na vida de Sigmund Freud",
+      "year": 2026
+    }
+  ]
+}
