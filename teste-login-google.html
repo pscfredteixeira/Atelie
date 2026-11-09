@@ -56,6 +56,11 @@ h2{font-size:28px;margin:0}
 .errorbox{margin-top:17px;border:1px solid #e1bfc4;background:#fff5f6;border-radius:12px;padding:15px;color:#713b46;font-size:12px}
 .errorbox strong{display:block;font-size:13px;margin-bottom:5px}
 .errorbox code{display:block;margin-top:8px;overflow-wrap:anywhere}
+.domain-result{background:#f6f0f7;border:1px solid #e2d5e5;padding:15px 17px;border-radius:12px;margin:18px 0 0}
+.domain-result strong{font-size:13px;color:#5a4266;display:block}
+.domain-result p{font-size:12px;color:#716276;margin:6px 0 0;line-height:1.65;overflow-wrap:anywhere}
+.domain-result[data-result=ok]{background:#eef8f1;border-color:#bbd9c2}
+.domain-result[data-result=error]{background:#fff4f3;border-color:#eac1c6}
 .note{font-size:12px;color:#756b79;line-height:1.75;margin:21px 0 0}
 .diagnostic{margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
 .diaghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -89,6 +94,10 @@ footer{max-width:1050px;margin:auto;padding:0 25px 30px;color:#928694;font-size:
  </div>
  <div class="profile" id="profile" hidden><small>Conta autenticada</small><h3 id="userName"></h3><p id="userEmail"></p><p id="persistInfo"></p></div>
  <div class="errorbox" id="errorBox" hidden role="alert"><strong id="errorTitle"></strong><span id="errorHelp"></span><code id="errorCode"></code></div>
+ <div id="domainCheck" class="domain-result" role="status" aria-live="polite">
+   <strong id="domainTitle">Verificando domínios com o Firebase…</strong>
+   <p id="domainText">Consultaremos a configuração pública retornada pelo serviço usando a chave Web publicada.</p>
+ </div>
  <p class="note">O login ocorre pelo Google e pelo Firebase. Esta página não pede sua senha nem envia informações para nosso banco de dados. A conta de autenticação pode ser criada pelo Firebase no primeiro acesso.</p>
  <div class="diagnostic">
   <div class="diaghead"><h3>Diagnóstico técnico</h3><button class="copy" id="copy" type="button">Copiar diagnóstico</button></div>
@@ -100,8 +109,9 @@ footer{max-width:1050px;margin:auto;padding:0 25px 30px;color:#928694;font-size:
  <ol class="steps">
   <li><span class="check" id="stepSdk">1</span>O navegador carrega o SDK do Firebase.</li>
   <li><span class="check" id="stepApp">2</span>A configuração Web do projeto <strong>ateliepsi</strong> é carregada.</li>
-  <li><span class="check" id="stepAuth">3</span>A conta Google é reconhecida pelo Firebase.</li>
-  <li><span class="check" id="stepPersist">4</span>Após atualizar esta página, a sessão permanece ativa.</li>
+  <li><span class="check" id="stepDomain">3</span>A chave Web do Firebase reconhece o domínio deste site como autorizado.</li>
+  <li><span class="check" id="stepAuth">4</span>A conta Google é reconhecida pelo Firebase.</li>
+  <li><span class="check" id="stepPersist">5</span>Após atualizar esta página, a sessão permanece ativa.</li>
  </ol>
  <p class="aside-note"><strong>Faça o teste:</strong> entre com Google, atualize usando “Verificar sessão novamente” e, por último, saia da conta. O status de cada etapa aparecerá ao lado.</p>
  <p class="aside-note"><strong>No iPhone:</strong> abra esta página diretamente no Safari, fora do navegador integrado do ChatGPT ou de outras redes sociais, para evitar bloqueios à janela do Google.</p>
@@ -112,7 +122,7 @@ footer{max-width:1050px;margin:auto;padding:0 25px 30px;color:#928694;font-size:
 <footer>Ateliê de Psicanálise · Página de teste da autenticação · GitHub Pages</footer>
 <script type="module">
 const $=id=>document.getElementById(id);
-let service='carregando',authState='desconhecida',phase='inicialização',errorCode='nenhum',auth,signInWithPopup,GoogleAuthProvider,signOut;
+let service='carregando',authState='desconhecida',phase='inicialização',errorCode='nenhum',backendDomainStatus='não verificado',backendProject='não verificado',auth,signInWithPopup,GoogleAuthProvider,signOut;
 const persistedKey='atelie-auth-test-active-v1';
 let previousSession=false;
 try{previousSession=sessionStorage.getItem(persistedKey)==='1'}catch{}
@@ -122,15 +132,15 @@ function show(kind,title,message){
  $('statusTitle').textContent=title;
  $('statusText').textContent=message;
 }
-function check(id,done){const el=$(id);el.classList.toggle('done',!!done);el.textContent=done?'✓':id==='stepSdk'?'1':id==='stepApp'?'2':id==='stepAuth'?'3':'4'}
+function check(id,done){const el=$(id);el.classList.toggle('done',!!done);el.textContent=done?'✓':id==='stepSdk'?'1':id==='stepApp'?'2':id==='stepDomain'?'3':id==='stepAuth'?'4':'5'}
 function report(){
- $('report').textContent=['Projeto: ateliepsi','Página: '+location.hostname+location.pathname,'SDK Firebase: '+service,'Autenticação: '+authState,'Etapa: '+phase,'Erro: '+errorCode,'Firestore: não utilizado neste teste'].join('\n');
+ $('report').textContent=['Projeto: ateliepsi','Página: '+location.hostname+location.pathname,'SDK Firebase: '+service,'Projeto retornado pelo servidor: '+backendProject,'Domínio atual: '+location.hostname,'Verificação de domínio: '+backendDomainStatus,'Autenticação: '+authState,'Etapa: '+phase,'Erro: '+errorCode,'Firestore: não utilizado neste teste'].join('\n');
 }
 function fail(err,where){
  const code=typeof err?.code==='string'?err.code:'erro/desconhecido';
  errorCode=code;phase=where;authState='falha';
  const help={
- 'auth/unauthorized-domain':['Domínio não autorizado','Confira Authentication → Settings → Authorized domains: pscfredteixeira.github.io.'],
+ 'auth/unauthorized-domain':['Domínio não autorizado','Veja a verificação de domínio abaixo: se a chave Web não reconhecer pscfredteixeira.github.io, compare a configuração publicada do aplicativo Web no Firebase com a chave do site.'],
  'auth/configuration-not-found':['Configuração não encontrada','Verifique se o Firebase Authentication está inicializado no projeto ateliepsi e se a configuração Web é a correta.'],
  'auth/operation-not-allowed':['Provedor desabilitado','Confira se Google está ativado e salvo em Authentication → Sign-in method.'],
  'auth/invalid-api-key':['Chave Web inválida','Confira as configurações do aplicativo Web no projeto Firebase.'],
@@ -149,6 +159,40 @@ function fail(err,where){
  $('login').disabled=!auth;
  show('error',item[0],'Falha durante '+where+'.');
  report();
+}
+async function checkBackendDomains(config){
+  const target=location.hostname.toLowerCase();
+  try{
+    const endpoint='https://identitytoolkit.googleapis.com/v1/projects?key='+encodeURIComponent(config.apiKey);
+    const response=await fetch(endpoint,{cache:'no-store'});
+    const result=await response.json();
+    if(!response.ok){
+      const code=String(result?.error?.status||result?.error?.message||'HTTP '+response.status);
+      backendDomainStatus='consulta falhou ('+code+')';
+      backendProject='indisponível';
+      $('domainCheck').dataset.result='error';
+      $('domainTitle').textContent='Não foi possível conferir a lista de domínios.';
+      $('domainText').textContent='O servidor retornou '+code+'. Isso pode indicar chave Web incorreta, bloqueio nas restrições da chave ou uma configuração do Authentication ainda incompleta.';
+      report();
+      return;
+    }
+    backendProject=String(result.projectId||'não informado');
+    const domains=Array.isArray(result.authorizedDomains)?result.authorizedDomains.map(x=>String(x).toLowerCase()):[];
+    const allowed=domains.includes(target);
+    backendDomainStatus=allowed?'autorizado pelo servidor':'NÃO autorizado pelo servidor';
+    check('stepDomain',allowed);
+    $('domainCheck').dataset.result=allowed?'ok':'error';
+    $('domainTitle').textContent=allowed?'Domínio confirmado no Firebase':'O Firebase não reconhece este domínio';
+    $('domainText').textContent=allowed
+      ?'O serviço retornou o domínio '+target+' na lista autorizada. Se o login continuar falhando, confira as restrições da chave e o domínio de autenticação.'
+      :'Domínio consultado: '+target+'. Projeto retornado: '+backendProject+'. Domínios autorizados devolvidos pelo servidor: '+(domains.join(', ')||'nenhum')+'. Se você já cadastrou o domínio no Console, verifique se está no mesmo projeto e se a configuração Web do site aponta para ele.';
+  }catch(err){
+    backendDomainStatus='falha de rede na consulta';
+    $('domainCheck').dataset.result='error';
+    $('domainTitle').textContent='A consulta de domínios não pôde ser concluída';
+    $('domainText').textContent='O navegador não conseguiu consultar a configuração pública do Firebase. Verifique rede, bloqueadores e restrições da chave; o teste de login continua disponível.';
+  }
+  report();
 }
 $('reload').addEventListener('click',()=>location.reload());
 $('copy').addEventListener('click',async()=>{
@@ -180,6 +224,7 @@ async function init(){
   ]);
   service='carregado';check('stepSdk',true);
   if(cfg.firebaseConfig?.projectId!=='ateliepsi')throw Object.assign(new Error('Projeto incorreto'),{code:'auth/configuration-not-found'});
+  void checkBackendDomains(cfg.firebaseConfig);
   const app=appSDK.initializeApp(cfg.firebaseConfig);
   auth=authSDK.getAuth(app);
   signInWithPopup=authSDK.signInWithPopup;GoogleAuthProvider=authSDK.GoogleAuthProvider;signOut=authSDK.signOut;
