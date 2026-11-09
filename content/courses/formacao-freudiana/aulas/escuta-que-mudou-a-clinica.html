@@ -36,7 +36,7 @@ button,textarea{font:inherit}button{cursor:pointer}a{color:var(--plum)}button:fo
   <div class="step-inner" style="padding:0">
    <div class="step-head" hidden><span class="number">MOMENTO 02 · EXPLORAÇÃO VISUAL</span><span class="badge" id="badge-2">Disponível</span></div>
    <iframe id="room-1880-frame" title="Exploração visual interativa: O consultório de 1880"
-     src="./consultorio-1880.html?v=20261109-ajuste-altura-v5" loading="eager"
+     src="./consultorio-1880.html?v=20261109-largura-e-desbloqueio-v9" loading="eager"
      scrolling="no" referrerpolicy="strict-origin-when-cross-origin"
      style="width:100%;display:block;height:400px;min-height:0;max-width:100%;border:0;border-radius:18px;background:#f4efec"></iframe>
   </div>
@@ -202,6 +202,8 @@ function onIntroEnded(){
  st.videoWatched=true;st.unlocked=Math.max(st.unlocked,Math.min(6,Number(st.resumeUnlock)||2));
  complete(1);
  if(st.roomCompletedEarly&&!st.done.includes(2))complete(2,false);
+ // Reconhece visitas prévias que já completaram os três hotspots.
+ setTimeout(requestRoomProgress,300);
 }
 let ytInitialized=false;
 function attachVideoEvents(){
@@ -216,6 +218,13 @@ ytAPI.async=true;ytAPI.onload=attachVideoEvents;document.head.appendChild(ytAPI)
 if(window.YT?.Player)attachVideoEvents();
 /* Integra o novo consultório HTML independente e mantém a progressão do curso. */
 const roomFrame=$('#room-1880-frame');
+// Uma consulta de estado garante que progresso salvo apareça no site mesmo
+// após atualização do Safari, quando mensagens de carregamento podem se perder.
+function requestRoomProgress(){
+ if(roomFrame?.contentWindow)roomFrame.contentWindow.postMessage({type:'atelie-room-request-state'},location.origin);
+}
+roomFrame?.addEventListener('load',requestRoomProgress);
+if(roomFrame?.contentDocument?.readyState==='complete')setTimeout(requestRoomProgress,0);
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==roomFrame?.contentWindow)return;
  const msg=event.data;if(!msg||typeof msg!=='object')return;
