@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" media="(min-width: 1025px)" href="assets/hero-escultura-hd.jpg?v=atelie-banner-hd-20261102">
-  <link rel="stylesheet" href="styles.css?v=perfil-conquistas-20261109-v3">
+  <link rel="stylesheet" href="styles.css?v=cursos-modulos-navegacao-20261109-v1">
   <script type="module" src="firebase.js?v=perfil-firestore-20261109-v2"></script>
-  <script src="app.js?v=perfil-conquistas-20261109-v3" defer></script>
+  <script src="app.js?v=cursos-modulos-navegacao-20261109-v1" defer></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -38,17 +38,22 @@
 <div class="shell" id="shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
-      <a class="brand" href="#/" aria-label="Ateliê: ir ao início">
-        <span class="brand-word">Ateliê<span class="brand-rule"></span></span>
-        <span class="brand-sub">ESTUDOS EM<br>PSICANÁLISE</span>
-      </a>
+      <div class="course-drawer-heading">
+        <a class="brand" href="#/" aria-label="Ateliê: ir ao início">
+          <span class="brand-word">Ateliê<span class="brand-rule"></span></span>
+          <span class="brand-sub">ESTUDOS EM<br>PSICANÁLISE</span>
+        </a>
+        <button type="button" id="sidebarClose" class="sidebar-close" aria-label="Fechar menu de cursos"><svg><use href="#i-close"/></svg></button>
+      </div>
+      <div id="courseContextNav" class="course-context-nav" aria-label="Cursos e módulos"></div>
+      <div class="sidebar-separator sidebar-main-separator"></div>
+      <p class="sidebar-caption">EXPLORAR O ATELIÊ</p>
       <nav aria-label="Menu principal">
         <a href="#/" data-nav="/" class="nav-link"><svg><use href="#i-home"/></svg> Início</a>
         <a href="#/cursos" data-nav="/cursos" class="nav-link"><svg><use href="#i-layers"/></svg> Cursos</a>
         <a href="#/trilhas" data-nav="/trilhas" class="nav-link"><svg><use href="#i-route"/></svg> Trilhas</a>
         <a href="#/biblioteca" data-nav="/biblioteca" class="nav-link"><svg><use href="#i-book"/></svg> Biblioteca</a>
       </nav>
-      <div id="courseContextNav" class="course-context-nav" hidden aria-label="Navegação do curso selecionado"></div>
       <div class="sidebar-separator"></div>
       <p class="sidebar-caption">MEU ESTUDO</p>
       <nav aria-label="Menu do estudante">
