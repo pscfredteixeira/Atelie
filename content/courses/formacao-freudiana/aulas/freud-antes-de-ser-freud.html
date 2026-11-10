@@ -191,9 +191,7 @@ body{overflow-x:hidden}.shell{max-width:900px}
   <h2 id="step1-title">Freud antes de ser Freud</h2>
   <div class="step-content" id="content-1"><div class="video">
 <iframe id="video-introducao" src="https://www.youtube-nocookie.com/embed/2vYTFwAVh0E?enablejsapi=1&amp;playsinline=1&amp;rel=0" title="Vídeo de abertura: Freud antes de ser Freud" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="eager"></iframe></div>
-<div class="video-gate" id="video-gate" aria-live="polite">Assista à abertura para começar a sequência de estudo.</div>
-<button type="button" class="video-fallback" id="video-fallback">Já assisti ao vídeo? Liberar o desafio</button>
-<section class="quiz" id="q1" hidden aria-label="Desafio 1">
+<section class="quiz" id="q1" aria-label="Desafio 1">
   <div class="quiz-top">✦ Desafio 01 · raciocínio</div>
   <h3>O que permite estudar Freud sem reduzir a psicanálise à sua biografia?</h3><div class="answers" role="group" aria-label="Alternativas do desafio 1"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>Os acontecimentos pessoais de Freud explicam diretamente todos os conceitos.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>A vida pessoal precisa ser ignorada para evitar interpretações.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>É preciso articular documentos, trajetória intelectual e evolução conceitual sem confundi-los.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Uma carta de Freud revela a intenção oculta de toda sua obra.</span></button></div>
   <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
@@ -317,7 +315,7 @@ for(let n=1;n<=6;n++){
  const badge=$('#badge-'+n);badge.textContent=done?'✓ Concluído':(open?'Disponível':'Bloqueado');badge.className='pill'+(done?' done':(!open?' lock':''));
  if(open&&wasHidden){step.classList.add('reveal');step.addEventListener('animationend',()=>step.classList.remove('reveal'),{once:true});}
 }
-$('#q1').hidden=!state.videoWatched;$('#video-gate').hidden=state.videoWatched;$('#video-fallback').hidden=state.videoWatched;
+
 $('#finish').hidden=!state.done.includes(6);
 save();reportHeight();
 }
@@ -356,9 +354,7 @@ function makeQuiz(q){
  });
 }
 Q.forEach(makeQuiz);
-$('#video-fallback').addEventListener('click',()=>{
- state.videoWatched=true;updateProgress();$('#q1').scrollIntoView({behavior:'smooth',block:'start'});
-});
+
 let ytPlayer=null;
 function onYoutubeReady(){
  if(!window.YT||!window.YT.Player)return;
