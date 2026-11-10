@@ -18,7 +18,7 @@ try{
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),1,'Somente Formação Freudiana é publicada');
  assert.equal(await mobile.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
- assert.equal(await mobile.locator('.course-drawer-module').count(),2,'Apenas dois módulos com aulas reais');
+ assert.equal(await mobile.locator('.course-drawer-module').count(),3,'Três módulos com aulas reais');
  assert.equal(await mobile.locator('.course-drawer-module').first().getAttribute('open'),'','Primeiro módulo expandido');
  assert.equal(await mobile.locator('.course-drawer-module').first().locator('a[href="#/aula/escuta-que-mudou-a-clinica"]').count(),1);
  assert.equal(await mobile.locator('#sidebarClose').isVisible(),true);
@@ -26,6 +26,7 @@ try{
  await mobile.locator('.course-drawer-module').nth(1).locator('summary').click();
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).evaluate(e=>e.open),true,'Segundo módulo abre');
  assert.equal(await mobile.locator('.course-drawer-module').nth(1).locator('a[href="#/aula/primeira-topica-freud"]').count(),1);
+ assert.equal(await mobile.locator('.course-drawer-module').nth(2).locator('a[href="#/aula/freud-antes-de-ser-freud"]').count(),1,'Terceira aula aparece no menu lateral');
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca disponível na visão geral do curso');
  // O progresso da aula só é mostrado após o login; esta etapa ainda está na visão geral do curso.
  await mobile.locator('#sidebarClose').click();
@@ -40,7 +41,7 @@ try{
  await mobile.locator('#sidebarClose').click();
  await mobile.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
  await mobile.locator('.course-program-module').first().waitFor({state:'visible'});
- assert.equal(await mobile.locator('.course-program-module').count(),2);
+ assert.equal(await mobile.locator('.course-program-module').count(),3);
  assert.equal(await mobile.locator('#searchForm').isVisible(),true,'Busca continua disponível fora da aula');
  await mobile.locator('.course-program-module a[href="#/aula/escuta-que-mudou-a-clinica"]').click();
  await mobile.locator('[data-profile-login]').waitFor();
@@ -50,11 +51,16 @@ try{
  const desktop=await browser.newPage({viewport:{width:1440,height:900}});
  await desktop.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
  await desktop.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
- assert.equal(await desktop.locator('.course-program-module').count(),2);
+ assert.equal(await desktop.locator('.course-program-module').count(),3);
  assert.equal(await desktop.locator('#courseContextNav').isVisible(),true);
  await desktop.locator('.course-program-module').nth(1).locator('summary').click();
  await desktop.locator('.course-program-module a[href="#/aula/primeira-topica-freud"]').click();
  await desktop.locator('[data-profile-login]').waitFor();
  assert.equal(await desktop.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
+ await desktop.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
+ await desktop.locator('.course-program-module').nth(2).locator('summary').click();
+ await desktop.locator('.course-program-module a[href="#/aula/freud-antes-de-ser-freud"]').click();
+ await desktop.locator('[data-profile-login]').waitFor();
+ assert.match(desktop.url(),/#\\/aula\\/freud-antes-de-ser-freud/,'Rota da terceira aula funciona na plataforma');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
 }finally{await browser.close()}
