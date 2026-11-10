@@ -1,121 +1,394 @@
 <!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f4efe9">
-  <title>Freud antes de ser Freud | Ateliê de Psicanálise</title>
-  <meta name="description" content="Aula da Formação Freudiana sobre a trajetória científica de Freud, o projeto de 1895 e o nascimento da psicanálise. Inclui vídeo de abertura gravado pelo professor.">
-  <style>
-    :root{--bg:#f5f1ec;--paper:#fffefa;--ink:#282335;--plum:#644b7c;--plumdeep:#413153;--muted:#6a626e;--line:#e6dfe5;--soft:#f1eaf5;--violet:#a58bbd;--gold:#ac8e66;--serif:Georgia,'Times New Roman',serif}
-    *,*:before,*:after{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(165deg,#eee7ef 0,#f5f1ec 420px,#f5f1ec 100%);color:var(--ink);font:17px/1.75 system-ui,-apple-system,'Segoe UI',sans-serif}
-    button,a{touch-action:manipulation}button{font:inherit;cursor:pointer}a{color:#543e71;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}
-    :focus-visible{outline:3px solid #a888ce;outline-offset:4px}
-    .wrap{width:min(100% - 44px,1120px);margin-inline:auto}
-    .topbar{height:92px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #d8d0da}
-    .brand{font-size:12px;letter-spacing:.19em;color:var(--plumdeep);font-weight:850;text-transform:uppercase}.brand span{display:block;font:italic 15px var(--serif);letter-spacing:.02em;margin-top:3px;color:#86738d;font-weight:400;text-transform:none}
-    .topright{font-size:12px;letter-spacing:.09em;font-weight:750;color:#6e6472;text-align:right;text-transform:uppercase}
-    .eyebrow{text-transform:uppercase;letter-spacing:.18em;color:#866b9e;font-size:11px;font-weight:800}
-    h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-height:1.13}
-    h1{font-size:clamp(42px,6.2vw,78px);margin:20px 0 15px;max-width:800px}
-    h2{font-size:clamp(36px,4.4vw,58px);margin:13px 0 21px}
-    h3{font-size:clamp(28px,3vw,39px);margin:9px 0 18px}
-    .hero{padding:52px 0 40px}
-    .hero-lead{font:23px/1.5 var(--serif);color:#595061;max-width:710px;margin:0 0 27px}
-    .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:#746b78;font-size:13px}
-    .meta span{display:inline-flex;align-items:center;gap:8px;background:#fffdf8;border:1px solid #e3d9e5;border-radius:30px;padding:7px 12px}
-    .video-container{background:var(--paper);padding:15px;border-radius:25px;border:1px solid #e9e0e7;box-shadow:0 20px 50px #49385714}
-    .player{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:16px;background:radial-gradient(circle at 75% 35%,#5e4c6e 0,#3e334a 47%,#211c29 100%);display:grid;place-items:center}
-    .poster{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .poster:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 8px,#ffffff03 8px 9px);opacity:.5}
-    .poster-art{position:absolute;inset:auto auto -10% -7%;width:49%;height:127%;max-width:520px;border-radius:50% 50% 2% 2%;background:linear-gradient(0deg,#bca9be33,#e9d8e51a);border:1px solid #f6e9fa15;box-shadow:80px 0 100px #1c192736}
-    .poster-art:after{content:'F';position:absolute;inset:0;display:grid;place-items:center;font:clamp(170px,30vw,380px)/1 var(--serif);color:#c7b4cc24}
-    .poster-word{position:absolute;top:11%;right:6%;font:italic clamp(28px,4.2vw,65px)/1.11 var(--serif);text-align:right;color:#f2eaf3;text-shadow:0 5px 18px #21182977;max-width:61%}
-    .poster-word small{display:block;font:700 11px/1.7 system-ui;letter-spacing:.25em;color:#cfbbd3;margin-bottom:14px;text-transform:uppercase}
-    .player-controls{position:absolute;z-index:2;bottom:9%;right:7%;display:flex;gap:12px;align-items:center;color:#e9e1ea;font-size:13px}
-    .play{border:1px solid #eee7f6a1;border-radius:60px;background:#fffdfa;color:#3d2d50;font-size:14px;font-weight:800;padding:13px 19px;display:inline-flex;gap:10px;align-items:center;box-shadow:0 8px 22px #150e2045}
-    .play:hover{background:#eee6f5}.play svg{width:17px;height:17px}
-    .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3;background:#18121e}
-    .player .hidden{display:none}
-    .video-note{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:16px 6px 2px;font-size:13px;color:var(--muted)}
-    .video-note strong{color:#634679}.temp{background:#eee6f3;border-radius:40px;padding:4px 10px;color:#654579;font-size:11px;white-space:nowrap;font-weight:750}
-    .article{margin:65px auto 65px;background:var(--paper);border:1px solid #e9e0e7;box-shadow:0 24px 66px #55475b0e;border-radius:28px;overflow:hidden}
-    .article-header{padding:clamp(26px,5.3vw,65px) clamp(26px,7vw,93px) 22px}
-    .article-header .sub{max-width:730px;font:21px/1.53 var(--serif);color:#62596b;margin-bottom:24px}
-    .article-body{max-width:980px;margin:auto;padding:0 clamp(25px,7vw,91px) 60px}
-    .reading{max-width:710px}.reading p{margin:0 0 20px;color:#413b49}
-    .dropcap:first-letter{float:left;font:86px/.9 var(--serif);padding:7px 12px 0 0;color:#755b91}
-    .pullquote{border-left:3px solid #a48abe;padding:12px 25px;margin:38px 0 45px;font:italic 29px/1.33 var(--serif);color:#574263;background:#faf6fb;border-radius:0 14px 14px 0;max-width:850px}
-    .chapter{padding-top:46px;border-top:1px solid var(--line);margin-top:48px}
-    .chapter-head{margin-bottom:25px}
-    .chapter-num{font:italic 27px var(--serif);color:#ab89bb;margin-right:11px;vertical-align:middle}
-    .chapter-strap{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:10px;color:#927aaa}
-    .split{display:grid;grid-template-columns:1.16fr .84fr;align-items:start;gap:39px}
-    .split.reverse{grid-template-columns:.85fr 1.15fr}
-    .archive{margin:0;min-width:0}
-    .archive-image{background:linear-gradient(160deg,#d9cee1,#b6a2c0);border-radius:18px;min-height:310px;position:relative;overflow:hidden;display:grid;place-items:center;box-shadow:0 13px 32px #53435a1b}
-    .archive-image img{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:cover;filter:saturate(.48) sepia(.17);z-index:1}
-    .archive-image.manuscript{min-height:415px;background:linear-gradient(140deg,#e5d6bc,#c8b79c)}
-    .archive-image.manuscript img{object-fit:cover;filter:sepia(.25) contrast(.85)}
-    .archive-image.bookcover{min-height:390px;max-height:470px;background:linear-gradient(145deg,#c3b3c6,#efe5e0)}
-    .archive-image.bookcover img{width:82%;height:89%;inset:5% auto 5% auto;object-fit:contain;box-shadow:0 14px 30px #32263d22;background:#eee2d0}
-    .archive-fallback{width:100%;height:100%;position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;color:#6c5a72}
-    .archive-fallback b{font:italic 90px var(--serif);opacity:.3}.archive-fallback small{letter-spacing:.12em;text-transform:uppercase;font-size:11px}
-    .archive figcaption{padding:11px 3px 0;color:#726b70;font-size:12px;line-height:1.55}
-    .chapter .reading p:last-child{margin-bottom:0}
-    .year-card{margin-top:22px;border-radius:19px;overflow:hidden;border:1px solid #dcd0e3;background:linear-gradient(120deg,#eee5f1,#faf6fb);display:flex;gap:22px;align-items:center;padding:23px 27px}
-    .year-card strong{font:60px/.95 var(--serif);color:#604675;letter-spacing:-.06em}.year-card span{font-size:14px;color:#655a6b;line-height:1.5}
-    .note-line{font-size:14px;color:#69616b;border-left:2px solid #c4aecf;padding-left:14px;margin:25px 0}
-    .closing{margin-top:55px;border-radius:19px;background:linear-gradient(120deg,#ede3f1,#f7f2f8 70%);border:1px solid #dcd0e3;padding:33px 37px}
-    .closing h3{font-size:32px}.closing p{max-width:730px;margin-bottom:8px}
-    .closing .eyebrow{color:#7a5e8f}
-    .sources{margin:40px 0 8px;border-top:1px solid var(--line);padding-top:26px}
-    .sources h4{font:24px var(--serif);margin:0 0 12px}.sources ul{padding-left:20px;font-size:13px;color:#615c67;line-height:1.8}
-    footer{padding:0 0 50px;text-align:center;font-size:11px;font-weight:750;letter-spacing:.18em;color:#877b8d;text-transform:uppercase}
-    @media(max-width:760px){.wrap{width:min(100% - 26px,1120px)}.topbar{height:72px}.brand{font-size:10px;letter-spacing:.12em}.brand span{font-size:12px}.topright{font-size:10px}.hero{padding:28px 0 26px}h1{font-size:clamp(39px,10vw,58px)}.hero-lead{font-size:19px}.meta{gap:7px}.meta span{font-size:11px}.video-container{padding:8px;border-radius:18px}.player{border-radius:11px}.poster-word{font-size:clamp(22px,6vw,43px);top:10%}.poster-word small{font-size:8px;margin-bottom:4px}.player-controls{right:5%;bottom:8%}.play{font-size:11px;padding:9px 12px}.player-controls>span{display:none}.video-note{flex-direction:column;gap:5px;font-size:12px}.article{margin:35px auto;border-radius:19px}.article-header{padding:29px 23px 10px}.article-body{padding:0 23px 38px}.article-header .sub{font-size:18px}.reading p{font-size:15.5px}.dropcap:first-letter{font-size:70px}.pullquote{font-size:23px;padding:9px 14px;margin:24px 0 32px}.chapter{margin-top:34px;padding-top:35px}.split,.split.reverse{grid-template-columns:1fr;gap:20px}.split.reverse figure{order:2}.archive-image{min-height:280px}.archive-image.manuscript{min-height:330px}.archive-image.bookcover{min-height:320px}.year-card{padding:19px;gap:15px}.year-card strong{font-size:47px}.year-card span{font-size:13px}.closing{padding:25px 19px}.closing h3{font-size:28px}.sources ul{padding-left:17px}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
-</head>
-<body>
-  <header class="wrap topbar"><div class="brand">✦ ATELIÊ DE PSICANÁLISE<span>Formação Freudiana</span></div><div class="topright">Aula 03<br>Formação Freudiana</div></header>
-  <main>
-    <section class="wrap hero"><div class="eyebrow">Formação Freudiana · Uma nova etapa</div><h1>Freud antes de ser Freud</h1><p class="hero-lead">O jovem médico, suas perguntas e a construção de um novo campo de investigação.</p><div class="meta"><span>Vídeo de abertura</span><span>Leitura complementar</span><span>Sem exercícios nesta versão</span></div></section>
-    <section class="wrap video-container" aria-labelledby="video-label">
-      <div class="player" id="player">
-        <div class="poster" id="poster"><div class="poster-art"></div><div class="poster-word"><small>FORMAÇÃO FREUDIANA</small>Da escuta<br>à teoria</div><div class="player-controls"><span>Vídeo de abertura</span><button type="button" class="play" id="play-btn" aria-label="Reproduzir vídeo de abertura: Freud antes de ser Freud"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4v16l13-8z"/></svg> Assistir ao vídeo</button></div></div>
-      </div>
-      <div class="video-note"><div id="video-label"><strong>Vídeo de abertura.</strong> Assista à apresentação de <em>Freud antes de ser Freud</em> e continue a leitura histórica logo abaixo.</div><span class="temp">Vídeo oficial</span></div>
-    </section>
-    <article class="wrap article" aria-labelledby="reading-title">
-      <header class="article-header"><div class="eyebrow">Leitura complementar · Aprofundamento</div><h2 id="reading-title">Quando a clínica exige uma teoria</h2><p class="sub">Como Freud passou da investigação dos sintomas à tentativa de explicar o funcionamento da vida psíquica?</p></header>
-      <div class="article-body">
-        <div class="reading"><p class="dropcap">O surgimento da psicanálise não se explica apenas por uma sucessão de acontecimentos na vida de Sigmund Freud. Há uma transformação intelectual decisiva nesse percurso: a passagem da investigação de determinados fenômenos clínicos à construção de hipóteses sobre o funcionamento do psiquismo.</p><p>A experiência clínica levantava problemas que não se resolviam com a descrição dos sintomas. Por que uma lembrança poderia continuar produzindo efeitos sem estar presente na consciência? Como processos psíquicos diferentes poderiam entrar em conflito? O que permitiria pensar essas questões como partes de um mesmo funcionamento?</p></div>
-        <aside class="pullquote">“Não bastava descrever o que acontecia. Era preciso tentar explicar como os processos psíquicos se articulavam.”</aside>
-        <section class="chapter" aria-labelledby="chap1"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">01</span> Da formação científica às perguntas novas</div><h3 id="chap1">A herança da neurologia</h3></div><div class="split"><div class="reading"><p>Freud não abandonou de uma só vez sua formação em medicina e neurologia. Ao contrário, seus primeiros esforços teóricos foram profundamente marcados pela ambição de construir explicações científicas para os processos mentais.</p><p>Sua investigação se deslocava, porém, para problemas que não podiam ser satisfatoriamente descritos apenas pela localização anatômica de uma lesão. A memória, a consciência e os conflitos entre representações exigiam um nível próprio de elaboração.</p><p>Esse deslocamento não significava negar a existência do cérebro ou dos processos corporais. Significava perguntar como construir uma explicação psicológica que não se limitasse a reduzir a experiência humana à anatomia.</p></div><figure class="archive"><div class="archive-image"><div class="archive-fallback"><b>F</b><small>Retrato histórico · 1885</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Freud_1885.jpg" alt="Retrato de Sigmund Freud em 1885" onerror="this.remove()"></div><figcaption>Sigmund Freud em 1885. Reprodução histórica: Wikimedia Commons.</figcaption></figure></div></section>
-        <section class="chapter" aria-labelledby="chap2"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">02</span> Um documento pouco conhecido</div><h3 id="chap2">O projeto científico de 1895</h3></div><div class="split reverse"><figure class="archive"><div class="archive-image manuscript"><div class="archive-fallback"><b>✒</b><small>Manuscrito · 1895</small></div><img loading="lazy" src="https://www.loc.gov/exhibits/freud/ex/images/ex22.jpg" alt="Página manuscrita do Projeto para uma Psicologia Científica, de Freud" onerror="this.remove()"></div><figcaption>Manuscrito autógrafo do <em>Projeto para uma Psicologia Científica</em> (1895), Library of Congress. <a href="https://www.loc.gov/exhibits/freud/freud01.html#obj022" target="_blank" rel="noopener noreferrer">Consultar fonte</a>.</figcaption></figure><div class="reading"><p>No mesmo ano em que publicou <em>Estudos sobre a Histeria</em> com Josef Breuer, Freud trabalhou em um manuscrito que hoje conhecemos como <em>Projeto para uma Psicologia Científica</em>.</p><p>Nesse texto, tentou explicar fenômenos psíquicos por meio de hipóteses sobre neurônios, quantidades de excitação, memória e transmissão de energia. O objetivo não era apenas descrever experiências, mas imaginar os mecanismos responsáveis por sua produção.</p><p>O manuscrito permaneceu inédito durante a vida de Freud e só foi publicado em 1950. Seu interesse histórico está em mostrar uma tentativa ambiciosa e ainda experimental de aproximar o funcionamento psíquico de um modelo neurofisiológico.</p><p>O projeto não se tornou a teoria acabada da psicanálise. Revela, antes, uma dificuldade fecunda: como formular modelos para processos que não podem ser observados diretamente?</p></div></div><p class="note-line">O documento é uma fonte para acompanhar a elaboração de Freud, não uma confirmação científica atual das hipóteses neurológicas que propôs.</p></section>
-        <section class="chapter" aria-labelledby="chap3"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">03</span> Um campo em construção</div><h3 id="chap3">1896: a psicanálise recebe um nome</h3></div><div class="reading"><p>Em 1896, Freud começou a empregar o termo <em>psicanálise</em> para designar sua abordagem. A escolha de um nome ajuda a delimitar uma prática e um programa de investigação, mas não significa que seus métodos e conceitos estivessem prontos.</p><p>Nos anos seguintes, Freud continuaria revisando hipóteses sobre memória, defesa, conflito e processos inconscientes. A construção de uma disciplina envolve precisamente esse trabalho: definir problemas, desenvolver instrumentos conceituais e reformular explicações quando elas se mostram insuficientes.</p></div><div class="year-card" aria-label="Marco histórico de 1896"><strong>1896</strong><span><b>Surge o termo “psicanálise”.</b><br>O nome assinala um campo em formação — não uma teoria já concluída.</span></div></section>
-        <section class="chapter" aria-labelledby="chap4"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">04</span> Uma passagem decisiva</div><h3 id="chap4">Dos sintomas à teoria dos sonhos</h3></div><div class="split"><div class="reading"><p>Com <em>A interpretação dos sonhos</em>, publicada no final de 1899 com a data de 1900, Freud amplia o campo de suas perguntas. Ele não procura apenas interpretar conteúdos oníricos, mas compreender os processos pelos quais os sonhos se formam.</p><p>Por que certas ideias aparecem transformadas? Como diferentes representações se articulam? Por que alguns conteúdos encontram obstáculos para chegar à consciência?</p><p>Essas questões levam Freud a formular hipóteses sobre o aparelho psíquico. Especialmente no capítulo VII, o autor procura construir um modelo capaz de explicar a relação entre percepção, memória, desejo e processos inconscientes.</p><p>Não se trata de um mapa anatômico do cérebro, mas de uma construção teórica para investigar o funcionamento psíquico.</p></div><figure class="archive"><div class="archive-image bookcover"><div class="archive-fallback"><b>1900</b><small>Die Traumdeutung</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Freud_1900_Die_Traumdeutung.pdf/page1-800px-Freud_1900_Die_Traumdeutung.pdf.jpg" alt="Página de rosto de A interpretação dos sonhos, edição de 1900" onerror="this.remove()"></div><figcaption>Página de rosto da edição de 1900 de <em>Die Traumdeutung</em>. Wikimedia Commons. <a href="https://commons.wikimedia.org/wiki/File:Freud_1900_Die_Traumdeutung.pdf" target="_blank" rel="noopener noreferrer">Consultar digitalização</a>.</figcaption></figure></div></section>
-        <section class="closing"><div class="eyebrow">Conexão com a aula anterior</div><h3>Por que Freud precisou imaginar um aparelho psíquico?</h3><p>Partimos da clínica e chegamos a uma exigência teórica: explicar como processos que não aparecem diretamente à consciência podem participar da vida psíquica.</p><p>Na aula anterior, <strong>A primeira tópica de Freud</strong>, examinamos uma resposta decisiva a esse problema: a distinção entre inconsciente, pré-consciente e consciente. Esta leitura histórica permite agora reconhecer o percurso intelectual que tornou esse modelo necessário.</p></section>
-        <section class="sources" aria-label="Fontes históricas"><h4>Fontes para continuar a leitura</h4><ul><li><a href="https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/" target="_blank" rel="noopener noreferrer">Library of Congress — Cronologia de Sigmund Freud</a>.</li><li><a href="https://www.loc.gov/exhibits/freud/freud01.html" target="_blank" rel="noopener noreferrer">Library of Congress — Os anos de formação e o manuscrito de 1895</a>.</li><li><a href="https://psychclassics.yorku.ca/Freud/Dreams/dreams7a.htm" target="_blank" rel="noopener noreferrer">Freud, <em>A interpretação dos sonhos</em>, capítulo VII — tradução histórica em inglês</a>.</li></ul><p style="font-size:12px;color:#7b707e">Esta prévia contém conteúdo didático original. Fotografias e documentos são identificados com suas fontes. As imagens dependem de conexão com os respectivos acervos.</p></section>
-      </div>
-    </article>
-  </main>
-  <footer class="wrap">Ateliê de Psicanálise · Formação Freudiana · Aula 03</footer>
-  <script>
-    // Vídeo oficial da aula.
-    const VIDEO_ID = '2vYTFwAVh0E';
-    document.getElementById('play-btn').addEventListener('click',()=>{
-      const iframe=document.createElement('iframe');
-      iframe.title='Vídeo de abertura: Freud antes de ser Freud';
-      iframe.allow='accelerometer; autoplay; encrypted-media; picture-in-picture; web-share';
-      iframe.allowFullscreen=true;
-      iframe.referrerPolicy='strict-origin-when-cross-origin';
-      iframe.src='https://www.youtube-nocookie.com/embed/'+VIDEO_ID+'?autoplay=1&playsinline=1&rel=0';
-      document.getElementById('player').appendChild(iframe);
-      document.getElementById('poster').classList.add('hidden');
-    });
-  </script>
-</body>
-</html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#eee9e2"><meta name="description" content="Aula progressiva e interativa da Formação Freudiana — Freud antes de ser Freud.">
+<title>Ateliê de Psicanálise • Freud antes de ser Freud</title>
+<script>if(window.parent!==window)document.documentElement.classList.add('embedded-in-atelie');</script>
+<style>
+    html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mast{display:none}html.embedded-in-atelie .intro{padding:15px 0 25px}html.embedded-in-atelie .intro h1{display:none}html.embedded-in-atelie .shell{width:min(100% - 18px,860px)}html.embedded-in-atelie footer{padding-bottom:15px}
+
+    :root{--bg:#f4f0eb;--paper:#fffdfa;--ink:#29243a;--muted:#675f71;--accent:#755c9a;--accent-dark:#544075;--pale:#eee7f5;--line:#ded5e2;--good:#276850;--good-bg:#e7f3ea;--bad:#8b443e;--bad-bg:#f9ebe8;--shadow:0 10px 32px rgba(39,29,46,.07);--radius:20px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 90% 24% at 100% 0%,#e9e2f0 0%,transparent 84%),var(--bg);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.65}
+    button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}a:hover{text-decoration-thickness:2px} button:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
+    .shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #dcd5dc}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted);text-align:right}
+    .intro{padding:42px 0 28px}.eyebrow{color:var(--accent-dark);letter-spacing:.16em;font-size:.76rem;text-transform:uppercase;font-weight:800}.intro h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.08;letter-spacing:-.028em;font-size:clamp(2.4rem,5.2vw,4.2rem);max-width:740px;margin:13px 0 18px}.intro>p{max-width:670px;color:var(--muted);font-size:1.06rem;margin:0}
+    .progress-wrap{margin:23px 0 3px;padding:17px 19px;background:rgba(255,253,250,.8);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:650;font-size:.88rem}.progress-head span:last-child{color:var(--accent-dark);font-variant-numeric:tabular-nums}.track{height:7px;background:#e5dfea;border-radius:30px;margin-top:11px;overflow:hidden}.track>div{width:0;height:100%;background:linear-gradient(90deg,#8062a6,#b699c7);transition:width .45s ease;border-radius:inherit}
+    .progress-segments{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;margin-top:12px}
+    .progress-segments span{display:block;height:9px;border-radius:10px;background:#e6dfeb;border:1px solid #e1d7e7;transition:background .3s,box-shadow .3s}
+    .progress-segments span.done{background:linear-gradient(90deg,#71548e,#a989c2);border-color:transparent;box-shadow:0 1px 3px #6f53863a}
+    .progress-foot{margin:10px 0 0;color:#796b7e;font-size:.78rem;line-height:1.45}
+    @media(max-width:560px){.progress-segments{gap:3px}.progress-segments span{height:8px}}.roadmap{display:flex;gap:6px;color:var(--muted);font-size:.75rem;justify-content:space-between;margin-top:9px}.roadmap span:last-child{text-align:right}
+    .timeline{position:relative;padding:12px 0 30px}.timeline:before{content:"";position:absolute;top:35px;bottom:110px;left:23px;width:2px;background:repeating-linear-gradient(to bottom,#c9b8d6 0,#c9b8d6 8px,transparent 8px,transparent 15px)}
+    .step{position:relative;padding-left:56px;margin:15px 0 28px;scroll-margin-top:20px}.dot{position:absolute;left:5px;top:19px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid #bba6ca;background:var(--bg);color:var(--accent-dark);font-weight:800;z-index:1}.step.complete .dot{background:var(--good);border-color:var(--good);color:#fff}.step.locked .dot,.step.planned .dot{color:#948b9a;border-color:#d8d0da}
+    .panel{background:var(--paper);border:1px solid #e5dce5;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-inner{padding:clamp(20px,3.5vw,33px)}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.kicker{font-weight:800;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-dark)}.pill{display:inline-flex;align-items:center;gap:5px;background:#f1edf5;color:#604a7c;border-radius:100px;padding:3px 10px;font-size:.72rem;font-weight:800;white-space:nowrap}.pill.done{background:var(--good-bg);color:var(--good)}.pill.lock{background:#eeebef;color:#7d7581}
+    h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(1.65rem,3.4vw,2.3rem);line-height:1.2;margin:5px 0 14px;letter-spacing:-.015em}h3{font-size:1.13rem;line-height:1.25;margin:24px 0 7px}.lead{font-size:1.1rem;color:#4f465b}.body-text p{margin:0 0 13px}.aside{border-left:3px solid #ac91c7;padding:14px 18px;margin:20px 0;background:#f6f0f8;color:#463753;border-radius:0 12px 12px 0}.aside strong{color:#39284a}.video{aspect-ratio:16/9;position:relative;border-radius:13px;overflow:hidden;background:#211c2c}.video iframe{width:100%;height:100%;border:0;display:block}.under-video{font-size:.87rem;color:var(--muted);margin:10px 0 22px}.separator{border:0;border-top:1px solid var(--line);margin:24px 0}.quiz{margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}.quiz-top{display:flex;align-items:center;gap:8px;color:var(--accent-dark);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800}.quiz h3{font-family:Georgia,serif;font-weight:400;font-size:1.25rem;margin:8px 0 17px;line-height:1.4}.answers{display:grid;gap:9px}.answer{width:100%;padding:13px 15px;text-align:left;border:1.5px solid #e0d9e4;border-radius:11px;background:#fff;line-height:1.45;color:var(--ink);display:flex;align-items:flex-start;gap:11px;transition:border-color .12s,background .12s}.answer:hover:not(:disabled){border-color:#bca6d0;background:#faf6fd}.answer[aria-pressed="true"]{border-color:var(--accent);background:#f3edf9}.answer .letter{flex:none;font-size:.75rem;display:grid;place-items:center;width:25px;height:25px;border:1px solid #d6c8df;border-radius:50%;font-weight:850;color:var(--accent-dark)}.answer:disabled{cursor:default;opacity:.82}.answer.right{border-color:var(--good);background:var(--good-bg);opacity:1}.answer.wrong{border-color:var(--bad);background:var(--bad-bg);opacity:1}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}.btn{border:0;color:#fff;background:var(--accent-dark);font-weight:750;border-radius:11px;padding:12px 19px;min-height:46px}.btn:hover:not(:disabled){background:#3e3059}.btn:disabled{background:#c9bfd1;cursor:not-allowed}.btn.secondary{background:#eee9f1;color:var(--accent-dark)}.btn.secondary:hover{background:#e5dce9}.feedback{margin-top:14px;padding:13px 16px;border-radius:12px;background:#f1ecf5;color:#453852;font-size:.94rem;border:1px solid #e1d5e7}.feedback.good{background:var(--good-bg);border-color:#b2d5c0;color:#205842}.feedback.bad{background:var(--bad-bg);border-color:#ebc9bf;color:#703630}.feedback[hidden]{display:none}.step-gate{margin-top:20px;padding:14px 16px;background:#eeedf4;color:#4f435f;border:1px dashed #c7b9cf;border-radius:12px;font-size:.9rem}
+    .locked .panel{background:#faf8fa;box-shadow:none;border-style:dashed;border-color:#d8cfdc}.locked h2{color:#86808a}.locked .hint{font-size:.93rem;color:#817989}.step-content[hidden]{display:none !important}.chapter-num{font-size:.78rem;color:var(--muted)}
+    .mini-timeline{margin:18px 0 22px;display:grid;gap:8px}.history{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:12px 15px;border-radius:12px;background:#f7f3f8}.history .year{font-family:Georgia,serif;font-weight:600;color:var(--accent-dark);font-size:1.3rem;line-height:1.1}.history p{margin:0;font-size:.92rem}
+    .systems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 15px}.system-tab{min-height:118px;border-radius:14px;border:1px solid #d8cadf;background:#f8f4f9;padding:16px 9px;text-align:center;color:var(--ink);display:grid;gap:5px;place-content:center}.system-tab span{color:#73617f;font-size:.77rem;letter-spacing:.12em;font-weight:800}.system-tab b{font-family:Georgia,serif;font-size:clamp(.95rem,2.1vw,1.3rem);font-weight:500}.system-tab:hover{background:#f0e9f5}.system-tab.active{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}.system-tab.active span{color:#e8dcef}.system-panel{border:1px solid #d8cadf;background:#f7f2f9;border-radius:14px;padding:19px;min-height:150px}.system-panel h3{font-family:Georgia,serif;margin:0 0 8px;font-size:1.35rem;font-weight:400}.system-panel p{margin:0}.note{font-size:.82rem;color:var(--muted);margin:10px 0 0}.tab-counter{font-size:.8rem;color:var(--muted);margin:8px 0}.locked-shelf{text-align:center;background:#fffdfa;border:1px dashed #d4ccd6;border-radius:15px;padding:22px;color:var(--muted);margin:12px 0 50px}.locked-shelf strong{color:var(--ink)}
+    footer{border-top:1px solid #d8cfd8;padding:26px 0 55px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start}footer div{font-size:.84rem;color:var(--muted)}.reset{border:1px solid #cdbed5;background:transparent;padding:10px 13px;border-radius:10px;color:var(--accent-dark);font-weight:750;white-space:nowrap}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .newly-unlocked{animation:reveal .65s ease both}@keyframes reveal{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(max-width:560px){.shell{width:min(100% - 24px,860px)}.mast{padding-top:20px}.small-tag{display:none}.intro{padding-top:29px}.step{padding-left:38px}.timeline:before{left:15px}.dot{left:-1px;width:32px;height:32px;font-size:.85rem;top:17px}.panel-inner{padding:19px 16px}.systems{gap:5px}.system-tab{padding:10px 3px;min-height:97px}.system-tab b{font-size:.88rem}.history{grid-template-columns:58px 1fr;padding:11px 9px;gap:8px}.actions .btn{width:100%}footer{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.newly-unlocked{animation:none}*{transition:none!important}}
+    /* Aula vertical em cartões, sem numeração lateral nem etapas futuras visíveis. */
+    .intro{padding:26px 0 16px}
+    .intro h1{margin:5px 0 0;font-size:clamp(2.25rem,5.4vw,3.7rem)}
+    .progress-wrap{margin:16px 0 0}
+    .timeline{padding:0}
+    .timeline::before,.step .dot,.panel-heading{display:none!important}
+    .step{padding-left:0;margin:16px 0 22px}
+    .step.locked,.step.planned{display:none!important}
+    .step .panel-inner>h2{margin:2px 0 20px}
+    .step.reveal{animation:tileOpen .72s cubic-bezier(.2,.9,.25,1) both}
+    @keyframes tileOpen{from{opacity:0;transform:translateY(-22px) scale(.986)}to{opacity:1;transform:translateY(0) scale(1)}}
+    #q1[hidden],#video-fallback[hidden],#video-gate[hidden]{display:none!important}
+    .video-gate{margin:17px 0 0;padding:12px 14px;border-radius:12px;border:1px solid #e4d8ec;background:#f7f2f9;color:#65516e;font-size:.89rem;text-align:center}
+    .video-fallback{margin:12px auto 0;display:block;border:0;background:none;color:var(--accent-dark);text-decoration:underline;cursor:pointer;font-size:.82rem;text-align:center}
+    #q1:not([hidden]){animation:tileOpen .5s ease both}
+    @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
+    @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
+
+    /* Microunidades da fundamentação: leitura curta, escolha de palavras e desbloqueio progressivo. */
+    .word-stage{padding:clamp(18px,3vw,25px);margin:18px 0;border:1px solid #ddd2e2;border-radius:18px;background:#fffdfa;box-shadow:0 5px 18px #6255770b}
+    .word-stage[hidden],#q2a[hidden],#q2b[hidden],#gate-2[hidden]{display:none!important}
+    .word-stage-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+    .word-stage-number{color:#71568a;font-size:.73rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
+    .word-stage-status{color:#276850;font-size:.8rem;font-weight:750}
+    .word-stage .body-text h3{margin-top:12px}
+    .word-exercise{margin-top:21px;padding:20px;border-radius:16px;background:linear-gradient(135deg,#f4edf8 0%,#f9f6fb 100%);border:1px solid #dccde7}
+    .word-exercise-head{display:flex;align-items:center;gap:13px;flex-wrap:wrap;color:#594471}
+    .word-exercise-head span{font-size:.7rem;font-weight:800;letter-spacing:.12em}
+    .word-exercise-head strong{font-size:.97rem}
+    .word-directions{font-size:.86rem;color:#655872;line-height:1.55;margin:9px 0 16px}
+    .word-sentence{font-size:clamp(1rem,2vw,1.13rem);line-height:2.65;color:#352c40;font-weight:700;margin-bottom:16px}
+    .word-sentence .word-prompt-text{font-weight:800;color:#292136}
+    .word-sentence .word-slot{font-weight:500}
+    .word-slot{display:inline-flex;vertical-align:middle;justify-content:center;align-items:center;min-width:124px;max-width:100%;min-height:42px;padding:6px 12px;margin:2px 4px;border:2px dashed #a58bbb;border-radius:10px;background:#fff;color:#8c79a0;font-size:.89rem;line-height:1.2;transition:background .2s,border-color .2s;touch-action:manipulation}
+    .word-slot.filled{color:#3a2b4c;font-weight:700;border-style:solid;border-color:#755c9a;background:#eee4f4}
+    .word-slot.dragover{border-color:#276850;background:#eaf4eb}
+    .word-slot:disabled{cursor:default;opacity:1}
+    .word-bank{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 18px}
+    .word-bank[hidden],.word-check[hidden]{display:none!important}
+    .word-chip{background:#fff;border:1px solid #cbb7d6;color:#4b3962;padding:9px 13px;border-radius:999px;font-weight:650;font-size:.89rem;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
+    .word-chip.word-dragging{opacity:.5;cursor:grabbing}
+    .word-ghost{position:fixed!important;z-index:9999;left:0;top:0;transform:translate(-50%,-50%) scale(1.07);margin:0;box-shadow:0 12px 28px #3b28564d;background:#fff!important;border:2px solid #795c9a!important;color:#3e2b51!important;border-radius:999px;pointer-events:none;touch-action:none;cursor:grabbing;opacity:.97;text-align:center}
+    .word-chip:hover:not(:disabled){border-color:#795c9a;background:#f5eef8}
+    .word-chip.used{opacity:.38;text-decoration:line-through;cursor:default}
+    .word-chip:disabled{cursor:default}
+    .word-check{min-height:41px;padding:9px 17px;font-size:.9rem}
+    .word-feedback{margin:13px 0 0;font-size:.9rem;color:#8b443e;line-height:1.5}
+    .word-exercise.solved{border-color:#b2d5c0;background:#eef6f0}
+    .word-exercise.solved .word-feedback{color:#276850}
+    .word-stage.is-new{animation:tileOpen .65s ease both}
+    @media(max-width:560px){.word-stage{padding:18px 14px}.word-exercise{padding:15px 12px}.word-sentence{line-height:2.9}.word-slot{min-width:105px;padding:6px 8px;font-size:.78rem}.word-chip{font-size:.82rem;padding:9px 12px}.word-check{width:100%}}
+
+    /* Conquista exibida apenas após completar todas as atividades da versão atual. */
+    #lesson-achievement[hidden]{display:none!important}
+    .achievement{position:relative;overflow:hidden;margin:32px 0 26px;padding:clamp(27px,5vw,55px);border:1px solid #d6c3a2;border-radius:26px;background:radial-gradient(circle at 83% 8%,#e8d8eb 0,transparent 42%),linear-gradient(140deg,#fffdf9 0%,#f5edf8 58%,#f8f1e8 100%);box-shadow:0 22px 54px rgba(69,47,87,.12);scroll-margin-top:30px}
+    .achievement:before{content:"";position:absolute;inset:10px;border:1px solid rgba(194,163,106,.42);border-radius:19px;pointer-events:none}
+    .achievement:after{content:"✧";position:absolute;right:30px;top:19px;color:#b99c68;font-size:27px;pointer-events:none}
+    .achievement-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,310px);align-items:center;gap:clamp(20px,4vw,45px);position:relative;z-index:1}
+    .achievement-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7b618a;font-size:.72rem;letter-spacing:.18em;font-weight:850;text-transform:uppercase}
+    .achievement-eyebrow:before{content:"✦";color:#b79a65;font-size:15px}
+    .achievement h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,4.5vw,3.15rem);line-height:1.14;color:#342641;margin:12px 0 14px}
+    .achievement-message{color:#55495e;font-size:clamp(.99rem,1.8vw,1.1rem);line-height:1.75;max-width:520px;margin:0 0 18px}
+    .achievement-status{display:flex;align-items:center;gap:9px;font-weight:760;color:#5b4670;font-size:.9rem;margin:0 0 23px}
+    .achievement-status:before{content:"✓";display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:50%;background:#e8f0e6;color:#2c684d}
+    .achievement-medal{margin:0;display:grid;justify-items:center;gap:7px}
+    .achievement-medal img{display:block;width:min(100%,295px);height:auto;filter:drop-shadow(0 20px 19px rgba(69,45,82,.20))}
+    .achievement-medal figcaption{font-size:.74rem;letter-spacing:.10em;text-transform:uppercase;font-weight:750;color:#836f83;text-align:center}
+    .achievement-actions{display:flex;flex-wrap:wrap;gap:9px}
+    .achievement-actions a,.achievement-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:10px;text-decoration:none;font-size:.88rem;font-weight:750;border:1px solid #6a527e;cursor:pointer}
+    .achievement-actions .achievement-download{background:#624a78;color:#fff}
+    .achievement-actions .achievement-download:hover{background:#4a365e}
+    .achievement-actions .achievement-review{background:transparent;color:#5c476f}
+    .achievement-actions .achievement-review:hover{background:#ebe2ef}
+    .achievement-note{font-size:.76rem;color:#887987;line-height:1.5;margin:18px 0 0}
+    .achievement.earned{animation:achievementReveal .85s cubic-bezier(.18,.88,.24,1) both}
+    @keyframes achievementReveal{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:700px){.achievement{margin:24px 0;padding:30px 24px 33px}.achievement:before{inset:8px}.achievement-grid{grid-template-columns:1fr;gap:14px}.achievement-medal{grid-row:1}.achievement-medal img{width:min(100%,235px)}.achievement-copy{text-align:center}.achievement h2{margin-top:9px}.achievement-status,.achievement-actions{justify-content:center}.achievement-actions a,.achievement-actions button{flex:1 1 160px}.achievement-message{margin-inline:auto}}
+    @media(prefers-reduced-motion:reduce){.achievement.earned{animation:none}}
+    #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
+    #third-video-player iframe{max-width:100%;display:block}
+/* Conteúdo pessoal somente após autenticação e leitura no Firestore. */
+body:not(.account-progress-ready) header.mast,body:not(.account-progress-ready) main.shell,
+body:not(.account-progress-ready) footer.shell{display:none!important}
+.account-progress-status{padding:15px 18px;max-width:800px;margin:25px auto;border-radius:12px;
+ background:#fffdfa;color:#5b4569;border:1px solid #dfd4e3;font:600 14px/1.5 Arial,sans-serif}
+  
+
+/* Adaptações de conteúdo à mesma linha visual e às mesmas etapas da Primeira Tópica. */
+html.embedded-in-atelie .external-nav{display:none}
+body{overflow-x:hidden}.shell{max-width:900px}
+.mast{display:flex;align-items:center;gap:15px;justify-content:space-between}
+.external-nav{font-size:.81rem;display:flex;gap:10px;align-items:center}
+.external-nav a{color:var(--accent-dark);padding:8px 11px;text-decoration:none;background:var(--pale);border-radius:10px;font-weight:700}
+.intro>.lead{margin-top:12px;max-width:680px}
+.step[hidden],.quiz[hidden],.step-content[hidden],.finish[hidden]{display:none!important}
+.step .panel-inner{padding:clamp(20px,3.7vw,36px)}
+.step .panel-inner>.lead{margin-top:0}
+.step .panel-inner .body-text p,.reading p{font-size:1rem;line-height:1.78;color:#4c4558}
+.step .panel-inner .body-text p{margin:0 0 14px}
+.chapter{margin:5px 0 8px}
+.chapter h3{font:400 clamp(1.5rem,3.8vw,2.2rem)/1.17 Georgia,serif;letter-spacing:-.02em;margin:6px 0 17px;color:#2d2340}
+.chapter-head{margin-bottom:15px}.chapter-strap{font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dark);font-weight:750}
+.chapter-num{display:inline-grid;place-items:center;background:var(--pale);border-radius:8px;width:29px;height:29px;margin-right:8px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.53fr);gap:23px;align-items:start}
+.split.reverse{grid-template-columns:minmax(210px,.53fr) minmax(0,1fr)}
+.reading p{margin:0 0 15px}.dropcap:first-letter{float:left;font:4rem/.82 Georgia,serif;color:var(--accent-dark);padding:4px 8px 0 0}
+.archive{margin:4px 0 15px;background:#f0eaf3;border-radius:18px;overflow:hidden;border:1px solid #e4dbe7}
+.archive-image{height:255px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#e5dce9,#bbaaC5);overflow:hidden}
+.archive-image img{width:100%;height:100%;object-fit:contain;display:block;position:relative;z-index:1}
+.archive-fallback{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff}
+.archive-fallback b{font:5.5rem Georgia,serif;opacity:.62}.archive-fallback small{font-size:.76rem;letter-spacing:.1em}
+.archive figcaption{font-size:.73rem;line-height:1.5;color:#655a6b;padding:11px 13px}.archive a{color:#62477d}
+.note-line,.pullquote{background:#f6f0f8;color:#554369;border-left:3px solid #baa4d0;border-radius:0 12px 12px 0;padding:14px 17px;line-height:1.6;margin:17px 0}
+.pullquote{font:italic 1.23rem/1.45 Georgia,serif}
+.year-card{display:flex;align-items:center;gap:21px;margin:22px 0;background:#efe8f5;border-radius:15px;padding:17px}
+.year-card>strong{font:2rem Georgia,serif;color:var(--accent-dark)}
+.year-card>span{font-size:.91rem;line-height:1.5;color:#4a3f57}
+.closing{padding:21px;background:#eee6f4;border-radius:16px}
+.closing h3{font:400 1.65rem Georgia,serif;color:#392b4c}.closing p{color:#514760}
+.sources{margin:23px 0;background:#fffdfa;border:1px solid #e5dbe8;border-radius:15px;padding:15px 20px}
+.sources summary{cursor:pointer;font-weight:800;color:#54376d}
+.sources ul{margin-bottom:5px}.sources li{font-size:.85rem;line-height:1.6;margin:8px 0}
+.quiz{margin-top:22px}.answers{display:grid;gap:9px}.quiz .answer{font-size:.94rem;text-align:left}
+.feedback{line-height:1.6}.feedback[hidden]{display:none!important}
+.feedback .explain{margin-top:8px;display:grid;gap:5px}
+.feedback .explain div{padding:7px 0;border-top:1px solid #c9bcd180}
+.action-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+.helper{color:#746a7b;font-size:.82rem}.btn:disabled{opacity:.5;cursor:default}
+.activity{background:#f5eff8;border:1px solid #e3d7ed;border-radius:16px;padding:20px;margin:20px 0}
+.activity h4{font-size:1.03rem;margin:0 0 7px}.activity>p{font-size:.89rem;line-height:1.6}
+.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+.fact-btn{border:1px solid #d9cce2;border-radius:12px;padding:13px 9px;background:white;text-align:center;color:#443355;min-height:91px}
+.fact-btn strong{display:block;font-size:1rem}.fact-btn small{display:block;color:#716579;font-size:.76rem;margin-top:6px}
+.fact-btn.visited{background:#e3daeb;border-color:#a68bbd}
+.fact-output{background:#fff;border:1px solid #e2d6e8;border-radius:12px;min-height:65px;padding:15px;margin-top:12px;font-size:.9rem;color:#51455c}
+.smallhint{font-size:.83rem;color:#6a5f73}
+.video-fallback{display:block;margin:15px auto 8px;max-width:100%;border:1px solid #d6c8e1;background:#f6eff9;color:#5b4271;border-radius:10px;padding:11px 15px;font-weight:700;font-size:.87rem}
+.reflection{width:100%;min-height:135px;border:1px solid #d6c8e1;background:white;border-radius:12px;padding:15px;resize:vertical;line-height:1.6;color:#332840;font:inherit}
+.finish{margin:22px 0;padding:27px;border:1px solid #c9b5d8;border-radius:20px;background:linear-gradient(140deg,#efe7f3,#fffdfa);text-align:center}
+.finish .medal{font:4rem Georgia,serif;color:#8e6ea9}.finish h2{font:400 2.05rem Georgia,serif;margin:5px}
+.note-area{margin-top:23px}.note-area label{display:block;font-weight:750;margin-bottom:9px;color:#45354e}
+.banner-note{font-size:.83rem;color:#776a7d;margin-top:12px}
+@media(max-width:680px){.split,.split.reverse{grid-template-columns:1fr;gap:12px}.archive{max-width:320px;margin:7px auto 20px;width:100%}.archive-image{height:245px}.fact-grid{grid-template-columns:1fr}.fact-btn{min-height:65px}.year-card{gap:13px}.mast{flex-wrap:wrap}.external-nav{width:100%}.panel-inner{padding:19px!important}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style></head>
+<body class="account-progress-ready">
+<header class="mast shell"><div class="brand">Ateliê de Psicanálise</div><div class="small-tag">FORMAÇÃO FREUDIANA · AULA 03</div>
+<nav class="external-nav" aria-label="Navegação do curso"><a href="../../../../index.html#/cursos/curso-formacao-freudiana">Voltar ao curso</a><a href="../../../../index.html#/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud">Aula anterior</a></nav></header>
+<main class="shell"><section class="intro" aria-labelledby="title"><h1 id="title">Freud antes de ser Freud</h1>
+<p class="lead">Do jovem médico ao nascimento de uma teoria: um percurso pelas perguntas que transformaram a clínica freudiana.</p>
+<div class="progress-wrap" aria-label="Progresso da aula">
+<div class="progress-head"><span>Seu percurso nesta aula</span><span id="progress-label">0 de 6 momentos concluídos</span></div>
+<div class="progress-segments" id="progressbar" role="progressbar" aria-label="Momentos concluídos" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"></div>
+<p class="progress-foot" id="progress-next">A seguir: vídeo de abertura.</p></div></section>
+<div class="timeline"><section class="step" id="step-1"  aria-labelledby="step1-title">
+ <div class="dot" aria-hidden="true">1</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 01 · vídeo de abertura</span><span class="pill" id="badge-1">Disponível</span></div>
+  <h2 id="step1-title">Freud antes de ser Freud</h2>
+  <div class="step-content" id="content-1"><div class="video">
+<iframe id="video-introducao" src="https://www.youtube-nocookie.com/embed/2vYTFwAVh0E?enablejsapi=1&amp;playsinline=1&amp;rel=0" title="Vídeo de abertura: Freud antes de ser Freud" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="eager"></iframe></div>
+<div class="video-gate" id="video-gate" aria-live="polite">Assista à abertura para começar a sequência de estudo.</div>
+<button type="button" class="video-fallback" id="video-fallback">Já assisti ao vídeo? Liberar o desafio</button>
+<section class="quiz" id="q1" hidden aria-label="Desafio 1">
+  <div class="quiz-top">✦ Desafio 01 · raciocínio</div>
+  <h3>O que permite estudar Freud sem reduzir a psicanálise à sua biografia?</h3><div class="answers" role="group" aria-label="Alternativas do desafio 1"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>Os acontecimentos pessoais de Freud explicam diretamente todos os conceitos.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>A vida pessoal precisa ser ignorada para evitar interpretações.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>É preciso articular documentos, trajetória intelectual e evolução conceitual sem confundi-los.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Uma carta de Freud revela a intenção oculta de toda sua obra.</span></button></div>
+  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+  <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+  
+ </div></div></section>
+<section class="step locked" id="step-2" hidden aria-labelledby="step2-title">
+ <div class="dot" aria-hidden="true">2</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 02 · fundamentação</span><span class="pill lock" id="badge-2">Bloqueado</span></div>
+  <h2 id="step2-title">Quando a clínica exige uma teoria</h2>
+  <div class="step-content" id="content-2"><div class="reading"><p class="dropcap">O surgimento da psicanálise não se explica apenas por uma sucessão de acontecimentos na vida de Sigmund Freud. Há uma transformação intelectual decisiva nesse percurso: a passagem da investigação de determinados fenômenos clínicos à construção de hipóteses sobre o funcionamento do psiquismo.</p><p>A experiência clínica levantava problemas que não se resolviam com a descrição dos sintomas. Por que uma lembrança poderia continuar produzindo efeitos sem estar presente na consciência? Como processos psíquicos diferentes poderiam entrar em conflito? O que permitiria pensar essas questões como partes de um mesmo funcionamento?</p></div><div class="pullquote">A clínica levou Freud a novas perguntas: como processos psíquicos se articulam e produzem efeitos?</div><section class="chapter" aria-labelledby="chap1"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">01</span> Da formação científica às perguntas novas</div><h3 id="chap1">A herança da neurologia</h3></div><div class="split"><div class="reading"><p>Freud não abandonou de uma só vez sua formação em medicina e neurologia. Ao contrário, seus primeiros esforços teóricos foram profundamente marcados pela ambição de construir explicações científicas para os processos mentais.</p><p>Sua investigação se deslocava, porém, para problemas que não podiam ser satisfatoriamente descritos apenas pela localização anatômica de uma lesão. A memória, a consciência e os conflitos entre representações exigiam um nível próprio de elaboração.</p><p>Esse deslocamento não significava negar a existência do cérebro ou dos processos corporais. Significava perguntar como construir uma explicação psicológica que não se limitasse a reduzir a experiência humana à anatomia.</p></div><figure class="archive"><div class="archive-image"><div class="archive-fallback"><b>F</b><small>Retrato histórico · 1885</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Freud_1885.jpg" alt="Retrato de Sigmund Freud em 1885" onerror="this.remove()"></div><figcaption>Sigmund Freud em 1885. Reprodução histórica: Wikimedia Commons.</figcaption></figure></div></section><section class="quiz" id="q2"  aria-label="Desafio 2">
+  <div class="quiz-top">✦ Desafio 02 · raciocínio</div>
+  <h3>Por que a investigação clínica conduziu Freud à necessidade de uma teoria?</h3><div class="answers" role="group" aria-label="Alternativas do desafio 2"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>Porque os relatos de sintomas deixaram de ter qualquer valor.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>Porque surgiam perguntas sobre memória, consciência e conflito que ultrapassavam a simples descrição.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>Porque ele já havia localizado anatomicamente todos os conflitos.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Porque pretendia provar que o corpo não tinha relação com a vida mental.</span></button></div>
+  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+  <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+  
+ </div></div></section>
+<section class="step locked" id="step-3" hidden aria-labelledby="step3-title">
+ <div class="dot" aria-hidden="true">3</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 03 · documento histórico</span><span class="pill lock" id="badge-3">Bloqueado</span></div>
+  <h2 id="step3-title">O Projeto de 1895</h2>
+  <div class="step-content" id="content-3"><section class="chapter" aria-labelledby="chap2"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">02</span> Um documento pouco conhecido</div><h3 id="chap2">O projeto científico de 1895</h3></div><div class="split reverse"><figure class="archive"><div class="archive-image manuscript"><div class="archive-fallback"><b>✒</b><small>Manuscrito · 1895</small></div><img loading="lazy" src="https://www.loc.gov/exhibits/freud/ex/images/ex22.jpg" alt="Página manuscrita do Projeto para uma Psicologia Científica, de Freud" onerror="this.remove()"></div><figcaption>Manuscrito autógrafo do <em>Projeto para uma Psicologia Científica</em> (1895), Library of Congress. <a href="https://www.loc.gov/exhibits/freud/freud01.html#obj022" target="_blank" rel="noopener noreferrer">Consultar fonte</a>.</figcaption></figure><div class="reading"><p>No mesmo ano em que publicou <em>Estudos sobre a Histeria</em> com Josef Breuer, Freud trabalhou em um manuscrito que hoje conhecemos como <em>Projeto para uma Psicologia Científica</em>.</p><p>Nesse texto, tentou explicar fenômenos psíquicos por meio de hipóteses sobre neurônios, quantidades de excitação, memória e transmissão de energia. O objetivo não era apenas descrever experiências, mas imaginar os mecanismos responsáveis por sua produção.</p><p>O manuscrito permaneceu inédito durante a vida de Freud e só foi publicado em 1950. Seu interesse histórico está em mostrar uma tentativa ambiciosa e ainda experimental de aproximar o funcionamento psíquico de um modelo neurofisiológico.</p><p>O projeto não se tornou a teoria acabada da psicanálise. Revela, antes, uma dificuldade fecunda: como formular modelos para processos que não podem ser observados diretamente?</p></div></div><p class="note-line">O documento é uma fonte para acompanhar a elaboração de Freud, não uma confirmação científica atual das hipóteses neurológicas que propôs.</p></section><div class="activity" id="document-lab"><h4>Explore o documento</h4>
+<p>Três pistas ajudam a identificar a função histórica do manuscrito. Selecione cada uma para ver o comentário e depois responda ao desafio.</p>
+<div class="fact-grid">
+<button type="button" class="fact-btn" data-fact="1"><strong>1895</strong><small>Quando foi escrito?</small></button>
+<button type="button" class="fact-btn" data-fact="2"><strong>1950</strong><small>Quando foi publicado?</small></button>
+<button type="button" class="fact-btn" data-fact="3"><strong>Hipóteses</strong><small>O que o texto propõe?</small></button></div>
+<div id="fact-output" class="fact-output" aria-live="polite">Selecione uma pista para ampliar a análise.</div>
+<p class="smallhint" id="fact-counter">0 de 3 pistas examinadas</p></div><section class="quiz" id="q3"  aria-label="Desafio 3">
+  <div class="quiz-top">✦ Desafio 03 · raciocínio</div>
+  <h3>O que o Projeto para uma Psicologia Científica (1895) nos permite compreender?</h3><div class="answers" role="group" aria-label="Alternativas do desafio 3"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>Que Freud já havia comprovado sua teoria neural do pensamento.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>Que Freud abandonara a neurologia muito antes de investigar os sintomas.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>Que ele buscava modelos explicativos do psiquismo, ainda marcados pela linguagem da fisiologia.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Que a primeira tópica e a segunda tópica já aparecem prontas em 1895.</span></button></div>
+  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+  <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+  
+ </div></div></section>
+<section class="step locked" id="step-4" hidden aria-labelledby="step4-title">
+ <div class="dot" aria-hidden="true">4</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 04 · contexto histórico</span><span class="pill lock" id="badge-4">Bloqueado</span></div>
+  <h2 id="step4-title">1896: a psicanálise recebe um nome</h2>
+  <div class="step-content" id="content-4"><section class="chapter" aria-labelledby="chap3"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">03</span> Um campo em construção</div><h3 id="chap3">1896: a psicanálise recebe um nome</h3></div><div class="reading"><p>Em 1896, Freud começou a empregar o termo <em>psicanálise</em> para designar sua abordagem. A escolha de um nome ajuda a delimitar uma prática e um programa de investigação, mas não significa que seus métodos e conceitos estivessem prontos.</p><p>Nos anos seguintes, Freud continuaria revisando hipóteses sobre memória, defesa, conflito e processos inconscientes. A construção de uma disciplina envolve precisamente esse trabalho: definir problemas, desenvolver instrumentos conceituais e reformular explicações quando elas se mostram insuficientes.</p></div><div class="year-card" aria-label="Marco histórico de 1896"><strong>1896</strong><span><b>Surge o termo “psicanálise”.</b><br>O nome assinala um campo em formação — não uma teoria já concluída.</span></div></section><div class="activity"><h4>O que significa nomear um campo?</h4><p>Explore os marcos em sequência e observe que a formulação da psicanálise não coincide com um único acontecimento.</p>
+<div class="fact-grid">
+<button class="fact-btn" type="button" data-time="1895"><strong>1895</strong><small>Experiências e hipóteses</small></button>
+<button class="fact-btn" type="button" data-time="1896"><strong>1896</strong><small>Um novo nome</small></button>
+<button class="fact-btn" type="button" data-time="1900"><strong>1900</strong><small>Uma formulação ampliada</small></button>
+</div><div class="fact-output" id="time-output" aria-live="polite">Escolha uma data.</div></div><section class="quiz" id="q4"  aria-label="Desafio 4">
+  <div class="quiz-top">✦ Desafio 04 · raciocínio</div>
+  <h3>O uso do termo “psicanálise” em 1896 significa que…</h3><div class="answers" role="group" aria-label="Alternativas do desafio 4"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>todas as técnicas e conceitos da disciplina já estavam concluídos.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>Breuer e Freud haviam encerrado toda divergência científica.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>a psicanálise começava com uma teoria do cérebro que jamais seria reformulada.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Freud estava nomeando um campo de investigação e tratamento ainda em construção.</span></button></div>
+  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+  <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+  
+ </div></div></section>
+<section class="step locked" id="step-5" hidden aria-labelledby="step5-title">
+ <div class="dot" aria-hidden="true">5</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 05 · formação dos sonhos</span><span class="pill lock" id="badge-5">Bloqueado</span></div>
+  <h2 id="step5-title">Dos sintomas ao aparelho psíquico</h2>
+  <div class="step-content" id="content-5"><section class="chapter" aria-labelledby="chap4"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">04</span> Uma passagem decisiva</div><h3 id="chap4">Dos sintomas à teoria dos sonhos</h3></div><div class="split"><div class="reading"><p>Com <em>A interpretação dos sonhos</em>, publicada no final de 1899 com a data de 1900, Freud amplia o campo de suas perguntas. Ele não procura apenas interpretar conteúdos oníricos, mas compreender os processos pelos quais os sonhos se formam.</p><p>Por que certas ideias aparecem transformadas? Como diferentes representações se articulam? Por que alguns conteúdos encontram obstáculos para chegar à consciência?</p><p>Essas questões levam Freud a formular hipóteses sobre o aparelho psíquico. Especialmente no capítulo VII, o autor procura construir um modelo capaz de explicar a relação entre percepção, memória, desejo e processos inconscientes.</p><p>Não se trata de um mapa anatômico do cérebro, mas de uma construção teórica para investigar o funcionamento psíquico.</p></div><figure class="archive"><div class="archive-image bookcover"><div class="archive-fallback"><b>1900</b><small>Die Traumdeutung</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Freud_1900_Die_Traumdeutung.pdf/page1-800px-Freud_1900_Die_Traumdeutung.pdf.jpg" alt="Página de rosto de A interpretação dos sonhos, edição de 1900" onerror="this.remove()"></div><figcaption>Página de rosto da edição de 1900 de <em>Die Traumdeutung</em>. Wikimedia Commons. <a href="https://commons.wikimedia.org/wiki/File:Freud_1900_Die_Traumdeutung.pdf" target="_blank" rel="noopener noreferrer">Consultar digitalização</a>.</figcaption></figure></div></section><section class="quiz" id="q5"  aria-label="Desafio 5">
+  <div class="quiz-top">✦ Desafio 05 · raciocínio</div>
+  <h3>Por que A interpretação dos sonhos representa um deslocamento decisivo?</h3><div class="answers" role="group" aria-label="Alternativas do desafio 5"><button type="button" class="answer" data-index="0" aria-pressed="false"><span class="letter">A</span><span>Porque Freud passa a investigar os mecanismos de formação dos sonhos e propõe relações entre processos psíquicos.</span></button><button type="button" class="answer" data-index="1" aria-pressed="false"><span class="letter">B</span><span>Porque apresenta um atlas das regiões do cérebro responsáveis pelos sonhos.</span></button><button type="button" class="answer" data-index="2" aria-pressed="false"><span class="letter">C</span><span>Porque abandona toda reflexão sobre memória e desejo.</span></button><button type="button" class="answer" data-index="3" aria-pressed="false"><span class="letter">D</span><span>Porque demonstra que todo sonho possui uma tradução única e universal.</span></button></div>
+  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+  <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+  
+ </div></div></section>
+<section class="step locked" id="step-6" hidden aria-labelledby="step6-title">
+ <div class="dot" aria-hidden="true">6</div><div class="panel"><div class="panel-inner">
+  <div class="panel-heading"><span class="kicker">Quadradinho 06 · síntese</span><span class="pill lock" id="badge-6">Bloqueado</span></div>
+  <h2 id="step6-title">O que permanece desta investigação?</h2>
+  <div class="step-content" id="content-6"><div class="closing"><div class="kicker">Síntese · história e conceito</div><h3>Da clínica à formulação teórica</h3><p>Freud não passou diretamente da observação de sintomas a uma teoria pronta. As perguntas sobre memória, afeto, consciência e sonho foram sendo reelaboradas até exigirem novos modelos explicativos.</p><p>Na aula anterior, estudamos a primeira tópica. Agora podemos compreender melhor o percurso que tornou esse modelo uma resposta intelectualmente necessária.</p></div>
+<div class="note-area"><label for="reflection">Para registrar no seu caderno: qual é a diferença entre descrever um sintoma e explicar um processo psíquico?</label>
+<textarea id="reflection" class="reflection" placeholder="Escreva sua interpretação (opcional). Não inclua dados clínicos identificáveis."></textarea><p class="smallhint">Suas anotações ficam salvas neste navegador. O caderno do aluno permanece disponível no menu do Ateliê.</p></div>
+<div class="actions"><button type="button" class="btn" id="complete-reading">Concluir percurso</button></div></div>
+  
+ </div></div></section></div>
+<section class="finish" id="finish" hidden aria-live="polite"><div class="medal" aria-hidden="true">✦</div>
+<h2>Você concluiu a aula.</h2><p>Investigou as raízes científicas do pensamento freudiano, leu documentos históricos e examinou a passagem da clínica à construção de modelos teóricos.</p>
+<p>Revise qualquer quadradinho ou prossiga para outras aulas pelo menu do Ateliê.</p></section>
+<details class="sources"><summary>Fontes históricas e leitura complementar</summary><h4>Fontes para continuar a leitura</h4><ul><li><a href="https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/" target="_blank" rel="noopener noreferrer">Library of Congress — Cronologia de Sigmund Freud</a>.</li><li><a href="https://www.loc.gov/exhibits/freud/freud01.html" target="_blank" rel="noopener noreferrer">Library of Congress — Os anos de formação e o manuscrito de 1895</a>.</li><li><a href="https://psychclassics.yorku.ca/Freud/Dreams/dreams7a.htm" target="_blank" rel="noopener noreferrer">Freud, <em>A interpretação dos sonhos</em>, capítulo VII — tradução histórica em inglês</a>.</li></ul><p style="font-size:12px;color:#7b707e">Esta prévia contém conteúdo didático original. Fotografias e documentos são identificados com suas fontes. As imagens dependem de conexão com os respectivos acervos.</p></details>
+</main><footer class="shell"><div><strong>Ateliê de Psicanálise · Formação Freudiana</strong><br>O progresso desta experiência fica salvo no navegador. O menu do curso e o caderno do aluno permanecem no Ateliê.</div>
+<button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
+<script>(()=>{
+'use strict';
+const KEY='atelie-formacao-freudiana-freud-antes-v2';
+const VIDEO_ID='2vYTFwAVh0E';
+const Q=[{"n":1,"title":"O que permite estudar Freud sem reduzir a psicanálise à sua biografia?","correct":2,"answers":[["Os acontecimentos pessoais de Freud explicam diretamente todos os conceitos.","A biografia ilumina um contexto, mas não substitui a análise dos argumentos e dos textos."],["A vida pessoal precisa ser ignorada para evitar interpretações.","Fontes biográficas podem ser importantes quando tratadas com critério."],["É preciso articular documentos, trajetória intelectual e evolução conceitual sem confundi-los.","Correto: a história da psicanálise não é apenas a história privada de Freud."],["Uma carta de Freud revela a intenção oculta de toda sua obra.","Nenhuma fonte isolada permite essa conclusão."]]},{"n":2,"title":"Por que a investigação clínica conduziu Freud à necessidade de uma teoria?","correct":1,"answers":[["Porque os relatos de sintomas deixaram de ter qualquer valor.","O problema não era descartar a clínica, mas explicar os processos investigados por ela."],["Porque surgiam perguntas sobre memória, consciência e conflito que ultrapassavam a simples descrição.","Correto: as observações clínicas exigiam hipóteses sobre mecanismos psíquicos."],["Porque ele já havia localizado anatomicamente todos os conflitos.","Não há esse resultado no percurso freudiano."],["Porque pretendia provar que o corpo não tinha relação com a vida mental.","Ao contrário, seu pensamento nasceu em diálogo com a medicina e a fisiologia."]]},{"n":3,"title":"O que o Projeto para uma Psicologia Científica (1895) nos permite compreender?","correct":2,"answers":[["Que Freud já havia comprovado sua teoria neural do pensamento.","As hipóteses são historicamente importantes, mas não equivalem à comprovação experimental."],["Que Freud abandonara a neurologia muito antes de investigar os sintomas.","O manuscrito mostra a persistência da ambição neurofisiológica."],["Que ele buscava modelos explicativos do psiquismo, ainda marcados pela linguagem da fisiologia.","Correto: o texto testemunha uma fase de experimentação teórica."],["Que a primeira tópica e a segunda tópica já aparecem prontas em 1895.","Esses modelos foram formulados e reelaborados em momentos posteriores."]]},{"n":4,"title":"O uso do termo “psicanálise” em 1896 significa que…","correct":3,"answers":[["todas as técnicas e conceitos da disciplina já estavam concluídos.","Não: o desenvolvimento conceitual prosseguiu ao longo das décadas seguintes."],["Breuer e Freud haviam encerrado toda divergência científica.","Não: suas hipóteses não eram idênticas e a colaboração já atravessara mudanças."],["a psicanálise começava com uma teoria do cérebro que jamais seria reformulada.","A trajetória da disciplina envolveu transformações profundas."],["Freud estava nomeando um campo de investigação e tratamento ainda em construção.","Correto: nomear um campo não equivale a concluir seu desenvolvimento."]]},{"n":5,"title":"Por que A interpretação dos sonhos representa um deslocamento decisivo?","correct":0,"answers":[["Porque Freud passa a investigar os mecanismos de formação dos sonhos e propõe relações entre processos psíquicos.","Correto: a questão não se limita ao conteúdo dos sonhos, mas também à sua produção."],["Porque apresenta um atlas das regiões do cérebro responsáveis pelos sonhos.","Não: o modelo freudiano do aparelho psíquico não é anatômico."],["Porque abandona toda reflexão sobre memória e desejo.","Essas questões continuam centrais na obra."],["Porque demonstra que todo sonho possui uma tradução única e universal.","O trabalho clínico e teórico não se reduz a um dicionário fixo de símbolos."]]}];
+const facts={
+1:'Freud redigiu o Projeto para uma Psicologia Científica no mesmo ano da publicação de Estudos sobre a Histeria; trata-se de uma tentativa teórica distinta dos relatos clínicos.',
+2:'O manuscrito foi publicado postumamente, em 1950. Isso impede tratá-lo como obra que orientou publicamente os primeiros leitores da psicanálise.',
+3:'A linguagem emprega hipóteses sobre neurônios, quantidade de excitação e memória: testemunha uma pesquisa em construção, não uma teoria neurocientífica hoje demonstrada.'
+};
+const years={
+1895:'Estudos sobre a Histeria e o Projeto mostram caminhos diferentes de investigação ainda em construção.',
+1896:'Freud usa o termo psicanálise para designar um campo que ainda transformará seus instrumentos e conceitos.',
+1900:'A interpretação dos sonhos é publicada com essa data, depois de sair no final de 1899. O capítulo VII desenvolve um modelo do aparelho psíquico.'
+};
+const init=()=>({done:[],videoWatched:false,selected:{},visited:[],reflection:'',completed:false});
+let state=init();
+try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&typeof v==='object')state={...state,...v};}catch(e){}
+state.done=Array.isArray(state.done)?[...new Set(state.done.filter(n=>Number.isInteger(n)&&n>=1&&n<=6))]:[];
+state.selected=state.selected&&typeof state.selected==='object'?state.selected:{};
+state.visited=Array.isArray(state.visited)?state.visited.filter(n=>n>=1&&n<=3):[];
+state.reflection=typeof state.reflection==='string'?state.reflection.slice(0,5000):'';
+state.videoWatched=state.videoWatched===true||state.done.includes(1);
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function allowed(n){return n===1||state.done.includes(n-1)}
+function reportHeight(){if(parent===window)return;parent.postMessage({type:'atelie-lesson-height',height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))},location.origin)}
+function updateProgress(){
+const count=state.done.length;
+$('#progress-label').textContent=count+' de 6 momentos concluídos';
+$('#progressbar').setAttribute('aria-valuemax','6');
+$('#progressbar').setAttribute('aria-valuenow',String(count));
+$('#progressbar').innerHTML=Array.from({length:6},(_,i)=>'<span class="progress-segment'+(i<count?' complete':'')+'"></span>').join('');
+$('#progress-next').textContent=count===6?'Percurso concluído.':('A seguir: '+['vídeo de abertura','passagem à teoria','Projeto de 1895','nome psicanálise','teoria dos sonhos','síntese final'][count]+'.');
+for(let n=1;n<=6;n++){
+ const step=$('#step-'+n),open=allowed(n),done=state.done.includes(n),wasHidden=step.hidden;
+ step.hidden=!open;step.classList.toggle('locked',!open);step.classList.toggle('complete',done);
+ const badge=$('#badge-'+n);badge.textContent=done?'✓ Concluído':(open?'Disponível':'Bloqueado');badge.className='pill'+(done?' done':(!open?' lock':''));
+ if(open&&wasHidden){step.classList.add('reveal');step.addEventListener('animationend',()=>step.classList.remove('reveal'),{once:true});}
+}
+$('#q1').hidden=!state.videoWatched;$('#video-gate').hidden=state.videoWatched;$('#video-fallback').hidden=state.videoWatched;
+$('#finish').hidden=!state.done.includes(6);
+save();reportHeight();
+}
+function advance(n){
+ if(state.done.includes(n))return;
+ state.done.push(n);state.done.sort((a,b)=>a-b);
+ if(n===6)state.completed=true;
+ updateProgress();
+ const target=n<6?$('#step-'+(n+1)):$('#finish');
+ if(target)setTimeout(()=>{target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});reportHeight()},260);
+}
+function makeQuiz(q){
+ const box=$('#q'+q.n);if(!box)return;
+ const answers=$$('.quiz#q'+q.n+' .answer'),verify=box.querySelector('.verify'),feed=box.querySelector('.feedback');
+ function feedback(ok,chosen){
+  feed.hidden=false;feed.className='feedback '+(ok?'good':'bad');
+  feed.innerHTML='<b>'+(ok?'Resposta correta.':'Essa não é a alternativa mais adequada. Revise os comentários:')+'</b><div class="explain">'+q.answers.map((a,i)=>'<div><b>'+('ABCD'[i])+'.</b> '+a[1]+'</div>').join('')+'</div>';
+  answers.forEach((b,i)=>{b.classList.toggle('right',i===q.correct);b.classList.toggle('wrong',!ok&&chosen===i);});
+ }
+ const done=state.done.includes(q.n);
+ if(done){feedback(true,q.correct);verify.hidden=true;}
+ answers.forEach((b,i)=>{
+  if(done){b.disabled=true;b.setAttribute('aria-pressed',String(i===q.correct))}
+  b.addEventListener('click',()=>{
+    if(state.done.includes(q.n))return;
+    state.selected[q.n]=i;answers.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    verify.disabled=false;feed.hidden=true;save();
+  });
+ });
+ verify.disabled=done||!Number.isInteger(state.selected[q.n]);
+ if(!done&&Number.isInteger(state.selected[q.n]))answers[state.selected[q.n]]?.setAttribute('aria-pressed','true');
+ verify.addEventListener('click',()=>{
+  if(verify.disabled||state.done.includes(q.n))return;
+  const chosen=state.selected[q.n],ok=chosen===q.correct;
+  feedback(ok,chosen);if(ok){answers.forEach(b=>b.disabled=true);verify.hidden=true;advance(q.n)}
+ });
+}
+Q.forEach(makeQuiz);
+$('#video-fallback').addEventListener('click',()=>{
+ state.videoWatched=true;updateProgress();$('#q1').scrollIntoView({behavior:'smooth',block:'start'});
+});
+let ytPlayer=null;
+function onYoutubeReady(){
+ if(!window.YT||!window.YT.Player)return;
+ try{
+  ytPlayer=new YT.Player('video-introducao',{events:{onStateChange(e){if(e.data===0){state.videoWatched=true;updateProgress();}}}});
+ }catch(e){/* alternativa manual sempre disponível */}
+}
+window.onYouTubeIframeAPIReady=onYoutubeReady;
+if(window.YT&&window.YT.Player)onYoutubeReady();
+const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;document.head.appendChild(script);
+$$('[data-fact]').forEach(b=>{
+ const n=Number(b.dataset.fact);if(state.visited.includes(n))b.classList.add('visited');
+ b.addEventListener('click',()=>{
+  if(!state.visited.includes(n))state.visited.push(n);
+  b.classList.add('visited');$('#fact-output').textContent=facts[n];
+  $('#fact-counter').textContent=state.visited.length+' de 3 pistas examinadas';save();reportHeight();
+ });
+});
+$('#fact-counter').textContent=state.visited.length+' de 3 pistas examinadas';
+$$('[data-time]').forEach(b=>b.addEventListener('click',()=>{
+ $$('[data-time]').forEach(x=>x.classList.toggle('visited',x===b));
+ $('#time-output').textContent=years[b.dataset.time]||'';reportHeight();
+}));
+$('#reflection').value=state.reflection;
+$('#reflection').addEventListener('input',e=>{state.reflection=e.target.value.slice(0,5000);save();});
+$('#complete-reading').addEventListener('click',()=>advance(6));
+$('#reset').addEventListener('click',()=>{
+ if(confirm('Reiniciar o progresso desta aula?')){localStorage.removeItem(KEY);location.reload();}
+});
+if(window.ResizeObserver)new ResizeObserver(reportHeight).observe(document.body);
+window.addEventListener('load',reportHeight);window.addEventListener('resize',reportHeight);
+updateProgress();
+})();</script>
+</body></html>
