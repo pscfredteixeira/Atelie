@@ -3,7 +3,7 @@
 // não representam a migração das aulas publicadas no repositório Atelie.
 const COURSES = [
   {status:'draft',slug:'introducao-a-psicanalise',title:'Introdução à Psicanálise',subtitle:'Primeiros encontros com a escuta',description:'Conheça a estrutura de uma aula, um exercício e seu caderno de estudos. O conteúdo é apenas ilustrativo.',image:'assets/cover-intro.svg',lesson:'escuta',label:'1 aula ilustrativa'},
-  {status:'published',slug:'formacao-freudiana',title:'Formação Freudiana',subtitle:'Estudo sistemático da obra de Sigmund Freud',description:'Duas aulas interativas: A escuta que mudou a clínica e A primeira tópica de Freud.',image:'assets/cover-freud.svg',lesson:'escuta-que-mudou-a-clinica',label:'2 aulas disponíveis'},
+  {status:'published',slug:'formacao-freudiana',title:'Formação Freudiana',subtitle:'Estudo sistemático da obra de Sigmund Freud',description:'Três aulas: A escuta que mudou a clínica, A primeira tópica de Freud e Freud antes de ser Freud.',image:'assets/cover-freud.svg',lesson:'escuta-que-mudou-a-clinica',label:'3 aulas disponíveis'},
   {status:'draft',slug:'fundamentos-da-psicanalise',title:'Fundamentos da Psicanálise',subtitle:'Conflitos e sentidos possíveis',description:'Experimente o formato de leitura, quiz, anotações e acompanhamento do próprio estudo.',image:'assets/cover-fundamentos.svg',lesson:'conflito-exemplo',label:'1 aula ilustrativa'}
 ];
 /* Cursos demonstrativos ficam arquivados no código. Novos cursos aparecem
@@ -125,16 +125,17 @@ function courseIsComplete(c){
 }
 function courseCard(c){const done=courseIsComplete(c);return '<article class="course-card"><a href="#/curso/'+c.slug+'" class="course-visual" aria-label="Abrir '+esc(c.title)+'"><img alt="" src="'+c.image+'" loading="lazy"><span class="pill">'+(done?'Concluído':(c.slug==='formacao-freudiana'?'Aula disponível':'Aula demonstrativa'))+'</span></a><div class="course-body"><h3><a href="#/curso/'+c.slug+'">'+esc(c.title)+'</a></h3><p>'+esc(c.description)+'</p><div class="course-meta"><span class="meta-left">'+icon(done?'check':'graduation')+esc(c.label)+'</span><a class="circle-link" href="#/curso/'+c.slug+'" aria-label="Abrir '+esc(c.title)+'">'+icon('arrow')+'</a></div></div></article>'}
 function heading(k,t,sub){return '<header class="page-heading"><span class="eyebrow">'+esc(k)+'</span><h1>'+esc(t)+'</h1><p>'+esc(sub)+'</p></header>'}
-function home(){return '<section class="hero"><div class="hero-copy"><span class="eyebrow">ATELIÊ · VERSÃO BETA</span><h1>Estudo e formação em psicanálise</h1><div class="mini-rule"></div><p>Um espaço para ler, pensar e construir perguntas. A Formação Freudiana já conta com duas aulas interativas publicadas. Os demais cursos e recursos continuam em desenvolvimento.</p><div class="hero-buttons"><a href="#/cursos" class="btn btn-primary">'+icon('layers')+' Explorar cursos</a><a href="#/progresso" class="btn btn-outline">'+icon('route')+' Meu progresso</a></div></div></section><section><div class="section-bar"><h2>Cursos disponíveis</h2><a class="section-link" href="#/cursos">Ver catálogo '+icon('arrow')+'</a></div><div class="course-grid">'+PUBLISHED_COURSES().map(courseCard).join('')+'</div></section><section class="feature-strip"><div class="feature">'+icon('book')+'<a href="#/cursos"><h3>Aprendizagem interativa</h3><p>Vídeos, leituras e atividades para aprofundar o estudo.</p></a></div><div class="feature">'+icon('notebook')+'<a href="#/caderno"><h3>Caderno</h3><p>Escreva e retome suas anotações.</p></a></div><div class="feature">'+icon('graduation')+'<a href="#/estudio"><h3>Estúdio</h3><p>Experimente editar uma aula localmente.</p></a></div></section>'}
-function courses(q=''){const filtered=PUBLISHED_COURSES().filter(c=>[c.title,c.subtitle,c.description].join(' ').toLocaleLowerCase('pt-BR').includes(q.toLocaleLowerCase('pt-BR'))&&(courseFilter==='all'||(courseFilter==='saved'&&state.saved.includes(c.slug))||(courseFilter==='completed'&&courseIsComplete(c))));return heading('CATÁLOGO','Cursos e percursos','As origens da escuta psicanalítica e a primeira tópica de Freud já podem ser estudadas dentro da Formação Freudiana. Outros conteúdos estão em desenvolvimento.')+'<div class="filter-bar" role="group" aria-label="Filtrar catálogo">'+[['all','Todos'],['saved','Salvos'],['completed','Concluídos']].map(([v,t])=>'<button class="filter" data-filter="'+v+'" aria-pressed="'+(courseFilter===v)+'">'+t+'</button>').join('')+'</div>'+(filtered.length?'<div class="course-grid">'+filtered.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Sem resultados</h2><p>Experimente outro filtro ou outra busca.</p><a class="btn btn-primary" href="#/cursos">Ver todos</a></div>')}
+function home(){return '<section class="hero"><div class="hero-copy"><span class="eyebrow">ATELIÊ · VERSÃO BETA</span><h1>Estudo e formação em psicanálise</h1><div class="mini-rule"></div><p>Um espaço para ler, pensar e construir perguntas. A Formação Freudiana já conta com três aulas publicadas. Os demais cursos e recursos continuam em desenvolvimento.</p><div class="hero-buttons"><a href="#/cursos" class="btn btn-primary">'+icon('layers')+' Explorar cursos</a><a href="#/progresso" class="btn btn-outline">'+icon('route')+' Meu progresso</a></div></div></section><section><div class="section-bar"><h2>Cursos disponíveis</h2><a class="section-link" href="#/cursos">Ver catálogo '+icon('arrow')+'</a></div><div class="course-grid">'+PUBLISHED_COURSES().map(courseCard).join('')+'</div></section><section class="feature-strip"><div class="feature">'+icon('book')+'<a href="#/cursos"><h3>Aprendizagem interativa</h3><p>Vídeos, leituras e atividades para aprofundar o estudo.</p></a></div><div class="feature">'+icon('notebook')+'<a href="#/caderno"><h3>Caderno</h3><p>Escreva e retome suas anotações.</p></a></div><div class="feature">'+icon('graduation')+'<a href="#/estudio"><h3>Estúdio</h3><p>Experimente editar uma aula localmente.</p></a></div></section>'}
+function courses(q=''){const filtered=PUBLISHED_COURSES().filter(c=>[c.title,c.subtitle,c.description].join(' ').toLocaleLowerCase('pt-BR').includes(q.toLocaleLowerCase('pt-BR'))&&(courseFilter==='all'||(courseFilter==='saved'&&state.saved.includes(c.slug))||(courseFilter==='completed'&&courseIsComplete(c))));return heading('CATÁLOGO','Cursos e percursos','Três aulas, da escuta psicanalítica ao percurso intelectual de Freud, estão disponíveis na Formação Freudiana. Outros conteúdos estão em desenvolvimento.')+'<div class="filter-bar" role="group" aria-label="Filtrar catálogo">'+[['all','Todos'],['saved','Salvos'],['completed','Concluídos']].map(([v,t])=>'<button class="filter" data-filter="'+v+'" aria-pressed="'+(courseFilter===v)+'">'+t+'</button>').join('')+'</div>'+(filtered.length?'<div class="course-grid">'+filtered.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Sem resultados</h2><p>Experimente outro filtro ou outra busca.</p><a class="btn btn-primary" href="#/cursos">Ver todos</a></div>')}
 
 
-const FREUD_PROGRAM=['A escuta que mudou a clínica','A primeira tópica de Freud'];
+const FREUD_PROGRAM=['A escuta que mudou a clínica','A primeira tópica de Freud','Freud antes de ser Freud'];
 const FREUD_COURSE_ROUTE='#/curso/formacao-freudiana';
-const FREUD_FIRST_ID='escuta-que-mudou-a-clinica',FREUD_SECOND_ID='primeira-topica-freud';
+const FREUD_FIRST_ID='escuta-que-mudou-a-clinica',FREUD_SECOND_ID='primeira-topica-freud',FREUD_THIRD_ID='freud-antes-de-ser-freud';
 const FREUD_LESSONS=[
  {id:FREUD_FIRST_ID,title:FREUD_PROGRAM[0],route:'#/aula/'+FREUD_FIRST_ID,stages:6,file:'escuta-que-mudou-a-clinica.html'},
- {id:FREUD_SECOND_ID,title:FREUD_PROGRAM[1],route:'#/aula/'+FREUD_SECOND_ID,stages:3,file:'primeira-topica.html'}
+ {id:FREUD_SECOND_ID,title:FREUD_PROGRAM[1],route:'#/aula/'+FREUD_SECOND_ID,stages:3,file:'primeira-topica.html'},
+ {id:FREUD_THIRD_ID,title:FREUD_PROGRAM[2],route:'#/aula/'+FREUD_THIRD_ID,stages:6,file:'freud-antes-de-ser-freud.html'}
 ];
 const FREUD_LESSON_ROUTE=FREUD_LESSONS[0].route;
 function freudCourseView(c){
@@ -142,7 +143,7 @@ function freudCourseView(c){
  return '<div class="course-heading freud-course-heading"><div><a class="back-link" href="#/cursos">← Voltar aos cursos</a>'+
  '<div style="margin-top:25px"><span class="eyebrow">FORMAÇÃO FREUDIANA · PERCURSO DE ESTUDOS</span></div>'+
  '<h1>'+esc(c.title)+'</h1><p>'+esc(c.description)+'</p>'+
- '<p class="muted-note">2 aulas disponíveis · '+done+' de 2 concluídas</p>'+
+ '<p class="muted-note">'+FREUD_LESSONS.length+' aulas disponíveis · '+done+' de '+FREUD_LESSONS.length+' concluídas</p>'+
  '<div class="course-actions"><button class="saved-btn" data-save="'+c.slug+'" aria-pressed="'+saved+'">'+icon(saved?'check':'heart')+
  (saved?'Curso salvo':'Salvar curso')+'</button><a class="btn btn-primary" href="'+FREUD_LESSON_ROUTE+'">'+icon('book')+' Começar aula 01</a></div></div>'+
  '<img src="assets/cover-freud.svg" alt="Capa da Formação Freudiana"></div>'+
@@ -153,7 +154,7 @@ function freudCourseView(c){
 function freudLessonView(id=FREUD_FIRST_ID){
  const i=FREUD_LESSONS.findIndex(l=>l.id===id);if(i<0)return notFound();
  const l=FREUD_LESSONS[i],prev=FREUD_LESSONS[i-1],next=FREUD_LESSONS[i+1];
- const intro='Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
+ const intro=id===FREUD_THIRD_ID?'Assista ao vídeo e avance pelos textos, documentos históricos e desafios progressivos.':'Assista ao vídeo, explore os sistemas psíquicos e responda aos desafios para avançar.';
  const videoFirst=i===0;
  const progress=videoFirst?'<div class="freud-live-progress" id="freudLiveProgress" aria-label="Progresso das atividades da aula">'+
   '<div class="freud-live-heading"><span>Seu progresso na aula</span><strong id="freudLiveCount">0 de 6 etapas</strong></div>'+
@@ -163,16 +164,16 @@ function freudLessonView(id=FREUD_FIRST_ID){
  const heading=videoFirst?
   '<header class="freud-lesson-heading freud-opening-heading"><h1>'+esc(l.title)+'</h1></header>':
   '<header class="freud-lesson-heading"><span class="eyebrow">FORMAÇÃO FREUDIANA · AULA '+String(i+1).padStart(2,'0')+
-  ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
+  ' DE '+(id===FREUD_THIRD_ID?'03':'11')+'</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v=sanfona-rolagem-corrigida-20261110-v2" title="Aula interativa '+esc(l.title)+
+  '?v='+(id===FREUD_THIRD_ID?'freud-terceira-aula-progressiva-20261110-v3':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
-  '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
+  (id===FREUD_THIRD_ID?'':'<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
   '<label class="form-label" for="lessonNote">O que você gostaria de guardar desta aula?</label>'+
   '<textarea id="lessonNote" data-note="'+l.id+'" maxlength="5000" rows="5" placeholder="Escreva suas dúvidas, ideias e associações...">'+
-  esc(state.notes[l.id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Suas anotações são salvas no Ateliê.</p></section>'+
+  esc(state.notes[l.id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Suas anotações são salvas no Ateliê.</p></section>')+
   '<nav class="lesson-controls" aria-label="Navegação entre aulas">'+
   (prev?'<a class="btn btn-outline" href="'+prev.route+'">← Aula anterior: '+esc(prev.title)+'</a>':'')+
   (next?'<a class="btn btn-primary" href="'+next.route+'">Próxima aula: '+esc(next.title)+' →</a>':'')+
@@ -187,7 +188,9 @@ const ATELIE_COURSE_MODULES={
   {title:'As origens da investigação freudiana',lessons:[
    {title:'A escuta que mudou a clínica',href:'#/aula/escuta-que-mudou-a-clinica',id:'escuta-que-mudou-a-clinica'}]},
   {title:'A primeira tópica de Freud',lessons:[
-   {title:'A primeira tópica de Freud',href:'#/aula/primeira-topica-freud',id:'primeira-topica-freud'}]}
+   {title:'A primeira tópica de Freud',href:'#/aula/primeira-topica-freud',id:'primeira-topica-freud'}]},
+  {title:'Freud antes de ser Freud',lessons:[
+   {title:'Freud antes de ser Freud',href:'#/aula/freud-antes-de-ser-freud',id:'freud-antes-de-ser-freud'}]}
  ]
 };
 let selectedCourseSlug='formacao-freudiana';
@@ -200,7 +203,7 @@ function inferSidebarCourse(path){
  if(path.startsWith('/cursos/curso-formacao-freudiana'))return 'formacao-freudiana';
  if(path.startsWith('/aula/')){
   const id=path.split('/')[2];
-  if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return 'formacao-freudiana';
+  if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID||id===FREUD_THIRD_ID)return 'formacao-freudiana';
   const item=LESSONS[id];
   return item?COURSES[item.course]?.slug:null;
  }
@@ -278,7 +281,7 @@ function courseView(slug){
   '<div class="section-bar"><h2>Módulos do curso</h2><span class="freud-program-caption">Expanda para ver as aulas</span></div>'+
   courseProgramAccordion(slug);
 }
-function lessonView(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return freudLessonView(id);if(!Object.hasOwn(LESSONS,id))return notFound();const l=lesson(id),c=COURSES[l.course],selected=state.answers[id],done=state.completed.includes(id),valid=Number.isInteger(selected);return '<div class="reading"><a class="back-link" href="#/curso/'+c.slug+'">← Voltar ao curso</a>'+heading('AULA ILUSTRATIVA',l.title,c.title+' · '+l.minutes+' minutos')+'<div class="notice"><strong>Conteúdo fictício para testes.</strong> Esta aula não foi importada de outro repositório e será substituída depois.</div><article class="reading-panel"><span class="eyebrow">PARA COMEÇAR</span><h2>'+esc(l.prompt)+'</h2><p>'+esc(l.intro)+'</p><div class="mini-rule"></div><h3>'+esc(l.topic)+'</h3><p>'+esc(l.text)+'</p></article><section class="reading-panel quiz-panel"><span class="eyebrow">ATIVIDADE · 1 PERGUNTA</span><h2>'+esc(l.quiz.question)+'</h2><div class="quiz-options">'+l.quiz.options.map((op,i)=>'<button class="quiz-option" type="button" data-answer="'+id+'" data-index="'+i+'" aria-pressed="'+(i===selected)+'">'+String.fromCharCode(65+i)+' · '+esc(op)+'</button>').join('')+'</div>'+(valid?'<p class="quiz-feedback" role="status"><strong>'+(selected===l.quiz.answer?'Resposta correta.':'Vamos pensar mais um pouco.')+'</strong> '+esc(l.quiz.explanation)+'</p>':'<p class="muted-note">Escolha uma alternativa para conferir a resposta.</p>')+'</section><section class="reading-panel"><span class="eyebrow">CADERNO DE ESTUDOS</span><h2>Suas anotações</h2><label for="lessonNote" class="form-label">O que você gostaria de registrar?</label><textarea id="lessonNote" data-note="'+id+'" maxlength="5000" rows="5" placeholder="Anote suas perguntas e ideias...">'+esc(state.notes[id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Salvo automaticamente neste navegador'+(window.AtelieCloud?.user?' e na sua conta':'')+'.</p><div class="lesson-controls"><button type="button" class="btn btn-primary" data-complete="'+id+'">'+icon(done?'check':'graduation')+(done?'Marcar como não concluída':'Concluir aula')+'</button><a class="btn btn-outline" href="#/progresso">Meu progresso</a></div></section></div>'}
+function lessonView(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID||id===FREUD_THIRD_ID)return freudLessonView(id);if(!Object.hasOwn(LESSONS,id))return notFound();const l=lesson(id),c=COURSES[l.course],selected=state.answers[id],done=state.completed.includes(id),valid=Number.isInteger(selected);return '<div class="reading"><a class="back-link" href="#/curso/'+c.slug+'">← Voltar ao curso</a>'+heading('AULA ILUSTRATIVA',l.title,c.title+' · '+l.minutes+' minutos')+'<div class="notice"><strong>Conteúdo fictício para testes.</strong> Esta aula não foi importada de outro repositório e será substituída depois.</div><article class="reading-panel"><span class="eyebrow">PARA COMEÇAR</span><h2>'+esc(l.prompt)+'</h2><p>'+esc(l.intro)+'</p><div class="mini-rule"></div><h3>'+esc(l.topic)+'</h3><p>'+esc(l.text)+'</p></article><section class="reading-panel quiz-panel"><span class="eyebrow">ATIVIDADE · 1 PERGUNTA</span><h2>'+esc(l.quiz.question)+'</h2><div class="quiz-options">'+l.quiz.options.map((op,i)=>'<button class="quiz-option" type="button" data-answer="'+id+'" data-index="'+i+'" aria-pressed="'+(i===selected)+'">'+String.fromCharCode(65+i)+' · '+esc(op)+'</button>').join('')+'</div>'+(valid?'<p class="quiz-feedback" role="status"><strong>'+(selected===l.quiz.answer?'Resposta correta.':'Vamos pensar mais um pouco.')+'</strong> '+esc(l.quiz.explanation)+'</p>':'<p class="muted-note">Escolha uma alternativa para conferir a resposta.</p>')+'</section><section class="reading-panel"><span class="eyebrow">CADERNO DE ESTUDOS</span><h2>Suas anotações</h2><label for="lessonNote" class="form-label">O que você gostaria de registrar?</label><textarea id="lessonNote" data-note="'+id+'" maxlength="5000" rows="5" placeholder="Anote suas perguntas e ideias...">'+esc(state.notes[id]||'')+'</textarea><p class="muted-note" id="noteSaveStatus">Salvo automaticamente neste navegador'+(window.AtelieCloud?.user?' e na sua conta':'')+'.</p><div class="lesson-controls"><button type="button" class="btn btn-primary" data-complete="'+id+'">'+icon(done?'check':'graduation')+(done?'Marcar como não concluída':'Concluir aula')+'</button><a class="btn btn-outline" href="#/progresso">Meu progresso</a></div></section></div>'}
 
 function studyIndex(){return PUBLISHED_COURSES().flatMap(c=>c.slug==='formacao-freudiana'?
  FREUD_LESSONS.map(l=>({id:l.id,title:l.title,course:c.title,route:l.route})):
@@ -422,7 +425,7 @@ function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return he
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
 function notFound(){return '<div class="empty"><h2>Página não encontrada</h2><p>Confira o endereço.</p><a class="btn btn-primary" href="#/">Voltar ao início</a></div>'}
 function parseRoute(){let hash='/';try{hash=decodeURIComponent(location.hash.slice(1)||'/')}catch{}const [path,query='']=hash.split('?');return{path:path||'/',q:new URLSearchParams(query).get('q')||''}}
-function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/matriculas':()=>window.AtelieEnrollments?.render()||notFound(),'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));const needsAccount=path.startsWith('/aula/')||path.includes('/aulas/aula-')||['/progresso','/caderno','/salvos','/matriculas'].includes(path);
+function render(){updateEntryGate();const {path,q}=parseRoute(),routes={'/':home,'/cursos':()=>courses(q),'/trilhas':trails,'/biblioteca':library,'/salvos':savedView,'/progresso':progressView,'/caderno':notebookView,'/perfil':profileView,'/matriculas':()=>window.AtelieEnrollments?.render()||notFound(),'/estudio':studioView,'/sobre':about};let html=routes[path]?.();if(html===undefined){if(path==='/cursos/curso-formacao-freudiana')html=courseView('formacao-freudiana');else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-escuta-que-mudou-a-clinica')html=lessonView(FREUD_FIRST_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-primeira-topica-freud')html=lessonView(FREUD_SECOND_ID);else if(path==='/cursos/curso-formacao-freudiana/aulas/aula-freud-antes-de-ser-freud')html=lessonView(FREUD_THIRD_ID);else if(path.startsWith('/curso/'))html=courseView(path.split('/')[2]);else if(path.startsWith('/aula/'))html=lessonView(path.split('/')[2]);else if(path.startsWith('/estudio/'))html=studioEditor(path.split('/')[2]);else html=notFound()}document.body.classList.toggle('is-lesson-page',path.startsWith('/aula/')||path.includes('/aulas/aula-'));const needsAccount=path.startsWith('/aula/')||path.includes('/aulas/aula-')||['/progresso','/caderno','/salvos','/matriculas'].includes(path);
  if(needsAccount&&!activeUid){
   html=heading('ACESSO ÀS AULAS','Entre para continuar','O progresso de cada etapa pertence à sua conta Google, não ao navegador.')+
    '<section class="profile-signin-panel"><h2>Seu estudo acompanha sua conta</h2>'+
@@ -712,6 +715,7 @@ function currentLessonId(){
  if(path.startsWith('/aula/'))return path.split('/aula/')[1];
  if(path.includes('/aulas/aula-escuta-que-mudou-a-clinica'))return 'escuta-que-mudou-a-clinica';
  if(path.includes('/aulas/aula-primeira-topica-freud'))return 'primeira-topica-freud';
+ if(path.includes('/aulas/aula-freud-antes-de-ser-freud'))return 'freud-antes-de-ser-freud';
  return null;
 }
 function confirmedLessonCompletion(lessonId,progress){
