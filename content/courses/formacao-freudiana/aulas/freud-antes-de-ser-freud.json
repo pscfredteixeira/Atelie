@@ -5,11 +5,11 @@
   "courseId": "curso-formacao-freudiana",
   "moduleId": "modulo-formacao-freudiana-freud-antes-de-ser-freud",
   "slug": "freud-antes-de-ser-freud",
-  "revision": 2,
+  "revision": 3,
   "status": "published",
   "title": "Freud antes de ser Freud",
-  "summary": "Leitura ilustrada após o vídeo: a herança da neurologia, o Projeto de 1895, o nascimento do nome psicanálise em 1896 e A interpretação dos sonhos.",
-  "estimatedMinutes": 20,
+  "summary": "Aula progressiva em seis quadradinhos: vídeo de abertura, cinco desafios comentados e leituras ilustradas sobre o percurso científico de Freud, o Projeto de 1895, o termo psicanálise e os sonhos.",
+  "estimatedMinutes": 35,
   "objectives": [
     "Analisar a passagem das investigações clínicas à elaboração de uma teoria do funcionamento psíquico.",
     "Situar o Projeto para uma Psicologia Científica de 1895 no percurso de Freud.",
@@ -18,11 +18,12 @@
   ],
   "metadata": {
     "interactivePage": "./freud-antes-de-ser-freud.html",
-    "stagesAvailable": 1,
+    "stagesAvailable": 6,
     "videoUrl": "https://youtu.be/2vYTFwAVh0E",
     "videoIsPlaceholder": false,
-    "source": "Leitura complementar aprovada pelo autor, publicada a partir de prévia HTML.",
-    "narration": "Vídeo oficial de abertura gravado pelo professor."
+    "source": "Aula integrada à Formação Freudiana, no modelo visual e progressivo de A primeira tópica de Freud.",
+    "narration": "Vídeo oficial de abertura gravado pelo professor.",
+    "progress": "Progresso das interações temporariamente salvo neste navegador; integra-se ao menu e ao caderno do Ateliê."
   },
   "blocks": [],
   "references": [
