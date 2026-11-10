@@ -22,14 +22,14 @@ try{
   saved:['formacao-freudiana'],completed:['escuta-que-mudou-a-clinica'],
   notes:{'escuta-que-mudou-a-clinica':'Reflexão privada da conta A'},answers:{},updatedAt:101
  });
- await page.locator('.progress-head').getByText('1 de 2').waitFor();
+ await page.locator('.progress-head').getByText('1 de 3').waitFor();
  await page.goto('http://127.0.0.1:4173/#/caderno',{waitUntil:'domcontentloaded'});
  await page.getByText('Reflexão privada da conta A',{exact:false}).waitFor();
  await login('B',null);
  assert.equal(await page.locator('.note-preview').first().innerText()!=='Reflexão privada da conta A',true);
  assert.equal(await page.locator('#main').getByText('Reflexão privada da conta A',{exact:false}).count(),0);
  await page.goto('http://127.0.0.1:4173/#/progresso',{waitUntil:'domcontentloaded'});
- await page.locator('.progress-head').getByText('0 de 2').waitFor();
+ await page.locator('.progress-head').getByText('0 de 3').waitFor();
  await login('A',{
   saved:['formacao-freudiana'],completed:['escuta-que-mudou-a-clinica'],
   notes:{'escuta-que-mudou-a-clinica':'Reflexão privada da conta A'},answers:{},updatedAt:101
