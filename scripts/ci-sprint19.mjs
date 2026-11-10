@@ -34,7 +34,7 @@ try{
   saved:['formacao-freudiana'],completed:['escuta-que-mudou-a-clinica'],
   notes:{'escuta-que-mudou-a-clinica':'Reflexão privada da conta A'},answers:{},updatedAt:101
  });
- await page.locator('.progress-head').getByText('1 de 2').waitFor();
+ await page.locator('.progress-head').getByText('1 de 3').waitFor();
  assert.equal(await page.evaluate(()=>localStorage.getItem('ateliepsi-beta-state-v1:account:A')),null);
  assert.equal(await page.evaluate(()=>localStorage.getItem('ateliepsi-beta-state-v1:account:B')),null);
  console.log('OK — estado A e B isolado, recuperado do servidor, sem armazenamento local por conta.');
