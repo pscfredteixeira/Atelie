@@ -782,6 +782,22 @@ window.addEventListener('message',event=>{
   if(data.lessonId===routeLessonId&&data.state&&typeof data.state==='object'&&!Array.isArray(data.state))sendLessonProgress(routeLessonId,data.state,frame,data.requestId);
   return;
  }
+ if(data.type==='atelie-lesson-scroll-to'){
+  // O iframe tem altura dinâmica. A página externa é quem deve rolar.
+  // Reenquadra o início do marco, em vez de deixar o texto crescer acima
+  // do ponto atualmente visível no Safari/iOS.
+  const offset=Number(data.offsetTop);
+  if(data.lessonId===routeLessonId&&data.target==='timeline'&&
+     Number.isFinite(offset)&&offset>=0&&offset<=30000){
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(frame!==$('#freudLessonFrame')||currentLessonId()!==routeLessonId)return;
+    const frameTop=frame.getBoundingClientRect().top+window.scrollY;
+    const top=Math.max(0,Math.round(frameTop+offset-94));
+    window.scrollTo({top,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+   }));
+  }
+  return;
+ }
  if(data.type==='atelie-lesson-height'){
    const height=Number(data.height);
    if(Number.isFinite(height)&&height>=100&&height<=30000){
