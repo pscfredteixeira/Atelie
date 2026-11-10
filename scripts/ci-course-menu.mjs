@@ -76,7 +76,9 @@ try{
  const lesson=desktop.frameLocator('#freudLessonFrame');
  await lesson.locator('#step-1').waitFor({state:'visible'});
  assert.equal(await lesson.locator('#step-2').isVisible(),false,'Próxima etapa oculta antes de concluir a abertura');
- await lesson.locator('#video-fallback').click();
+ assert.equal(await lesson.locator('#video-fallback').count(),0,'Sem botão desnecessário de liberar vídeo');
+ assert.equal(await lesson.locator('#video-gate').count(),0,'Sem aviso redundante de assistir');
+ await lesson.locator('#q1').waitFor({state:'visible'});
  await lesson.locator('#q1 .answer[data-index="2"]').click();
  await lesson.locator('#q1 .verify').click();
  await lesson.locator('#step-2').waitFor({state:'visible'});
