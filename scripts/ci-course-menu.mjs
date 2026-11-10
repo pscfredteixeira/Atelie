@@ -62,5 +62,25 @@ try{
  await desktop.locator('.course-program-module a[href="#/aula/freud-antes-de-ser-freud"]').click();
  await desktop.locator('[data-profile-login]').waitFor();
  assert.equal(desktop.url().includes('#/aula/freud-antes-de-ser-freud'),true,'Rota da terceira aula funciona na plataforma');
+ // A terceira aula deve aparecer dentro da mesma sala do Ateliê e destravar o próximo quadradinho.
+ await desktop.route('https://www.youtube-nocookie.com/**',route=>route.fulfill({status:200,body:'',contentType:'text/html'}));
+ await desktop.route('https://www.youtube.com/iframe_api',route=>route.fulfill({status:200,body:'',contentType:'application/javascript'}));
+ await desktop.evaluate(()=>{
+  const uid='teste-terceira-aula';
+  window.AtelieCloud={user:{uid,displayName:'Aluno Teste',email:'aluno@example.com',photoURL:null},ready:true,save:async()=>true,loadLessonProgress:async()=>null,saveLessonProgress:async()=>true,logout:async()=>true};
+  dispatchEvent(new CustomEvent('atelie-cloud-auth',{detail:{uid}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-loaded',{detail:{uid,exists:false,state:null}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-ready',{detail:{uid}}));
+ });
+ await desktop.locator('#freudLessonFrame').waitFor({state:'visible'});
+ const lesson=desktop.frameLocator('#freudLessonFrame');
+ await lesson.locator('#step-1').waitFor({state:'visible'});
+ assert.equal(await lesson.locator('#step-2').isVisible(),false,'Próxima etapa oculta antes de concluir a abertura');
+ await lesson.locator('#video-fallback').click();
+ await lesson.locator('#q1 .answer[data-index="2"]').click();
+ await lesson.locator('#q1 .verify').click();
+ await lesson.locator('#step-2').waitFor({state:'visible'});
+ assert.equal(await lesson.locator('#progress-label').innerText(),'1 de 6 momentos concluídos');
+ console.log('OK — Terceira aula abre dentro do Ateliê, com vídeo e desbloqueio progressivo.');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
 }finally{await browser.close()}
