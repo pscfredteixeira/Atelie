@@ -61,6 +61,6 @@ try{
  await desktop.locator('.course-program-module').nth(2).locator('summary').click();
  await desktop.locator('.course-program-module a[href="#/aula/freud-antes-de-ser-freud"]').click();
  await desktop.locator('[data-profile-login]').waitFor();
- assert.match(desktop.url(),/#\\/aula\\/freud-antes-de-ser-freud/,'Rota da terceira aula funciona na plataforma');
+ assert.equal(desktop.url().includes('#/aula/freud-antes-de-ser-freud'),true,'Rota da terceira aula funciona na plataforma');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
 }finally{await browser.close()}
