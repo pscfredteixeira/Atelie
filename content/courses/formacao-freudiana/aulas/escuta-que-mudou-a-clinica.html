@@ -63,6 +63,22 @@ body:not(.account-progress-ready) main.container{display:none!important}
 .account-progress-status{width:min(960px,calc(100% - 24px));margin:20px auto;
  border:1px solid #e1d5e4;background:#fffdfd;color:#594365;border-radius:12px;
  padding:13px 16px;font:600 14px/1.5 Arial,sans-serif}
+
+/* Momento 03: leitura histórica em duas partes, com progressão e quizzes próprios. */
+.biography-card+.biography-card{margin-top:24px}
+.bio-header{display:grid;grid-template-columns:minmax(0,1fr) 210px;align-items:start;gap:22px;margin:17px 0 25px}
+.bio-dates{color:#735583;text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;font-weight:800;margin-bottom:10px}
+.bio-header h2{font-size:clamp(2rem,4vw,3rem);margin:0}
+.bio-portrait{border:1px solid #e0d4de;border-radius:13px;overflow:hidden;background:#ece1e0}
+.bio-portrait img{display:block;width:100%;height:235px;object-fit:cover;object-position:center 28%;filter:grayscale(1) sepia(.17)}
+.bio-portrait figcaption{padding:8px 10px;color:#5d5062;font-size:.75rem;line-height:1.4}
+.bio-prose{max-width:740px;font-size:1.02rem;line-height:1.85;color:#433b49}
+.bio-prose h3{font-size:1.42rem;color:#483452;margin:26px 0 10px}
+.bio-prose p{margin:0 0 15px}
+.bio-quiz{margin:27px 0 0;padding:23px}
+.bio-quiz h3{line-height:1.35}
+.bio-quiz .option.correct[disabled]{opacity:1}
+@media(max-width:690px){.bio-header{grid-template-columns:1fr;gap:15px}.bio-header h2{font-size:clamp(2rem,8vw,2.65rem)}.bio-portrait img{height:235px}.bio-prose{font-size:1rem;line-height:1.8}.bio-quiz{padding:16px 13px}}
 </style>
 </head>
 <body>
@@ -82,36 +98,30 @@ body:not(.account-progress-ready) main.container{display:none!important}
   </div>
  </div>
 </section>
-<section class="step" id="stage-3" data-stage="3" hidden>
- <div class="step-card"><div class="step-inner">
-  <div class="step-head"><span class="number">MOMENTO 03 · ARQUIVO HISTÓRICO</span><span class="badge" id="badge-3">Disponível</span></div>
-  <h2>O arquivo Anna O.</h2>
-  <p class="lead">Bertha Pappenheim (1859–1936) foi tratada por Josef Breuer entre 1880 e 1882. O pseudônimo Anna O. se tornaria célebre. Para compreender o caso, precisamos separar o relato clínico, a teoria e a biografia da própria Bertha.</p>
-  <div class="dossier">
-   <div class="portraits">
-    <figure class="portrait"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pappenheim_1882.jpg?width=450" alt="Retrato histórico de Bertha Pappenheim, 1882" loading="lazy"><figcaption>Bertha Pappenheim, 1882 · Wikimedia Commons, domínio público</figcaption></figure>
-    <figure class="portrait"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jozef_Breuer%2C_1877.jpg?width=320" alt="Retrato histórico de Josef Breuer, 1877" loading="lazy"><figcaption>Josef Breuer, 1877 · Wikimedia Commons, domínio público</figcaption></figure>
-   </div>
-   <div>
-    <div class="file-tabs" role="tablist" aria-label="Documentos do arquivo histórico">
-      <button type="button" data-file="0" role="tab" aria-selected="true">01 · A paciente</button>
-      <button type="button" data-file="1" role="tab" aria-selected="false">02 · O tratamento</button>
-      <button type="button" data-file="2" role="tab" aria-selected="false">03 · O que se conta</button>
-    </div>
-    <div class="file-panel" id="file-panel" role="tabpanel" aria-live="polite"></div>
-    <p class="explorer-label" id="file-count">Explore os três documentos. Ao terminar, a questão aparecerá automaticamente.</p>
-   </div>
-  </div>
-  <div class="quiz" id="quiz-3" hidden>
-   <div class="overline">Verificação crítica</div><h3>Qual afirmação descreve corretamente o papel de Freud no caso Anna O.?</h3>
-   <div class="options">
-    <button class="option" data-quiz="3" data-choice="0">A. Freud conduziu o tratamento de Bertha Pappenheim e depois o publicou com Breuer.</button>
-    <button class="option" data-quiz="3" data-choice="1">B. Breuer tratou Bertha; Freud conheceu o caso por meio dele e participou da elaboração posterior.</button>
-    <button class="option" data-quiz="3" data-choice="2">C. Não existem registros que associem Anna O. à história da psicanálise.</button>
-   </div><div id="feedback-3" aria-live="polite"></div>
-  </div>
- </div></div>
-</section>
+<section class="step" id="stage-3" data-stage="3" hidden><article class="step-card biography-card" id="bio-anna" aria-labelledby="bio-title-anna"><div class="step-inner"><div class="step-head"><span class="number">MOMENTO 03 · BERTHA PAPPENHEIM</span><span class="badge" id="badge-3">Disponível</span></div><div class="bio-header"><div><div class="bio-dates">1859–1936 · Bertha Pappenheim</div><h2 id="bio-title-anna">Anna O.: a mulher para além do caso</h2></div><figure class="bio-portrait"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pappenheim_1882.jpg?width=600" alt="Retrato histórico de Bertha Pappenheim em vestido escuro, 1882" loading="lazy"><figcaption>Bertha Pappenheim, 1882 · Wikimedia Commons</figcaption></figure></div><div class="bio-prose"><h3>A jovem por trás do pseudônimo</h3>
+<p>Bertha Pappenheim nasceu em Viena, em 1859, em uma família judaica. Teve acesso à educação e era interessada em línguas, leitura e literatura, mas viveu em uma sociedade que impunha limites à formação e à autonomia das mulheres. Ao adoecer durante o período de enfermidade de seu pai, tornou-se paciente do médico Josef Breuer. O atendimento ocorreu entre 1880 e 1882.</p>
+<p>Breuer descreveu alterações da fala, dificuldades motoras, experiências perceptivas perturbadoras e oscilações da vida psíquica. Na linguagem médica de sua época, esse conjunto foi classificado como <em>histeria</em>. A palavra designava uma categoria histórica muito ampla; seria equivocado tratá-la como um diagnóstico clínico atual ou deduzir, apenas do relato, a origem de todos aqueles sintomas.</p>
+<h3>Quando a paciente também produz conhecimento</h3>
+<p>O relato mostra episódios nos quais a lembrança, a narrativa e a expressão de afetos passaram a ocupar lugar importante nas sessões. A expressão <em>talking cure</em>, tradicionalmente atribuída a Anna O., tornou-se conhecida por apontar para o valor da palavra nessa experiência. Não se tratava ainda da técnica da associação livre que Freud desenvolveria posteriormente.</p>
+<p>Existe, porém, uma dificuldade fundamental: <strong>o documento mais famoso sobre Anna O. foi escrito por Breuer e publicado em 1895</strong>, anos depois do tratamento. Ele não é uma transcrição neutra do que Bertha viveu. A extensão de sua melhora, a narrativa de uma suposta cura e as interpretações posteriores do caso permanecem objeto de discussão historiográfica.</p>
+<h3>Uma vida que não cabe no prontuário</h3>
+<p>Mais tarde, Bertha construiu uma trajetória como escritora, tradutora, assistente social e ativista. Na Alemanha, foi uma importante voz do movimento de mulheres judias, participou da fundação da <em>Jüdischer Frauenbund</em>, em 1904, e atuou contra a exploração de mulheres. Sua produção intelectual e seu trabalho social não são um epílogo secundário da história de Anna O.: mostram uma pessoa cuja existência excede amplamente a posição de paciente.</p>
+<p><strong>Para a leitura clínica:</strong> conhecer um caso não significa conhecer integralmente um sujeito. É preciso distinguir o relato do profissional, a vida da pessoa narrada e as teorias que foram construídas depois.</p></div><section class="quiz bio-quiz" aria-labelledby="bio-question-anna"><div class="overline">DESAFIO HISTÓRICO · 01</div><h3 id="bio-question-anna">Qual é a leitura historicamente mais cuidadosa do caso Anna O.?</h3><div class="options"><button type="button" class="option" data-bio-quiz="anna" data-bio-choice="0">A. O relato de Breuer explica de forma definitiva a vida e o destino de Bertha Pappenheim.</button><button type="button" class="option" data-bio-quiz="anna" data-bio-choice="1">B. A trajetória posterior de Bertha é irrelevante: seu papel na história da psicanálise termina quando o tratamento acaba.</button><button type="button" class="option" data-bio-quiz="anna" data-bio-choice="2">C. Devemos distinguir o relato médico, as controvérsias sobre seus resultados e a trajetória intelectual e social de Bertha.</button></div><div id="bio-feedback-anna" aria-live="polite"></div></section></div></article><article class="step-card biography-card" id="bio-breuer" aria-labelledby="bio-title-breuer" hidden><div class="step-inner"><div class="step-head"><span class="number">MOMENTO 03 · JOSEF BREUER</span><span class="badge">Estudo aprofundado</span></div><div class="bio-header"><div><div class="bio-dates">1842–1925 · Médico e pesquisador vienense</div><h2 id="bio-title-breuer">Josef Breuer: muito além de um nome ao lado de Freud</h2></div><figure class="bio-portrait"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jozef_Breuer%2C_1877.jpg?width=500" alt="Retrato histórico do médico Josef Breuer, 1877" loading="lazy"><figcaption>Josef Breuer, 1877 · Wikimedia Commons</figcaption></figure></div><div class="bio-prose"><h3>Um cientista antes de ser interlocutor de Freud</h3>
+<p>Josef Breuer nasceu em Viena em 1842. Formado em medicina, tornou-se um clínico respeitado e exerceu uma prática profissional intensa. Ao contrário do que uma história centrada exclusivamente em Freud pode sugerir, Breuer não se limitava a tratar os chamados distúrbios nervosos. Sua formação e grande parte de sua produção estavam ligadas à clínica médica e à fisiologia experimental.</p>
+<p>Em 1868, trabalhando com o fisiologista Ewald Hering, investigou mecanismos de regulação da respiração mediados pelo nervo vago. Dessa pesquisa deriva a referência ao <strong>reflexo de Hering–Breuer</strong>. Na década de 1870, estudou a função dos canais semicirculares do ouvido interno e sua relação com o equilíbrio corporal. Essas contribuições pertencem à história das ciências médicas independentemente de seu vínculo posterior com a psicanálise.</p>
+<h3>Por que o caso de Bertha o mobilizou?</h3>
+<p>Durante o acompanhamento de Bertha Pappenheim, Breuer encontrou manifestações que não eram explicadas de maneira simples pelas lesões anatômicas conhecidas. Em vez de reduzir o trabalho clínico à inspeção do corpo, procurou relacionar determinadas mudanças dos sintomas à evocação de episódios, ao estado de consciência e à expressão de sentimentos.</p>
+<p>É importante perceber a particularidade desse movimento. <strong>Breuer não estava aplicando uma teoria freudiana do inconsciente já pronta</strong>. Ele formulava hipóteses a partir de uma medicina do século XIX, de sua experiência com a paciente e dos conhecimentos de sua época. A relevância histórica do caso está nas perguntas novas que ajudou a introduzir, não na demonstração definitiva de que toda enfermidade tem uma causa psíquica.</p>
+<p>O próprio relato requer prudência. Publicado muitos anos depois do atendimento, não oferece acesso direto e completo à experiência subjetiva de Bertha, e seus resultados não devem ser apresentados como uma cura incontestável. É possível reconhecer a importância de Breuer sem transformar uma observação clínica em prova universal.</p>
+<h3>O médico mais velho e o jovem Freud</h3>
+<p>Breuer era aproximadamente catorze anos mais velho que Freud. Já possuía reputação profissional e se tornou para ele um interlocutor, um apoiador e, em certos momentos, uma fonte de ajuda material. Compartilhou o que observava com a paciente que mais tarde receberia o pseudônimo Anna O. <strong>Freud não conduziu esse tratamento</strong>: soube de seu desenvolvimento por intermédio de Breuer.</p>
+<p>Essa troca foi decisiva para o interesse freudiano pelos sintomas histéricos e pelas relações entre manifestações corporais, experiências e vida psíquica. Mas influência não é identidade: Freud retomaria e transformaria muitas questões, incorporando problemas como defesa, resistência, conflito e sexualidade em suas próprias elaborações.</p>
+<h3>Do diálogo à publicação conjunta</h3>
+<p>Em 1893, os dois publicaram a chamada <em>Comunicação preliminar</em> sobre os mecanismos psíquicos dos fenômenos histéricos. Em 1895, saiu <em>Estudos sobre a Histeria</em>. Nesse livro, Breuer assina o relato do tratamento de Anna O. e uma exposição teórica; Freud apresenta outros casos clínicos e suas próprias reflexões terapêuticas. Não se trata, portanto, de uma obra em que Breuer empresta apenas o nome a ideias alheias.</p>
+<p>Suas orientações teóricas também não eram inteiramente coincidentes. Breuer atribuía importância a certos estados especiais de consciência e à expressão afetiva; Freud desenvolveria outras hipóteses e técnicas. A caricatura de que Breuer simplesmente “não entendeu” Freud empobrece essa história. O processo foi feito de aproximações, diferenças e reelaborações, não de uma descoberta solitária e instantânea.</p>
+<h3>Uma consequência para o estudo da psicanálise</h3>
+<p>Se apresentamos Breuer apenas como “o amigo que contou a Freud o caso de Anna O.”, apagamos suas pesquisas sobre o corpo, sua experiência clínica, sua autoria e as disputas intelectuais do período. Compreender seu papel é reconhecer que a psicanálise nasceu de um campo de debates que ainda estava em formação.</p>
+<p><strong>Pergunta de leitura:</strong> como reconhecer uma contribuição inaugural sem atribuir a seu autor uma teoria que só foi produzida posteriormente? Essa distinção orienta uma história da psicanálise menos mítica e mais rigorosa.</p></div><section class="quiz bio-quiz" aria-labelledby="bio-question-breuer"><div class="overline">DESAFIO HISTÓRICO · 02</div><h3 id="bio-question-breuer">Qual descrição faz justiça à contribuição histórica de Josef Breuer?</h3><div class="options"><button type="button" class="option" data-bio-quiz="breuer" data-bio-choice="0">A. Breuer formulou sozinho toda a teoria psicanalítica; Freud apenas a divulgou.</button><button type="button" class="option" data-bio-quiz="breuer" data-bio-choice="1">B. Foi médico e fisiologista reconhecido, conduziu o tratamento de Bertha e participou da formulação inicial de questões que Freud desenvolveria de outros modos.</button><button type="button" class="option" data-bio-quiz="breuer" data-bio-choice="2">C. Breuer não teve participação clínica ou teórica própria; seu nome aparece em 1895 apenas pela amizade com Freud.</button></div><div id="bio-feedback-breuer" aria-live="polite"></div></section></div></article></section>
 <section class="step" id="stage-4" data-stage="4" hidden>
  <div class="step-card"><div class="step-inner">
   <div class="step-head"><span class="number">MOMENTO 04 · CAMINHOS DA TÉCNICA</span><span class="badge" id="badge-4">Disponível</span></div>
@@ -197,6 +207,9 @@ body:not(.account-progress-ready) main.container{display:none!important}
   <li>Breuer, Josef; Freud, Sigmund. <em>Estudos sobre a Histeria</em> (1895).</li>
   <li>Breuer e Freud. “Sobre o mecanismo psíquico dos fenômenos histéricos: comunicação preliminar” (1893).</li>
   <li><a href="https://www.loc.gov/exhibits/freud/freud02.html" rel="noopener noreferrer" target="_blank">Library of Congress · Sigmund Freud: Conflict &amp; Culture</a> — material sobre Breuer, Anna O. e a passagem da hipnose à associação livre.</li>
+  <li><a href="https://www.deutsche-biographie.de/sfz5841.html" target="_blank" rel="noopener noreferrer">Deutsche Biographie · Josef Breuer</a> — pesquisa fisiológica e trajetória médica.</li>
+  <li><a href="https://www.posenlibrary.com/author/bertha-pappenheim" target="_blank" rel="noopener noreferrer">Posen Library · Bertha Pappenheim</a> — biografia e atuação social.</li>
+  <li><a href="https://pubmed.ncbi.nlm.nih.gov/11624161/" target="_blank" rel="noopener noreferrer">Kimball, 2000 · From Anna O. to Bertha Pappenheim</a> — análise histórica da vida de Bertha.</li>
   <li><a href="https://commons.wikimedia.org/wiki/File:Pappenheim_1882.jpg" target="_blank" rel="noopener noreferrer">Retrato de Bertha Pappenheim</a> e <a href="https://commons.wikimedia.org/wiki/File:Jozef_Breuer,_1877.jpg" target="_blank" rel="noopener noreferrer">retrato de Josef Breuer</a> — Wikimedia Commons, domínio público.</li>
  </ul>
  <p class="tiny">A expressão “histeria” é apresentada como categoria histórica, não como diagnóstico atual. Há controvérsias sobre o curso clínico de Anna O. e sobre versões retrospectivas de sua história. O tratamento foi conduzido por Breuer, não por Freud.</p>
@@ -311,27 +324,64 @@ window.addEventListener('message',event=>{
   }
  }
 });
-const documents=[
- {title:'Bertha: mais do que um caso',body:'Bertha Pappenheim (1859–1936) não se resume ao pseudônimo Anna O. Mais tarde, tornou-se escritora, assistente social e ativista pelos direitos das mulheres. Seu percurso ajuda a resistir à redução de sua biografia ao prontuário médico.'},
- {title:'O encontro com Josef Breuer',body:'Breuer atendeu Bertha entre 1880 e 1882. Em sua narrativa, relacionou episódios de fala, lembrança e expressão afetiva a alterações nos sintomas. Essa observação alimentou o método catártico, que não era ainda a associação livre freudiana.'},
- {title:'O que o relato não resolve',body:'O caso foi publicado em 1895, anos depois do atendimento. Há controvérsias sobre a evolução do tratamento e sobre uma alegada cura. Freud não tratou Bertha pessoalmente; seu contato com a história ocorreu por intermédio de Breuer.'}
-];
-function selectFile(i){
- if(!st.files.includes(i))st.files.push(i);
- $$('[data-file]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.file)===i)));
- $('#file-panel').innerHTML='<h3>'+documents[i].title+'</h3><p>'+documents[i].body+'</p>';
- $('#file-count').textContent=st.files.length+' de 3 documentos explorados';
- $('#quiz-3').hidden=st.files.length<3;
- updateQuiz(3);save();reportHeight();
+
+const BIO_QUIZZES={
+ anna:{correct:2,explain:[
+  'A. Incorreta: o relato foi escrito pelo médico e publicado anos depois, não sendo uma biografia definitiva de Bertha.',
+  'B. Incorreta: a vida como escritora, assistente social e ativista mostra o quanto Bertha excede o papel de paciente.',
+  'C. Correta: a leitura exige distinguir o documento clínico, seus limites e a história de vida da pessoa atendida.'
+ ]},
+ breuer:{correct:1,explain:[
+  'A. Incorreta: as teorias de Freud sobre defesa, resistência e sexualidade não estavam prontas no trabalho de Breuer.',
+  'B. Correta: Breuer teve produção científica própria, tratou Bertha, dialogou com Freud e foi coautor de Estudos sobre a Histeria.',
+  'C. Incorreta: a autoria clínica e teórica de Breuer está documentada no livro de 1895.'
+ ]}
+};
+function bioAnswers(){
+ const v=st.choices['3'];
+ return v&&typeof v==='object'&&!Array.isArray(v)?v:{};
 }
-$$('[data-file]').forEach(b=>b.addEventListener('click',()=>selectFile(Number(b.dataset.file))));
+function bioCorrect(which){return bioAnswers()[which]===BIO_QUIZZES[which].correct;}
+function updateBioQuizzes(){
+ // Quem concluiu a versão antiga não perde as etapas desbloqueadas.
+ $('#bio-breuer').hidden=!(bioCorrect('anna')||st.passed.includes(3)||st.done.includes(3));
+ ['anna','breuer'].forEach(which=>{
+  const q=BIO_QUIZZES[which],chosen=bioAnswers()[which],passed=bioCorrect(which);
+  $$('[data-bio-quiz="'+which+'"]').forEach(b=>{
+   const idx=Number(b.dataset.bioChoice);
+   b.classList.toggle('selected',chosen===idx);
+   b.classList.toggle('correct',passed&&idx===q.correct);
+   b.classList.toggle('incorrect',!passed&&chosen===idx);
+   b.disabled=passed;
+  });
+  const feedback=$('#bio-feedback-'+which);
+  if(Number.isInteger(chosen)&&chosen>=0&&chosen<=2){
+   feedback.className='feedback'+(passed?'':' error');
+   feedback.innerHTML='<strong>'+(passed?(which==='anna'?'Resposta correta. A história de Breuer foi liberada.':'Resposta correta. Os dois desafios históricos foram resolvidos.'):'Essa alternativa não é a mais adequada. Examine todas as explicações e tente novamente.')+'</strong><div class="explained">'+q.explain.map(v=>'<p>'+v+'</p>').join('')+'</div>';
+  }else{feedback.className='';feedback.textContent='';}
+ });
+}
+$$('[data-bio-quiz]').forEach(b=>b.addEventListener('click',()=>{
+ if(!accountReady)return;
+ const which=b.dataset.bioQuiz;
+ if(!BIO_QUIZZES[which]||bioCorrect(which))return;
+ const wasHidden=$('#bio-breuer').hidden;
+ st.choices['3']={...bioAnswers(),[which]:Number(b.dataset.bioChoice)};
+ if(bioCorrect('anna')&&bioCorrect('breuer')&&!st.passed.includes(3))st.passed.push(3);
+ updateBioQuizzes();
+ save();
+ if(st.passed.includes(3))autoAdvanceForQuiz(3);
+ reportHeight();
+ if(which==='anna'&&bioCorrect('anna')&&wasHidden)setTimeout(()=>$('#bio-breuer').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}),180);
+}));
+updateBioQuizzes();
+
 const quizzes={
- 3:{correct:1,explain:['A. Incorreta: Freud não conduziu o tratamento de Bertha Pappenheim.','B. Correta: o caso foi atendido por Breuer e discutido depois com Freud.','C. Incorreta: o caso ocupa lugar importante nos Estudos sobre a Histeria (1895), embora sua narrativa exija leitura crítica.']},
  5:{correct:1,explain:['A. Incorreta: o mesmo sintoma não autoriza significados universais ou interpretações prontas.','B. Correta: as hipóteses devem ser construídas historicamente e articuladas à singularidade do caso.','C. Incorreta: as formulações de 1895 antecedem e diferem das reformulações metapsicológicas de 1915 e 1923.']},
  6:{correct:2,explain:['A. Incorreta: uma fala isolada não demonstra a existência de recalque nem revela seu conteúdo.','B. Incorreta: não saber explicar a causa não torna o sofrimento menos legítimo.','C. Correta: a escuta parte de perguntas e do contexto, sem descartar avaliação médica ou atribuir um sentido automático.']}
 };
 function quizReady(n){
- return n===3?st.files.length===3:n===5?st.concepts.length===4:true;
+ return n===5?st.concepts.length===4:true;
 }
 function updateQuiz(n){
  const passed=st.passed.includes(n),chosen=st.choices[n],correct=quizzes[n].correct;
@@ -342,7 +392,6 @@ function updateQuiz(n){
   b.classList.toggle('incorrect',!passed&&Number.isInteger(chosen)&&chosen===i&&chosen!==correct);
   b.disabled=passed;
  });
- if(n===3)$('#quiz-3').hidden=!quizReady(3);
  if(n===5)$('#quiz-5').hidden=!quizReady(5);
  const feedback=$('#feedback-'+n);
  if(passed){
@@ -351,13 +400,13 @@ function updateQuiz(n){
  }
 }
 function autoAdvanceForQuiz(n){
- if(!st.videoWatched||!st.passed.includes(n)||!quizReady(n))return;
+ if(!st.videoWatched||!st.passed.includes(n)||(n!==3&&!quizReady(n)))return;
  if(n===3&&!st.done.includes(2))return;
  if(n===5&&!st.done.includes(4))return;
  if(n===6&&!st.done.includes(5))return;
- if(!st.done.includes(n))complete(n,false);
+ if(!st.done.includes(n))complete(n,n===3);
 }
-[3,5,6].forEach(n=>{
+[5,6].forEach(n=>{
  $$('[data-quiz="'+n+'"]').forEach(b=>b.addEventListener('click',()=>{
   if(st.passed.includes(n)||!quizReady(n))return;
   const choice=Number(b.dataset.choice),good=choice===quizzes[n].correct;
@@ -415,10 +464,9 @@ $$('[data-concept]').forEach(b=>{
 $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
 $('#reflection').value=st.reflection||'';
 $('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Salvando reflexão na sua conta Google...';reportHeight()});
-selectFile(0);
 // Migração de quem acertou os quizzes, mas ficou preso em botões antigos.
 if(st.videoWatched){
- if(st.passed.includes(3)&&st.files.length===3&&st.done.includes(2))autoAdvanceForQuiz(3);
+ if(st.passed.includes(3)&&st.done.includes(2))autoAdvanceForQuiz(3);
  if(st.times.length===4&&st.done.includes(3)&&!st.done.includes(4))complete(4,false);
  if(st.passed.includes(5)&&st.concepts.length===4&&st.done.includes(4))autoAdvanceForQuiz(5);
  if(st.passed.includes(6)&&st.done.includes(5))autoAdvanceForQuiz(6);
@@ -454,10 +502,10 @@ function applyAccountProgress(value){
  $$('[data-concept]').forEach(b=>b.classList.toggle('seen',st.concepts.includes(Number(b.dataset.concept))));
  $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
  $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
- $('#quiz-3').hidden=st.files.length<3;
+ updateBioQuizzes();
  $('#quiz-5').hidden=st.concepts.length<4;
- [3,5,6].forEach(updateQuiz);
- selectFile(st.files[st.files.length-1]??0);
+ [5,6].forEach(updateQuiz);
+ if(st.passed.includes(3)&&st.done.includes(2)&&!st.done.includes(3))autoAdvanceForQuiz(3);
  refresh();
  requestRoomProgress();
  hydrating=false;
