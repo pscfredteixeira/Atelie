@@ -166,7 +166,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
   ' DE 11</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v=biografias-breuer-anna-20261110-v1" title="Aula interativa '+esc(l.title)+
+  '?v=linha-do-tempo-sanfona-20261110-v1" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
   '<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
