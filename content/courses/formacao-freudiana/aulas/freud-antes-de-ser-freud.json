@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-freud-antes-de-ser-freud",
+  "courseId": "curso-formacao-freudiana",
+  "moduleId": "modulo-formacao-freudiana-freud-antes-de-ser-freud",
+  "slug": "freud-antes-de-ser-freud",
+  "revision": 1,
+  "status": "published",
+  "title": "Freud antes de ser Freud",
+  "summary": "Leitura ilustrada após o vídeo: a herança da neurologia, o Projeto de 1895, o nascimento do nome psicanálise em 1896 e A interpretação dos sonhos.",
+  "estimatedMinutes": 20,
+  "objectives": [
+    "Analisar a passagem das investigações clínicas à elaboração de uma teoria do funcionamento psíquico.",
+    "Situar o Projeto para uma Psicologia Científica de 1895 no percurso de Freud.",
+    "Reconhecer o uso do termo psicanálise em 1896 como marco de um campo ainda em construção.",
+    "Relacionar A interpretação dos sonhos às perguntas que deram origem à primeira tópica."
+  ],
+  "metadata": {
+    "interactivePage": "./freud-antes-de-ser-freud.html",
+    "stagesAvailable": 1,
+    "videoUrl": "https://youtu.be/RPcqYZkYTIE",
+    "videoIsPlaceholder": true,
+    "source": "Leitura complementar aprovada pelo autor, publicada a partir de prévia HTML.",
+    "narration": "Vídeo anterior usado provisoriamente; substituir pelo novo vídeo quando estiver disponível."
+  },
+  "blocks": [],
+  "references": [
+    {
+      "id": "freud1895projeto",
+      "author": "Sigmund Freud",
+      "title": "Projeto para uma Psicologia Científica",
+      "year": 1895
+    },
+    {
+      "id": "freud1900sonhos",
+      "author": "Sigmund Freud",
+      "title": "A interpretação dos sonhos",
+      "year": 1900
+    },
+    {
+      "id": "loc-freud-chronology",
+      "author": "Library of Congress",
+      "title": "Sigmund Freud Papers — Timeline"
+    }
+  ]
+}
