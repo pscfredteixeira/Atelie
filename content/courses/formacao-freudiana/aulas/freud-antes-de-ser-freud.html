@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4efe9">
   <title>Freud antes de ser Freud | Ateliê de Psicanálise</title>
-  <meta name="description" content="Aula da Formação Freudiana sobre a trajetória científica de Freud, o projeto de 1895 e o nascimento da psicanálise. Contém vídeo de referência provisório.">
+  <meta name="description" content="Aula da Formação Freudiana sobre a trajetória científica de Freud, o projeto de 1895 e o nascimento da psicanálise. Inclui vídeo de abertura gravado pelo professor.">
   <style>
     :root{--bg:#f5f1ec;--paper:#fffefa;--ink:#282335;--plum:#644b7c;--plumdeep:#413153;--muted:#6a626e;--line:#e6dfe5;--soft:#f1eaf5;--violet:#a58bbd;--gold:#ac8e66;--serif:Georgia,'Times New Roman',serif}
     *,*:before,*:after{box-sizing:border-box}
@@ -84,9 +84,9 @@
     <section class="wrap hero"><div class="eyebrow">Formação Freudiana · Uma nova etapa</div><h1>Freud antes de ser Freud</h1><p class="hero-lead">O jovem médico, suas perguntas e a construção de um novo campo de investigação.</p><div class="meta"><span>Vídeo de abertura</span><span>Leitura complementar</span><span>Sem exercícios nesta versão</span></div></section>
     <section class="wrap video-container" aria-labelledby="video-label">
       <div class="player" id="player">
-        <div class="poster" id="poster"><div class="poster-art"></div><div class="poster-word"><small>FORMAÇÃO FREUDIANA</small>Da escuta<br>à teoria</div><div class="player-controls"><span>Vídeo provisório</span><button type="button" class="play" id="play-btn" aria-label="Reproduzir vídeo de referência temporário"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4v16l13-8z"/></svg> Assistir ao vídeo</button></div></div>
+        <div class="poster" id="poster"><div class="poster-art"></div><div class="poster-word"><small>FORMAÇÃO FREUDIANA</small>Da escuta<br>à teoria</div><div class="player-controls"><span>Vídeo de abertura</span><button type="button" class="play" id="play-btn" aria-label="Reproduzir vídeo de abertura: Freud antes de ser Freud"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4v16l13-8z"/></svg> Assistir ao vídeo</button></div></div>
       </div>
-      <div class="video-note"><div id="video-label"><strong>Vídeo temporário.</strong> Enquanto a nova gravação não é publicada, esta prévia utiliza o vídeo de <em>A escuta que mudou a clínica</em>.</div><span class="temp">Será substituído</span></div>
+      <div class="video-note"><div id="video-label"><strong>Vídeo de abertura.</strong> Assista à apresentação de <em>Freud antes de ser Freud</em> e continue a leitura histórica logo abaixo.</div><span class="temp">Vídeo oficial</span></div>
     </section>
     <article class="wrap article" aria-labelledby="reading-title">
       <header class="article-header"><div class="eyebrow">Leitura complementar · Aprofundamento</div><h2 id="reading-title">Quando a clínica exige uma teoria</h2><p class="sub">Como Freud passou da investigação dos sintomas à tentativa de explicar o funcionamento da vida psíquica?</p></header>
@@ -104,15 +104,15 @@
   </main>
   <footer class="wrap">Ateliê de Psicanálise · Formação Freudiana · Aula 03</footer>
   <script>
-    // Para substituir o vídeo posteriormente, troque somente o ID abaixo.
-    const VIDEO_PROVISORIO_ID = 'RPcqYZkYTIE';
+    // Vídeo oficial da aula.
+    const VIDEO_ID = '2vYTFwAVh0E';
     document.getElementById('play-btn').addEventListener('click',()=>{
       const iframe=document.createElement('iframe');
-      iframe.title='Vídeo temporário: A escuta que mudou a clínica';
+      iframe.title='Vídeo de abertura: Freud antes de ser Freud';
       iframe.allow='accelerometer; autoplay; encrypted-media; picture-in-picture; web-share';
       iframe.allowFullscreen=true;
       iframe.referrerPolicy='strict-origin-when-cross-origin';
-      iframe.src='https://www.youtube-nocookie.com/embed/'+VIDEO_PROVISORIO_ID+'?autoplay=1&playsinline=1&rel=0';
+      iframe.src='https://www.youtube-nocookie.com/embed/'+VIDEO_ID+'?autoplay=1&playsinline=1&rel=0';
       document.getElementById('player').appendChild(iframe);
       document.getElementById('poster').classList.add('hidden');
     });
