@@ -79,6 +79,30 @@ body:not(.account-progress-ready) main.container{display:none!important}
 .bio-quiz h3{line-height:1.35}
 .bio-quiz .option.correct[disabled]{opacity:1}
 @media(max-width:690px){.bio-header{grid-template-columns:1fr;gap:15px}.bio-header h2{font-size:clamp(2rem,8vw,2.65rem)}.bio-portrait img{height:235px}.bio-prose{font-size:1rem;line-height:1.8}.bio-quiz{padding:16px 13px}}
+
+/* Sanfona histórica — abre diretamente abaixo da data escolhida */
+.chronology{display:grid;grid-template-columns:1fr;gap:13px;margin:20px 0 14px}
+.time-entry{border:1px solid #ddd0df;border-radius:17px;background:#fbf8fb;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.time-entry.seen{border-color:#aecdb9}.time-entry.open{border-color:#aa90b9;background:#fffafd;box-shadow:0 12px 27px rgba(70,43,86,.08)}
+.time-card{display:grid;grid-template-columns:minmax(105px,135px) minmax(0,1fr) auto;align-items:center;gap:15px;width:100%;min-height:92px;text-align:left;border:0;background:transparent;padding:19px 20px;color:var(--ink)}
+.time-card:hover{background:#f3edf7}.time-card:focus-visible{outline:3px solid #997bae;outline-offset:-4px;border-radius:14px}
+.time-card .time-year{font:400 clamp(1.62rem,3vw,2.12rem)/1.16 Georgia,serif;color:var(--plum)}
+.time-card .time-title{font-size:1.03rem;font-weight:730;line-height:1.42;color:#3c3344}
+.time-action{display:flex;align-items:center;gap:10px;color:#6b4c7e;font-size:.81rem;font-weight:760;white-space:nowrap}
+.time-chevron{display:block;width:11px;height:11px;border:solid currentColor;border-width:0 2px 2px 0;transform:translateY(-3px) rotate(45deg);transition:transform .18s}
+.time-card[aria-expanded="true"] .time-chevron{transform:translateY(3px) rotate(225deg)}
+.time-panel{padding:22px clamp(18px,4vw,29px) 23px;border-top:1px solid #e5dbe8;background:#fffdfd;line-height:1.76;color:#413948}
+.time-panel h3{font-size:1.37rem;color:#483252;margin:0 0 13px}.time-panel p{margin:0 0 15px}.time-panel p:last-child{margin-bottom:0}
+.time-panel .time-note{background:#f3edf7;border-left:3px solid #aa8cba;border-radius:0 11px 11px 0;padding:12px 15px;margin-top:17px}
+.timeline-count{font-weight:750;color:#654775}
+@media(max-width:690px){
+.time-card{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;gap:6px 9px;padding:18px 16px;min-height:102px}
+.time-card .time-year{grid-column:1;grid-row:1;font-size:1.9rem}.time-card .time-title{grid-column:1;grid-row:2;font-size:.97rem}
+.time-action{grid-column:2;grid-row:1/span 2;align-self:center;gap:7px;font-size:.79rem}
+.time-panel{padding:20px 17px;font-size:.96rem}.time-panel h3{font-size:1.25rem}.time-panel .time-note{padding:11px 12px}
+}
+@media(prefers-reduced-motion:reduce){.time-chevron{transition:none}}
+
 </style>
 </head>
 <body>
@@ -127,14 +151,46 @@ body:not(.account-progress-ready) main.container{display:none!important}
   <div class="step-head"><span class="number">MOMENTO 04 · CAMINHOS DA TÉCNICA</span><span class="badge" id="badge-4">Disponível</span></div>
   <h2>Da hipnose à escuta</h2>
   <p class="lead">A psicanálise não surgiu pronta. Entre as experiências com hipnose, os relatos de sintomas, o método catártico e a associação livre, mudaram as perguntas dirigidas ao sofrimento. Explore os marcos deste percurso — sem confundi-los com uma sequência linear e sem controvérsias.</p>
-  <div class="chronology" id="chronology">
-   <button class="time-card" data-time="0"><strong>1880–82</strong><span>Breuer atende Bertha Pappenheim</span></button>
-   <button class="time-card" data-time="1"><strong>1885–86</strong><span>Freud estuda com Charcot, em Paris</span></button>
-   <button class="time-card" data-time="2"><strong>1893</strong><span>Breuer e Freud publicam a comunicação preliminar</span></button>
-   <button class="time-card" data-time="3"><strong>1895</strong><span>Saem os <em>Estudos sobre a Histeria</em></span></button>
-  </div>
-  <div class="selected-time" id="time-detail" aria-live="polite">Escolha uma data para conhecer seu significado histórico.</div>
-  <p class="explorer-label" id="time-count">0 de 4 marcos explorados</p>
+  <p class="explorer-label">Toque em cada marco para ler a explicação logo abaixo. Toque novamente para recolher.</p>
+  <div class="chronology" id="chronology"><article class="time-entry" data-time-entry="0">
+ <button type="button" class="time-card" data-time="0" aria-expanded="false" aria-controls="time-panel-0">
+  <strong class="time-year">1880–82</strong><span class="time-title">Breuer atende Bertha Pappenheim</span>
+  <span class="time-action" aria-hidden="true"><span class="time-action-label">Ler mais</span><span class="time-chevron"></span></span>
+ </button>
+ <div class="time-panel" id="time-panel-0" hidden><h3>O caso de Anna O. e o surgimento de uma questão clínica</h3><p>Entre 1880 e 1882, o médico <strong>Josef Breuer</strong> acompanhou Bertha Pappenheim, posteriormente conhecida pelo pseudônimo <em>Anna O.</em>. Seu relato descreve alterações da linguagem, sintomas motores e outras manifestações então classificadas como histéricas. Essa designação pertence à medicina do século XIX e não deve ser confundida com um diagnóstico contemporâneo.</p>
+<p>Breuer observou que, em certas circunstâncias, narrar lembranças e expressar afetos pareciam relacionar-se a mudanças nos sintomas. A fala da paciente ganhou, assim, importância para a investigação clínica. Essa experiência, entretanto, <strong>não era ainda a associação livre freudiana</strong>.</p>
+<p class="time-note"><strong>Por que é importante?</strong> Freud não tratou Bertha: conheceu o caso por intermédio de Breuer. Publicado em 1895, o relato não é uma transcrição neutra das sessões, e a ideia de uma cura definitiva permanece historicamente controversa.</p></div>
+</article>
+<article class="time-entry" data-time-entry="1">
+ <button type="button" class="time-card" data-time="1" aria-expanded="false" aria-controls="time-panel-1">
+  <strong class="time-year">1885–86</strong><span class="time-title">Freud estuda com Charcot, em Paris</span>
+  <span class="time-action" aria-hidden="true"><span class="time-action-label">Ler mais</span><span class="time-chevron"></span></span>
+ </button>
+ <div class="time-panel" id="time-panel-1" hidden><h3>A neurologia e as perguntas que Freud levou de Paris</h3><p>Entre 1885 e 1886, Freud estudou em Paris com <strong>Jean-Martin Charcot</strong>, no hospital da Salpêtrière. O trabalho do neurologista com a histeria e as demonstrações envolvendo a hipnose exerceram forte influência sobre os interesses clínicos do jovem médico vienense.</p>
+<p>A experiência contribuiu para que Freud considerasse manifestações de sofrimento que não se explicavam de maneira imediata por uma lesão anatômica identificável. Os debates sobre hipnose, sugestão e sintomas ampliaram suas perguntas sobre as relações entre corpo e vida psíquica.</p>
+<p class="time-note"><strong>Por que é importante?</strong> Charcot não fundou a psicanálise, nem Freud regressou de Paris com uma técnica analítica pronta. Foi uma etapa de formação que ajudou a transformar suas investigações posteriores.</p></div>
+</article>
+<article class="time-entry" data-time-entry="2">
+ <button type="button" class="time-card" data-time="2" aria-expanded="false" aria-controls="time-panel-2">
+  <strong class="time-year">1893</strong><span class="time-title">Breuer e Freud publicam a Comunicação preliminar</span>
+  <span class="time-action" aria-hidden="true"><span class="time-action-label">Ler mais</span><span class="time-chevron"></span></span>
+ </button>
+ <div class="time-panel" id="time-panel-2" hidden><h3>Uma primeira formulação conjunta sobre sintomas e vida psíquica</h3><p>Breuer e Freud publicaram, em 1893, a chamada <em>Comunicação preliminar</em>, sobre os mecanismos psíquicos dos fenômenos histéricos. Os autores investigaram possíveis relações entre experiências, lembranças, expressão afetiva e manifestações sintomáticas.</p>
+<p>O trabalho propunha considerar a história vivida pelos pacientes como parte da investigação clínica. Seu valor reside em abrir novas perguntas, mas suas hipóteses dependiam dos pressupostos médicos e psicológicos daquele momento e não podem ser tratadas como explicações universais.</p>
+<p>Breuer conferia importância especial a determinados estados de consciência; Freud, posteriormente, aprofundaria problemas como defesa, conflito e resistência. A colaboração entre os dois <strong>não significava concordância teórica completa</strong>.</p>
+<p class="time-note"><strong>Por que é importante?</strong> O texto antecipa perguntas centrais para a psicanálise, mas não apresenta uma teoria psicanalítica já concluída.</p></div>
+</article>
+<article class="time-entry" data-time-entry="3">
+ <button type="button" class="time-card" data-time="3" aria-expanded="false" aria-controls="time-panel-3">
+  <strong class="time-year">1895</strong><span class="time-title">Publicação de Estudos sobre a Histeria</span>
+  <span class="time-action" aria-hidden="true"><span class="time-action-label">Ler mais</span><span class="time-chevron"></span></span>
+ </button>
+ <div class="time-panel" id="time-panel-3" hidden><h3>Um livro compartilhado e uma clínica ainda em transformação</h3><p>Em 1895, <strong>Josef Breuer e Sigmund Freud</strong> publicaram <em>Estudos sobre a Histeria</em>. A obra reúne casos clínicos e reflexões sobre sintomas, memória, vida afetiva e possibilidades de tratamento. É uma fonte fundamental para estudar a origem histórica de questões psicanalíticas.</p>
+<p>Breuer assina o relato de Anna O. e apresenta discussões teóricas, enquanto Freud descreve outros atendimentos e dificuldades encontradas em sua prática. O livro permite observar tanto a colaboração quanto as diferenças entre os autores.</p>
+<p>As técnicas e os conceitos ali empregados não são idênticos aos que Freud formularia nas décadas seguintes. Associação livre, recalque, transferência e teoria do inconsciente passariam por importantes reelaborações.</p>
+<p class="time-note"><strong>Por que é importante?</strong> Mais do que uma descoberta pronta, o livro documenta uma clínica em construção, com hipóteses, impasses e mudanças de direção.</p></div>
+</article></div>
+  <p class="explorer-label timeline-count" id="time-count" role="status" aria-live="polite">0 de 4 marcos explorados</p>
   <div class="takeaway"><strong>Uma distinção indispensável:</strong> o método catártico e a associação livre não são a mesma técnica. A escuta analítica se modifica ao longo do percurso freudiano; ela não pode ser atribuída, já acabada, ao tratamento de Anna O.</div>
  </div></div>
 </section>
@@ -423,26 +479,35 @@ function autoAdvanceForQuiz(n){
  }));
  updateQuiz(n);
 });
-const times=[
- 'Breuer acompanha o caso de Bertha Pappenheim. O tratamento será publicado apenas em 1895, com interpretações posteriores.',
- 'Freud estuda com Jean-Martin Charcot no hospital da Salpêtrière, em Paris. O encontro com a neurologia e as pesquisas sobre histeria contribui para seus interesses clínicos.',
- 'Breuer e Freud publicam a comunicação preliminar sobre mecanismos psíquicos de fenômenos histéricos, uma formulação ainda anterior à psicanálise plenamente desenvolvida.',
- 'Estudos sobre a Histeria reúne o caso Anna O. narrado por Breuer e casos relatados por Freud. A publicação registra hipóteses em elaboração, não uma teoria final.'
-];
-$$('[data-time]').forEach(b=>{
+
+let openTime=null;
+function updateChronology(){
+ $$('[data-time]').forEach(b=>{
+  const i=Number(b.dataset.time),expanded=openTime===i;
+  b.setAttribute('aria-expanded',String(expanded));
+  b.classList.toggle('seen',st.times.includes(i));
+  b.querySelector('.time-action-label').textContent=expanded?'Recolher':'Ler mais';
+  b.closest('.time-entry').classList.toggle('seen',st.times.includes(i));
+  b.closest('.time-entry').classList.toggle('open',expanded);
+  $('#time-panel-'+i).hidden=!expanded;
+ });
+ $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
+}
+$$('[data-time]').forEach(b=>b.addEventListener('click',()=>{
+ if(!accountReady)return;
  const i=Number(b.dataset.time);
- b.addEventListener('click',()=>{
-  if(!st.times.includes(i))st.times.push(i);
-  b.classList.add('seen');
-  $('#time-detail').textContent=times[i];
-  $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
+ openTime=openTime===i?null:i;
+ const firstVisit=openTime===i&&!st.times.includes(i);
+ if(firstVisit)st.times.push(i);
+ updateChronology();
+ if(firstVisit){
   save();
   if(st.times.length===4&&st.done.includes(3)&&!st.done.includes(4))complete(4,false);
-  reportHeight();
- });
- if(st.times.includes(i))b.classList.add('seen');
-});
-$('#time-count').textContent=st.times.length+' de 4 marcos explorados';
+ }
+ reportHeight();
+}));
+updateChronology();
+
 const concepts=[
  {title:'Sintoma',body:'Os autores investigam se certas manifestações, em determinados casos, podem ser relacionadas a conflitos e experiências narradas. Sintoma não é uma palavra com significado único: depende do caso, do contexto e das limitações do conhecimento disponível.'},
  {title:'Memória',body:'Recordações e lacunas de lembrança entram na investigação clínica. Isso não significa que toda dificuldade de recordar seja recalque, nem que a memória reproduza acontecimentos de modo literal ou infalível.'},
@@ -498,7 +563,7 @@ function applyAccountProgress(value){
  document.body.classList.add('account-progress-ready');
  $('#cloudLessonStatus').textContent='Progresso vinculado à sua conta Google.';
  $('#reflection').value=st.reflection;
- $$('[data-time]').forEach(b=>b.classList.toggle('seen',st.times.includes(Number(b.dataset.time))));
+ updateChronology();
  $$('[data-concept]').forEach(b=>b.classList.toggle('seen',st.concepts.includes(Number(b.dataset.concept))));
  $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
  $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
