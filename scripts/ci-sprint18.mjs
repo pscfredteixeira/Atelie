@@ -11,7 +11,7 @@ try{
  await page.locator('.course-card').first().waitFor();
  assert.equal(await page.locator('.course-card').count(),1);
  await page.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
- assert.equal(await page.locator('.course-program-module').count(),2);
+ assert.equal(await page.locator('.course-program-module').count(),3);
  await page.goto(base+'#/aula/escuta-que-mudou-a-clinica',{waitUntil:'domcontentloaded'});
  await page.locator('[data-profile-login]').waitFor();
  assert.equal(await page.locator('#freudLessonFrame').count(),0);
