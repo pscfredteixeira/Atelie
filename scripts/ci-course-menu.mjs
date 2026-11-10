@@ -19,7 +19,7 @@ try{
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),1,'Somente Formação Freudiana é publicada');
  assert.equal(await mobile.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
  assert.equal(await mobile.locator('.course-drawer-module').count(),3,'Três aulas reais no menu');
- assert.equal(await mobile.locator('.course-drawer-module-label').first().innerText(),'Aula 01','Menu deve chamar aula, não módulo');
+ assert.equal(await mobile.locator('.course-drawer-module-label').first().innerText(),'AULA 01','Menu deve chamar aula, não módulo');
  assert.equal(await mobile.locator('.course-drawer-module').first().getAttribute('open'),'','Primeiro módulo expandido');
  assert.equal(await mobile.locator('.course-drawer-module').first().locator('a[href="#/aula/escuta-que-mudou-a-clinica"]').count(),1);
  assert.equal(await mobile.locator('#sidebarClose').isVisible(),true);
