@@ -175,6 +175,33 @@ body{overflow-x:hidden}.shell{max-width:900px}
 .banner-note{font-size:.83rem;color:#776a7d;margin-top:12px}
 @media(max-width:680px){.split,.split.reverse{grid-template-columns:1fr;gap:12px}.archive{max-width:320px;margin:7px auto 20px;width:100%}.archive-image{height:245px}.fact-grid{grid-template-columns:1fr}.fact-btn{min-height:65px}.year-card{gap:13px}.mast{flex-wrap:wrap}.external-nav{width:100%}.panel-inner{padding:19px!important}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.achievement{position:relative;overflow:hidden;margin:32px 0 26px;padding:clamp(27px,5vw,55px);border:1px solid #d6c3a2;border-radius:26px;background:radial-gradient(circle at 83% 8%,#e8d8eb 0,transparent 42%),linear-gradient(140deg,#fffdf9 0%,#f5edf8 58%,#f8f1e8 100%);box-shadow:0 22px 54px rgba(69,47,87,.12);scroll-margin-top:30px}
+    .achievement:before{content:"";position:absolute;inset:10px;border:1px solid rgba(194,163,106,.42);border-radius:19px;pointer-events:none}
+    .achievement:after{content:"✧";position:absolute;right:30px;top:19px;color:#b99c68;font-size:27px;pointer-events:none}
+    .achievement-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,310px);align-items:center;gap:clamp(20px,4vw,45px);position:relative;z-index:1}
+    .achievement-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7b618a;font-size:.72rem;letter-spacing:.18em;font-weight:850;text-transform:uppercase}
+    .achievement-eyebrow:before{content:"✦";color:#b79a65;font-size:15px}
+    .achievement h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,4.5vw,3.15rem);line-height:1.14;color:#342641;margin:12px 0 14px}
+    .achievement-message{color:#55495e;font-size:clamp(.99rem,1.8vw,1.1rem);line-height:1.75;max-width:520px;margin:0 0 18px}
+    .achievement-status{display:flex;align-items:center;gap:9px;font-weight:760;color:#5b4670;font-size:.9rem;margin:0 0 23px}
+    .achievement-status:before{content:"✓";display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:50%;background:#e8f0e6;color:#2c684d}
+    .achievement-medal{margin:0;display:grid;justify-items:center;gap:7px}
+    .achievement-medal img{display:block;width:min(100%,295px);height:auto;filter:drop-shadow(0 20px 19px rgba(69,45,82,.20))}
+    .achievement-medal figcaption{font-size:.74rem;letter-spacing:.10em;text-transform:uppercase;font-weight:750;color:#836f83;text-align:center}
+    .achievement-actions{display:flex;flex-wrap:wrap;gap:9px}
+    .achievement-actions a,.achievement-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:10px;text-decoration:none;font-size:.88rem;font-weight:750;border:1px solid #6a527e;cursor:pointer}
+    .achievement-actions .achievement-download{background:#624a78;color:#fff}
+    .achievement-actions .achievement-download:hover{background:#4a365e}
+    .achievement-actions .achievement-review{background:transparent;color:#5c476f}
+    .achievement-actions .achievement-review:hover{background:#ebe2ef}
+    .achievement-note{font-size:.76rem;color:#887987;line-height:1.5;margin:18px 0 0}
+    .achievement.earned{animation:achievementReveal .85s cubic-bezier(.18,.88,.24,1) both}
+    @keyframes achievementReveal{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:700px){.achievement{margin:24px 0;padding:30px 24px 33px}.achievement:before{inset:8px}.achievement-grid{grid-template-columns:1fr;gap:14px}.achievement-medal{grid-row:1}.achievement-medal img{width:min(100%,235px)}.achievement-copy{text-align:center}.achievement h2{margin-top:9px}.achievement-status,.achievement-actions{justify-content:center}.achievement-actions a,.achievement-actions button{flex:1 1 160px}.achievement-message{margin-inline:auto}}
+    @media(prefers-reduced-motion:reduce){.achievement.earned{animation:none}}
+
+#lesson-achievement[hidden]{display:none!important}
 </style></head>
 <body class="account-progress-ready">
 <header class="mast shell"><div class="brand">Ateliê de Psicanálise</div><div class="small-tag">FORMAÇÃO FREUDIANA · AULA 03</div>
@@ -269,9 +296,21 @@ body{overflow-x:hidden}.shell{max-width:900px}
 <div class="actions"><button type="button" class="btn" id="complete-reading">Concluir percurso</button></div></div>
   
  </div></div></section></div>
-<section class="finish" id="finish" hidden aria-live="polite"><div class="medal" aria-hidden="true">✦</div>
-<h2>Você concluiu a aula.</h2><p>Investigou as raízes científicas do pensamento freudiano, leu documentos históricos e examinou a passagem da clínica à construção de modelos teóricos.</p>
-<p>Revise qualquer quadradinho ou prossiga para outras aulas pelo menu do Ateliê.</p></section>
+<section id="lesson-achievement" class="achievement" hidden aria-labelledby="achievement-title" aria-live="polite">
+<div class="achievement-grid">
+<div class="achievement-copy">
+<span class="achievement-eyebrow">Conquista desbloqueada</span>
+<h2 id="achievement-title">Parabéns pela conclusão!</h2>
+<p class="achievement-message">Você concluiu o percurso de <strong>Freud antes de ser Freud</strong>, explorando sua formação científica, o Projeto de 1895 e as perguntas que conduziram à elaboração teórica da psicanálise.</p>
+<p class="achievement-status">Insígnia conquistada</p>
+<div class="achievement-actions"><button type="button" id="achievement-review" class="achievement-review">Rever a aula</button></div>
+<p class="achievement-note">Esta insígnia marca a conclusão das atividades desta aula. O progresso desta versão fica salvo neste navegador.</p>
+</div>
+<figure class="achievement-medal">
+<img src="../../../../assets/insignia-freud-antes-de-ser-freud.svg" alt="Insígnia Freud antes de ser Freud, com livro, manuscrito, pena e louros em tons de lilás" loading="lazy" width="900" height="900">
+<figcaption>Freud antes de ser Freud</figcaption>
+</figure>
+</div></section>
 <details class="sources"><summary>Fontes históricas e leitura complementar</summary><h4>Fontes para continuar a leitura</h4><ul><li><a href="https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/" target="_blank" rel="noopener noreferrer">Library of Congress — Cronologia de Sigmund Freud</a>.</li><li><a href="https://www.loc.gov/exhibits/freud/freud01.html" target="_blank" rel="noopener noreferrer">Library of Congress — Os anos de formação e o manuscrito de 1895</a>.</li><li><a href="https://psychclassics.yorku.ca/Freud/Dreams/dreams7a.htm" target="_blank" rel="noopener noreferrer">Freud, <em>A interpretação dos sonhos</em>, capítulo VII — tradução histórica em inglês</a>.</li></ul><p style="font-size:12px;color:#7b707e">Esta prévia contém conteúdo didático original. Fotografias e documentos são identificados com suas fontes. As imagens dependem de conexão com os respectivos acervos.</p></details>
 </main><footer class="shell"><div><strong>Ateliê de Psicanálise · Formação Freudiana</strong><br>O progresso desta experiência fica salvo no navegador. O menu do curso e o caderno do aluno permanecem no Ateliê.</div>
 <button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
@@ -316,7 +355,7 @@ for(let n=1;n<=6;n++){
  if(open&&wasHidden){step.classList.add('reveal');step.addEventListener('animationend',()=>step.classList.remove('reveal'),{once:true});}
 }
 
-$('#finish').hidden=!state.done.includes(6);
+$('#lesson-achievement').hidden=!state.done.includes(6);
 save();reportHeight();
 }
 function advance(n){
@@ -324,7 +363,7 @@ function advance(n){
  state.done.push(n);state.done.sort((a,b)=>a-b);
  if(n===6)state.completed=true;
  updateProgress();
- const target=n<6?$('#step-'+(n+1)):$('#finish');
+ const target=n<6?$('#step-'+(n+1)):$('#lesson-achievement');
  if(target)setTimeout(()=>{reportHeight();if(parent!==window){parent.postMessage({type:'atelie-lesson-scroll-to',lessonId:'freud-antes-de-ser-freud',target:'timeline',offsetTop:Math.max(0,Math.round(target.getBoundingClientRect().top+window.scrollY))},location.origin)}else{target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}},300);
 }
 function makeQuiz(q){
@@ -381,6 +420,7 @@ $$('[data-time]').forEach(b=>b.addEventListener('click',()=>{
 $('#reflection').value=state.reflection;
 $('#reflection').addEventListener('input',e=>{state.reflection=e.target.value.slice(0,5000);save();});
 $('#complete-reading').addEventListener('click',()=>advance(6));
+$('#achievement-review').addEventListener('click',()=>{$('#step-1').scrollIntoView({behavior:'smooth',block:'start'});});
 $('#reset').addEventListener('click',()=>{
  if(confirm('Reiniciar o progresso desta aula?')){localStorage.removeItem(KEY);location.reload();}
 });
