@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4efe9">
+  <title>Freud antes de ser Freud | Ateliê de Psicanálise</title>
+  <meta name="description" content="Aula da Formação Freudiana sobre a trajetória científica de Freud, o projeto de 1895 e o nascimento da psicanálise. Contém vídeo de referência provisório.">
+  <style>
+    :root{--bg:#f5f1ec;--paper:#fffefa;--ink:#282335;--plum:#644b7c;--plumdeep:#413153;--muted:#6a626e;--line:#e6dfe5;--soft:#f1eaf5;--violet:#a58bbd;--gold:#ac8e66;--serif:Georgia,'Times New Roman',serif}
+    *,*:before,*:after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(165deg,#eee7ef 0,#f5f1ec 420px,#f5f1ec 100%);color:var(--ink);font:17px/1.75 system-ui,-apple-system,'Segoe UI',sans-serif}
+    button,a{touch-action:manipulation}button{font:inherit;cursor:pointer}a{color:#543e71;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}
+    :focus-visible{outline:3px solid #a888ce;outline-offset:4px}
+    .wrap{width:min(100% - 44px,1120px);margin-inline:auto}
+    .topbar{height:92px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #d8d0da}
+    .brand{font-size:12px;letter-spacing:.19em;color:var(--plumdeep);font-weight:850;text-transform:uppercase}.brand span{display:block;font:italic 15px var(--serif);letter-spacing:.02em;margin-top:3px;color:#86738d;font-weight:400;text-transform:none}
+    .topright{font-size:12px;letter-spacing:.09em;font-weight:750;color:#6e6472;text-align:right;text-transform:uppercase}
+    .eyebrow{text-transform:uppercase;letter-spacing:.18em;color:#866b9e;font-size:11px;font-weight:800}
+    h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-height:1.13}
+    h1{font-size:clamp(42px,6.2vw,78px);margin:20px 0 15px;max-width:800px}
+    h2{font-size:clamp(36px,4.4vw,58px);margin:13px 0 21px}
+    h3{font-size:clamp(28px,3vw,39px);margin:9px 0 18px}
+    .hero{padding:52px 0 40px}
+    .hero-lead{font:23px/1.5 var(--serif);color:#595061;max-width:710px;margin:0 0 27px}
+    .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:#746b78;font-size:13px}
+    .meta span{display:inline-flex;align-items:center;gap:8px;background:#fffdf8;border:1px solid #e3d9e5;border-radius:30px;padding:7px 12px}
+    .video-container{background:var(--paper);padding:15px;border-radius:25px;border:1px solid #e9e0e7;box-shadow:0 20px 50px #49385714}
+    .player{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:16px;background:radial-gradient(circle at 75% 35%,#5e4c6e 0,#3e334a 47%,#211c29 100%);display:grid;place-items:center}
+    .poster{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .poster:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 8px,#ffffff03 8px 9px);opacity:.5}
+    .poster-art{position:absolute;inset:auto auto -10% -7%;width:49%;height:127%;max-width:520px;border-radius:50% 50% 2% 2%;background:linear-gradient(0deg,#bca9be33,#e9d8e51a);border:1px solid #f6e9fa15;box-shadow:80px 0 100px #1c192736}
+    .poster-art:after{content:'F';position:absolute;inset:0;display:grid;place-items:center;font:clamp(170px,30vw,380px)/1 var(--serif);color:#c7b4cc24}
+    .poster-word{position:absolute;top:11%;right:6%;font:italic clamp(28px,4.2vw,65px)/1.11 var(--serif);text-align:right;color:#f2eaf3;text-shadow:0 5px 18px #21182977;max-width:61%}
+    .poster-word small{display:block;font:700 11px/1.7 system-ui;letter-spacing:.25em;color:#cfbbd3;margin-bottom:14px;text-transform:uppercase}
+    .player-controls{position:absolute;z-index:2;bottom:9%;right:7%;display:flex;gap:12px;align-items:center;color:#e9e1ea;font-size:13px}
+    .play{border:1px solid #eee7f6a1;border-radius:60px;background:#fffdfa;color:#3d2d50;font-size:14px;font-weight:800;padding:13px 19px;display:inline-flex;gap:10px;align-items:center;box-shadow:0 8px 22px #150e2045}
+    .play:hover{background:#eee6f5}.play svg{width:17px;height:17px}
+    .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3;background:#18121e}
+    .player .hidden{display:none}
+    .video-note{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:16px 6px 2px;font-size:13px;color:var(--muted)}
+    .video-note strong{color:#634679}.temp{background:#eee6f3;border-radius:40px;padding:4px 10px;color:#654579;font-size:11px;white-space:nowrap;font-weight:750}
+    .article{margin:65px auto 65px;background:var(--paper);border:1px solid #e9e0e7;box-shadow:0 24px 66px #55475b0e;border-radius:28px;overflow:hidden}
+    .article-header{padding:clamp(26px,5.3vw,65px) clamp(26px,7vw,93px) 22px}
+    .article-header .sub{max-width:730px;font:21px/1.53 var(--serif);color:#62596b;margin-bottom:24px}
+    .article-body{max-width:980px;margin:auto;padding:0 clamp(25px,7vw,91px) 60px}
+    .reading{max-width:710px}.reading p{margin:0 0 20px;color:#413b49}
+    .dropcap:first-letter{float:left;font:86px/.9 var(--serif);padding:7px 12px 0 0;color:#755b91}
+    .pullquote{border-left:3px solid #a48abe;padding:12px 25px;margin:38px 0 45px;font:italic 29px/1.33 var(--serif);color:#574263;background:#faf6fb;border-radius:0 14px 14px 0;max-width:850px}
+    .chapter{padding-top:46px;border-top:1px solid var(--line);margin-top:48px}
+    .chapter-head{margin-bottom:25px}
+    .chapter-num{font:italic 27px var(--serif);color:#ab89bb;margin-right:11px;vertical-align:middle}
+    .chapter-strap{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:10px;color:#927aaa}
+    .split{display:grid;grid-template-columns:1.16fr .84fr;align-items:start;gap:39px}
+    .split.reverse{grid-template-columns:.85fr 1.15fr}
+    .archive{margin:0;min-width:0}
+    .archive-image{background:linear-gradient(160deg,#d9cee1,#b6a2c0);border-radius:18px;min-height:310px;position:relative;overflow:hidden;display:grid;place-items:center;box-shadow:0 13px 32px #53435a1b}
+    .archive-image img{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:cover;filter:saturate(.48) sepia(.17);z-index:1}
+    .archive-image.manuscript{min-height:415px;background:linear-gradient(140deg,#e5d6bc,#c8b79c)}
+    .archive-image.manuscript img{object-fit:cover;filter:sepia(.25) contrast(.85)}
+    .archive-image.bookcover{min-height:390px;max-height:470px;background:linear-gradient(145deg,#c3b3c6,#efe5e0)}
+    .archive-image.bookcover img{width:82%;height:89%;inset:5% auto 5% auto;object-fit:contain;box-shadow:0 14px 30px #32263d22;background:#eee2d0}
+    .archive-fallback{width:100%;height:100%;position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;color:#6c5a72}
+    .archive-fallback b{font:italic 90px var(--serif);opacity:.3}.archive-fallback small{letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+    .archive figcaption{padding:11px 3px 0;color:#726b70;font-size:12px;line-height:1.55}
+    .chapter .reading p:last-child{margin-bottom:0}
+    .year-card{margin-top:22px;border-radius:19px;overflow:hidden;border:1px solid #dcd0e3;background:linear-gradient(120deg,#eee5f1,#faf6fb);display:flex;gap:22px;align-items:center;padding:23px 27px}
+    .year-card strong{font:60px/.95 var(--serif);color:#604675;letter-spacing:-.06em}.year-card span{font-size:14px;color:#655a6b;line-height:1.5}
+    .note-line{font-size:14px;color:#69616b;border-left:2px solid #c4aecf;padding-left:14px;margin:25px 0}
+    .closing{margin-top:55px;border-radius:19px;background:linear-gradient(120deg,#ede3f1,#f7f2f8 70%);border:1px solid #dcd0e3;padding:33px 37px}
+    .closing h3{font-size:32px}.closing p{max-width:730px;margin-bottom:8px}
+    .closing .eyebrow{color:#7a5e8f}
+    .sources{margin:40px 0 8px;border-top:1px solid var(--line);padding-top:26px}
+    .sources h4{font:24px var(--serif);margin:0 0 12px}.sources ul{padding-left:20px;font-size:13px;color:#615c67;line-height:1.8}
+    footer{padding:0 0 50px;text-align:center;font-size:11px;font-weight:750;letter-spacing:.18em;color:#877b8d;text-transform:uppercase}
+    @media(max-width:760px){.wrap{width:min(100% - 26px,1120px)}.topbar{height:72px}.brand{font-size:10px;letter-spacing:.12em}.brand span{font-size:12px}.topright{font-size:10px}.hero{padding:28px 0 26px}h1{font-size:clamp(39px,10vw,58px)}.hero-lead{font-size:19px}.meta{gap:7px}.meta span{font-size:11px}.video-container{padding:8px;border-radius:18px}.player{border-radius:11px}.poster-word{font-size:clamp(22px,6vw,43px);top:10%}.poster-word small{font-size:8px;margin-bottom:4px}.player-controls{right:5%;bottom:8%}.play{font-size:11px;padding:9px 12px}.player-controls>span{display:none}.video-note{flex-direction:column;gap:5px;font-size:12px}.article{margin:35px auto;border-radius:19px}.article-header{padding:29px 23px 10px}.article-body{padding:0 23px 38px}.article-header .sub{font-size:18px}.reading p{font-size:15.5px}.dropcap:first-letter{font-size:70px}.pullquote{font-size:23px;padding:9px 14px;margin:24px 0 32px}.chapter{margin-top:34px;padding-top:35px}.split,.split.reverse{grid-template-columns:1fr;gap:20px}.split.reverse figure{order:2}.archive-image{min-height:280px}.archive-image.manuscript{min-height:330px}.archive-image.bookcover{min-height:320px}.year-card{padding:19px;gap:15px}.year-card strong{font-size:47px}.year-card span{font-size:13px}.closing{padding:25px 19px}.closing h3{font-size:28px}.sources ul{padding-left:17px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="wrap topbar"><div class="brand">✦ ATELIÊ DE PSICANÁLISE<span>Formação Freudiana</span></div><div class="topright">Aula 03<br>Formação Freudiana</div></header>
+  <main>
+    <section class="wrap hero"><div class="eyebrow">Formação Freudiana · Uma nova etapa</div><h1>Freud antes de ser Freud</h1><p class="hero-lead">O jovem médico, suas perguntas e a construção de um novo campo de investigação.</p><div class="meta"><span>Vídeo de abertura</span><span>Leitura complementar</span><span>Sem exercícios nesta versão</span></div></section>
+    <section class="wrap video-container" aria-labelledby="video-label">
+      <div class="player" id="player">
+        <div class="poster" id="poster"><div class="poster-art"></div><div class="poster-word"><small>FORMAÇÃO FREUDIANA</small>Da escuta<br>à teoria</div><div class="player-controls"><span>Vídeo provisório</span><button type="button" class="play" id="play-btn" aria-label="Reproduzir vídeo de referência temporário"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4v16l13-8z"/></svg> Assistir ao vídeo</button></div></div>
+      </div>
+      <div class="video-note"><div id="video-label"><strong>Vídeo temporário.</strong> Enquanto a nova gravação não é publicada, esta prévia utiliza o vídeo de <em>A escuta que mudou a clínica</em>.</div><span class="temp">Será substituído</span></div>
+    </section>
+    <article class="wrap article" aria-labelledby="reading-title">
+      <header class="article-header"><div class="eyebrow">Leitura complementar · Aprofundamento</div><h2 id="reading-title">Quando a clínica exige uma teoria</h2><p class="sub">Como Freud passou da investigação dos sintomas à tentativa de explicar o funcionamento da vida psíquica?</p></header>
+      <div class="article-body">
+        <div class="reading"><p class="dropcap">O surgimento da psicanálise não se explica apenas por uma sucessão de acontecimentos na vida de Sigmund Freud. Há uma transformação intelectual decisiva nesse percurso: a passagem da investigação de determinados fenômenos clínicos à construção de hipóteses sobre o funcionamento do psiquismo.</p><p>A experiência clínica levantava problemas que não se resolviam com a descrição dos sintomas. Por que uma lembrança poderia continuar produzindo efeitos sem estar presente na consciência? Como processos psíquicos diferentes poderiam entrar em conflito? O que permitiria pensar essas questões como partes de um mesmo funcionamento?</p></div>
+        <aside class="pullquote">“Não bastava descrever o que acontecia. Era preciso tentar explicar como os processos psíquicos se articulavam.”</aside>
+        <section class="chapter" aria-labelledby="chap1"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">01</span> Da formação científica às perguntas novas</div><h3 id="chap1">A herança da neurologia</h3></div><div class="split"><div class="reading"><p>Freud não abandonou de uma só vez sua formação em medicina e neurologia. Ao contrário, seus primeiros esforços teóricos foram profundamente marcados pela ambição de construir explicações científicas para os processos mentais.</p><p>Sua investigação se deslocava, porém, para problemas que não podiam ser satisfatoriamente descritos apenas pela localização anatômica de uma lesão. A memória, a consciência e os conflitos entre representações exigiam um nível próprio de elaboração.</p><p>Esse deslocamento não significava negar a existência do cérebro ou dos processos corporais. Significava perguntar como construir uma explicação psicológica que não se limitasse a reduzir a experiência humana à anatomia.</p></div><figure class="archive"><div class="archive-image"><div class="archive-fallback"><b>F</b><small>Retrato histórico · 1885</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Freud_1885.jpg" alt="Retrato de Sigmund Freud em 1885" onerror="this.remove()"></div><figcaption>Sigmund Freud em 1885. Reprodução histórica: Wikimedia Commons.</figcaption></figure></div></section>
+        <section class="chapter" aria-labelledby="chap2"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">02</span> Um documento pouco conhecido</div><h3 id="chap2">O projeto científico de 1895</h3></div><div class="split reverse"><figure class="archive"><div class="archive-image manuscript"><div class="archive-fallback"><b>✒</b><small>Manuscrito · 1895</small></div><img loading="lazy" src="https://www.loc.gov/exhibits/freud/ex/images/ex22.jpg" alt="Página manuscrita do Projeto para uma Psicologia Científica, de Freud" onerror="this.remove()"></div><figcaption>Manuscrito autógrafo do <em>Projeto para uma Psicologia Científica</em> (1895), Library of Congress. <a href="https://www.loc.gov/exhibits/freud/freud01.html#obj022" target="_blank" rel="noopener noreferrer">Consultar fonte</a>.</figcaption></figure><div class="reading"><p>No mesmo ano em que publicou <em>Estudos sobre a Histeria</em> com Josef Breuer, Freud trabalhou em um manuscrito que hoje conhecemos como <em>Projeto para uma Psicologia Científica</em>.</p><p>Nesse texto, tentou explicar fenômenos psíquicos por meio de hipóteses sobre neurônios, quantidades de excitação, memória e transmissão de energia. O objetivo não era apenas descrever experiências, mas imaginar os mecanismos responsáveis por sua produção.</p><p>O manuscrito permaneceu inédito durante a vida de Freud e só foi publicado em 1950. Seu interesse histórico está em mostrar uma tentativa ambiciosa e ainda experimental de aproximar o funcionamento psíquico de um modelo neurofisiológico.</p><p>O projeto não se tornou a teoria acabada da psicanálise. Revela, antes, uma dificuldade fecunda: como formular modelos para processos que não podem ser observados diretamente?</p></div></div><p class="note-line">O documento é uma fonte para acompanhar a elaboração de Freud, não uma confirmação científica atual das hipóteses neurológicas que propôs.</p></section>
+        <section class="chapter" aria-labelledby="chap3"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">03</span> Um campo em construção</div><h3 id="chap3">1896: a psicanálise recebe um nome</h3></div><div class="reading"><p>Em 1896, Freud começou a empregar o termo <em>psicanálise</em> para designar sua abordagem. A escolha de um nome ajuda a delimitar uma prática e um programa de investigação, mas não significa que seus métodos e conceitos estivessem prontos.</p><p>Nos anos seguintes, Freud continuaria revisando hipóteses sobre memória, defesa, conflito e processos inconscientes. A construção de uma disciplina envolve precisamente esse trabalho: definir problemas, desenvolver instrumentos conceituais e reformular explicações quando elas se mostram insuficientes.</p></div><div class="year-card" aria-label="Marco histórico de 1896"><strong>1896</strong><span><b>Surge o termo “psicanálise”.</b><br>O nome assinala um campo em formação — não uma teoria já concluída.</span></div></section>
+        <section class="chapter" aria-labelledby="chap4"><div class="chapter-head"><div class="chapter-strap"><span class="chapter-num">04</span> Uma passagem decisiva</div><h3 id="chap4">Dos sintomas à teoria dos sonhos</h3></div><div class="split"><div class="reading"><p>Com <em>A interpretação dos sonhos</em>, publicada no final de 1899 com a data de 1900, Freud amplia o campo de suas perguntas. Ele não procura apenas interpretar conteúdos oníricos, mas compreender os processos pelos quais os sonhos se formam.</p><p>Por que certas ideias aparecem transformadas? Como diferentes representações se articulam? Por que alguns conteúdos encontram obstáculos para chegar à consciência?</p><p>Essas questões levam Freud a formular hipóteses sobre o aparelho psíquico. Especialmente no capítulo VII, o autor procura construir um modelo capaz de explicar a relação entre percepção, memória, desejo e processos inconscientes.</p><p>Não se trata de um mapa anatômico do cérebro, mas de uma construção teórica para investigar o funcionamento psíquico.</p></div><figure class="archive"><div class="archive-image bookcover"><div class="archive-fallback"><b>1900</b><small>Die Traumdeutung</small></div><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Freud_1900_Die_Traumdeutung.pdf/page1-800px-Freud_1900_Die_Traumdeutung.pdf.jpg" alt="Página de rosto de A interpretação dos sonhos, edição de 1900" onerror="this.remove()"></div><figcaption>Página de rosto da edição de 1900 de <em>Die Traumdeutung</em>. Wikimedia Commons. <a href="https://commons.wikimedia.org/wiki/File:Freud_1900_Die_Traumdeutung.pdf" target="_blank" rel="noopener noreferrer">Consultar digitalização</a>.</figcaption></figure></div></section>
+        <section class="closing"><div class="eyebrow">Conexão com a aula anterior</div><h3>Por que Freud precisou imaginar um aparelho psíquico?</h3><p>Partimos da clínica e chegamos a uma exigência teórica: explicar como processos que não aparecem diretamente à consciência podem participar da vida psíquica.</p><p>Na aula anterior, <strong>A primeira tópica de Freud</strong>, examinamos uma resposta decisiva a esse problema: a distinção entre inconsciente, pré-consciente e consciente. Esta leitura histórica permite agora reconhecer o percurso intelectual que tornou esse modelo necessário.</p></section>
+        <section class="sources" aria-label="Fontes históricas"><h4>Fontes para continuar a leitura</h4><ul><li><a href="https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/" target="_blank" rel="noopener noreferrer">Library of Congress — Cronologia de Sigmund Freud</a>.</li><li><a href="https://www.loc.gov/exhibits/freud/freud01.html" target="_blank" rel="noopener noreferrer">Library of Congress — Os anos de formação e o manuscrito de 1895</a>.</li><li><a href="https://psychclassics.yorku.ca/Freud/Dreams/dreams7a.htm" target="_blank" rel="noopener noreferrer">Freud, <em>A interpretação dos sonhos</em>, capítulo VII — tradução histórica em inglês</a>.</li></ul><p style="font-size:12px;color:#7b707e">Esta prévia contém conteúdo didático original. Fotografias e documentos são identificados com suas fontes. As imagens dependem de conexão com os respectivos acervos.</p></section>
+      </div>
+    </article>
+  </main>
+  <footer class="wrap">Ateliê de Psicanálise · Formação Freudiana · Aula 03</footer>
+  <script>
+    // Para substituir o vídeo posteriormente, troque somente o ID abaixo.
+    const VIDEO_PROVISORIO_ID = 'RPcqYZkYTIE';
+    document.getElementById('play-btn').addEventListener('click',()=>{
+      const iframe=document.createElement('iframe');
+      iframe.title='Vídeo temporário: A escuta que mudou a clínica';
+      iframe.allow='accelerometer; autoplay; encrypted-media; picture-in-picture; web-share';
+      iframe.allowFullscreen=true;
+      iframe.referrerPolicy='strict-origin-when-cross-origin';
+      iframe.src='https://www.youtube-nocookie.com/embed/'+VIDEO_PROVISORIO_ID+'?autoplay=1&playsinline=1&rel=0';
+      document.getElementById('player').appendChild(iframe);
+      document.getElementById('poster').classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
