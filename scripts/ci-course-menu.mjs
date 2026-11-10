@@ -18,7 +18,8 @@ try{
  assert.equal(await mobile.locator('#sidebar').evaluate(e=>Number(getComputedStyle(e).zIndex)>Number(getComputedStyle(document.querySelector('#overlay')).zIndex)),true,'Menu deve ficar acima do fundo escurecido');
  assert.equal(await mobile.locator('#sidebarCourseSelect option').count(),1,'Somente Formação Freudiana é publicada');
  assert.equal(await mobile.locator('#sidebarCourseSelect').inputValue(),'formacao-freudiana');
- assert.equal(await mobile.locator('.course-drawer-module').count(),3,'Três módulos com aulas reais');
+ assert.equal(await mobile.locator('.course-drawer-module').count(),3,'Três aulas reais no menu');
+ assert.equal(await mobile.locator('.course-drawer-module-label').first().innerText(),'Aula 01','Menu deve chamar aula, não módulo');
  assert.equal(await mobile.locator('.course-drawer-module').first().getAttribute('open'),'','Primeiro módulo expandido');
  assert.equal(await mobile.locator('.course-drawer-module').first().locator('a[href="#/aula/escuta-que-mudou-a-clinica"]').count(),1);
  assert.equal(await mobile.locator('#sidebarClose').isVisible(),true);
@@ -52,6 +53,7 @@ try{
  await desktop.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
  await desktop.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
  assert.equal(await desktop.locator('.course-program-module').count(),3);
+ assert.equal(await desktop.locator('.course-program-module-copy small').last().innerText(),'AULA 03','Programa apresenta Aula 03');
  assert.equal(await desktop.locator('#courseContextNav').isVisible(),true);
  await desktop.locator('.course-program-module').nth(1).locator('summary').click();
  await desktop.locator('.course-program-module a[href="#/aula/primeira-topica-freud"]').click();
@@ -83,6 +85,15 @@ try{
  await lesson.locator('#q1 .verify').click();
  await lesson.locator('#step-2').waitFor({state:'visible'});
  assert.equal(await lesson.locator('#progress-label').innerText(),'1 de 6 momentos concluídos');
+ for(const [stage,answer] of [[2,1],[3,2],[4,3],[5,0]]){
+   await lesson.locator('#q'+stage+' .answer[data-index="'+answer+'"]').click();
+   await lesson.locator('#q'+stage+' .verify').click();
+   await lesson.locator('#step-'+(stage+1)).waitFor({state:'visible'});
+ }
+ await lesson.locator('#complete-reading').click();
+ await lesson.locator('#lesson-achievement').waitFor({state:'visible'});
+ assert.equal(await lesson.locator('#lesson-achievement .achievement-medal img').getAttribute('src'),'../../../../assets/insignia-freud-antes-de-ser-freud.svg');
+ assert.match(await lesson.locator('#lesson-achievement').innerText(),/Insígnia conquistada/);
  console.log('OK — Terceira aula abre dentro do Ateliê, com vídeo e desbloqueio progressivo.');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
 }finally{await browser.close()}
