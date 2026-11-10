@@ -504,7 +504,21 @@ $$('[data-time]').forEach(b=>b.addEventListener('click',()=>{
   save();
   if(st.times.length===4&&st.done.includes(3)&&!st.done.includes(4))complete(4,false);
  }
+ // Resize o iframe antes de solicitar ao site que enquadre o marco aberto.
+ // Evita que o Safari salte para uma região intermediária da explicação.
  reportHeight();
+ if(openTime===i&&parent!==window){
+  const entry=b.closest('.time-entry');
+  requestAnimationFrame(()=>{
+   if(openTime!==i||!entry)return;
+   parent.postMessage({
+    type:'atelie-lesson-scroll-to',
+    lessonId:LESSON_ID,
+    target:'timeline',
+    offsetTop:entry.getBoundingClientRect().top+window.scrollY
+   },location.origin);
+  });
+ }
 }));
 updateChronology();
 
