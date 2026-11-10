@@ -118,6 +118,7 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
   
 
 /* Adaptações de conteúdo à mesma linha visual e às mesmas etapas da Primeira Tópica. */
+.progress-segments{grid-template-columns:repeat(6,minmax(0,1fr))}
 html.embedded-in-atelie .external-nav{display:none}
 body{overflow-x:hidden}.shell{max-width:900px}
 .mast{display:flex;align-items:center;gap:15px;justify-content:space-between}
@@ -308,7 +309,7 @@ const count=state.done.length;
 $('#progress-label').textContent=count+' de 6 momentos concluídos';
 $('#progressbar').setAttribute('aria-valuemax','6');
 $('#progressbar').setAttribute('aria-valuenow',String(count));
-$('#progressbar').innerHTML=Array.from({length:6},(_,i)=>'<span class="progress-segment'+(i<count?' complete':'')+'"></span>').join('');
+$('#progressbar').innerHTML=Array.from({length:6},(_,i)=>'<span class="progress-segment'+(i<count?' done':'')+'"></span>').join('');
 $('#progress-next').textContent=count===6?'Percurso concluído.':('A seguir: '+['vídeo de abertura','passagem à teoria','Projeto de 1895','nome psicanálise','teoria dos sonhos','síntese final'][count]+'.');
 for(let n=1;n<=6;n++){
  const step=$('#step-'+n),open=allowed(n),done=state.done.includes(n),wasHidden=step.hidden;
@@ -326,7 +327,7 @@ function advance(n){
  if(n===6)state.completed=true;
  updateProgress();
  const target=n<6?$('#step-'+(n+1)):$('#finish');
- if(target)setTimeout(()=>{target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});reportHeight()},260);
+ if(target)setTimeout(()=>{reportHeight();if(parent!==window){parent.postMessage({type:'atelie-lesson-scroll-to',lessonId:'freud-antes-de-ser-freud',target:'timeline',offsetTop:Math.max(0,Math.round(target.getBoundingClientRect().top+window.scrollY))},location.origin)}else{target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}},300);
 }
 function makeQuiz(q){
  const box=$('#q'+q.n);if(!box)return;
