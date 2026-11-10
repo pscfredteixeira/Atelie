@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="900" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+<title id="title">Insígnia Freud antes de ser Freud</title>
+<desc id="desc">Medalha de formação em psicanálise, com manuscrito antigo, livro aberto, pena de escrever, louros lilases e ornamentos alaranjados sobre fundo escuro.</desc>
+<defs>
+<radialGradient id="bg"><stop stop-color="#38303a"/><stop offset=".72" stop-color="#231d26"/><stop offset="1" stop-color="#171318"/></radialGradient>
+<linearGradient id="edge" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#a18aa7"/><stop offset=".48" stop-color="#70576f"/><stop offset="1" stop-color="#b79ab4"/></linearGradient>
+<linearGradient id="paper" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e0bb8c"/><stop offset=".5" stop-color="#d4a876"/><stop offset="1" stop-color="#b88e61"/></linearGradient>
+<linearGradient id="page" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff3e1"/><stop offset=".6" stop-color="#e1c9b7"/><stop offset="1" stop-color="#a88d7e"/></linearGradient>
+<linearGradient id="pen" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#1d1824"/><stop offset=".48" stop-color="#655165"/><stop offset="1" stop-color="#29222e"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="16" stdDeviation="17" flood-color="#050308" flood-opacity=".60"/></filter>
+</defs>
+<rect width="900" height="900" fill="#1C171D"/>
+<circle cx="450" cy="450" r="429" fill="url(#bg)" stroke="url(#edge)" stroke-width="12"/>
+<circle cx="450" cy="450" r="416" fill="none" stroke="#B6A0B7" stroke-opacity=".48" stroke-width="1.5"/>
+<circle cx="450" cy="450" r="386" fill="none" stroke="#F26924" stroke-width="2.3" stroke-dasharray="470 2400" transform="rotate(-121 450 450)" opacity=".95"/>
+<circle cx="450" cy="450" r="386" fill="none" stroke="#F26924" stroke-width="2.3" stroke-dasharray="470 2400" transform="rotate(-13 450 450)" opacity=".95"/>
+<text x="450" y="128" font-family="Georgia,'Times New Roman',serif" font-size="73" fill="#c9afc5" text-anchor="middle">Ψ</text>
+<path d="M215 596 Q124 442 229 244" fill="none" stroke="#8b7293" opacity=".55" stroke-width="5"/>
+<path d="M685 596 Q776 442 671 244" fill="none" stroke="#8b7293" opacity=".55" stroke-width="5"/>
+<ellipse cx="178.2" cy="333.5" rx="13" ry="39" transform="rotate(245.0 178.2 333.5)" fill="#9F83AE" opacity="0.66"/><ellipse cx="226.9" cy="264.0" rx="13" ry="39" transform="rotate(261.0 226.9 264.0)" fill="#9F83AE" opacity="0.682"/><ellipse cx="292.9" cy="210.6" rx="13" ry="39" transform="rotate(277.0 292.9 210.6)" fill="#9F83AE" opacity="0.7040000000000001"/><ellipse cx="371.1" cy="177.4" rx="16" ry="46" transform="rotate(293.0 371.1 177.4)" fill="#9F83AE" opacity="0.726"/><ellipse cx="455.3" cy="167.0" rx="16" ry="46" transform="rotate(309.0 455.3 167.0)" fill="#9F83AE" opacity="0.748"/><ellipse cx="539.2" cy="180.3" rx="16" ry="46" transform="rotate(325.0 539.2 180.3)" fill="#9F83AE" opacity="0.77"/><ellipse cx="616.1" cy="216.2" rx="16" ry="46" transform="rotate(341.0 616.1 216.2)" fill="#9F83AE" opacity="0.792"/><ellipse cx="680.2" cy="271.9" rx="16" ry="46" transform="rotate(357.0 680.2 271.9)" fill="#9F83AE" opacity="0.8140000000000001"/><ellipse cx="721.8" cy="333.5" rx="13" ry="39" transform="rotate(-65.0 721.8 333.5)" fill="#9F83AE" opacity="0.66"/><ellipse cx="673.1" cy="264.0" rx="13" ry="39" transform="rotate(-81.0 673.1 264.0)" fill="#9F83AE" opacity="0.682"/><ellipse cx="607.1" cy="210.6" rx="13" ry="39" transform="rotate(-97.0 607.1 210.6)" fill="#9F83AE" opacity="0.7040000000000001"/><ellipse cx="528.9" cy="177.4" rx="16" ry="46" transform="rotate(-113.0 528.9 177.4)" fill="#9F83AE" opacity="0.726"/><ellipse cx="444.7" cy="167.0" rx="16" ry="46" transform="rotate(-129.0 444.7 167.0)" fill="#9F83AE" opacity="0.748"/><ellipse cx="360.8" cy="180.3" rx="16" ry="46" transform="rotate(-145.0 360.8 180.3)" fill="#9F83AE" opacity="0.77"/><ellipse cx="283.9" cy="216.2" rx="16" ry="46" transform="rotate(-161.0 283.9 216.2)" fill="#9F83AE" opacity="0.792"/><ellipse cx="219.8" cy="271.9" rx="16" ry="46" transform="rotate(-177.0 219.8 271.9)" fill="#9F83AE" opacity="0.8140000000000001"/>
+<g filter="url(#shadow)">
+<path d="M347 156 L555 142 L604 353 L329 369 Z" fill="url(#paper)" stroke="#ac7d5c" stroke-width="4"/>
+<path d="M339 165 L547 151 L596 351 L322 362 Z" fill="none" stroke="#efcd9d" stroke-opacity=".35" stroke-width="2"/>
+<g transform="rotate(-6 460 256)"><path d="M340 183 C395 177, 439 199, 520 185 S585 176, 598 184" fill="none" stroke="#684a35" stroke-width="1.2" opacity=".52"/><path d="M340 201 C395 195, 439 217, 520 203 S585 194, 598 202" fill="none" stroke="#684a35" stroke-width="1.7" opacity=".52"/><path d="M340 219 C395 213, 439 235, 520 221 S585 212, 598 220" fill="none" stroke="#684a35" stroke-width="1.2" opacity=".52"/><path d="M340 237 C395 231, 439 253, 520 239 S585 230, 598 238" fill="none" stroke="#684a35" stroke-width="1.7" opacity=".52"/><path d="M340 255 C395 249, 439 271, 520 257 S585 248, 598 256" fill="none" stroke="#684a35" stroke-width="1.2" opacity=".52"/><path d="M340 273 C395 267, 439 289, 520 275 S585 266, 598 274" fill="none" stroke="#684a35" stroke-width="1.7" opacity=".52"/></g>
+<path d="M164 389 Q247 347 352 374 Q419 391 450 432 Q484 385 568 369 Q670 351 745 391 L748 477 Q603 438 452 500 Q309 446 158 482 Z" fill="#45383c" stroke="#b59486" stroke-width="6"/>
+<path d="M170 374 Q301 337 450 414 L452 486 Q311 410 166 464 Z" fill="url(#page)" stroke="#e9d5bc" stroke-width="5"/>
+<path d="M450 414 Q592 336 735 374 L740 464 Q591 414 452 486 Z" fill="url(#page)" stroke="#e9d5bc" stroke-width="5"/>
+<path d="M450 421 L452 481" stroke="#76545d" stroke-width="4" opacity=".68"/>
+<path d="M226 392 Q324 377 426 431 M223 407 Q324 393 427 449 M222 423 Q326 409 427 463" stroke="#9c8584" stroke-width="2" fill="none" opacity=".50"/>
+<path d="M474 431 Q576 377 686 392 M472 449 Q580 396 690 408 M472 463 Q580 411 690 424" stroke="#9c8584" stroke-width="2" fill="none" opacity=".50"/>
+<path d="M437 490 L464 490 L459 533 L448 521 L437 533 Z" fill="#E86525"/>
+<g transform="rotate(46 588 379)">
+<rect x="575" y="214" width="27" height="173" rx="9" fill="url(#pen)" stroke="#ad8890" stroke-width="2"/>
+<rect x="570" y="376" width="37" height="20" rx="5" fill="#d9b27e"/>
+<path d="M575 395 L587 450 L602 395 Z" fill="#d7bb95" stroke="#97704c" stroke-width="2"/>
+<path d="M587 416 L588 440" stroke="#6c5144" stroke-width="1.7"/>
+<circle cx="588" cy="412" r="3" fill="#614759"/>
+</g>
+</g>
+<text x="450" y="624" font-family="Georgia,'Times New Roman',serif" font-size="80" text-anchor="middle" letter-spacing="-2" fill="#f6e7dc">Freud antes</text>
+<text x="450" y="704" font-family="Georgia,'Times New Roman',serif" font-size="78" text-anchor="middle" letter-spacing="-2" fill="#f6e7dc">de ser Freud</text>
+<path d="M275 757 H428 M472 757 H626" fill="none" stroke="#9e809e" stroke-width="2.7"/>
+<rect x="443" y="745" width="22" height="22" transform="rotate(45 454 756)" fill="#D75C24"/>
+<text x="450" y="825" font-family="Arial,Helvetica,sans-serif" font-size="37" letter-spacing="1" text-anchor="middle" fill="#BDA5BB">Formação Freudiana</text>
+</svg>
