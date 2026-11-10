@@ -5,7 +5,7 @@
   "courseId": "curso-formacao-freudiana",
   "moduleId": "modulo-formacao-freudiana-freud-antes-de-ser-freud",
   "slug": "freud-antes-de-ser-freud",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "Freud antes de ser Freud",
   "summary": "Leitura ilustrada após o vídeo: a herança da neurologia, o Projeto de 1895, o nascimento do nome psicanálise em 1896 e A interpretação dos sonhos.",
@@ -19,10 +19,10 @@
   "metadata": {
     "interactivePage": "./freud-antes-de-ser-freud.html",
     "stagesAvailable": 1,
-    "videoUrl": "https://youtu.be/RPcqYZkYTIE",
-    "videoIsPlaceholder": true,
+    "videoUrl": "https://youtu.be/2vYTFwAVh0E",
+    "videoIsPlaceholder": false,
     "source": "Leitura complementar aprovada pelo autor, publicada a partir de prévia HTML.",
-    "narration": "Vídeo anterior usado provisoriamente; substituir pelo novo vídeo quando estiver disponível."
+    "narration": "Vídeo oficial de abertura gravado pelo professor."
   },
   "blocks": [],
   "references": [
