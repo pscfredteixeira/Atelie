@@ -3,12 +3,12 @@
   "kind": "course",
   "id": "curso-formacao-freudiana",
   "slug": "formacao-freudiana",
-  "revision": 6,
+  "revision": 7,
   "status": "published",
   "title": "Formação Freudiana",
   "icon": "✦",
   "subtitle": "Estudo sistemático da obra de Sigmund Freud",
-  "description": "Formação Freudiana com duas aulas interativas disponíveis: A escuta que mudou a clínica e A primeira tópica de Freud.",
+  "description": "Formação Freudiana com três aulas disponíveis: A escuta que mudou a clínica, A primeira tópica de Freud e Freud antes de ser Freud.",
   "objectives": [
     "Acompanhar os problemas teóricos e clínicos que atravessam diferentes momentos da obra de Freud",
     "Reconhecer mudanças e continuidades entre as formulações freudianas",
@@ -50,6 +50,23 @@
           "position": 1,
           "status": "published",
           "estimatedMinutes": 25
+        }
+      ]
+    },
+    {
+      "id": "modulo-formacao-freudiana-freud-antes-de-ser-freud",
+      "title": "Freud antes de ser Freud",
+      "description": "Leitura histórica após A primeira tópica de Freud: da formação neurológica ao Projeto de 1895, à nomeação da psicanálise e à teoria dos sonhos.",
+      "position": 3,
+      "lessons": [
+        {
+          "id": "aula-freud-antes-de-ser-freud",
+          "title": "Freud antes de ser Freud",
+          "summary": "Leitura ilustrada após o vídeo: a herança da neurologia, o Projeto de 1895, o nascimento do nome psicanálise em 1896 e A interpretação dos sonhos.",
+          "path": "./aulas/freud-antes-de-ser-freud.json",
+          "position": 1,
+          "status": "published",
+          "estimatedMinutes": 20
         }
       ]
     }
