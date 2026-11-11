@@ -169,11 +169,13 @@ function send(type,fields={}){if(parent!==window)parent.postMessage({type,lesson
 function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
 function scrollToElement(el){if(!el)return;requestAnimationFrame(()=>requestAnimationFrame(()=>{reportHeight();send("atelie-lesson-scroll-to",{target:"timeline",offsetTop:Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY))})}))}
 function save(){send("atelie-progress-save",{state:{done:[...done].sort((a,b)=>a-b),explored:[...expanded],answers,version:1},requestId:++lastRequest});$("#cloud-status").textContent="Salvando o progresso na sua conta..."}
-function markDone(n){
+function markDone(n,autoScroll=true){
  if(done.has(n))return;
  done.add(n);render();save();
- const next=$("#step-"+(n+1));if(next)scrollToElement(next);
- else scrollToElement($("#completion"));
+ if(autoScroll){
+  const next=$("#step-"+(n+1));if(next)scrollToElement(next);
+  else scrollToElement($("#completion"));
+ }
 }
 function render(){
  for(let n=1;n<=7;n++){
@@ -205,11 +207,17 @@ function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"
 function showFeedback(n,correct,scroll){
  const key="q"+n,q=questions[key],f=$(".feedback",$("#quiz-"+n));f.hidden=false;f.className="feedback "+(correct?"good":"bad");
  const notes=q.notes.map((t,i)=>"<li><strong>"+String.fromCharCode(65+i)+".</strong> "+escapeHtml(t)+"</li>").join("");
- f.innerHTML="<strong>"+(correct?"Resposta correta.":"Essa alternativa não resolve o problema.")+"</strong><p>"+(correct?"Vamos examinar as quatro alternativas.":"Observe a explicação da alternativa escolhida e tente novamente.")+"</p>"+(correct?"<ul>"+notes+"</ul>":"<p>"+escapeHtml(q.notes[Number(answers[key])])+"</p>");
+ f.innerHTML="<strong>"+(correct?"Resposta correta.":"Essa alternativa não resolve o problema.")+"</strong><p>"+(correct?"Vamos examinar as quatro alternativas.":"Observe a explicação da alternativa escolhida e tente novamente.")+"</p>"+(correct?"<ul>"+notes+"</ul><div class='actions'><button type='button' class='btn secondary' data-continue='"+n+"'>"+(n===7?"Ver conclusão":"Continuar para o próximo momento")+" →</button></div>":"<p>"+escapeHtml(q.notes[Number(answers[key])])+"</p>");
  if(scroll)scrollToElement(f);
  reportHeight();
 }
 $("#begin-lesson").addEventListener("click",()=>markDone(1));
+document.addEventListener("click",event=>{
+ const btn=event.target.closest("[data-continue]");
+ if(!btn)return;
+ const n=Number(btn.dataset.continue);
+ scrollToElement(n===7?$("#completion"):$("#step-"+(n+1)));
+});
 $$(".accordion").forEach(item=>{
  item.addEventListener("toggle",()=>{
   if(item.open){
@@ -230,7 +238,7 @@ $$(".quiz").forEach(block=>{
  $(".verify",block).addEventListener("click",()=>{
   if(answers[key]===undefined)return;
   const correct=Number(answers[key])===questions[key].correct;
-  if(correct){showFeedback(n,true,false);markDone(n)}
+  if(correct){markDone(n,false);showFeedback(n,true,false)}
   else{showFeedback(n,false,false);save()}
  });
 });
