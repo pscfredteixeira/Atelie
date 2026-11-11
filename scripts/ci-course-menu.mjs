@@ -90,6 +90,30 @@ try{
  await lesson.locator('#lesson-achievement').waitFor({state:'visible'});
  assert.equal(await lesson.locator('#lesson-achievement .achievement-medal img').getAttribute('src'),'../../../../assets/insignia-freud-antes-de-ser-freud.svg?v=fundo-transparente-1');
  assert.match(await lesson.locator('#lesson-achievement').innerText(),/Insígnia conquistada/);
+
+ // Altura do iframe deve acompanhar o fim real do rodapé, não o viewport.
+ // Quando havia uma área vazia abaixo do botão Reiniciar progresso, a diferença
+ // era de centenas de pixels e o iframe não diminuía.
+ const fitted=()=>{const f=document.querySelector('#freudLessonFrame'),d=f?.contentDocument,footer=d?.querySelector('footer.shell');if(!footer)return false;const end=footer.getBoundingClientRect().bottom+f.contentWindow.scrollY+4;return Math.abs(f.getBoundingClientRect().height-end)<=24;};
+ await desktop.waitForFunction(fitted,null,{timeout:15000});
+ const mobileLesson=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ await mobileLesson.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
+ await mobileLesson.route('https://www.youtube-nocookie.com/**',r=>r.fulfill({status:200,body:'',contentType:'text/html'}));
+ await mobileLesson.route('https://www.youtube.com/iframe_api',r=>r.fulfill({status:200,body:'',contentType:'application/javascript'}));
+ await mobileLesson.goto(base+'#/aula/freud-antes-de-ser-freud',{waitUntil:'domcontentloaded'});
+ await mobileLesson.locator('[data-profile-login]').waitFor();
+ await mobileLesson.evaluate(()=>{
+  const uid='teste-mobile-altura';
+  window.AtelieCloud={user:{uid,displayName:'Teste Mobile'},ready:true,save:async()=>true,loadLessonProgress:async()=>null,saveLessonProgress:async()=>true,logout:async()=>true};
+  dispatchEvent(new CustomEvent('atelie-cloud-auth',{detail:{uid}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-loaded',{detail:{uid,exists:false,state:null}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-ready',{detail:{uid}}));
+ });
+ await mobileLesson.locator('#freudLessonFrame').waitFor({state:'visible'});
+ await mobileLesson.locator('#freudLessonFrame').contentFrame().locator('#step-1').waitFor({state:'visible'});
+ await mobileLesson.waitForFunction(fitted,null,{timeout:15000});
+ console.log('OK — Iframe ajusta altura ao rodapé também no tamanho de iPhone, sem sobra vazia.');
+
  console.log('OK — Terceira aula abre dentro do Ateliê, com vídeo e desbloqueio progressivo.');
  console.log('OK — Navegação em duas áreas, sem duplicação de submenus.');
 }finally{await browser.close()}
