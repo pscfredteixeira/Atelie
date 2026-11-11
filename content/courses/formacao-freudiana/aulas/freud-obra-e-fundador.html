@@ -279,9 +279,9 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
  <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
  <div class="feedback" role="status" aria-live="polite" hidden></div>
  </section>
- <div class="completion" id="completion" hidden><div class="completion-mark" aria-hidden="true">ψ</div><div><strong>Percurso concluído</strong><p>Você percorreu os sete momentos desta aula. As perguntas e as leituras podem continuar no seu caderno de estudos.</p></div></div>
+ <div class="completion" id="completion" hidden><div class="completion-mark" aria-hidden="true">ψ</div><div><strong>Percurso concluído</strong><p>Você percorreu os sete momentos desta aula. Você concluiu os sete momentos. O percurso permanece disponível para revisão.</p></div></div>
  </div></article></section></div></main>
-<footer class="shell"><span>Ateliê · Estudos em Psicanálise</span><span>Primeira versão editorial · conteúdo em revisão</span></footer>
+
 <script>(function(){
 "use strict";
 const LESSON_ID="freud-obra-e-fundador";
@@ -292,7 +292,19 @@ const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
 let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false;
 const origin=location.origin;
 function send(type,fields={}){if(parent!==window)parent.postMessage({type,lessonId:LESSON_ID,...fields},origin)}
-function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
+let lastMeasuredHeight=0;
+function reportHeight(){
+ if(parent===window)return;
+ // A altura do iframe pode exceder a altura do conteúdo após recolher etapas.
+ // Medir scrollHeight criava um ciclo: a moldura alta fazia o documento parecer alto.
+ const end=document.querySelector('main.shell');
+ if(!end)return;
+ const height=Math.ceil(Math.max(100,end.getBoundingClientRect().bottom+window.scrollY+8));
+ if(Number.isFinite(height)&&Math.abs(height-lastMeasuredHeight)>2){
+  lastMeasuredHeight=height;
+  send("atelie-lesson-height",{height});
+ }
+}
 let scrollRequest=0;
 function scrollToElement(el,alignAccordion=false){
  if(!el)return;
