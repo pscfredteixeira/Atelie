@@ -21,7 +21,7 @@ const cloud = {
   async loadLessonProgress(lessonId) {
     const user=cloud.user;
     if(!user)throw new Error('Entre com Google para acessar seu progresso.');
-    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))throw new Error('Aula não autorizada.');
+    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud','freud-obra-e-fundador'].includes(lessonId))throw new Error('Aula não autorizada.');
     const uid=user.uid, seq=session;
     const snap=await getDocFromServer(doc(db,'users',uid,'lessonProgress',lessonId));
     if(seq!==session||cloud.user?.uid!==uid)throw new Error('A conta mudou durante o carregamento.');
@@ -30,7 +30,7 @@ const cloud = {
   async saveLessonProgress(lessonId,progress) {
     const user=cloud.user;
     if(!user)throw new Error('Entre com Google antes de salvar.');
-    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud'].includes(lessonId))throw new Error('Aula não autorizada.');
+    if(!['escuta-que-mudou-a-clinica','primeira-topica-freud','freud-obra-e-fundador'].includes(lessonId))throw new Error('Aula não autorizada.');
     if(!progress||typeof progress!=='object'||Array.isArray(progress))throw new Error('Progresso inválido.');
     const uid=user.uid,seq=session;
     // Somente a última alteração confirmada pelo servidor é considerada salva.
