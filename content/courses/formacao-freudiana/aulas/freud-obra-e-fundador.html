@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f0eb"><meta name="description" content="Aula interativa da Formação Freudiana sobre a obra, a colaboração com Breuer e o lugar do fundador."><title>Ateliê · Freud, a obra e o lugar do fundador</title>
+<script>if(parent!==window)document.documentElement.classList.add("embedded-in-atelie");</script><style>
+:root{--bg:#f4f0eb;--paper:#fffdfa;--ink:#29243a;--muted:#675f71;--accent:#755c9a;--accent-dark:#544075;--pale:#eee7f5;--line:#ded5e2;--good:#276850;--good-bg:#e7f3ea;--bad:#8b443e;--bad-bg:#f9ebe8;--shadow:0 10px 32px rgba(39,29,46,.07);--radius:20px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 90% 24% at 100% 0%,#e9e2f0 0%,transparent 84%),var(--bg);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.65}button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
+.shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted)}
+.intro{padding:36px 0 16px}.eyebrow{color:var(--accent-dark);letter-spacing:.16em;font-size:.76rem;text-transform:uppercase;font-weight:800}h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(2.45rem,5.2vw,4.2rem);letter-spacing:-.025em;line-height:1.1;margin:12px 0 14px}h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(1.68rem,3.5vw,2.35rem);letter-spacing:-.015em;line-height:1.2;margin:6px 0 18px}h3{font-size:1.12rem;line-height:1.35;margin:16px 0 8px}.lead{font-size:1.075rem;color:#51475a;line-height:1.75}.small-note{color:var(--muted);font-size:.87rem}.progress-wrap{margin:22px 0 10px;padding:17px 19px;background:rgba(255,253,250,.82);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:12px;font-weight:650;font-size:.87rem}.progress-head strong{color:var(--accent-dark)}.segments{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:11px}.segments span{height:9px;border:1px solid #e1d7e7;background:#e6dfeb;border-radius:100px}.segments span.done{background:linear-gradient(90deg,#71548e,#aa89c2);border-color:transparent}.progress-foot{color:var(--muted);font-size:.8rem;margin:9px 0 0}
+.timeline{position:relative;padding:7px 0 28px}.timeline::before{content:"";position:absolute;left:23px;top:28px;bottom:62px;width:2px;background:repeating-linear-gradient(to bottom,#c9b8d6 0 8px,transparent 8px 15px)}.step{position:relative;padding-left:56px;margin:14px 0 28px;scroll-margin-top:18px}.step[hidden]{display:none}.dot{position:absolute;top:20px;left:5px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid #bba6ca;background:var(--bg);font-weight:800;color:var(--accent-dark);z-index:2}.step.complete .dot{background:var(--good);border-color:var(--good);color:#fff}.panel{background:var(--paper);border:1px solid #e5dce5;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}.panel-inner{padding:clamp(21px,3.6vw,33px)}.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.kicker{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dark)}.pill{display:inline-block;padding:3px 10px;font-size:.71rem;border-radius:100px;background:#f1edf5;color:#604a7c;font-weight:800;white-space:nowrap}.pill.done{background:var(--good-bg);color:var(--good)}
+.video-placeholder{aspect-ratio:16/9;min-height:210px;border-radius:16px;background:linear-gradient(130deg,#221a31,#66507f 52%,#a98ea9);color:#fff;display:flex;gap:20px;align-items:center;justify-content:center;padding:24px 30px;text-align:left;overflow:hidden;position:relative}.video-placeholder::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 10%,#fff4,transparent 45%),repeating-linear-gradient(115deg,transparent 0 36px,#ffffff09 36px 37px)}.play-ring{position:relative;flex:none;border:1px solid #ffffffaa;border-radius:50%;display:grid;place-items:center;width:70px;height:70px;font-size:1.15rem;padding-left:4px;background:#ffffff10}.video-placeholder>div:last-child{position:relative;display:grid;gap:7px}.video-placeholder small{font-size:.73rem;letter-spacing:.16em;font-weight:800;color:#e8d8f3}.video-placeholder strong{font:400 clamp(1.5rem,3.8vw,2.5rem)/1.2 Georgia,serif}.video-placeholder span{font-size:.86rem;color:#f1eaf6}.script-note{border:1px solid var(--line);border-radius:13px;margin:20px 0;background:#f9f6fa}.script-note summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:15px 19px;font-weight:750;color:var(--accent-dark)}.script-content{padding:0 19px 8px;color:#4c4456}.script-content p{margin:0 0 13px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:0;border-radius:11px;background:var(--accent-dark);color:#fff;font-weight:750;padding:12px 19px;min-height:46px}.btn:hover:not(:disabled){background:#3e3059}.btn:disabled{background:#cbc2d1;cursor:not-allowed}.btn.secondary{background:#eee9f1;color:var(--accent-dark)}
+.portrait-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:23px 0}.portrait-pair figure{min-width:0;margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#f8f5f9}.portrait-pair img{width:100%;height:220px;object-fit:contain;display:block;background:#eee8e7;filter:grayscale(.35) sepia(.12)}.portrait-pair figcaption{padding:11px 15px;display:grid;line-height:1.4}.portrait-pair figcaption strong{font-family:Georgia,serif;font-size:1.15rem;font-weight:500}.portrait-pair figcaption span{font-size:.8rem;color:var(--muted)}
+.accent-callout{border-left:3px solid #ac91c7;background:#f6f0f8;color:#473754;padding:16px 18px;border-radius:0 12px 12px 0;margin:19px 0}.accordion-heading{margin-top:28px}.accordion-heading h3{font:400 1.5rem Georgia,serif}.accordion-heading p{color:var(--muted);font-size:.92rem;margin:0 0 14px}.accordion-list{display:grid;gap:9px}.accordion{border:1px solid #ded2e4;border-radius:14px;background:#fff;overflow:hidden}.accordion[open]{border-color:#bba5c9;box-shadow:0 8px 20px #614d7210}.accordion summary{list-style:none;cursor:pointer;display:flex;gap:14px;align-items:center;padding:15px 16px}.accordion summary::-webkit-details-marker{display:none}.acc-num{font-family:Georgia,serif;color:#785e94;font-size:1.35rem}.accordion summary>span:nth-child(2){display:grid;gap:2px;flex:1}.accordion summary strong{font-size:.95rem}.accordion summary small{font-size:.81rem;color:var(--muted)}.chevron{font-size:1.45rem;color:var(--accent-dark);transition:transform .2s}.accordion[open] .chevron{transform:rotate(180deg)}.accordion-body{padding:16px 20px 8px;border-top:1px solid var(--line);background:#faf7fb}.accordion-body p{margin:0 0 14px}.explore-status{font-size:.83rem;color:var(--accent-dark);font-weight:750;margin:14px 0}
+.quiz{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}.quiz-top{font-size:.75rem;letter-spacing:.11em;font-weight:800;color:var(--accent-dark)}.star{font-size:1rem}.quiz h3{font:400 1.25rem/1.45 Georgia,serif;margin:10px 0 18px}.answers{display:grid;gap:9px}.answer{width:100%;border:1.5px solid #e0d9e4;background:#fff;border-radius:11px;text-align:left;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;color:var(--ink);line-height:1.48}.answer .letter{width:26px;height:26px;flex:none;border:1px solid #d7c9df;display:grid;place-items:center;border-radius:50%;font-size:.75rem;font-weight:800;color:var(--accent-dark)}.answer:hover:not(:disabled){background:#faf6fd;border-color:#bca6d0}.answer[aria-pressed="true"]{border-color:var(--accent);background:#f3edf9}.answer.right{border-color:var(--good);background:var(--good-bg)}.answer.wrong{border-color:var(--bad);background:var(--bad-bg)}.feedback{border-radius:12px;padding:14px 16px;margin-top:15px;border:1px solid #ded1e5;background:#f4eef7}.feedback.good{background:var(--good-bg);border-color:#b2d5c0}.feedback.bad{background:var(--bad-bg);border-color:#ebc9bf}.feedback[hidden]{display:none}.feedback strong{display:block;margin-bottom:6px}.feedback ul{padding-left:20px;margin:9px 0 0}.feedback li{margin:6px 0}.feedback .review-link{font-size:.84rem}.comparison,.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:22px 0}.compare-card,.term-grid>div{background:#f8f5f8;border:1px solid #e2d7e5;border-radius:15px;padding:18px}.compare-card.accented{background:#f0eaf5;border-color:#cdb9dc}.compare-card>span,.term-tag{color:var(--accent-dark);font-weight:800;font-size:.7rem;letter-spacing:.08em}.compare-card h3,.term-grid h3{font:400 1.35rem Georgia,serif}.compare-card p,.term-grid p{font-size:.94rem;margin:8px 0 0}
+.work-timeline{display:grid;gap:9px;margin:24px 0}.work-timeline article{display:grid;grid-template-columns:84px 1fr;gap:16px;padding:19px;border:1px solid var(--line);background:#f8f5fa;border-radius:14px}.work-date{font:500 1.45rem Georgia,serif;color:var(--accent-dark)}.work-timeline h3{margin:0;font-family:Georgia,serif;font-weight:500}.work-timeline p{margin:8px 0 0;font-size:.93rem}
+.photo-feature{display:grid;grid-template-columns:190px 1fr;align-items:start;gap:22px}.photo-feature figure{margin:0;background:#eee8e7;border-radius:14px;overflow:hidden}.photo-feature img{display:block;width:100%;height:245px;object-fit:cover;filter:sepia(.13)}.photo-feature figcaption{font-size:.73rem;color:var(--muted);padding:8px}.photo-feature .lead{margin-top:0}.letter-panel{padding:21px;border:1px solid #dfd4c5;border-radius:15px;background:#faf6ed;margin-top:18px}.letter-panel>span{font-size:.73rem;font-weight:800;letter-spacing:.12em;color:#836e50}.letter-panel h3{font:400 1.45rem Georgia,serif}.letter-panel p{margin:7px 0}
+.founder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:23px 0}.founder-grid>div{padding:17px;background:#f7f2f9;border:1px solid #e0d2e5;border-radius:14px}.founder-grid span{font:500 1.4rem Georgia,serif;color:var(--accent)}.founder-grid h3{font:400 1.25rem Georgia,serif}.founder-grid p{font-size:.88rem;margin:7px 0}.reflect{padding:19px;background:#f0e7f5;border-radius:14px;border-left:3px solid #846aa3}.reflect span{font-size:.72rem;color:var(--accent-dark);letter-spacing:.1em;font-weight:800}.reflect p{font:italic 1.16rem Georgia,serif;margin:8px 0}.completion{display:flex;align-items:center;gap:18px;background:#f3eaf7;border:1px solid #dacbe2;border-radius:17px;padding:20px;margin:24px 0}.completion[hidden]{display:none}.completion-mark{flex:none;width:63px;height:63px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#c7a6d8,#6d5085);color:#fff;font:400 2.2rem Georgia,serif}.completion strong{font:400 1.55rem Georgia,serif}.completion p{margin:6px 0 0}.cloud{font-size:.79rem;color:var(--muted);margin:0 0 18px}.cloud[role=status]{min-height:1.4em}
+footer{padding:25px 0 45px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;display:flex;justify-content:space-between;gap:16px}
+html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mast{display:none}html.embedded-in-atelie .intro{padding:15px 0 22px}html.embedded-in-atelie .intro h1{display:none}html.embedded-in-atelie .shell{width:min(100% - 18px,860px)}
+@media(max-width:600px){.shell{width:min(100% - 20px,860px)}.intro{padding:18px 0 10px}.timeline::before{left:17px}.step{padding-left:42px;margin-bottom:20px}.dot{left:0;width:33px;height:33px;top:16px}.panel-inner{padding:18px}.panel-heading{gap:5px}.kicker{font-size:.65rem}.pill{font-size:.66rem}.video-placeholder{padding:18px;gap:12px;min-height:190px}.play-ring{height:48px;width:48px;font-size:.85rem}.portrait-pair{gap:9px}.portrait-pair img{height:160px}.portrait-pair figcaption{padding:9px}.comparison,.term-grid,.founder-grid,.photo-feature{grid-template-columns:1fr}.photo-feature figure{width:165px}.photo-feature img{height:185px}.work-timeline article{grid-template-columns:1fr;gap:6px}.work-date{font-size:1.25rem}.answer{font-size:.92rem}.completion{align-items:flex-start}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chevron{transition:none}}
+</style></head>
+<body><header class="mast shell"><span class="brand">Ateliê de Psicanálise</span><span class="small-tag">FORMAÇÃO FREUDIANA · AULA 04</span></header>
+<main class="shell"><section class="intro" aria-labelledby="lesson-title"><span class="eyebrow">FORMAÇÃO FREUDIANA · CONTINUAÇÃO</span><h1 id="lesson-title">Freud, a obra e o lugar do fundador</h1><div class="progress-wrap"><div class="progress-head"><span>Seu progresso na aula</span><strong id="progress-label">0 de 7 momentos</strong></div><div class="segments" role="progressbar" id="progressbar" aria-label="Momentos concluídos" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></div><p class="progress-foot" id="progress-next">A seguir: Abertura.</p></div></section>
+<p id="cloud-status" class="cloud" role="status" aria-live="polite">Carregando progresso...</p>
+<div class="timeline"><section class="step" id="step-1" aria-labelledby="step-title-1" >
+ <div class="dot" aria-hidden="true">1</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 01 · ABERTURA</span><span class="pill" id="badge-1">Disponível</span></div>
+ <h2 id="step-title-1">Freud, a obra e o lugar do fundador</h2>
+ <div class="video-placeholder" role="img" aria-label="Espaço reservado para o vídeo introdutório ainda não publicado"><div class="play-ring" aria-hidden="true">▶</div><div><small>VÍDEO INTRODUTÓRIO</small><strong>A obra, o homem e o fundador</strong><span>O roteiro está pronto; aqui entra a gravação quando for publicada.</span></div></div>
+ <p class="lead">Esta é a quarta aula da Formação Freudiana. Partimos dos conhecimentos já estudados para investigar a colaboração com Breuer, a disputa em torno da obra inaugural e o lugar de Freud como fundador.</p>
+ <details class="script-note"><summary>Leia o roteiro da abertura <span aria-hidden="true">⌄</span></summary><div class="script-content">
+ <p>Nas aulas anteriores, acompanhamos alguns dos acontecimentos e das formulações que contribuíram para o surgimento da psicanálise.</p>
+ <p>Mas existe uma questão que merece nossa atenção: o que levou Freud a dedicar sua carreira a um campo clínico que, naquele momento, não desfrutava do mesmo reconhecimento de outras especialidades médicas?</p>
+ <p>Freud era um jovem médico de formação sólida, mas enfrentava dificuldades financeiras e procurava construir seu futuro profissional. Ao mesmo tempo, vivia uma intensa relação amorosa com Martha Bernays e mantinha uma importante colaboração intelectual com Josef Breuer.</p>
+ <p>Foi nesse contexto que tomou decisões que marcariam sua trajetória. Ao atribuir dignidade clínica ao sofrimento das pacientes diagnosticadas com histeria, Freud também começou a questionar a posição tradicional do saber médico.</p>
+ <p>Essa experiência teria consequências importantes para sua produção intelectual. Em 1895, publicaria com Breuer os <em>Estudos sobre a histeria</em>. Mas por que essa obra nem sempre recebe o reconhecimento de texto inaugural da psicanálise, frequentemente atribuído a <em>A interpretação dos sonhos</em>?</p>
+ <p>E existe ainda uma curiosidade nessa trajetória. Muito antes de alcançar reconhecimento, Freud já imaginava que sua vida seria objeto de investigação por futuros biógrafos.</p>
+ <p>Décadas depois, seu nome não apenas seria mundialmente conhecido, mas também ocuparia uma posição singular na formação e na prática dos psicanalistas.</p>
+ <p>Nesta aula, vamos examinar essas diferentes dimensões de sua trajetória, chegando a uma questão fundamental: o que significa, para a psicanálise, a existência de um fundador cuja presença continua atravessando a relação dos analistas com sua própria disciplina?</p>
+ </div></details>
+ <div class="actions"><button class="btn" id="begin-lesson" type="button">Iniciar o percurso <span aria-hidden="true">→</span></button></div>
+ </div></article></section>
+<section class="step" id="step-2" aria-labelledby="step-title-2" hidden>
+ <div class="dot" aria-hidden="true">2</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 02 · RELAÇÃO HISTÓRICA</span><span class="pill" id="badge-2">Em percurso</span></div>
+ <h2 id="step-title-2">Breuer e Freud: uma parceria para além da clínica</h2>
+ <p class="lead">A transcrição menciona algo que passa despercebido quando reduzimos a relação dos dois médicos ao caso Anna O.: Breuer também foi interlocutor e apoiador de Freud em uma fase de dificuldades materiais e definição profissional.</p>
+ <div class="portrait-pair" aria-label="Retratos históricos de Breuer e Freud">
+ <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jozef_Breuer%2C_1877.jpg?width=500" alt="Retrato histórico do médico Josef Breuer" loading="lazy"><figcaption><strong>Josef Breuer</strong><span>Médico e interlocutor científico</span></figcaption></figure>
+ <figure><img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Freud_1885.jpg" alt="Retrato histórico de Sigmund Freud em 1885" loading="lazy"><figcaption><strong>Sigmund Freud</strong><span>Jovem médico em Viena</span></figcaption></figure></div>
+ <div class="accent-callout"><strong>O foco agora é a relação, não uma nova biografia.</strong> Anna O. e o método catártico já foram abordados na primeira aula. Aqui examinamos as condições e consequências de uma colaboração.</div>
+ <div class="accordion-heading"><h3>Três dimensões de uma parceria</h3><p>Abra os três documentos para liberar o desafio. Cada dimensão acrescenta algo à compreensão do vínculo.</p></div>
+ <div class="accordion-list" id="breuer-accordions">
+ <details class="accordion" data-explore="apoio"><summary><span class="acc-num">01</span><span><strong>O apoio pessoal e material</strong><small>As condições de trabalho do jovem Freud</small></span><span class="chevron" aria-hidden="true">⌄</span></summary><div class="accordion-body"><p>O professor chama atenção para as dificuldades financeiras de Freud. Breuer, médico mais estabelecido, não foi apenas uma referência científica: também o auxiliou em momentos importantes. Isso permite reconhecer uma dimensão frequentemente apagada nas narrativas de grandes descobertas: a produção intelectual depende de relações, oportunidades e condições materiais.</p><p>A ajuda recebida não determina, por si só, o conteúdo da teoria. Ela compõe o contexto em que Freud precisava construir sua vida profissional e sustentar uma atividade de pesquisa ainda incerta.</p></div></details>
+ <details class="accordion" data-explore="interlocucao"><summary><span class="acc-num">02</span><span><strong>A interlocução científica</strong><small>Como um caso se torna problema teórico</small></span><span class="chevron" aria-hidden="true">⌄</span></summary><div class="accordion-body"><p>O tratamento de Bertha Pappenheim foi conduzido por Breuer, e Freud conheceu o caso por meio de seu colega. Não vamos recontar aqui a história da paciente. A questão é outra: o que ocorre quando uma experiência clínica relatada por um médico se transforma em objeto de discussão e formulação conjunta?</p><p>Essa passagem entre relato, debate e hipótese é decisiva. Não corresponde a uma transferência simples de ideias de Breuer para Freud; envolve aproximações, reformulações e divergências que ganhariam importância posteriormente.</p></div></details>
+ <details class="accordion" data-explore="publicacao"><summary><span class="acc-num">03</span><span><strong>Da conversa ao texto compartilhado</strong><small>Comunicação preliminar e Estudos sobre a histeria</small></span><span class="chevron" aria-hidden="true">⌄</span></summary><div class="accordion-body"><p>Em 1893, os dois autores publicaram a <em>Comunicação preliminar</em>, que se tornaria parte de <em>Estudos sobre a histeria</em>, publicado em 1895. O livro reúne contribuições dos dois médicos, mas não apresenta uma posição inteiramente homogênea.</p><p>O caráter conjunto da publicação ajuda a pensar a psicanálise em formação: um campo que não surgiu pronto, nem pode ser explicado como ato isolado de um único indivíduo.</p></div></details>
+ </div>
+ <p class="explore-status" id="explore-status" aria-live="polite">0 de 3 dimensões exploradas</p>
+ <div id="stage2-quiz" hidden><section class="quiz" id="quiz-2" data-question="q2" aria-labelledby="quiz-title-2">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 01 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-2">Qual leitura melhor expressa a importância da relação entre Freud e Breuer?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>Breuer formulou sozinho a psicanálise, e Freud apenas divulgou seus resultados.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>A relação articulou apoio material, interlocução científica e colaboração editorial, sem eliminar diferenças entre os autores.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>O vínculo entre Breuer e Freud foi apenas financeiro; os textos nasceram de trabalhos independentes.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>Os dois médicos já defendiam em 1893 uma teoria psicanalítica plenamente concluída.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section></div>
+ </div></article></section>
+<section class="step" id="step-3" aria-labelledby="step-title-3" hidden>
+ <div class="dot" aria-hidden="true">3</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 03 · DECISÃO CLÍNICA</span><span class="pill" id="badge-3">Em percurso</span></div>
+ <h2 id="step-title-3">O risco de atribuir dignidade à histeria</h2>
+ <p class="lead">O professor chama de “ato de coragem” a decisão de Freud de levar a sério um sofrimento frequentemente desqualificado. O interesse deste trecho não está em repetir o surgimento da escuta, mas em examinar as consequências de uma escolha profissional.</p>
+ <div class="comparison"><div class="compare-card"><span>UM CAMINHO MAIS RECONHECIDO</span><h3>Carreira médica convencional</h3><p>Freud tinha uma formação universitária sólida, com professores influentes e possibilidades de inserção profissional. Essa trajetória não exigiria que ele se dedicasse de modo tão intenso aos problemas controversos da histeria.</p></div><div class="compare-card accented"><span>UM CAMINHO DE INVESTIGAÇÃO</span><h3>Conferir legitimidade ao sintoma</h3><p>Tomar o discurso das pacientes como material relevante significava recusar sua desqualificação imediata. Não foi um gesto isolado nem sem antecedentes, mas teve consequências importantes para a direção de sua pesquisa.</p></div></div>
+ <div class="accent-callout">Afirmar que Freud deu dignidade à histeria não significa apagar outros pesquisadores, nem romantizar a situação das pacientes. É uma interpretação do compromisso clínico destacado na transcrição.</div>
+ <section class="quiz" id="quiz-3" data-question="q3" aria-labelledby="quiz-title-3">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 02 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-3">O que se pode afirmar, com rigor histórico, sobre a escolha clínica destacada no vídeo?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>Freud abandonou a medicina imediatamente, sem qualquer continuidade com sua formação anterior.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>O interesse pela histeria garantiu a Freud reconhecimento instantâneo na medicina vienense.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>A decisão de tomar esses sintomas como objeto legítimo de investigação tinha implicações clínicas e profissionais, sem significar que Freud tenha sido o único a estudá-los.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>A dignidade clínica dos sintomas dependia da comprovação prévia de uma causa anatômica.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section>
+ </div></article></section>
+<section class="step" id="step-4" aria-labelledby="step-title-4" hidden>
+ <div class="dot" aria-hidden="true">4</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 04 · PRECISÃO CONCEITUAL</span><span class="pill" id="badge-4">Em percurso</span></div>
+ <h2 id="step-title-4">Da “limpeza de chaminé” à ab-reação</h2>
+ <p class="lead">Na transcrição, o professor retoma a expressão “limpeza de chaminé” e passa da palavra ao problema do afeto. O ponto novo desta etapa é distinguir uma formulação inicial de conceitos que só ganhariam desenvolvimento posterior.</p>
+ <div class="term-grid"><div><span class="term-tag">NO CONTEXTO INICIAL</span><h3>Ab-reação</h3><p>Na explicação catártica, a expressão de um afeto ligado a determinadas lembranças poderia modificar a força patogênica atribuída àquela experiência.</p></div><div><span class="term-tag">UMA ELABORAÇÃO POSTERIOR</span><h3>Trabalho psíquico</h3><p>Elaborar não se reduz necessariamente a uma descarga afetiva. A compreensão psicanalítica do trabalho sobre conflitos e repetições seria transformada ao longo da obra.</p></div></div>
+ <p class="small-note">O termo <em>ab-reação</em> pertence à fase inicial da teoria. Empregá-lo aqui não significa que uma simples expressão verbal seja suficiente para qualquer tratamento.</p>
+ <section class="quiz" id="quiz-4" data-question="q4" aria-labelledby="quiz-title-4">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 03 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-4">Qual distinção evita transformar uma hipótese inicial em regra geral de toda a psicanálise?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>A ab-reação designava, na formulação inicial, a descarga ou expressão de um afeto ligado a lembranças; não é sinônimo automático de elaboração psicanalítica.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>Ab-reação e associação livre são nomes intercambiáveis de uma única técnica definitiva.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>O método catártico prescindia de lembranças e da dimensão afetiva.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>Para Freud, falar em tratamento significava simplesmente informar ao paciente um diagnóstico correto.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section>
+ </div></article></section>
+<section class="step" id="step-5" aria-labelledby="step-title-5" hidden>
+ <div class="dot" aria-hidden="true">5</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 05 · HISTÓRIA DAS OBRAS</span><span class="pill" id="badge-5">Em percurso</span></div>
+ <h2 id="step-title-5">A disputa sobre o texto inaugural</h2>
+ <p class="lead">Aqui a transcrição apresenta uma tomada de posição: o professor considera que <em>Estudos sobre a histeria</em> pode receber o estatuto de texto inaugural da psicanálise. Sua tese depende do que entendemos por “inaugural”.</p>
+ <div class="work-timeline" aria-label="Três obras e suas abordagens"><article><span class="work-date">1895</span><div><h3>Estudos sobre a histeria</h3><p>Clínica, casos e formulações sobre memória, afeto, defesa e sintomas. Na leitura do professor, já existe aqui um trabalho propriamente psicanalítico.</p></div></article><article><span class="work-date">1895</span><div><h3>Projeto para uma psicologia</h3><p>Manuscrito que procura modelar processos psíquicos com instrumentos conceituais neurofisiológicos. Sua abordagem é distinta da organização clínica dos <em>Estudos</em>.</p></div></article><article><span class="work-date">1900</span><div><h3>A interpretação dos sonhos</h3><p>Concluída e publicada no final de 1899 com data editorial de 1900, é uma obra decisiva de sistematização teórica e frequentemente escolhida como marco fundador.</p></div></article></div>
+ <div class="accent-callout"><strong>Uma controvérsia, não uma trivia:</strong> uma obra pode inaugurar problemas e práticas antes que exista uma teoria plenamente sistematizada. O critério de nascimento de um campo precisa ser argumentado.</div>
+ <section class="quiz" id="quiz-5" data-question="q5" aria-labelledby="quiz-title-5">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 04 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-5">Como tratar com rigor a divergência sobre qual é a primeira obra psicanalítica?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>É obrigatório excluir Estudos sobre a histeria, porque o livro contém uma investigação médica.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>O Projeto para uma psicologia de 1895 e Estudos sobre a histeria empregam exatamente a mesma linguagem conceitual.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>A interpretação dos sonhos foi o primeiro texto escrito por Freud sobre qualquer assunto psíquico.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>A escolha da obra inaugural depende do critério empregado: início de uma investigação clínica propriamente psicanalítica ou formulação teórica mais sistemática.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section>
+ </div></article></section>
+<section class="step" id="step-6" aria-labelledby="step-title-6" hidden>
+ <div class="dot" aria-hidden="true">6</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 06 · DOCUMENTOS PESSOAIS</span><span class="pill" id="badge-6">Em percurso</span></div>
+ <h2 id="step-title-6">Martha, as cartas e a ideia de posteridade</h2>
+ <div class="photo-feature"><figure><img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Freud_1885.jpg" alt="Freud fotografado em 1885" loading="lazy"><figcaption>Freud em 1885 · retrato histórico</figcaption></figure><div><p class="lead">O professor aproxima a história da psicanálise do Freud que se apaixona por Martha Bernays, escreve cartas e tenta organizar a própria vida. Em uma correspondência de 1885, ele comenta a destruição de documentos pessoais e imagina o trabalho de futuros biógrafos.</p><p>Essa passagem é surpreendente porque antecede a notoriedade mundial. Mas não autoriza diagnosticar um traço de personalidade nem concluir que Freud previa com certeza o impacto de sua obra.</p></div></div>
+ <div class="letter-panel"><span>CORRESPONDÊNCIA · 1885</span><h3>Uma pergunta ao documento</h3><p>Quando alguém preserva ou destrói arquivos pessoais, também interfere na imagem que poderá ser construída sobre sua trajetória. O historiador pode examinar essa escolha, mas não deduzir dela, sem outras evidências, uma explicação total sobre a pessoa.</p><p class="small-note">Neste esboço, a passagem é apresentada em paráfrase, não como citação literal da carta.</p></div>
+ <section class="quiz" id="quiz-6" data-question="q6" aria-labelledby="quiz-title-6">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 05 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-6">O que a referência aos futuros biógrafos permite investigar sem extrapolar o documento?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>A carta demonstra que Freud conhecia com certeza o destino futuro de sua teoria.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>A correspondência permite analisar como Freud se apresentava e imaginava sua posteridade, sem transformar isso em prova de uma intenção inconsciente.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>O valor de uma carta pessoal está em explicar sozinha toda a obra de seu autor.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>Como Freud destruiu documentos, nenhuma investigação histórica de sua vida seria possível.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section>
+ </div></article></section>
+<section class="step" id="step-7" aria-labelledby="step-title-7" hidden>
+ <div class="dot" aria-hidden="true">7</div><article class="panel"><div class="panel-inner">
+ <div class="panel-heading"><span class="kicker">QUADRADINHO 07 · CONSEQUÊNCIAS</span><span class="pill" id="badge-7">Em percurso</span></div>
+ <h2 id="step-title-7">Freud e o lugar do fundador</h2>
+ <p class="lead">No encerramento da transcrição, o professor propõe que os analistas, queiram ou não, mantêm uma relação transferencial com o fundador. É uma afirmação forte, que merece ser trabalhada como hipótese de leitura da transmissão da psicanálise — e não como fato universal sobre cada profissional.</p>
+ <div class="founder-grid"><div><span>01</span><h3>Filiação</h3><p>O nome de Freud oferece uma referência histórica e conceitual, mesmo em escolas que se distanciam de aspectos importantes de sua obra.</p></div><div><span>02</span><h3>Idealização</h3><p>O fundador pode ser elevado à condição de autoridade intocável, dificultando o exame crítico de seus impasses e contradições.</p></div><div><span>03</span><h3>Crítica</h3><p>Estudar a psicanálise exige trabalhar com heranças, discordâncias e reformulações, sem reduzir uma teoria à pessoa que a fundou.</p></div></div>
+ <div class="reflect"><span>PERGUNTA PARA LEVAR À CLÍNICA</span><p>Como reconhecer o peso de Freud na transmissão da psicanálise sem fazer de seu nome um argumento de autoridade?</p></div>
+ <section class="quiz" id="quiz-7" data-question="q7" aria-labelledby="quiz-title-7">
+ <div class="quiz-top"><span class="star">✦</span> DESAFIO 06 · LEITURA CRÍTICA</div>
+ <h3 id="quiz-title-7">Qual posição melhor articula o lugar do fundador com a responsabilidade crítica do analista?</h3>
+ <div class="answers" role="group" aria-label="Alternativas do desafio"><button type="button" class="answer" data-choice="0" aria-pressed="false"><span class="letter">A</span><span>A filiação à psicanálise exige concordância permanente com todas as afirmações de Freud.</span></button>
+<button type="button" class="answer" data-choice="1" aria-pressed="false"><span class="letter">B</span><span>A presença de Freud como fundador demonstra que todos os analistas têm o mesmo vínculo subjetivo com ele.</span></button>
+<button type="button" class="answer" data-choice="2" aria-pressed="false"><span class="letter">C</span><span>O lugar do fundador pode produzir identificação, discordância e idealização; estudar isso não dispensa a crítica dos textos nem torna universal uma relação transferencial.</span></button>
+<button type="button" class="answer" data-choice="3" aria-pressed="false"><span class="letter">D</span><span>Criticar Freud significa necessariamente abandonar a psicanálise.</span></button></div>
+ <div class="actions"><button type="button" class="btn verify" disabled>Conferir resposta</button></div>
+ <div class="feedback" role="status" aria-live="polite" hidden></div>
+ </section>
+ <div class="completion" id="completion" hidden><div class="completion-mark" aria-hidden="true">ψ</div><div><strong>Percurso concluído</strong><p>Você percorreu os sete momentos desta aula. As perguntas e as leituras podem continuar no seu caderno de estudos.</p></div></div>
+ </div></article></section></div></main>
+<footer class="shell"><span>Ateliê · Estudos em Psicanálise</span><span>Primeira versão editorial · conteúdo em revisão</span></footer>
+<script>(function(){
+"use strict";
+const LESSON_ID="freud-obra-e-fundador";
+const questions={"q2":{"correct":1,"options":["Breuer formulou sozinho a psicanálise, e Freud apenas divulgou seus resultados.","A relação articulou apoio material, interlocução científica e colaboração editorial, sem eliminar diferenças entre os autores.","O vínculo entre Breuer e Freud foi apenas financeiro; os textos nasceram de trabalhos independentes.","Os dois médicos já defendiam em 1893 uma teoria psicanalítica plenamente concluída."],"notes":["Essa formulação apaga as contribuições distintas de ambos e confunde antecedentes clínicos com a teoria posterior.","Reconhece a complexidade do vínculo: cooperação e diferenças não se excluem.","A Comunicação preliminar e o livro de 1895 demonstram colaboração intelectual efetiva.","As formulações da época eram provisórias e não equivalem à psicanálise sistematizada depois."]},"q3":{"correct":2,"options":["Freud abandonou a medicina imediatamente, sem qualquer continuidade com sua formação anterior.","O interesse pela histeria garantiu a Freud reconhecimento instantâneo na medicina vienense.","A decisão de tomar esses sintomas como objeto legítimo de investigação tinha implicações clínicas e profissionais, sem significar que Freud tenha sido o único a estudá-los.","A dignidade clínica dos sintomas dependia da comprovação prévia de uma causa anatômica."],"notes":["Freud manteve vínculos e continuidades com sua formação médica e neurológica.","A história não registra um reconhecimento imediato e incontestado.","É uma leitura historicamente prudente do gesto ressaltado pelo professor.","A investigação freudiana justamente problematizava limites dessas explicações para certos fenômenos."]},"q4":{"correct":0,"options":["A ab-reação designava, na formulação inicial, a descarga ou expressão de um afeto ligado a lembranças; não é sinônimo automático de elaboração psicanalítica.","Ab-reação e associação livre são nomes intercambiáveis de uma única técnica definitiva.","O método catártico prescindia de lembranças e da dimensão afetiva.","Para Freud, falar em tratamento significava simplesmente informar ao paciente um diagnóstico correto."],"notes":["Essa diferenciação impede projetar conceitos posteriores sobre os primeiros textos.","As técnicas e as teorias foram transformadas ao longo do percurso freudiano.","Nas hipóteses iniciais, lembrança e afeto desempenhavam papel central.","Essa afirmação reproduz justamente uma posição de saber unilateral que a transcrição põe em discussão."]},"q5":{"correct":3,"options":["É obrigatório excluir Estudos sobre a histeria, porque o livro contém uma investigação médica.","O Projeto para uma psicologia de 1895 e Estudos sobre a histeria empregam exatamente a mesma linguagem conceitual.","A interpretação dos sonhos foi o primeiro texto escrito por Freud sobre qualquer assunto psíquico.","A escolha da obra inaugural depende do critério empregado: início de uma investigação clínica propriamente psicanalítica ou formulação teórica mais sistemática."],"notes":["O texto é de transição, mas isso não impede discutir seu estatuto inaugural.","O Projeto faz uso de um ferramental neurofisiológico distinto.","Freud escreveu e publicou sobre esses assuntos antes da obra dos sonhos.","É o centro da discussão proposta pelo professor na transcrição."]},"q6":{"correct":1,"options":["A carta demonstra que Freud conhecia com certeza o destino futuro de sua teoria.","A correspondência permite analisar como Freud se apresentava e imaginava sua posteridade, sem transformar isso em prova de uma intenção inconsciente.","O valor de uma carta pessoal está em explicar sozinha toda a obra de seu autor.","Como Freud destruiu documentos, nenhuma investigação histórica de sua vida seria possível."],"notes":["Antecipar um futuro não equivale a conhecê-lo.","Articula documento biográfico, contexto e interpretação sem fazer uma dedução indevida.","Nenhum documento isolado explica o conjunto de uma produção intelectual.","Persistiram vastas correspondências, publicações e registros estudados por biógrafos."]},"q7":{"correct":2,"options":["A filiação à psicanálise exige concordância permanente com todas as afirmações de Freud.","A presença de Freud como fundador demonstra que todos os analistas têm o mesmo vínculo subjetivo com ele.","O lugar do fundador pode produzir identificação, discordância e idealização; estudar isso não dispensa a crítica dos textos nem torna universal uma relação transferencial.","Criticar Freud significa necessariamente abandonar a psicanálise."],"notes":["A transmissão de uma disciplina não se reduz a obediência doutrinária.","A transcrição oferece uma hipótese de leitura, não uma regra psicológica comprovada para cada analista.","Reconhece o alcance e os limites da tese do professor sobre a presença do fundador.","É possível trabalhar criticamente dentro de tradições psicanalíticas distintas."]}};
+const labels=["Abertura","Breuer e Freud","Dignidade clínica","Ab-reação","Obras inaugurais","Martha e as cartas","O lugar do fundador"];
+const $=(s,root=document)=>root.querySelector(s);
+const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
+let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false;
+const origin=location.origin;
+function send(type,fields={}){if(parent!==window)parent.postMessage({type,lessonId:LESSON_ID,...fields},origin)}
+function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
+function scrollToElement(el){if(!el)return;requestAnimationFrame(()=>requestAnimationFrame(()=>{reportHeight();send("atelie-lesson-scroll-to",{target:"timeline",offsetTop:Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY))})}))}
+function save(){send("atelie-progress-save",{state:{done:[...done].sort((a,b)=>a-b),explored:[...expanded],answers,version:1},requestId:++lastRequest});$("#cloud-status").textContent="Salvando o progresso na sua conta..."}
+function markDone(n){
+ if(done.has(n))return;
+ done.add(n);render();save();
+ const next=$("#step-"+(n+1));if(next)scrollToElement(next);
+ else scrollToElement($("#completion"));
+}
+function render(){
+ for(let n=1;n<=7;n++){
+  const section=$("#step-"+n),completed=done.has(n),opened=n===1||done.has(n-1)||completed;
+  section.hidden=!opened;section.classList.toggle("complete",completed);$(".dot",section).textContent=completed?"✓":String(n);
+  $("#badge-"+n).textContent=completed?"Concluído":"Disponível";$("#badge-"+n).classList.toggle("done",completed);
+ }
+ const count=done.size;$("#progress-label").textContent=count+" de 7 momentos";
+ $$(".segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
+ $("#progressbar").setAttribute("aria-valuenow",String(count));
+ $("#progress-next").textContent=count===7?"Percurso completo. Volte aos trechos que quiser rever.":"A seguir: "+labels[Array.from({length:7},(_,i)=>i+1).find(n=>!done.has(n))-1]+".";
+ $("#begin-lesson").disabled=done.has(1);
+ $("#begin-lesson").textContent=done.has(1)?"Abertura concluída":"Iniciar o percurso →";
+ $("#explore-status").textContent=expanded.size+" de 3 dimensões exploradas";
+ $("#stage2-quiz").hidden=expanded.size<3;
+ $$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
+ for(const key of Object.keys(questions)){
+  const id=Number(key.slice(1)),block=$("#quiz-"+id);if(!block)continue;
+  const selected=answers[key];
+  $$(".answer",block).forEach((b,i)=>{const picked=Number(selected)===i;b.setAttribute("aria-pressed",String(picked));b.classList.toggle("right",done.has(id)&&i===questions[key].correct);b.classList.toggle("wrong",selected!==undefined&&!done.has(id)&&picked&&i!==questions[key].correct);b.disabled=done.has(id)});
+  $(".verify",block).disabled=done.has(id)||selected===undefined;
+  $(".verify",block).textContent=done.has(id)?"Resposta conferida":"Conferir resposta";
+  if(done.has(id))showFeedback(id,true,false);
+ }
+ $("#completion").hidden=!done.has(7);
+ reportHeight();
+}
+function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function showFeedback(n,correct,scroll){
+ const key="q"+n,q=questions[key],f=$(".feedback",$("#quiz-"+n));f.hidden=false;f.className="feedback "+(correct?"good":"bad");
+ const notes=q.notes.map((t,i)=>"<li><strong>"+String.fromCharCode(65+i)+".</strong> "+escapeHtml(t)+"</li>").join("");
+ f.innerHTML="<strong>"+(correct?"Resposta correta.":"Essa alternativa não resolve o problema.")+"</strong><p>"+(correct?"Vamos examinar as quatro alternativas.":"Observe a explicação da alternativa escolhida e tente novamente.")+"</p>"+(correct?"<ul>"+notes+"</ul>":"<p>"+escapeHtml(q.notes[Number(answers[key])])+"</p>");
+ if(scroll)scrollToElement(f);
+ reportHeight();
+}
+$("#begin-lesson").addEventListener("click",()=>markDone(1));
+$$(".accordion").forEach(item=>{
+ item.addEventListener("toggle",()=>{
+  if(item.open){
+   $$(".accordion").forEach(other=>{if(other!==item&&other.open)other.open=false});
+   expanded.add(item.dataset.explore);
+   render();save();
+   scrollToElement(item);
+  }else reportHeight();
+ });
+});
+$$(".quiz").forEach(block=>{
+ const key=block.dataset.question,n=Number(key.slice(1));
+ $$(".answer",block).forEach(btn=>btn.addEventListener("click",()=>{
+  if(done.has(n))return;answers[key]=Number(btn.dataset.choice);
+  $$(".answer",block).forEach(b=>{b.classList.remove("wrong","right");b.setAttribute("aria-pressed",String(b===btn))});
+  $(".verify",block).disabled=false;$(".feedback",block).hidden=true;
+ }));
+ $(".verify",block).addEventListener("click",()=>{
+  if(answers[key]===undefined)return;
+  const correct=Number(answers[key])===questions[key].correct;
+  if(correct){showFeedback(n,true,false);markDone(n)}
+  else{showFeedback(n,false,false);save()}
+ });
+});
+function load(state){
+ if(!state||typeof state!=="object"){cloudReady=true;$("#cloud-status").textContent="O percurso será salvo na sua conta Google.";return}
+ done=new Set((Array.isArray(state.done)?state.done:[]).filter(n=>Number.isInteger(n)&&n>=1&&n<=7));
+ expanded=new Set((Array.isArray(state.explored)?state.explored:[]).filter(x=>["apoio","interlocucao","publicacao"].includes(x)));
+ answers=state.answers&&typeof state.answers==="object"?state.answers:{};
+ cloudReady=true;$("#cloud-status").textContent="Seu progresso foi carregado da conta Google.";render();
+}
+window.addEventListener("message",event=>{
+ if(event.origin!==origin||event.source!==parent||!event.data||event.data.lessonId!==LESSON_ID)return;
+ const d=event.data;
+ if(d.type==="atelie-progress-load")load(d.state);
+ else if(d.type==="atelie-progress-saved"){$("#cloud-status").textContent="Progresso salvo na conta Google."}
+ else if(d.type==="atelie-progress-error"){$("#cloud-status").textContent="Não foi possível confirmar o salvamento. Confira sua conexão e tente novamente."}
+});
+window.addEventListener("load",reportHeight);window.addEventListener("resize",reportHeight);
+if("ResizeObserver" in window)new ResizeObserver(reportHeight).observe(document.body);
+render();
+if(parent!==window){$("#cloud-status").textContent="Consultando o progresso da sua conta Google...";send("atelie-progress-request")}
+else $("#cloud-status").textContent="Abra a aula pelo Ateliê e entre com Google para salvar o progresso.";
+})();</script></body></html>
