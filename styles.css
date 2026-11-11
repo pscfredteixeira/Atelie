@@ -155,7 +155,7 @@
 .freud-lesson-heading{margin:0 0 20px}
 .freud-lesson-heading h1{font:500 clamp(33px,4.3vw,56px)/1.08 var(--serif);letter-spacing:-.035em;color:#29212d;margin:11px 0 12px}
 .freud-lesson-heading p{font-size:15px;color:#6a5e6d;max-width:680px;line-height:1.65;margin:0}
-.freud-lesson-frame{display:block;width:100%;height:900px;border:0;background:transparent;overflow:hidden}
+.freud-lesson-frame{display:block;width:100%;height:380px;min-height:0;border:0;background:transparent;overflow:hidden}
 .freud-note-panel{background:#fffcfb;padding:clamp(19px,3.4vw,34px);border:1px solid #e5d9e4;border-radius:18px;margin:18px 0 30px}
 .freud-note-panel h2{font:400 clamp(22px,2.8vw,29px)/1.25 var(--serif);color:#3c3041;margin:8px 0 13px}
 .freud-note-panel textarea{display:block;width:100%;min-height:120px;background:#fff;border:1px solid #d4c4d4;border-radius:12px;padding:13px 15px;color:#342d38;font:inherit;font-size:14px;resize:vertical}
