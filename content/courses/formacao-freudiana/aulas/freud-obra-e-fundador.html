@@ -16,15 +16,152 @@
 footer{padding:25px 0 45px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;display:flex;justify-content:space-between;gap:16px}
 html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mast{display:none}html.embedded-in-atelie .intro{padding:15px 0 22px}html.embedded-in-atelie .intro h1{display:none}html.embedded-in-atelie .shell{width:min(100% - 18px,860px)}
 @media(max-width:600px){.shell{width:min(100% - 20px,860px)}.intro{padding:18px 0 10px}.timeline::before{left:17px}.step{padding-left:42px;margin-bottom:20px}.dot{left:0;width:33px;height:33px;top:16px}.panel-inner{padding:18px}.panel-heading{gap:5px}.kicker{font-size:.65rem}.pill{font-size:.66rem}.video-placeholder{padding:18px;gap:12px;min-height:190px}.play-ring{height:48px;width:48px;font-size:.85rem}.portrait-pair{gap:9px}.portrait-pair img{height:160px}.portrait-pair figcaption{padding:9px}.comparison,.term-grid,.founder-grid,.photo-feature{grid-template-columns:1fr}.photo-feature figure{width:165px}.photo-feature img{height:185px}.work-timeline article{grid-template-columns:1fr;gap:6px}.work-date{font-size:1.25rem}.answer{font-size:.92rem}.completion{align-items:flex-start}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chevron{transition:none}}
+
+/* CSS original da aula-modelo: A primeira tópica de Freud. */
+
+    html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mast{display:none}html.embedded-in-atelie .intro{padding:15px 0 25px}html.embedded-in-atelie .intro h1{display:none}html.embedded-in-atelie .shell{width:min(100% - 18px,860px)}html.embedded-in-atelie footer{padding-bottom:15px}
+
+    :root{--bg:#f4f0eb;--paper:#fffdfa;--ink:#29243a;--muted:#675f71;--accent:#755c9a;--accent-dark:#544075;--pale:#eee7f5;--line:#ded5e2;--good:#276850;--good-bg:#e7f3ea;--bad:#8b443e;--bad-bg:#f9ebe8;--shadow:0 10px 32px rgba(39,29,46,.07);--radius:20px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 90% 24% at 100% 0%,#e9e2f0 0%,transparent 84%),var(--bg);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.65}
+    button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}a:hover{text-decoration-thickness:2px} button:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
+    .shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #dcd5dc}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted);text-align:right}
+    .intro{padding:42px 0 28px}.eyebrow{color:var(--accent-dark);letter-spacing:.16em;font-size:.76rem;text-transform:uppercase;font-weight:800}.intro h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.08;letter-spacing:-.028em;font-size:clamp(2.4rem,5.2vw,4.2rem);max-width:740px;margin:13px 0 18px}.intro>p{max-width:670px;color:var(--muted);font-size:1.06rem;margin:0}
+    .progress-wrap{margin:23px 0 3px;padding:17px 19px;background:rgba(255,253,250,.8);border:1px solid var(--line);border-radius:16px}.progress-head{display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:650;font-size:.88rem}.progress-head span:last-child{color:var(--accent-dark);font-variant-numeric:tabular-nums}.track{height:7px;background:#e5dfea;border-radius:30px;margin-top:11px;overflow:hidden}.track>div{width:0;height:100%;background:linear-gradient(90deg,#8062a6,#b699c7);transition:width .45s ease;border-radius:inherit}
+    .progress-segments{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;margin-top:12px}
+    .progress-segments span{display:block;height:9px;border-radius:10px;background:#e6dfeb;border:1px solid #e1d7e7;transition:background .3s,box-shadow .3s}
+    .progress-segments span.done{background:linear-gradient(90deg,#71548e,#a989c2);border-color:transparent;box-shadow:0 1px 3px #6f53863a}
+    .progress-foot{margin:10px 0 0;color:#796b7e;font-size:.78rem;line-height:1.45}
+    @media(max-width:560px){.progress-segments{gap:3px}.progress-segments span{height:8px}}.roadmap{display:flex;gap:6px;color:var(--muted);font-size:.75rem;justify-content:space-between;margin-top:9px}.roadmap span:last-child{text-align:right}
+    .timeline{position:relative;padding:12px 0 30px}.timeline:before{content:"";position:absolute;top:35px;bottom:110px;left:23px;width:2px;background:repeating-linear-gradient(to bottom,#c9b8d6 0,#c9b8d6 8px,transparent 8px,transparent 15px)}
+    .step{position:relative;padding-left:56px;margin:15px 0 28px;scroll-margin-top:20px}.dot{position:absolute;left:5px;top:19px;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:2px solid #bba6ca;background:var(--bg);color:var(--accent-dark);font-weight:800;z-index:1}.step.complete .dot{background:var(--good);border-color:var(--good);color:#fff}.step.locked .dot,.step.planned .dot{color:#948b9a;border-color:#d8d0da}
+    .panel{background:var(--paper);border:1px solid #e5dce5;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-inner{padding:clamp(20px,3.5vw,33px)}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.kicker{font-weight:800;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-dark)}.pill{display:inline-flex;align-items:center;gap:5px;background:#f1edf5;color:#604a7c;border-radius:100px;padding:3px 10px;font-size:.72rem;font-weight:800;white-space:nowrap}.pill.done{background:var(--good-bg);color:var(--good)}.pill.lock{background:#eeebef;color:#7d7581}
+    h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(1.65rem,3.4vw,2.3rem);line-height:1.2;margin:5px 0 14px;letter-spacing:-.015em}h3{font-size:1.13rem;line-height:1.25;margin:24px 0 7px}.lead{font-size:1.1rem;color:#4f465b}.body-text p{margin:0 0 13px}.aside{border-left:3px solid #ac91c7;padding:14px 18px;margin:20px 0;background:#f6f0f8;color:#463753;border-radius:0 12px 12px 0}.aside strong{color:#39284a}.video{aspect-ratio:16/9;position:relative;border-radius:13px;overflow:hidden;background:#211c2c}.video iframe{width:100%;height:100%;border:0;display:block}.under-video{font-size:.87rem;color:var(--muted);margin:10px 0 22px}.separator{border:0;border-top:1px solid var(--line);margin:24px 0}.quiz{margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}.quiz-top{display:flex;align-items:center;gap:8px;color:var(--accent-dark);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800}.quiz h3{font-family:Georgia,serif;font-weight:400;font-size:1.25rem;margin:8px 0 17px;line-height:1.4}.answers{display:grid;gap:9px}.answer{width:100%;padding:13px 15px;text-align:left;border:1.5px solid #e0d9e4;border-radius:11px;background:#fff;line-height:1.45;color:var(--ink);display:flex;align-items:flex-start;gap:11px;transition:border-color .12s,background .12s}.answer:hover:not(:disabled){border-color:#bca6d0;background:#faf6fd}.answer[aria-pressed="true"]{border-color:var(--accent);background:#f3edf9}.answer .letter{flex:none;font-size:.75rem;display:grid;place-items:center;width:25px;height:25px;border:1px solid #d6c8df;border-radius:50%;font-weight:850;color:var(--accent-dark)}.answer:disabled{cursor:default;opacity:.82}.answer.right{border-color:var(--good);background:var(--good-bg);opacity:1}.answer.wrong{border-color:var(--bad);background:var(--bad-bg);opacity:1}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}.btn{border:0;color:#fff;background:var(--accent-dark);font-weight:750;border-radius:11px;padding:12px 19px;min-height:46px}.btn:hover:not(:disabled){background:#3e3059}.btn:disabled{background:#c9bfd1;cursor:not-allowed}.btn.secondary{background:#eee9f1;color:var(--accent-dark)}.btn.secondary:hover{background:#e5dce9}.feedback{margin-top:14px;padding:13px 16px;border-radius:12px;background:#f1ecf5;color:#453852;font-size:.94rem;border:1px solid #e1d5e7}.feedback.good{background:var(--good-bg);border-color:#b2d5c0;color:#205842}.feedback.bad{background:var(--bad-bg);border-color:#ebc9bf;color:#703630}.feedback[hidden]{display:none}.step-gate{margin-top:20px;padding:14px 16px;background:#eeedf4;color:#4f435f;border:1px dashed #c7b9cf;border-radius:12px;font-size:.9rem}
+    .locked .panel{background:#faf8fa;box-shadow:none;border-style:dashed;border-color:#d8cfdc}.locked h2{color:#86808a}.locked .hint{font-size:.93rem;color:#817989}.step-content[hidden]{display:none !important}.chapter-num{font-size:.78rem;color:var(--muted)}
+    .mini-timeline{margin:18px 0 22px;display:grid;gap:8px}.history{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:12px 15px;border-radius:12px;background:#f7f3f8}.history .year{font-family:Georgia,serif;font-weight:600;color:var(--accent-dark);font-size:1.3rem;line-height:1.1}.history p{margin:0;font-size:.92rem}
+    .systems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 15px}.system-tab{min-height:118px;border-radius:14px;border:1px solid #d8cadf;background:#f8f4f9;padding:16px 9px;text-align:center;color:var(--ink);display:grid;gap:5px;place-content:center}.system-tab span{color:#73617f;font-size:.77rem;letter-spacing:.12em;font-weight:800}.system-tab b{font-family:Georgia,serif;font-size:clamp(.95rem,2.1vw,1.3rem);font-weight:500}.system-tab:hover{background:#f0e9f5}.system-tab.active{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}.system-tab.active span{color:#e8dcef}.system-panel{border:1px solid #d8cadf;background:#f7f2f9;border-radius:14px;padding:19px;min-height:150px}.system-panel h3{font-family:Georgia,serif;margin:0 0 8px;font-size:1.35rem;font-weight:400}.system-panel p{margin:0}.note{font-size:.82rem;color:var(--muted);margin:10px 0 0}.tab-counter{font-size:.8rem;color:var(--muted);margin:8px 0}.locked-shelf{text-align:center;background:#fffdfa;border:1px dashed #d4ccd6;border-radius:15px;padding:22px;color:var(--muted);margin:12px 0 50px}.locked-shelf strong{color:var(--ink)}
+    footer{border-top:1px solid #d8cfd8;padding:26px 0 55px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start}footer div{font-size:.84rem;color:var(--muted)}.reset{border:1px solid #cdbed5;background:transparent;padding:10px 13px;border-radius:10px;color:var(--accent-dark);font-weight:750;white-space:nowrap}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .newly-unlocked{animation:reveal .65s ease both}@keyframes reveal{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(max-width:560px){.shell{width:min(100% - 24px,860px)}.mast{padding-top:20px}.small-tag{display:none}.intro{padding-top:29px}.step{padding-left:38px}.timeline:before{left:15px}.dot{left:-1px;width:32px;height:32px;font-size:.85rem;top:17px}.panel-inner{padding:19px 16px}.systems{gap:5px}.system-tab{padding:10px 3px;min-height:97px}.system-tab b{font-size:.88rem}.history{grid-template-columns:58px 1fr;padding:11px 9px;gap:8px}.actions .btn{width:100%}footer{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.newly-unlocked{animation:none}*{transition:none!important}}
+    /* Aula vertical em cartões, sem numeração lateral nem etapas futuras visíveis. */
+    .intro{padding:26px 0 16px}
+    .intro h1{margin:5px 0 0;font-size:clamp(2.25rem,5.4vw,3.7rem)}
+    .progress-wrap{margin:16px 0 0}
+    .timeline{padding:0}
+    .timeline::before,.step .dot,.panel-heading{display:none!important}
+    .step{padding-left:0;margin:16px 0 22px}
+    .step.locked,.step.planned{display:none!important}
+    .step .panel-inner>h2{margin:2px 0 20px}
+    .step.reveal{animation:tileOpen .72s cubic-bezier(.2,.9,.25,1) both}
+    @keyframes tileOpen{from{opacity:0;transform:translateY(-22px) scale(.986)}to{opacity:1;transform:translateY(0) scale(1)}}
+    #q1[hidden],#video-fallback[hidden],#video-gate[hidden]{display:none!important}
+    .video-gate{margin:17px 0 0;padding:12px 14px;border-radius:12px;border:1px solid #e4d8ec;background:#f7f2f9;color:#65516e;font-size:.89rem;text-align:center}
+    .video-fallback{margin:12px auto 0;display:block;border:0;background:none;color:var(--accent-dark);text-decoration:underline;cursor:pointer;font-size:.82rem;text-align:center}
+    #q1:not([hidden]){animation:tileOpen .5s ease both}
+    @media(max-width:560px){.intro{padding:16px 0 12px}.intro h1{font-size:clamp(2.05rem,8vw,2.65rem)}.step{padding-left:0;margin:14px 0 20px}.panel-inner{padding:20px 17px}.progress-wrap{margin-top:14px}.step .panel-inner>h2{margin-bottom:16px}}
+    @media(prefers-reduced-motion:reduce){.step.reveal,#q1:not([hidden]){animation:none!important}}
+
+    /* Microunidades da fundamentação: leitura curta, escolha de palavras e desbloqueio progressivo. */
+    .word-stage{padding:clamp(18px,3vw,25px);margin:18px 0;border:1px solid #ddd2e2;border-radius:18px;background:#fffdfa;box-shadow:0 5px 18px #6255770b}
+    .word-stage[hidden],#q2a[hidden],#q2b[hidden],#gate-2[hidden]{display:none!important}
+    .word-stage-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+    .word-stage-number{color:#71568a;font-size:.73rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
+    .word-stage-status{color:#276850;font-size:.8rem;font-weight:750}
+    .word-stage .body-text h3{margin-top:12px}
+    .word-exercise{margin-top:21px;padding:20px;border-radius:16px;background:linear-gradient(135deg,#f4edf8 0%,#f9f6fb 100%);border:1px solid #dccde7}
+    .word-exercise-head{display:flex;align-items:center;gap:13px;flex-wrap:wrap;color:#594471}
+    .word-exercise-head span{font-size:.7rem;font-weight:800;letter-spacing:.12em}
+    .word-exercise-head strong{font-size:.97rem}
+    .word-directions{font-size:.86rem;color:#655872;line-height:1.55;margin:9px 0 16px}
+    .word-sentence{font-size:clamp(1rem,2vw,1.13rem);line-height:2.65;color:#352c40;font-weight:700;margin-bottom:16px}
+    .word-sentence .word-prompt-text{font-weight:800;color:#292136}
+    .word-sentence .word-slot{font-weight:500}
+    .word-slot{display:inline-flex;vertical-align:middle;justify-content:center;align-items:center;min-width:124px;max-width:100%;min-height:42px;padding:6px 12px;margin:2px 4px;border:2px dashed #a58bbb;border-radius:10px;background:#fff;color:#8c79a0;font-size:.89rem;line-height:1.2;transition:background .2s,border-color .2s;touch-action:manipulation}
+    .word-slot.filled{color:#3a2b4c;font-weight:700;border-style:solid;border-color:#755c9a;background:#eee4f4}
+    .word-slot.dragover{border-color:#276850;background:#eaf4eb}
+    .word-slot:disabled{cursor:default;opacity:1}
+    .word-bank{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 18px}
+    .word-bank[hidden],.word-check[hidden]{display:none!important}
+    .word-chip{background:#fff;border:1px solid #cbb7d6;color:#4b3962;padding:9px 13px;border-radius:999px;font-weight:650;font-size:.89rem;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
+    .word-chip.word-dragging{opacity:.5;cursor:grabbing}
+    .word-ghost{position:fixed!important;z-index:9999;left:0;top:0;transform:translate(-50%,-50%) scale(1.07);margin:0;box-shadow:0 12px 28px #3b28564d;background:#fff!important;border:2px solid #795c9a!important;color:#3e2b51!important;border-radius:999px;pointer-events:none;touch-action:none;cursor:grabbing;opacity:.97;text-align:center}
+    .word-chip:hover:not(:disabled){border-color:#795c9a;background:#f5eef8}
+    .word-chip.used{opacity:.38;text-decoration:line-through;cursor:default}
+    .word-chip:disabled{cursor:default}
+    .word-check{min-height:41px;padding:9px 17px;font-size:.9rem}
+    .word-feedback{margin:13px 0 0;font-size:.9rem;color:#8b443e;line-height:1.5}
+    .word-exercise.solved{border-color:#b2d5c0;background:#eef6f0}
+    .word-exercise.solved .word-feedback{color:#276850}
+    .word-stage.is-new{animation:tileOpen .65s ease both}
+    @media(max-width:560px){.word-stage{padding:18px 14px}.word-exercise{padding:15px 12px}.word-sentence{line-height:2.9}.word-slot{min-width:105px;padding:6px 8px;font-size:.78rem}.word-chip{font-size:.82rem;padding:9px 12px}.word-check{width:100%}}
+
+    /* Conquista exibida apenas após completar todas as atividades da versão atual. */
+    #lesson-achievement[hidden]{display:none!important}
+    .achievement{position:relative;overflow:hidden;margin:32px 0 26px;padding:clamp(27px,5vw,55px);border:1px solid #d6c3a2;border-radius:26px;background:radial-gradient(circle at 83% 8%,#e8d8eb 0,transparent 42%),linear-gradient(140deg,#fffdf9 0%,#f5edf8 58%,#f8f1e8 100%);box-shadow:0 22px 54px rgba(69,47,87,.12);scroll-margin-top:30px}
+    .achievement:before{content:"";position:absolute;inset:10px;border:1px solid rgba(194,163,106,.42);border-radius:19px;pointer-events:none}
+    .achievement:after{content:"✧";position:absolute;right:30px;top:19px;color:#b99c68;font-size:27px;pointer-events:none}
+    .achievement-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,310px);align-items:center;gap:clamp(20px,4vw,45px);position:relative;z-index:1}
+    .achievement-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#7b618a;font-size:.72rem;letter-spacing:.18em;font-weight:850;text-transform:uppercase}
+    .achievement-eyebrow:before{content:"✦";color:#b79a65;font-size:15px}
+    .achievement h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,4.5vw,3.15rem);line-height:1.14;color:#342641;margin:12px 0 14px}
+    .achievement-message{color:#55495e;font-size:clamp(.99rem,1.8vw,1.1rem);line-height:1.75;max-width:520px;margin:0 0 18px}
+    .achievement-status{display:flex;align-items:center;gap:9px;font-weight:760;color:#5b4670;font-size:.9rem;margin:0 0 23px}
+    .achievement-status:before{content:"✓";display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:50%;background:#e8f0e6;color:#2c684d}
+    .achievement-medal{margin:0;display:grid;justify-items:center;gap:7px}
+    .achievement-medal img{display:block;width:min(100%,295px);height:auto;filter:drop-shadow(0 20px 19px rgba(69,45,82,.20))}
+    .achievement-medal figcaption{font-size:.74rem;letter-spacing:.10em;text-transform:uppercase;font-weight:750;color:#836f83;text-align:center}
+    .achievement-actions{display:flex;flex-wrap:wrap;gap:9px}
+    .achievement-actions a,.achievement-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:10px;text-decoration:none;font-size:.88rem;font-weight:750;border:1px solid #6a527e;cursor:pointer}
+    .achievement-actions .achievement-download{background:#624a78;color:#fff}
+    .achievement-actions .achievement-download:hover{background:#4a365e}
+    .achievement-actions .achievement-review{background:transparent;color:#5c476f}
+    .achievement-actions .achievement-review:hover{background:#ebe2ef}
+    .achievement-note{font-size:.76rem;color:#887987;line-height:1.5;margin:18px 0 0}
+    .achievement.earned{animation:achievementReveal .85s cubic-bezier(.18,.88,.24,1) both}
+    @keyframes achievementReveal{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:700px){.achievement{margin:24px 0;padding:30px 24px 33px}.achievement:before{inset:8px}.achievement-grid{grid-template-columns:1fr;gap:14px}.achievement-medal{grid-row:1}.achievement-medal img{width:min(100%,235px)}.achievement-copy{text-align:center}.achievement h2{margin-top:9px}.achievement-status,.achievement-actions{justify-content:center}.achievement-actions a,.achievement-actions button{flex:1 1 160px}.achievement-message{margin-inline:auto}}
+    @media(prefers-reduced-motion:reduce){.achievement.earned{animation:none}}
+    #third-audio-skip[hidden],#interactive-system-area[hidden]{display:none!important}
+    #third-video-player iframe{max-width:100%;display:block}
+/* Conteúdo pessoal somente após autenticação e leitura no Firestore. */
+body:not(.account-progress-ready) header.mast,body:not(.account-progress-ready) main.shell,
+body:not(.account-progress-ready) footer.shell{display:none!important}
+.account-progress-status{padding:15px 18px;max-width:800px;margin:25px auto;border-radius:12px;
+ background:#fffdfa;color:#5b4569;border:1px solid #dfd4e3;font:600 14px/1.5 Arial,sans-serif}
+  
+
+/* Elementos exclusivos desta aula mantêm o desenho da Primeira Tópica. */
+.progress-segments{grid-template-columns:repeat(7,minmax(0,1fr))}
+#step-1 .video{aspect-ratio:16/9}
+#video-gate[hidden],#video-fallback[hidden],#stage2-quiz[hidden]{display:none!important}
+#video-gate{margin-top:16px}
+#video-fallback{margin:12px auto 0;display:block;background:transparent;border:0;color:var(--accent-dark);text-decoration:underline;cursor:pointer;font-size:.82rem}
+#begin-lesson{margin-top:0}
+#begin-lesson:disabled{cursor:not-allowed}
+#preview-note{font-size:.84rem;color:var(--muted);margin:11px 0 4px}
+#step-1 .script-note{margin-top:17px}
+@media(max-width:560px){.progress-segments{gap:4px}.progress-segments span{height:9px}}
 </style></head>
-<body><header class="mast shell"><span class="brand">Ateliê de Psicanálise</span><span class="small-tag">FORMAÇÃO FREUDIANA · AULA 04</span></header>
-<main class="shell"><section class="intro" aria-labelledby="lesson-title"><span class="eyebrow">FORMAÇÃO FREUDIANA · CONTINUAÇÃO</span><h1 id="lesson-title">Freud, a obra e o lugar do fundador</h1><div class="progress-wrap"><div class="progress-head"><span>Seu progresso na aula</span><strong id="progress-label">0 de 7 momentos</strong></div><div class="segments" role="progressbar" id="progressbar" aria-label="Momentos concluídos" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></div><p class="progress-foot" id="progress-next">A seguir: Abertura.</p></div></section>
+<body class="account-progress-ready"><header class="mast shell"><span class="brand">Ateliê de Psicanálise</span><span class="small-tag">FORMAÇÃO FREUDIANA · AULA 04</span></header>
+<main class="shell"><section class="intro" aria-labelledby="lesson-title"><span class="eyebrow">FORMAÇÃO FREUDIANA · CONTINUAÇÃO</span><h1 id="lesson-title">Freud, a obra e o lugar do fundador</h1><div class="progress-wrap"><div class="progress-head"><span>Seu progresso na aula</span><strong id="progress-label">0 de 7 momentos</strong></div><div class="progress-segments" role="progressbar" id="progressbar" aria-label="Momentos concluídos" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></div><p class="progress-foot" id="progress-next">A seguir: Abertura.</p></div></section>
 <p id="cloud-status" class="cloud" role="status" aria-live="polite">Carregando progresso...</p>
 <div class="timeline"><section class="step" id="step-1" aria-labelledby="step-title-1" >
  <div class="dot" aria-hidden="true">1</div><article class="panel"><div class="panel-inner">
  <div class="panel-heading"><span class="kicker">QUADRADINHO 01 · ABERTURA</span><span class="pill" id="badge-1">Disponível</span></div>
  <h2 id="step-title-1">Freud, a obra e o lugar do fundador</h2>
- <div class="video-placeholder" role="img" aria-label="Espaço reservado para o vídeo introdutório ainda não publicado"><div class="play-ring" aria-hidden="true">▶</div><div><small>VÍDEO INTRODUTÓRIO</small><strong>A obra, o homem e o fundador</strong><span>O roteiro está pronto; aqui entra a gravação quando for publicada.</span></div></div>
+ <div class="video">
+ <iframe id="video-introducao"
+ src="https://www.youtube-nocookie.com/embed/1gYNfeSIjNI?enablejsapi=1&amp;playsinline=1&amp;rel=0"
+ title="Vídeo provisório: A primeira tópica de Freud"
+ loading="eager" referrerpolicy="strict-origin-when-cross-origin"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
+ </div>
+ <p id="preview-note" class="under-video"><strong>Vídeo provisório.</strong> Estamos usando a abertura já publicada de “A primeira tópica de Freud” para testar o layout. O vídeo específico desta aula será colocado aqui depois.</p>
+ <div class="video-gate" id="video-gate" role="status" aria-live="polite">Assista ao vídeo de referência para avançar, ou use a opção de prévia abaixo.</div>
+ <button type="button" class="video-fallback" id="video-fallback">Abrir a atividade sem assistir ao vídeo provisório</button>
  <p class="lead">Esta é a quarta aula da Formação Freudiana. Partimos dos conhecimentos já estudados para investigar a colaboração com Breuer, a disputa em torno da obra inaugural e o lugar de Freud como fundador.</p>
  <details class="script-note"><summary>Leia o roteiro da abertura <span aria-hidden="true">⌄</span></summary><div class="script-content">
  <p>Nas aulas anteriores, acompanhamos alguns dos acontecimentos e das formulações que contribuíram para o surgimento da psicanálise.</p>
@@ -36,7 +173,7 @@ html.embedded-in-atelie body{background:transparent}html.embedded-in-atelie .mas
  <p>Décadas depois, seu nome não apenas seria mundialmente conhecido, mas também ocuparia uma posição singular na formação e na prática dos psicanalistas.</p>
  <p>Nesta aula, vamos examinar essas diferentes dimensões de sua trajetória, chegando a uma questão fundamental: o que significa, para a psicanálise, a existência de um fundador cuja presença continua atravessando a relação dos analistas com sua própria disciplina?</p>
  </div></details>
- <div class="actions"><button class="btn" id="begin-lesson" type="button">Iniciar o percurso <span aria-hidden="true">→</span></button></div>
+ <div class="actions"><button class="btn" id="begin-lesson" type="button" disabled>Assista à abertura para continuar →</button></div>
  </div></article></section>
 <section class="step" id="step-2" aria-labelledby="step-title-2" hidden>
  <div class="dot" aria-hidden="true">2</div><article class="panel"><div class="panel-inner">
@@ -163,7 +300,7 @@ const questions={"q2":{"correct":1,"options":["Breuer formulou sozinho a psican�
 const labels=["Abertura","Breuer e Freud","Dignidade clínica","Ab-reação","Obras inaugurais","Martha e as cartas","O lugar do fundador"];
 const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
-let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false;
+let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false,videoApiReady=false;
 const origin=location.origin;
 function send(type,fields={}){if(parent!==window)parent.postMessage({type,lessonId:LESSON_ID,...fields},origin)}
 function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
@@ -184,11 +321,13 @@ function render(){
   $("#badge-"+n).textContent=completed?"Concluído":"Disponível";$("#badge-"+n).classList.toggle("done",completed);
  }
  const count=done.size;$("#progress-label").textContent=count+" de 7 momentos";
- $$(".segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
+ $(".progress-segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
  $("#progressbar").setAttribute("aria-valuenow",String(count));
  $("#progress-next").textContent=count===7?"Percurso completo. Volte aos trechos que quiser rever.":"A seguir: "+labels[Array.from({length:7},(_,i)=>i+1).find(n=>!done.has(n))-1]+".";
- $("#begin-lesson").disabled=done.has(1);
- $("#begin-lesson").textContent=done.has(1)?"Abertura concluída":"Iniciar o percurso →";
+ $("#begin-lesson").disabled=done.has(1)||!videoApiReady;
+ $("#begin-lesson").textContent=done.has(1)?"Abertura concluída":videoApiReady?"Iniciar o percurso →":"Assista à abertura para continuar →";
+ $("#video-gate").hidden=done.has(1)||videoApiReady;
+ $("#video-fallback").hidden=done.has(1)||videoApiReady;
  $("#explore-status").textContent=expanded.size+" de 3 dimensões exploradas";
  $("#stage2-quiz").hidden=expanded.size<3;
  $$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
@@ -211,7 +350,28 @@ function showFeedback(n,correct,scroll){
  if(scroll)scrollToElement(f);
  reportHeight();
 }
-$("#begin-lesson").addEventListener("click",()=>markDone(1));
+function unlockOpening(){
+ if(done.has(1))return;
+ videoApiReady=true;render();
+ $("#video-gate").hidden=true;
+ $("#video-fallback").hidden=true;
+ $("#begin-lesson").disabled=false;
+}
+$("#video-fallback").addEventListener("click",unlockOpening);
+$("#begin-lesson").addEventListener("click",()=>{if(videoApiReady||done.has(1))markDone(1)});
+const introFrame=$("#video-introducao");
+try{if(location.protocol==="http:"||location.protocol==="https:"){
+ const url=new URL(introFrame.src);url.searchParams.set("origin",location.origin);introFrame.src=url.href;
+}}catch{}
+window.onYouTubeIframeAPIReady=()=>{
+ try{new YT.Player("video-introducao",{events:{
+  onStateChange:event=>{if(event.data===YT.PlayerState.ENDED)unlockOpening();},
+  onError:()=>{$("#video-fallback").hidden=false;}
+ }})}catch{$("#video-fallback").hidden=false}
+};
+const ytScript=document.createElement("script");
+ytScript.src="https://www.youtube.com/iframe_api";ytScript.async=true;
+document.head.appendChild(ytScript);
 document.addEventListener("click",event=>{
  const btn=event.target.closest("[data-continue]");
  if(!btn)return;
@@ -245,6 +405,7 @@ $$(".quiz").forEach(block=>{
 function load(state){
  if(!state||typeof state!=="object"){cloudReady=true;$("#cloud-status").textContent="O percurso será salvo na sua conta Google.";return}
  done=new Set((Array.isArray(state.done)?state.done:[]).filter(n=>Number.isInteger(n)&&n>=1&&n<=7));
+ videoApiReady=done.has(1);
  expanded=new Set((Array.isArray(state.explored)?state.explored:[]).filter(x=>["apoio","interlocucao","publicacao"].includes(x)));
  answers=state.answers&&typeof state.answers==="object"?state.answers:{};
  cloudReady=true;$("#cloud-status").textContent="Seu progresso foi carregado da conta Google.";render();
