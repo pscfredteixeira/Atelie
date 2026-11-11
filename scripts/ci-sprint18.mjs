@@ -9,9 +9,11 @@ try{
  const base='http://127.0.0.1:4173/';
  await page.goto(base,{waitUntil:'domcontentloaded'});
  await page.locator('.course-card').first().waitFor();
- assert.equal(await page.locator('.course-card').count(),1);
+ assert.equal(await page.locator('.course-card').count(),2,'O catálogo reúne Início da Psicanálise e Formação Freudiana');
  await page.goto(base+'#/curso/formacao-freudiana',{waitUntil:'domcontentloaded'});
- assert.equal(await page.locator('.course-program-module').count(),3);
+ assert.equal(await page.locator('.course-program-flat-lesson').count(),1,'A Formação Freudiana oferece a primeira tópica');
+ await page.goto(base+'#/curso/introducao-a-psicanalise',{waitUntil:'domcontentloaded'});
+ assert.equal(await page.locator('.course-program-flat-lesson').count(),3,'O início da psicanálise oferece três aulas');
  await page.goto(base+'#/aula/escuta-que-mudou-a-clinica',{waitUntil:'domcontentloaded'});
  await page.locator('[data-profile-login]').waitFor();
  assert.equal(await page.locator('#freudLessonFrame').count(),0);
@@ -40,11 +42,11 @@ try{
  await page.waitForFunction(()=>window.__writes.some(x=>x.notes?.['primeira-topica-freud']==='Anotação ligada à conta A'));
  await page.goto(base+'#/caderno',{waitUntil:'domcontentloaded'});
  await page.getByText('Anotação ligada à conta A',{exact:false}).waitFor();
- console.log('OK — única Formação Freudiana, autenticação exigida e notas da conta gravadas via Firestore simulado.');
+ console.log('OK — dois percursos, autenticação exigida e notas da conta gravadas via Firestore simulado.');
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  await mobile.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
  await mobile.goto(base+'#/cursos',{waitUntil:'domcontentloaded'});
- assert.equal(await mobile.locator('.course-card').count(),1);
+ assert.equal(await mobile.locator('.course-card').count(),2);
  assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true);
  await mobile.locator('#menuToggle').click();
  await mobile.locator('#sidebar a[href="#/perfil"]').click();
