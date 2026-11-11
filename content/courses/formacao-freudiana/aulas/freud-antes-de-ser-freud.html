@@ -340,7 +340,19 @@ state.videoWatched=state.videoWatched===true||state.done.includes(1);
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 function allowed(n){return n===1||state.done.includes(n-1)}
-function reportHeight(){if(parent===window)return;parent.postMessage({type:'atelie-lesson-height',height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))},location.origin)}
+// O scrollHeight do documento inclui a altura do viewport do iframe.
+// Se o iframe cresce, medir scrollHeight impede o redimensionamento para baixo.
+/// Medir o rodapé em coordenadas do conteúdo evita esse ciclo, inclusive no iOS.
+let lastReportedHeight=0;
+function reportHeight(){
+ if(parent===window)return;
+ const end=document.querySelector('footer.shell')||document.querySelector('main.shell');
+ if(!end)return;
+ const height=Math.ceil(Math.max(100,end.getBoundingClientRect().bottom+window.scrollY+4));
+ if(!Number.isFinite(height)||height===lastReportedHeight)return;
+ lastReportedHeight=height;
+ parent.postMessage({type:'atelie-lesson-height',height},location.origin);
+}
 function updateProgress(){
 const count=state.done.length;
 $('#progress-label').textContent=count+' de 6 momentos concluídos';
