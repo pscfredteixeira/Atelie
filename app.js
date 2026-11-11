@@ -168,7 +168,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
   ' DE '+String(FREUD_LESSONS.length).padStart(2,'0')+'</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-fundador-revisao-quadro-20261111-v4':id===FREUD_THIRD_ID?'freud-terceira-aula-progressiva-20261110-v3':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
+  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-fundador-sanfona-scroll-20261111-v5':id===FREUD_THIRD_ID?'freud-terceira-aula-progressiva-20261110-v3':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
   (id===FREUD_THIRD_ID?'':'<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
@@ -797,13 +797,17 @@ window.addEventListener('message',event=>{
   // Reenquadra o início do marco, em vez de deixar o texto crescer acima
   // do ponto atualmente visível no Safari/iOS.
   const offset=Number(data.offsetTop);
-  if(data.lessonId===routeLessonId&&data.target==='timeline'&&
+  if(data.lessonId===routeLessonId&&
+     (data.target==='timeline'||(routeLessonId===FREUD_FOURTH_ID&&data.target==='accordion'))&&
      Number.isFinite(offset)&&offset>=0&&offset<=30000){
    requestAnimationFrame(()=>requestAnimationFrame(()=>{
     if(frame!==$('#freudLessonFrame')||currentLessonId()!==routeLessonId)return;
     const frameTop=frame.getBoundingClientRect().top+window.scrollY;
-    const top=Math.max(0,Math.round(frameTop+offset-94));
-    window.scrollTo({top,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    const isAccordion=data.target==='accordion';
+    const top=Math.max(0,Math.round(frameTop+offset-(isAccordion?88:94)));
+    // Evita que a animação de rolagem concorra com o redimensionamento
+    // do iframe e o fechamento de outra sanfona, sobretudo no Safari iOS.
+    window.scrollTo({top,behavior:isAccordion?'instant':window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
    }));
   }
   return;
