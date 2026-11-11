@@ -531,3 +531,34 @@ body.is-lesson-page .topbar .search-form{display:none!important}
  .course-program-flat-no{flex-basis:32px;height:32px}
  .course-program-flat-lesson .course-program-open{margin-left:42px}
 }
+
+
+/* Curso único com dois percursos expansíveis. Os dois começam recolhidos. */
+.course-context-nav .course-drawer-picker{display:block;margin-bottom:10px}
+.study-area-menu{display:grid;gap:11px;padding:2px 0 10px}
+.study-area-accordion{background:#28232b;border:1px solid #57485b;border-radius:13px;overflow:hidden;min-width:0}
+.study-area-accordion[open]{border-color:#8b6b92;background:#2d2630}
+.study-area-accordion>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:19px 15px;min-height:79px;color:#f9eef9}
+.study-area-accordion>summary::-webkit-details-marker{display:none}
+.study-area-accordion>summary:hover{background:#3b3040}
+.study-area-accordion>summary:focus-visible{outline:2px solid #e0bee6;outline-offset:-3px}
+.study-area-copy{display:grid;gap:5px;min-width:0}
+.study-area-copy strong{font-size:16px;font-weight:760;line-height:1.34;overflow-wrap:anywhere}
+.study-area-copy small{font-size:11px;color:#c6acc9}
+.study-area-chevron{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:9px;border:1px solid #6c5970;background:#423747;color:#f3def2}
+.study-area-chevron svg{width:18px;height:18px;transition:transform .2s ease}
+.study-area-accordion[open] .study-area-chevron svg{transform:rotate(180deg)}
+.study-area-accordion>.course-drawer-lessons{padding:6px 7px 12px;border-top:1px solid #554858;margin:0;background:#252128}
+.study-area-accordion .course-drawer-lesson{background:transparent}
+.study-area-accordion .course-drawer-lesson.is-current{background:#493751}
+.study-area-accordion .course-drawer-lesson:hover{background:#43364a}
+.course-program-accordion{display:grid;gap:13px;margin:14px 0 27px}
+.course-program-module>summary{min-height:88px}
+.course-program-module[open] .course-program-module-no{background:#e2cfe6}
+@media(max-width:790px){
+ .study-area-menu{gap:13px;padding:2px 0 12px}
+ .study-area-accordion>summary{padding:20px 14px;min-height:82px}
+ .study-area-copy strong{font-size:16px}
+ .study-area-chevron{width:36px;height:36px;flex-basis:36px}
+ .study-area-accordion>.course-drawer-lessons{padding:8px 7px 12px}
+}
