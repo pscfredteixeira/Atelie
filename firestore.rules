@@ -12,20 +12,22 @@ service cloud.firestore {
           && request.resource.data.saved.size() <= 3
           && request.resource.data.saved.hasOnly(['introducao-a-psicanalise','formacao-freudiana','fundamentos-da-psicanalise'])
           && request.resource.data.completed is list
-          && request.resource.data.completed.size() <= 5
-          && request.resource.data.completed.hasOnly(['escuta','pergunta-freud','conflito-exemplo','escuta-que-mudou-a-clinica','primeira-topica-freud'])
+          && request.resource.data.completed.size() <= 6
+          && request.resource.data.completed.hasOnly(['escuta','pergunta-freud','conflito-exemplo','escuta-que-mudou-a-clinica','primeira-topica-freud','freud-obra-e-fundador'])
           && request.resource.data.notes is map
-          && request.resource.data.notes.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo','escuta-que-mudou-a-clinica','primeira-topica-freud'])
+          && request.resource.data.notes.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo','escuta-que-mudou-a-clinica','primeira-topica-freud','freud-obra-e-fundador'])
           && request.resource.data.notes.get('escuta','') is string
           && request.resource.data.notes.get('pergunta-freud','') is string
           && request.resource.data.notes.get('conflito-exemplo','') is string
           && request.resource.data.notes.get('escuta-que-mudou-a-clinica','') is string
           && request.resource.data.notes.get('primeira-topica-freud','') is string
+          && request.resource.data.notes.get('freud-obra-e-fundador','') is string
           && request.resource.data.notes.get('escuta','').size() <= 5000
           && request.resource.data.notes.get('pergunta-freud','').size() <= 5000
           && request.resource.data.notes.get('conflito-exemplo','').size() <= 5000
           && request.resource.data.notes.get('escuta-que-mudou-a-clinica','').size() <= 5000
           && request.resource.data.notes.get('primeira-topica-freud','').size() <= 5000
+          && request.resource.data.notes.get('freud-obra-e-fundador','').size() <= 5000
           && request.resource.data.answers is map
           && request.resource.data.answers.keys().hasOnly(['escuta','pergunta-freud','conflito-exemplo'])
           && request.resource.data.answers.size() <= 3
@@ -40,14 +42,14 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Microetapas das duas aulas. Não há fallback para dados de outro UID.
+    // Microetapas da formação freudiana. Não há fallback para dados de outro UID.
     // No cliente, a conclusão é formativa, não constitui certificação.
     match /users/{userId}/lessonProgress/{lessonId} {
       function owner() {
         return request.auth != null && request.auth.uid == userId;
       }
       function knownLesson() {
-        return lessonId in ['escuta-que-mudou-a-clinica','primeira-topica-freud'];
+        return lessonId in ['escuta-que-mudou-a-clinica','primeira-topica-freud','freud-obra-e-fundador'];
       }
       function validEscuta(p) {
         return p.keys().hasOnly([
@@ -80,6 +82,18 @@ service cloud.firestore {
         && p.wordsCompleted is list && p.wordsCompleted.size() <= 4
         && p.wordsCompleted.hasOnly([1,2,3,4]);
       }
+      function validObraFundador(p) {
+        return p.keys().hasOnly(['done','explored','answers','version'])
+        && p.keys().hasAll(['done','explored','answers','version'])
+        && p.version == 1
+        && p.done is list && p.done.size() <= 7
+        && p.done.hasOnly([1,2,3,4,5,6,7])
+        && p.explored is list && p.explored.size() <= 3
+        && p.explored.hasOnly(['apoio','interlocucao','publicacao'])
+        && p.answers is map && p.answers.size() <= 6
+        && p.answers.keys().hasOnly(['q2','q3','q4','q5','q6','q7'])
+        && p.answers.values().hasOnly([0,1,2,3]);
+      }
       function validDocument() {
         return request.resource.data.keys().hasOnly(['schemaVersion','state','updatedAt'])
         && request.resource.data.keys().hasAll(['schemaVersion','state','updatedAt'])
@@ -90,6 +104,7 @@ service cloud.firestore {
         && (
           (lessonId == 'escuta-que-mudou-a-clinica' && validEscuta(request.resource.data.state))
           || (lessonId == 'primeira-topica-freud' && validTopica(request.resource.data.state))
+          || (lessonId == 'freud-obra-e-fundador' && validObraFundador(request.resource.data.state))
         );
       }
       allow get: if owner() && knownLesson();
