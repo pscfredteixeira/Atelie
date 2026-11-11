@@ -92,7 +92,7 @@ try{
  }
  await lesson.locator('#complete-reading').click();
  await lesson.locator('#lesson-achievement').waitFor({state:'visible'});
- assert.equal(await lesson.locator('#lesson-achievement .achievement-medal img').getAttribute('src'),'../../../../assets/insignia-freud-antes-de-ser-freud.svg');
+ assert.equal(await lesson.locator('#lesson-achievement .achievement-medal img').getAttribute('src'),'../../../../assets/insignia-freud-antes-de-ser-freud.svg?v=fundo-transparente-1');
  assert.match(await lesson.locator('#lesson-achievement').innerText(),/Insígnia conquistada/);
  console.log('OK — Terceira aula abre dentro do Ateliê, com vídeo e desbloqueio progressivo.');
  console.log('OK — Programa organizado em módulos e navegação desktop preservada.');
