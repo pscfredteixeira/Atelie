@@ -459,6 +459,12 @@ $('#searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('#gl
 $('#menuToggle').addEventListener('click',toggleMenu);
 $('#sidebarClose').addEventListener('click',()=>{closeMenu();$('#menuToggle').focus({preventScroll:true});});
 $('#overlay').addEventListener('click',closeMenu);
+// O seletor de cursos continua funcional quando novos cursos forem publicados.
+document.addEventListener('change',event=>{
+ if(event.target.id!=='sidebarCourseSelect')return;
+ const slug=event.target.value;
+ if(PUBLISHED_COURSES().some(c=>c.slug===slug))location.hash='#/curso/'+slug;
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!e.altKey&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$('#globalSearch').focus()}});
 $('#loginButton')?.addEventListener('click', async () => {
  if (demoMode && !activeUid) { exitDemo(); return; }
