@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#1b1723">
-<title>Gabinete de Freud | Protótipo 3D — Ateliê de Psicanálise</title>
+<title>O arquivo de Breuer, Anna O. e Freud · Escape Room 3D — Ateliê</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
 :root{--gold:#d5b37d;--cream:#f8f2e9;--dark:#1c1920;--purple:#63516a;--line:rgba(255,255,255,.2)}
@@ -16,20 +16,52 @@
 @media(pointer:coarse){.mobilePad{display:grid}.instructions{bottom:calc(max(20px,env(safe-area-inset-bottom)) + 10px);font-size:11px;max-width:93vw;padding:9px 13px}.help{bottom:calc(max(24px,env(safe-area-inset-bottom)) + 127px);right:18px}.marker span{font-size:10px;top:46px}.marker{width:40px;height:40px}}
 @media(max-width:480px){.top{top:max(10px,env(safe-area-inset-top));left:10px;right:10px}.brand{padding:8px 10px}.brand strong{font-size:15px}.brand small{font-size:10px}.progress{padding:9px 10px}.progress b{font-size:11px}.eyebrow{font-size:9px}.panel{padding:24px}.panel p{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.marker{animation:none}}
+
+/* Ateliê — elementos pedagógicos do arquivo histórico */
+.question-title{font-family:'Playfair Display',Georgia,serif;font-weight:500;color:#322739;font-size:21px;line-height:1.3;margin:16px 0 10px}
+.proof{background:#eee6dc;border:1px solid #d9c5ad;border-radius:12px;color:#4d3b4d;padding:13px 16px;font-size:13px;line-height:1.6;margin:12px 0 18px}
+.sequence{padding-left:22px;margin:9px 0 2px}.sequence li{padding:4px 0}
+.panel .lesson-links{display:grid;gap:8px;margin:15px 0}
+.panel .lesson-links a{display:block;border-radius:9px;border:1px solid #cdbccf;background:#f9f5fa;padding:10px 13px;color:#523961;font-size:13px;text-decoration:none}
+.panel .lesson-links a:hover{background:#ede3f3}
+.timeline-choices .choice{min-height:52px}
+@media(max-width:480px){.question-title{font-size:19px}.panel .lesson-links a{font-size:12px}}
+
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}</script>
 </head>
 <body>
 <div id="scene" aria-label="Escritório tridimensional explorável de Freud"></div><div id="vignette"></div><div id="objectMarkers"></div>
 <div class="hud" id="hud">
- <div class="top"><div class="brand"><div class="eyebrow">Ateliê de Psicanálise</div><strong>O gabinete de Freud</strong><small>Uma experiência de exploração 3D</small></div><div class="progress"><b id="count">0 de 3 descobertas</b><div class="dots"><i></i><i></i><i></i></div></div></div>
+ <div class="top"><div class="brand"><div class="eyebrow">Ateliê de Psicanálise</div><strong>O arquivo de Freud</strong><small>Breuer · Anna O. · Origens da psicanálise</small></div><div class="progress"><b id="count">0 de 4 evidências</b><div class="dots"><i></i><i></i><i></i><i></i></div></div></div>
  <div class="mobilePad" aria-label="Controles de movimento"><button class="forward" data-move="forward" aria-label="Avançar">↑</button><button class="left" data-move="left" aria-label="Ir para esquerda">←</button><button class="back" data-move="back" aria-label="Recuar">↓</button><button class="right" data-move="right" aria-label="Ir para direita">→</button></div>
  <button class="help" id="helpBtn">? Como explorar</button>
  <div class="instructions" id="bottomHelp">Arraste para olhar ao redor · Use WASD para andar · Toque nos halos dourados</div>
 </div>
-<section class="overlay" id="intro"><div class="panel"><div class="eyebrow">Protótipo navegável • Viena, por volta de 1900</div><h1>O gabinete<br>de Freud</h1><p>Você entrou em uma reconstrução artística do espaço de trabalho de Sigmund Freud. Aqui, os objetos não são apenas decoração: cada um guarda uma ideia sobre o nascimento da técnica psicanalítica.</p><div class="hint"><strong>Sua missão:</strong> encontre três pistas no escritório, descubra como a escuta se transformou e abra a porta do gabinete.</div><div class="capsules"><span>Ambiente 3D</span><span>Celular e computador</span><span>Sem instalação</span></div><button class="primary" id="startBtn">Entrar no escritório</button><p class="credit">Demonstração artística, não reprodução historicamente exata. Requer internet para carregar Three.js.</p></div></section>
+<section class="overlay" id="intro"><div class="panel">
+<div class="eyebrow">Ateliê · Formação Freudiana · Experiência 3D</div>
+<h1>O arquivo de<br>Breuer e Freud</h1>
+<p>Você entrou em um gabinete imaginário inspirado no escritório de Freud. A mesa reúne um dossiê sobre Anna O.; a estante conserva obras de Breuer e Freud; o divã conta uma história sobre a fala; um manuscrito guarda as perguntas de 1895.</p>
+<div class="hint"><strong>Sua missão:</strong> investigue quatro fontes, discuta suas interpretações e reconstitua a cronologia do nascimento da psicanálise para abrir a porta.</div>
+<div class="capsules"><span>Quatro enigmas históricos</span><span>Uma cronologia final</span><span>Celular e computador</span></div>
+<button class="primary" id="startBtn">Entrar no gabinete</button>
+<p class="credit">Ambiente didático ficcional, não reconstrução documental exata. Freud não atendeu Anna O.; o caso foi conduzido por Breuer. Os materiais foram reunidos aqui para fins educativos.</p>
+</div></section>
 <section class="overlay" id="dialog" hidden><div class="panel" id="dialogBody"></div></section>
-<section class="overlay" id="ending" hidden><div class="panel"><div class="eyebrow">Experiência concluída</div><h2>A porta se abre.</h2><p>Você encontrou três elementos centrais para compreender a transformação da técnica freudiana: as limitações da sugestão e da hipnose, a associação livre e a atenção flutuante.</p><p>Este é apenas o primeiro cômodo. Em uma versão completa, a porta levaria a novos ambientes, documentos históricos, cenas clínicas e investigações.</p><div class="hint">A proposta não é decorar respostas. É descobrir como diferentes elementos se articulam na construção de um método de escuta.</div><button id="replayBtn" class="primary">Explorar novamente</button><p class="credit">Protótipo independente do site do Ateliê. Nenhum dado pessoal é coletado.</p></div></section>
+<section class="overlay" id="ending" hidden><div class="panel">
+<div class="eyebrow">Ateliê de Psicanálise · Arquivo concluído</div>
+<h2>A porta se abre.</h2>
+<p>Você recompôs uma história que não pertence a um único autor nem a um instante fundador: o atendimento de Bertha por Breuer, os trabalhos conjuntos de 1893 e 1895, as pesquisas de Freud e suas reformulações posteriores.</p>
+<div class="hint"><strong>Questão para levar à aula:</strong> o que se perde quando transformamos a origem da psicanálise em uma história de descoberta solitária e linear?</div>
+<p>Releia as aulas que fundamentaram esta investigação:</p>
+<div class="lesson-links">
+<a href="../../content/courses/formacao-freudiana/aulas/escuta-que-mudou-a-clinica.html">A escuta que mudou a clínica</a>
+<a href="../../content/courses/formacao-freudiana/aulas/freud-obra-e-fundador.html">Freud, a obra e o lugar do fundador</a>
+<a href="../../content/courses/formacao-freudiana/aulas/freud-antes-de-ser-freud.html">Freud antes de ser Freud</a>
+</div>
+<button id="replayBtn" class="primary">Explorar novamente</button>
+<p class="credit">Atividade experimental independente: não registra nota ou certificação. Textos e questões elaborados para estudo com referência às aulas do Ateliê.</p>
+</div></section>
 <script type="module">
 import * as THREE from 'three';
 const $ = s=>document.querySelector(s);
@@ -92,26 +124,186 @@ cube(2.8,.72,.56,.6,.1,.5,wood);for(let xx of [2.58,3.02])for(let zz of [.39,.74
 // Soft dust motes
 const dGeo=new THREE.BufferGeometry(),positions=[];for(let i=0;i<115;i++)positions.push((rand()-.5)*7.6,rand()*3.2,(rand()-.5)*8.5);dGeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));const dust=new THREE.Points(dGeo,new THREE.PointsMaterial({size:.012,color:0xc9b293,transparent:true,opacity:.34}));scene.add(dust);
 // Interactables: world-space pins and actual mesh targets
+
 const found=new Set(),points=[
-{id:'carta',title:'A carta sobre o método',label:'Carta',symbol:'✉',pos:new THREE.Vector3(-.42,1.27,-2.35),body:'Nos últimos anos do século XIX, Freud se afastou progressivamente da hipnose e da sugestão. Os limites desses procedimentos favoreceram o desenvolvimento de uma técnica que dependia cada vez mais da fala do paciente.',insight:'A técnica mudou porque o método anterior apresentava limites. Não foi uma descoberta instantânea.',action:'Guardar a descoberta'},
-{id:'diva',title:'O divã e a associação livre',label:'Divã',symbol:'◉',pos:new THREE.Vector3(-2.2,1.36,-.45),body:'No dispositivo analítico, o paciente é convidado a dizer o que lhe ocorre, mesmo quando considera o pensamento irrelevante, embaraçoso ou sem sentido. É a regra fundamental da associação livre.',insight:'O método não busca uma fala organizada para agradar ao analista. Ele abre espaço àquilo que surge no discurso.',action:'Guardar a descoberta'},
-{id:'estante',title:'A escuta do analista',label:'Estante',symbol:'▤',pos:new THREE.Vector3(2.5,2.14,-3.15),body:'Mais tarde, Freud formula a atenção uniformemente suspensa — também chamada atenção flutuante — como orientação para a escuta do analista, contraparte da associação livre do paciente.',insight:'Em vez de selecionar antecipadamente o que seria importante, o analista procura não privilegiar um elemento antes da escuta.',action:'Guardar a descoberta'},
-{id:'porta',title:'A porta do gabinete',label:'Porta',symbol:'⌂',pos:new THREE.Vector3(0,2.2,-4.03)}
+{id:'anna',title:'Dossiê Anna O. — a pessoa além do caso',label:'Dossiê',symbol:'✉',pos:new THREE.Vector3(-.42,1.27,-2.35),
+period:'1880–1882 · Viena',body:'O documento reúne informações sobre Bertha Pappenheim, que recebeu o pseudônimo Anna O. no relato de Josef Breuer. Ela não foi atendida por Freud. Sua vida posterior como escritora e ativista não cabe no prontuário médico.',
+evidence:'O tratamento ocorreu entre 1880 e 1882. Breuer publicou sua narrativa em 1895. O relato é uma fonte histórica situada, não uma transcrição neutra nem uma prova inequívoca de cura.',
+question:'Qual afirmação respeita melhor as fontes históricas?',
+choices:[
+'Freud conduziu o tratamento e apresentou sua técnica de associação livre à paciente.',
+'Breuer acompanhou Bertha; o caso foi publicado anos depois, e seu desfecho segue debatido.',
+'O relato de 1895 é suficiente para confirmar uma cura definitiva.',
+'Anna O. é apenas um nome clínico; a biografia de Bertha não acrescenta nada ao estudo.'
+],correct:1,
+notes:[
+'Atenção à autoria: Freud conheceu o caso por intermédio de Breuer e não realizou esse tratamento.',
+'Correto. Essa distinção evita confundir a experiência da paciente, o relato médico e sua recepção posterior.',
+'O desfecho do tratamento permanece objeto de controvérsia historiográfica.',
+'A vida de Bertha como autora e ativista mostra que a pessoa excede o recorte do caso clínico.'
+]},
+{id:'breuer',title:'A estante dos dois autores',label:'Estante',symbol:'▤',pos:new THREE.Vector3(2.5,2.14,-3.15),
+period:'1893 e 1895 · Publicações',body:'Dois livros parecem pertencer à mesma história: a Comunicação preliminar (1893) e Estudos sobre a Histeria (1895). Ambos resultam da colaboração de Josef Breuer e Sigmund Freud.',
+evidence:'Breuer já tinha uma trajetória científica própria, incluindo pesquisas fisiológicas. A colaboração intelectual não eliminou as diferenças de ênfase entre os dois médicos.',
+question:'Como ler o papel de Breuer nessa construção?',
+choices:[
+'Breuer apenas emprestou seu nome ao texto que Freud escreveu sozinho.',
+'Breuer abandonou a pesquisa médica para formular a associação livre freudiana.',
+'As publicações foram conjuntas, com contribuições e orientações teóricas não idênticas.',
+'Freud e Breuer publicaram Estudos sobre a Histeria em 1900, após A interpretação dos sonhos.'
+],correct:2,
+notes:[
+'A obra contém contribuições substantivas de ambos os autores.',
+'Isso atribui retrospectivamente a Breuer uma técnica desenvolvida por Freud depois.',
+'Correto. Reconhecer a colaboração não exige apagar as divergências.',
+'A publicação de Estudos sobre a Histeria é de 1895; A interpretação dos sonhos é posterior.'
+]},
+{id:'diva',title:'O divã e as transformações da escuta',label:'Divã',symbol:'◉',pos:new THREE.Vector3(-2.2,1.36,-.45),
+period:'Da catarse à elaboração de uma técnica',body:'No relato do caso Anna O., lembranças, narrativas e expressão de afetos assumem um papel relevante. A expressão talking cure tornou-se emblemática dessa experiência. O dispositivo de associação livre seria desenvolvido posteriormente por Freud.',
+evidence:'A passagem da hipnose e do método catártico à associação livre não foi imediata nem linear. É preciso evitar tomar um antecedente histórico como se já fosse a técnica analítica consolidada.',
+question:'O que podemos concluir sem projetar a teoria posterior sobre o caso?',
+choices:[
+'A talking cure já é, sem diferenças, a regra fundamental da associação livre.',
+'A experiência catártica abriu questões sobre fala, lembrança e afeto, reelaboradas posteriormente por Freud.',
+'Depois do caso Anna O., hipnose e sugestão desapareceram de toda prática médica.',
+'A simples descarga emocional passou a ser considerada suficiente para qualquer tratamento.'
+],correct:1,
+notes:[
+'Essa identificação apaga diferenças históricas importantes entre método catártico e associação livre.',
+'Correto. Continuidade histórica não significa identidade de técnica.',
+'Hipnose e sugestão não desapareceram da medicina; Freud reformulou gradualmente sua própria prática.',
+'A teoria e a clínica freudianas posteriores não se reduzem à ab-reação.'
+]},
+{id:'projeto',title:'O manuscrito que não conclui a história',label:'Manuscrito',symbol:'▧',pos:new THREE.Vector3(-2.05,2.30,-4.10),
+period:'1895–1900 · Uma teoria em construção',body:'Na parede há um registro do Projeto para uma Psicologia Científica, manuscrito de 1895. Freud tentou ali modelar processos psíquicos com hipóteses neurofisiológicas. Em 1896, passou a utilizar o termo psicanálise.',
+evidence:'Nomear uma disciplina não significa que seu método esteja concluído. A interpretação dos sonhos, publicada no final de 1899 com data editorial de 1900, desenvolveria um modelo do aparelho psíquico.',
+question:'Qual leitura mostra melhor a sequência de formulações?',
+choices:[
+'O Projeto de 1895 já oferece uma teoria psicanalítica acabada e validada pela neurologia atual.',
+'O nome psicanálise, em 1896, encerra as revisões de Freud.',
+'O Projeto de 1895 é uma tentativa experimental; o nome de 1896 e a obra de 1900 marcam outros momentos de elaboração.',
+'A interpretação dos sonhos foi publicada antes de Breuer acompanhar Bertha Pappenheim.'
+],correct:2,
+notes:[
+'O texto é historicamente importante, mas suas hipóteses não equivalem a validação neurocientífica contemporânea.',
+'A formulação do campo prosseguiu e sofreu muitas revisões.',
+'Correto. O campo surge por mudanças e reformulações, não por um único instante fundador.',
+'A obra sobre os sonhos é posterior ao tratamento de Bertha e aos trabalhos de 1893–1895.'
+]},
+{id:'porta',title:'A porta do arquivo',label:'Porta',symbol:'⌂',pos:new THREE.Vector3(0,2.2,-4.03)}
 ];
-const markerHost=$('#objectMarkers');for(const p of points){const btn=document.createElement('button');btn.type='button';btn.className='marker';btn.innerHTML=`<b>${p.symbol}</b><span>${p.label}</span>`;btn.setAttribute('aria-label',`Investigar: ${p.label}`);btn.addEventListener('click',()=>showPoint(p));markerHost.append(btn);p.el=btn;const indicator=ball(p.pos.x,p.pos.y,p.pos.z,.085,mat(0xe7ba75,.25,.4));indicator.userData.target=p.id;hitMeshes.push(indicator)}
-function redrawProgress(){const n=found.size;$('#count').textContent=`${n} de 3 descobertas`;document.querySelectorAll('.dots i').forEach((d,i)=>d.classList.toggle('done',i<n));for(const p of points){p.el.classList.toggle('done',found.has(p.id));if(p.id==='porta'){p.el.querySelector('span').textContent=n===3?'Abrir porta':'Porta';}}}
+const timeline=[
+ {key:'bertha',when:'1880–1882',title:'Breuer acompanha Bertha Pappenheim',detail:'O tratamento antecede as publicações conjuntas.'},
+ {key:'comunicacao',when:'1893',title:'Breuer e Freud publicam a Comunicação preliminar',detail:'A investigação clínica é apresentada em colaboração.'},
+ {key:'estudos',when:'1895',title:'Estudos sobre a Histeria e o Projeto para uma Psicologia Científica',detail:'Uma publicação conjunta e uma investigação freudiana distinta.'},
+ {key:'nome',when:'1896',title:'Freud emprega o nome psicanálise',detail:'Nomear o campo não equivale a encerrá-lo.'},
+ {key:'sonhos',when:'1899/1900',title:'A interpretação dos sonhos',detail:'Publicada no fim de 1899 com data editorial de 1900.'}
+];
+let sequence=[];
+const markerHost=$('#objectMarkers');
+for(const p of points){
+ const btn=document.createElement('button');
+ btn.type='button';btn.className='marker';btn.innerHTML='<b>'+p.symbol+'</b><span>'+p.label+'</span>';
+ btn.setAttribute('aria-label','Investigar: '+p.label);
+ btn.addEventListener('click',()=>showPoint(p));markerHost.append(btn);p.el=btn;
+ const indicator=ball(p.pos.x,p.pos.y,p.pos.z,.085,mat(0xe7ba75,.25,.4));
+ indicator.userData.target=p.id;hitMeshes.push(indicator);
+}
+function redrawProgress(){
+ const n=found.size;$('#count').textContent=n+' de 4 evidências';
+ document.querySelectorAll('.dots i').forEach((d,i)=>d.classList.toggle('done',i<n));
+ for(const p of points){
+  p.el.classList.toggle('done',found.has(p.id));
+  if(p.id==='porta')p.el.querySelector('span').textContent=n===4?'Abrir arquivo':'Porta';
+ }
+}
 const dlg=$('#dialog'),body=$('#dialogBody');let active=false;
 function closeDialog(){dlg.hidden=true;active=false}
-function showPoint(p){if(!$('#intro').hidden||!$('#ending').hidden)return;active=true;dlg.hidden=false;
- if(p.id==='porta'){if(found.size!==3){body.innerHTML=`<button class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">A saída</div><h2>Uma porta fechada</h2><p>A fechadura guarda uma pergunta sobre a transformação do método psicanalítico.</p><div class="hint">Descubra primeiro a carta, o divã e a estante. Encontrados: <strong>${found.size} de 3</strong>.</div><button class="primary" id="closePrimary">Voltar ao escritório</button>`}
- else {body.innerHTML=`<button class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">Enigma final</div><h2>A chave da escuta</h2><p>Você encontrou três pistas. Qual das alternativas representa melhor a articulação do método psicanalítico clássico?</p><div class="choices"><button class="choice" data-answer="a">A. Sugestão do analista e recordação orientada pela hipnose.</button><button class="choice" data-answer="b">B. Associação livre do paciente e atenção flutuante do analista.</button><button class="choice" data-answer="c">C. Decifração de símbolos por significados fixos e universais.</button></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="secondary" id="closePrimary">Voltar ao escritório</button>`;body.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>answer(b))} }
- else{const done=found.has(p.id);body.innerHTML=`<button class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">Objeto investigado · ${p.label}</div><h2>${p.title}</h2><p>${p.body}</p><div class="hint"><strong>Para pensar:</strong> ${p.insight}</div><button class="primary" id="saveClue">${done?'Continuar explorando':p.action}</button>`;$('#saveClue').onclick=()=>{found.add(p.id);redrawProgress();closeDialog()}}
- $('#closeDialog').onclick=closeDialog;const cp=$('#closePrimary');if(cp)cp.onclick=closeDialog;
+function templateTop(eyebrow,title){
+ return '<button type="button" class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">'+eyebrow+'</div><h2>'+title+'</h2>';
 }
-function answer(button){const good=button.dataset.answer==='b';body.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(b===button)b.classList.add(good?'good':'bad');if(b.dataset.answer==='b')b.classList.add('good')});$('#feedback').textContent=good?'Exato. A formulação põe em relação uma regra de fala e uma orientação de escuta.':'Essa alternativa não descreve a técnica clássica. A regra de associação livre articula-se à atenção flutuante; a interpretação não se baseia em um dicionário universal de símbolos.';if(good){setTimeout(()=>{closeDialog();opening=true;$('#ending').hidden=false},650)}else {const retry=document.createElement('button');retry.className='primary';retry.textContent='Tentar novamente';retry.onclick=()=>showPoint(points[3]);$('#feedback').after(retry)}}
+function wireClose(){
+ const b=$('#closeDialog');if(b)b.onclick=closeDialog;
+ const cp=$('#closePrimary');if(cp)cp.onclick=closeDialog;
+}
+function showPoint(p){
+ if(!$('#intro').hidden||!$('#ending').hidden)return;
+ active=true;dlg.hidden=false;
+ if(p.id==='porta'){showDoor();return}
+ showEvidence(p);
+}
+function showEvidence(p){
+ const done=found.has(p.id);
+ let block=templateTop('Documento de investigação · '+p.period,p.title)+
+  '<p>'+p.body+'</p><div class="hint"><strong>O que o arquivo permite afirmar:</strong> '+p.evidence+'</div>';
+ if(done){
+  block+='<div class="proof">✓ Evidência já registrada no seu arquivo</div>'+
+   '<button type="button" class="primary" id="closePrimary">Voltar ao gabinete</button>';
+ }else{
+  block+='<h3 class="question-title">'+p.question+'</h3><div class="choices">'+
+   p.choices.map((c,i)=>'<button type="button" class="choice" data-pick="'+i+'"><b>'+'ABCD'[i]+'.</b> '+c+'</button>').join('')+
+   '</div><div class="feedback" id="feedback" role="status" aria-live="polite"></div>'+
+   '<button type="button" class="primary hide" id="saveClue">Registrar evidência no arquivo</button>'+
+   '<button type="button" class="secondary" id="closePrimary">Examinar outro objeto</button>';
+ }
+ body.innerHTML=block;wireClose();
+ if(!done){
+  body.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{
+   const i=Number(b.dataset.pick),good=i===p.correct;
+   body.querySelectorAll('[data-pick]').forEach(x=>x.classList.remove('good','bad'));
+   b.classList.add(good?'good':'bad');
+   $('#feedback').textContent=(good?'Leitura sustentada. ':'Revise sua hipótese. ')+p.notes[i];
+   if(good){
+    body.querySelectorAll('[data-pick]').forEach(x=>x.disabled=true);
+    $('#saveClue').classList.remove('hide');
+   }
+  });
+  $('#saveClue').onclick=()=>{
+   found.add(p.id);redrawProgress();closeDialog();
+   $('#bottomHelp').textContent=found.size===4?'As quatro evidências foram reunidas. Procure a porta.':'Evidência registrada. Explore outros objetos do gabinete.';
+  };
+ }
+}
+function showDoor(){
+ if(found.size!==4){
+  body.innerHTML=templateTop('Arquivo bloqueado','A porta ainda está fechada')+
+  '<p>A fechadura não aceita uma senha: ela exige que você reúna as fontes e reconstrua a história.</p>'+
+  '<div class="hint">Evidências registradas: <strong>'+found.size+' de 4</strong>. Investigue o dossiê, a estante, o divã e o manuscrito.</div>'+
+  '<button type="button" class="primary" id="closePrimary">Voltar ao gabinete</button>';
+  wireClose();return;
+ }
+ renderTimeline();
+}
+function renderTimeline(){
+ const remaining=timeline.filter(t=>!sequence.includes(t.key));
+ body.innerHTML=templateTop('Desafio final · Reconstrução histórica','Coloque os acontecimentos em ordem')+
+  '<p>Você reuniu as quatro evidências. Agora toque nos registros, <strong>do mais antigo ao mais recente</strong>. As datas importam, mas os acontecimentos não formam uma descoberta instantânea.</p>'+
+  '<div class="proof"><strong>Sequência construída · '+sequence.length+' de '+timeline.length+'</strong><ol class="sequence">'+
+    sequence.map(key=>{const t=timeline.find(x=>x.key===key);return '<li>'+t.when+' · '+t.title+'</li>'}).join('')+
+  '</ol></div>'+
+  (remaining.length?'<div class="choices timeline-choices">'+
+    remaining.slice().reverse().map(t=>'<button type="button" class="choice" data-time="'+t.key+'"><b>'+t.when+'</b> · '+t.title+'</button>').join('')+
+   '</div><div class="feedback" id="feedback" role="status" aria-live="polite"></div>':
+   '<div class="hint"><strong>Arquivo reconstituído.</strong> A colaboração clínica, o Projeto, o nome psicanálise e a teoria dos sonhos pertencem a momentos diferentes da elaboração freudiana.</div><button type="button" class="primary" id="unlockDoor">Abrir a porta</button>')+
+  '<button type="button" class="secondary" id="resetTimeline">Recomeçar a sequência</button>'+
+  '<button type="button" class="secondary" id="closePrimary">Voltar ao gabinete</button>';
+ wireClose();
+ body.querySelectorAll('[data-time]').forEach(b=>b.onclick=()=>{
+  const expected=timeline[sequence.length];
+  if(b.dataset.time!==expected.key){
+   $('#feedback').textContent='Essa não é a próxima evidência cronológica. Releia as datas e as informações coletadas.';
+   b.classList.add('bad');return;
+  }
+  sequence.push(expected.key);renderTimeline();
+ });
+ $('#resetTimeline').onclick=()=>{sequence=[];renderTimeline()};
+ const unlock=$('#unlockDoor');
+ if(unlock)unlock.onclick=()=>{closeDialog();opening=true;$('#ending').hidden=false};
+}
+redrawProgress();
 $('#startBtn').onclick=()=>{$('#intro').hidden=true;$('#bottomHelp').textContent=matchMedia('(pointer:coarse)').matches?'Arraste a tela para olhar · Use as setas para andar · Toque nos halos':'Arraste para olhar · Use WASD para andar · Clique nos halos dourados'};
-$('#helpBtn').onclick=()=>{body.innerHTML=`<button class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">Como explorar</div><h2>Encontre as pistas</h2><p><strong>No celular:</strong> arraste o dedo na cena para olhar ao redor. Use as quatro setas no canto inferior esquerdo para caminhar. Toque nos halos dourados para examinar os objetos.</p><p><strong>No computador:</strong> arraste o mouse para girar a visão. Caminhe com W, A, S e D ou as setas do teclado. Clique nos halos.</p><div class="hint">Não há cronômetro. Você pode rever objetos quantas vezes quiser. Descubra os três objetos antes de tentar abrir a porta.</div><button class="primary" id="closePrimary">Voltar à experiência</button>`;dlg.hidden=false;active=true;$('#closeDialog').onclick=closeDialog;$('#closePrimary').onclick=closeDialog};
-$('#replayBtn').onclick=()=>{found.clear();redrawProgress();opening=false;doorObject.rotation.y=0;camera.position.set(.15,1.67,3.05);yaw=0;pitch=-.04;$('#ending').hidden=true};
+$('#helpBtn').onclick=()=>{body.innerHTML=`<button class="closer" id="closeDialog" aria-label="Fechar">×</button><div class="eyebrow">Como explorar</div><h2>Encontre as pistas</h2><p><strong>No celular:</strong> arraste o dedo na cena para olhar ao redor. Use as quatro setas no canto inferior esquerdo para caminhar. Toque nos halos dourados para examinar os objetos.</p><p><strong>No computador:</strong> arraste o mouse para girar a visão. Caminhe com W, A, S e D ou as setas do teclado. Clique nos halos.</p><div class="hint">Não há cronômetro. Você pode rever objetos quantas vezes quiser. Investigue os quatro objetos antes de tentar reconstituir a cronologia na porta.</div><button class="primary" id="closePrimary">Voltar à experiência</button>`;dlg.hidden=false;active=true;$('#closeDialog').onclick=closeDialog;$('#closePrimary').onclick=closeDialog};
+$('#replayBtn').onclick=()=>{found.clear();sequence=[];redrawProgress();opening=false;doorObject.rotation.y=0;camera.position.set(.15,1.67,3.05);yaw=0;pitch=-.04;$('#ending').hidden=true};
 // Navigation: desktop WASD + mouse, mobile drag-to-look + D-pad. Never steal browser scroll elsewhere.
 const keys=new Set(),mobileMoves=new Set();let yaw=0,pitch=-.04,drag=false,moved=false,lastX=0,lastY=0,downX=0,downY=0,opening=false,frame=0;
 window.addEventListener('keydown',e=>{if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)){keys.add(e.code);if(!active&&$('#intro').hidden)e.preventDefault()}if(e.key==='Escape')closeDialog()});window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>{keys.clear();mobileMoves.clear()});
