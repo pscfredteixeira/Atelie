@@ -291,8 +291,6 @@ body{overflow-x:hidden}.shell{max-width:900px}
   <div class="panel-heading"><span class="kicker">Quadradinho 06 · síntese</span><span class="pill lock" id="badge-6">Bloqueado</span></div>
   <h2 id="step6-title">O que permanece desta investigação?</h2>
   <div class="step-content" id="content-6"><div class="closing"><div class="kicker">Síntese · história e conceito</div><h3>Da clínica à formulação teórica</h3><p>Freud não passou diretamente da observação de sintomas a uma teoria pronta. As perguntas sobre memória, afeto, consciência e sonho foram sendo reelaboradas até exigirem novos modelos explicativos.</p><p>Na aula anterior, estudamos a primeira tópica. Agora podemos compreender melhor o percurso que tornou esse modelo uma resposta intelectualmente necessária.</p></div>
-<div class="note-area"><label for="reflection">Para registrar no seu caderno: qual é a diferença entre descrever um sintoma e explicar um processo psíquico?</label>
-<textarea id="reflection" class="reflection" placeholder="Escreva sua interpretação (opcional). Não inclua dados clínicos identificáveis."></textarea><p class="smallhint">Suas anotações ficam salvas neste navegador. O caderno do aluno permanece disponível no menu do Ateliê.</p></div>
 <div class="actions"><button type="button" class="btn" id="complete-reading">Concluir percurso</button></div></div>
   
  </div></div></section></div>
@@ -312,7 +310,7 @@ body{overflow-x:hidden}.shell{max-width:900px}
 </figure>
 </div></section>
 <details class="sources"><summary>Fontes históricas e leitura complementar</summary><h4>Fontes para continuar a leitura</h4><ul><li><a href="https://www.loc.gov/collections/sigmund-freud-papers/articles-and-essays/timeline/" target="_blank" rel="noopener noreferrer">Library of Congress — Cronologia de Sigmund Freud</a>.</li><li><a href="https://www.loc.gov/exhibits/freud/freud01.html" target="_blank" rel="noopener noreferrer">Library of Congress — Os anos de formação e o manuscrito de 1895</a>.</li><li><a href="https://psychclassics.yorku.ca/Freud/Dreams/dreams7a.htm" target="_blank" rel="noopener noreferrer">Freud, <em>A interpretação dos sonhos</em>, capítulo VII — tradução histórica em inglês</a>.</li></ul><p style="font-size:12px;color:#7b707e">Esta prévia contém conteúdo didático original. Fotografias e documentos são identificados com suas fontes. As imagens dependem de conexão com os respectivos acervos.</p></details>
-</main><footer class="shell"><div><strong>Ateliê de Psicanálise · Formação Freudiana</strong><br>O progresso desta experiência fica salvo no navegador. O menu do curso e o caderno do aluno permanecem no Ateliê.</div>
+</main><footer class="shell"><div><strong>Ateliê de Psicanálise · Formação Freudiana</strong><br>O progresso desta experiência fica salvo no navegador. O menu do curso permanece disponível no Ateliê.</div>
 <button type="button" class="reset" id="reset">Reiniciar progresso</button></footer>
 <script>(()=>{
 'use strict';
@@ -429,8 +427,6 @@ $$('[data-time]').forEach(b=>b.addEventListener('click',()=>{
  $$('[data-time]').forEach(x=>x.classList.toggle('visited',x===b));
  $('#time-output').textContent=years[b.dataset.time]||'';reportHeight();
 }));
-$('#reflection').value=state.reflection;
-$('#reflection').addEventListener('input',e=>{state.reflection=e.target.value.slice(0,5000);save();});
 $('#complete-reading').addEventListener('click',()=>advance(6));
 $('#achievement-review').addEventListener('click',()=>{$('#step-1').scrollIntoView({behavior:'smooth',block:'start'});});
 $('#reset').addEventListener('click',()=>{
