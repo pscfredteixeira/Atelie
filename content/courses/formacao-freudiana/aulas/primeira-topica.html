@@ -739,9 +739,17 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
 <script>
 (function(){
  if(window.parent===window)return;
+ let lastHeight=0;
  const report=()=>{
-   const height=Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight));
-   window.parent.postMessage({type:"atelie-lesson-height",height:height},window.location.origin);
+   // Mede o último elemento da aula, não a altura herdada do iframe.
+   // Assim a moldura encolhe após concluir ou recolher etapas.
+   const end=document.querySelector('footer.shell')||document.querySelector('main.shell');
+   if(!end)return;
+   const height=Math.ceil(Math.max(100,end.getBoundingClientRect().bottom+window.scrollY+6));
+   if(Number.isFinite(height)&&Math.abs(height-lastHeight)>2){
+     lastHeight=height;
+     window.parent.postMessage({type:"atelie-lesson-height",height},window.location.origin);
+   }
  };
  window.addEventListener("load",report);
  window.addEventListener("resize",report);
