@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f0eb"><meta name="description" content="Aula interativa da Formação Freudiana sobre a obra, a colaboração com Breuer e o lugar do fundador."><title>Ateliê · Freud, a obra e o lugar do fundador</title>
-<script>if(parent!==window)document.documentElement.classList.add("embedded-in-atelie");</script><style>
+<script>
+if(parent!==window){document.documentElement.classList.add("embedded-in-atelie")}
+else if(location.protocol==="https:"||location.protocol==="http:"){
+ location.replace(new URL("../../../../index.html#/aula/freud-obra-e-fundador",location.href).href);
+}
+</script><style>
 :root{--bg:#f4f0eb;--paper:#fffdfa;--ink:#29243a;--muted:#675f71;--accent:#755c9a;--accent-dark:#544075;--pale:#eee7f5;--line:#ded5e2;--good:#276850;--good-bg:#e7f3ea;--bad:#8b443e;--bad-bg:#f9ebe8;--shadow:0 10px 32px rgba(39,29,46,.07);--radius:20px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse 90% 24% at 100% 0%,#e9e2f0 0%,transparent 84%),var(--bg);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.65}button{font:inherit;cursor:pointer}a{color:var(--accent-dark)}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #b7a1db;outline-offset:3px}
 .shell{width:min(100% - 36px,860px);margin-inline:auto}.mast{padding:30px 0 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.brand{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);font-weight:800}.small-tag{font-size:.75rem;letter-spacing:.09em;color:var(--muted)}
@@ -154,26 +159,11 @@ body:not(.account-progress-ready) footer.shell{display:none!important}
  <div class="video">
  <iframe id="video-introducao"
  src="https://www.youtube-nocookie.com/embed/1gYNfeSIjNI?enablejsapi=1&amp;playsinline=1&amp;rel=0"
- title="Vídeo provisório: A primeira tópica de Freud"
+ title="Vídeo de referência: A primeira tópica de Freud"
  loading="eager" referrerpolicy="strict-origin-when-cross-origin"
  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
  allowfullscreen></iframe>
  </div>
- <p id="preview-note" class="under-video"><strong>Vídeo provisório.</strong> Estamos usando a abertura já publicada de “A primeira tópica de Freud” para testar o layout. O vídeo específico desta aula será colocado aqui depois.</p>
- <div class="video-gate" id="video-gate" role="status" aria-live="polite">Assista ao vídeo de referência para avançar, ou use a opção de prévia abaixo.</div>
- <button type="button" class="video-fallback" id="video-fallback">Abrir a atividade sem assistir ao vídeo provisório</button>
- <p class="lead">Esta é a quarta aula da Formação Freudiana. Partimos dos conhecimentos já estudados para investigar a colaboração com Breuer, a disputa em torno da obra inaugural e o lugar de Freud como fundador.</p>
- <details class="script-note"><summary>Leia o roteiro da abertura <span aria-hidden="true">⌄</span></summary><div class="script-content">
- <p>Nas aulas anteriores, acompanhamos alguns dos acontecimentos e das formulações que contribuíram para o surgimento da psicanálise.</p>
- <p>Mas existe uma questão que merece nossa atenção: o que levou Freud a dedicar sua carreira a um campo clínico que, naquele momento, não desfrutava do mesmo reconhecimento de outras especialidades médicas?</p>
- <p>Freud era um jovem médico de formação sólida, mas enfrentava dificuldades financeiras e procurava construir seu futuro profissional. Ao mesmo tempo, vivia uma intensa relação amorosa com Martha Bernays e mantinha uma importante colaboração intelectual com Josef Breuer.</p>
- <p>Foi nesse contexto que tomou decisões que marcariam sua trajetória. Ao atribuir dignidade clínica ao sofrimento das pacientes diagnosticadas com histeria, Freud também começou a questionar a posição tradicional do saber médico.</p>
- <p>Essa experiência teria consequências importantes para sua produção intelectual. Em 1895, publicaria com Breuer os <em>Estudos sobre a histeria</em>. Mas por que essa obra nem sempre recebe o reconhecimento de texto inaugural da psicanálise, frequentemente atribuído a <em>A interpretação dos sonhos</em>?</p>
- <p>E existe ainda uma curiosidade nessa trajetória. Muito antes de alcançar reconhecimento, Freud já imaginava que sua vida seria objeto de investigação por futuros biógrafos.</p>
- <p>Décadas depois, seu nome não apenas seria mundialmente conhecido, mas também ocuparia uma posição singular na formação e na prática dos psicanalistas.</p>
- <p>Nesta aula, vamos examinar essas diferentes dimensões de sua trajetória, chegando a uma questão fundamental: o que significa, para a psicanálise, a existência de um fundador cuja presença continua atravessando a relação dos analistas com sua própria disciplina?</p>
- </div></details>
- <div class="actions"><button class="btn" id="begin-lesson" type="button" disabled>Assista à abertura para continuar →</button></div>
  </div></article></section>
 <section class="step" id="step-2" aria-labelledby="step-title-2" hidden>
  <div class="dot" aria-hidden="true">2</div><article class="panel"><div class="panel-inner">
@@ -300,7 +290,7 @@ const questions={"q2":{"correct":1,"options":["Breuer formulou sozinho a psican�
 const labels=["Abertura","Breuer e Freud","Dignidade clínica","Ab-reação","Obras inaugurais","Martha e as cartas","O lugar do fundador"];
 const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
-let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false,videoApiReady=false;
+let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false;
 const origin=location.origin;
 function send(type,fields={}){if(parent!==window)parent.postMessage({type,lessonId:LESSON_ID,...fields},origin)}
 function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
@@ -324,10 +314,7 @@ function render(){
  $(".progress-segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
  $("#progressbar").setAttribute("aria-valuenow",String(count));
  $("#progress-next").textContent=count===7?"Percurso completo. Volte aos trechos que quiser rever.":"A seguir: "+labels[Array.from({length:7},(_,i)=>i+1).find(n=>!done.has(n))-1]+".";
- $("#begin-lesson").disabled=done.has(1)||!videoApiReady;
- $("#begin-lesson").textContent=done.has(1)?"Abertura concluída":videoApiReady?"Iniciar o percurso →":"Assista à abertura para continuar →";
- $("#video-gate").hidden=done.has(1)||videoApiReady;
- $("#video-fallback").hidden=done.has(1)||videoApiReady;
+
  $("#explore-status").textContent=expanded.size+" de 3 dimensões exploradas";
  $("#stage2-quiz").hidden=expanded.size<3;
  $$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
@@ -346,19 +333,14 @@ function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"
 function showFeedback(n,correct,scroll){
  const key="q"+n,q=questions[key],f=$(".feedback",$("#quiz-"+n));f.hidden=false;f.className="feedback "+(correct?"good":"bad");
  const notes=q.notes.map((t,i)=>"<li><strong>"+String.fromCharCode(65+i)+".</strong> "+escapeHtml(t)+"</li>").join("");
- f.innerHTML="<strong>"+(correct?"Resposta correta.":"Essa alternativa não resolve o problema.")+"</strong><p>"+(correct?"Vamos examinar as quatro alternativas.":"Observe a explicação da alternativa escolhida e tente novamente.")+"</p>"+(correct?"<ul>"+notes+"</ul><div class='actions'><button type='button' class='btn secondary' data-continue='"+n+"'>"+(n===7?"Ver conclusão":"Continuar para o próximo momento")+" →</button></div>":"<p>"+escapeHtml(q.notes[Number(answers[key])])+"</p>");
+ f.innerHTML="<strong>"+(correct?"Resposta correta.":"Essa alternativa não resolve o problema.")+"</strong><p>"+(correct?"Vamos examinar as quatro alternativas.":"Observe a explicação da alternativa escolhida e tente novamente.")+"</p>"+(correct?"<ul>"+notes+"</ul>":"<p>"+escapeHtml(q.notes[Number(answers[key])])+"</p>");
  if(scroll)scrollToElement(f);
  reportHeight();
 }
 function unlockOpening(){
- if(done.has(1))return;
- videoApiReady=true;render();
- $("#video-gate").hidden=true;
- $("#video-fallback").hidden=true;
- $("#begin-lesson").disabled=false;
+ // A próxima etapa aparece quando o player informa o fim do vídeo.
+ if(!done.has(1))markDone(1);
 }
-$("#video-fallback").addEventListener("click",unlockOpening);
-$("#begin-lesson").addEventListener("click",()=>{if(videoApiReady||done.has(1))markDone(1)});
 const introFrame=$("#video-introducao");
 try{if(location.protocol==="http:"||location.protocol==="https:"){
  const url=new URL(introFrame.src);url.searchParams.set("origin",location.origin);introFrame.src=url.href;
@@ -366,18 +348,12 @@ try{if(location.protocol==="http:"||location.protocol==="https:"){
 window.onYouTubeIframeAPIReady=()=>{
  try{new YT.Player("video-introducao",{events:{
   onStateChange:event=>{if(event.data===YT.PlayerState.ENDED)unlockOpening();},
-  onError:()=>{$("#video-fallback").hidden=false;}
- }})}catch{$("#video-fallback").hidden=false}
+  onError:()=>{console.warn("O YouTube não informou o estado do vídeo.");}
+ }})}catch(error){console.warn("Falha ao configurar o player do YouTube.",error)}
 };
 const ytScript=document.createElement("script");
 ytScript.src="https://www.youtube.com/iframe_api";ytScript.async=true;
 document.head.appendChild(ytScript);
-document.addEventListener("click",event=>{
- const btn=event.target.closest("[data-continue]");
- if(!btn)return;
- const n=Number(btn.dataset.continue);
- scrollToElement(n===7?$("#completion"):$("#step-"+(n+1)));
-});
 $$(".accordion").forEach(item=>{
  item.addEventListener("toggle",()=>{
   if(item.open){
@@ -398,14 +374,13 @@ $$(".quiz").forEach(block=>{
  $(".verify",block).addEventListener("click",()=>{
   if(answers[key]===undefined)return;
   const correct=Number(answers[key])===questions[key].correct;
-  if(correct){markDone(n,false);showFeedback(n,true,false)}
+  if(correct){markDone(n);showFeedback(n,true,false)}
   else{showFeedback(n,false,false);save()}
  });
 });
 function load(state){
  if(!state||typeof state!=="object"){cloudReady=true;$("#cloud-status").textContent="O percurso será salvo na sua conta Google.";return}
  done=new Set((Array.isArray(state.done)?state.done:[]).filter(n=>Number.isInteger(n)&&n>=1&&n<=7));
- videoApiReady=done.has(1);
  expanded=new Set((Array.isArray(state.explored)?state.explored:[]).filter(x=>["apoio","interlocucao","publicacao"].includes(x)));
  answers=state.answers&&typeof state.answers==="object"?state.answers:{};
  cloudReady=true;$("#cloud-status").textContent="Seu progresso foi carregado da conta Google.";render();
