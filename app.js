@@ -168,7 +168,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
   ' DE '+String(FREUD_LESSONS.length).padStart(2,'0')+'</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-fundador-editorial-20261111-v1':id===FREUD_THIRD_ID?'freud-terceira-aula-progressiva-20261110-v3':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
+  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-fundador-modelo-primeira-topica-20261111-v2':id===FREUD_THIRD_ID?'freud-terceira-aula-progressiva-20261110-v3':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
   '" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
   (id===FREUD_THIRD_ID?'':'<section class="freud-note-panel"><span class="eyebrow">MEU CADERNO</span><h2>Registre suas reflexões</h2>'+
