@@ -234,11 +234,6 @@ body:not(.account-progress-ready) main.container{display:none!important}
     <button class="option" data-quiz="6" data-choice="2">C. O relato merece escuta e investigação, sem antecipar sua causa ou dispensar avaliação adequada.</button>
    </div><div id="feedback-6" aria-live="polite"></div>
   </div>
-  <div class="notes">
-   <h3>Seu caderno de reflexão</h3><label for="reflection">O que muda na clínica quando a fala do paciente é tratada como parte do trabalho, e não como ruído?</label>
-   <textarea id="reflection" placeholder="Escreva aqui sua reflexão; ela fica salva neste navegador. Não inclua dados clínicos reais."></textarea>
-   <div class="tiny" role="status" id="note-status">Suas notas permanecem neste dispositivo.</div>
-  </div>
   <section class="achievement-card" id="finish" hidden aria-labelledby="achievement-title">
   <div class="achievement-grid">
     <div class="achievement-copy">
@@ -541,8 +536,6 @@ $$('[data-concept]').forEach(b=>{
  if(st.concepts.includes(i))b.classList.add('seen');
 });
 $('#concept-count').textContent=st.concepts.length+' de 4 conceitos explorados';
-$('#reflection').value=st.reflection||'';
-$('#reflection').addEventListener('input',()=>{st.reflection=$('#reflection').value.slice(0,5000);save();$('#note-status').textContent='Salvando reflexão na sua conta Google...';reportHeight()});
 // Migração de quem acertou os quizzes, mas ficou preso em botões antigos.
 if(st.videoWatched){
  if(st.passed.includes(3)&&st.done.includes(2))autoAdvanceForQuiz(3);
@@ -576,7 +569,6 @@ function applyAccountProgress(value){
  accountReady=true;
  document.body.classList.add('account-progress-ready');
  $('#cloudLessonStatus').textContent='Progresso vinculado à sua conta Google.';
- $('#reflection').value=st.reflection;
  updateChronology();
  $$('[data-concept]').forEach(b=>b.classList.toggle('seen',st.concepts.includes(Number(b.dataset.concept))));
  $('#time-count').textContent=st.times.length+' de 4 marcos explorados';
