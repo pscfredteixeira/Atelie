@@ -293,7 +293,27 @@ let done=new Set(),expanded=new Set(),answers={},lastRequest=0,cloudReady=false;
 const origin=location.origin;
 function send(type,fields={}){if(parent!==window)parent.postMessage({type,lessonId:LESSON_ID,...fields},origin)}
 function reportHeight(){send("atelie-lesson-height",{height:Math.ceil(Math.max(document.body.scrollHeight,document.documentElement.scrollHeight))})}
-function scrollToElement(el){if(!el)return;requestAnimationFrame(()=>requestAnimationFrame(()=>{reportHeight();send("atelie-lesson-scroll-to",{target:"timeline",offsetTop:Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY))})}))}
+let scrollRequest=0;
+function scrollToElement(el,alignAccordion=false){
+ if(!el)return;
+ const request=++scrollRequest;
+ const reposition=()=>{
+  if(request!==scrollRequest||!el.isConnected)return;
+  reportHeight();
+  const offsetTop=Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY));
+  if(parent!==window){
+   send("atelie-lesson-scroll-to",{target:alignAccordion?"accordion":"timeline",offsetTop});
+  }else{
+   window.scrollTo({top:Math.max(0,offsetTop-(alignAccordion?24:72)),behavior:alignAccordion?"instant":"smooth"});
+  }
+ };
+ // Aguarda o navegador fechar a sanfona anterior e recalcular a altura do iframe,
+ // especialmente no Safari/iPhone, antes de reposicionar a aba.
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  if(alignAccordion)setTimeout(reposition,120);
+  else reposition();
+ }));
+}
 function save(){send("atelie-progress-save",{state:{done:[...done].sort((a,b)=>a-b),explored:[...expanded],answers,version:1},requestId:++lastRequest});$("#cloud-status").textContent="Salvando o progresso na sua conta..."}
 function markDone(n,autoScroll=true){
  if(done.has(n))return;
@@ -353,15 +373,24 @@ window.onYouTubeIframeAPIReady=()=>{
 const ytScript=document.createElement("script");
 ytScript.src="https://www.youtube.com/iframe_api";ytScript.async=true;
 document.head.appendChild(ytScript);
-$$(".accordion").forEach(item=>{
- item.addEventListener("toggle",()=>{
-  if(item.open){
-   $$(".accordion").forEach(other=>{if(other!==item&&other.open)other.open=false});
+$(".accordion").forEach(item=>{
+ const summary=$("summary",item);
+ summary.addEventListener("click",()=>{
+  const wasOpen=item.open;
+  if(wasOpen)return;
+  // Executar após a abertura nativa da aba; o evento toggle sozinho
+  // nem sempre reposiciona a página corretamente em dispositivos iOS.
+  requestAnimationFrame(()=>{
+   if(!item.open)return;
+   $(".accordion").forEach(other=>{if(other!==item&&other.open)other.open=false});
+   const firstVisit=!expanded.has(item.dataset.explore);
    expanded.add(item.dataset.explore);
-   render();save();
-   scrollToElement(item);
-  }else reportHeight();
+   render();
+   if(firstVisit)save();
+   scrollToElement(summary,true);
+  });
  });
+ item.addEventListener("toggle",()=>reportHeight());
 });
 $$(".quiz").forEach(block=>{
  const key=block.dataset.question,n=Number(key.slice(1));
