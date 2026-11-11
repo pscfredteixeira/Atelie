@@ -171,7 +171,7 @@ function freudLessonView(id=FREUD_FIRST_ID){
   ' DE '+String(group.length).padStart(2,'0')+'</span><h1>'+esc(l.title)+'</h1><p>'+esc(intro)+'</p></header>';
  return '<div class="freud-reading'+(videoFirst?' freud-video-first':'')+'">'+backlink+heading+progress+
   '<iframe class="freud-lesson-frame" id="freudLessonFrame" src="content/courses/formacao-freudiana/aulas/'+l.file+
-  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-fundador-sanfona-scroll-20261111-v5':id===FREUD_THIRD_ID?'freud-terceira-altura-corrigida-20261111-v1':'sanfona-rolagem-corrigida-20261110-v2')+'" title="Aula interativa '+esc(l.title)+
+  '?v='+(id===FREUD_FOURTH_ID?'freud-obra-sem-caderno-altura-20261111-v6':id===FREUD_THIRD_ID?'freud-terceira-sem-caderno-20261111-v2':'freud-base-sem-caderno-altura-20261111-v3')+'" title="Aula interativa '+esc(l.title)+
   '"'+(id===FREUD_THIRD_ID?' style="height:360px"':'')+' loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin"></iframe>'+
   (videoFirst?'<div id="freudLessonExtras" hidden>':'')+
   '<nav class="lesson-controls" aria-label="Navegação entre aulas">'+
