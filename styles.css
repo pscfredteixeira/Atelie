@@ -492,3 +492,42 @@ body.is-lesson-page .topbar .search-form{display:none!important}
 .enroll-footnote,.enroll-note{font-size:13px;color:var(--muted);line-height:1.6;margin:16px 0 0}
 @media(max-width:800px){.enroll-details{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}}
 @media(max-width:480px){.enroll-card-heading{flex-direction:column;gap:0}.enroll-card-heading h2{margin-bottom:10px}.enroll-pill{margin-bottom:20px}}
+
+
+/* Organização das áreas 2026-11-11: duas seções, sem sanfona duplicada por aula. */
+.study-area-menu{display:grid;gap:17px;padding:5px 0 9px}
+.study-area{min-width:0;border:1px solid #4c404f;border-radius:14px;overflow:hidden;background:#252128}
+.study-area.is-active{border-color:#7c637e;background:#29232c}
+.study-area-link{display:flex;align-items:center;justify-content:space-between;gap:13px;padding:17px 14px 13px;text-decoration:none;color:#f6eef8;background:#332d36}
+.study-area-link:hover{background:#413548;color:#fff}
+.study-area-link:focus-visible{outline:2px solid #dbb2e4;outline-offset:-3px}
+.study-area-link strong{font-size:16px;font-weight:760;line-height:1.35;letter-spacing:0;min-width:0}
+.study-area-link span{flex:none;font-size:11px;white-space:nowrap;color:#d3bfd4}
+.course-drawer-lessons{padding:8px 8px 10px;display:grid;gap:3px}
+.course-drawer-lessons .course-drawer-lesson{padding:11px 10px;display:flex;align-items:flex-start;gap:11px;border-left:3px solid transparent;border-radius:9px;text-decoration:none}
+.course-drawer-lessons .course-drawer-lesson:hover{background:#3d3442}
+.course-drawer-lessons .course-drawer-lesson.is-current{background:#4b3953;border-left-color:#dfa783}
+.course-drawer-lessons .course-drawer-lesson:focus-visible{outline:2px solid #d6acd9;outline-offset:-2px}
+.course-drawer-lessons .course-drawer-lesson-no{margin-top:1px}
+.course-drawer-lessons .course-drawer-lesson strong{font-size:13px;line-height:1.4}
+.course-drawer-lessons .course-drawer-lesson small{font-size:11px;color:#cbb8ce}
+.course-program-list{display:grid;gap:10px;margin:18px 0 26px}
+.course-program-flat-lesson{display:flex;gap:14px;align-items:center;padding:17px 18px;background:#fffdfc;border:1px solid #e6dbe6;border-radius:15px}
+.course-program-flat-no{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;background:#eee4ef;color:#614775;font-size:12px;font-weight:800}
+.course-program-flat-lesson>div{flex:1;min-width:0}
+.course-program-flat-lesson strong{display:block;overflow-wrap:anywhere;font-weight:750;font-size:15px;line-height:1.5;color:#352b3b}
+.course-program-flat-lesson small{display:block;color:#807283;font-size:12px;margin-top:4px}
+@media(max-width:790px){
+ .study-area-menu{gap:14px;padding-top:4px}
+ .study-area-link{padding:17px 13px 14px;gap:9px}
+ .study-area-link strong{font-size:16px}
+ .study-area-link span{font-size:10px}
+ .course-drawer-lessons{padding:8px 7px 11px}
+ .course-drawer-lessons .course-drawer-lesson{padding:10px 9px}
+ .course-drawer-lessons .course-drawer-lesson strong{font-size:13px}
+}
+@media(max-width:480px){
+ .course-program-flat-lesson{padding:14px 12px;gap:10px;flex-wrap:wrap}
+ .course-program-flat-no{flex-basis:32px;height:32px}
+ .course-program-flat-lesson .course-program-open{margin-left:42px}
+}
