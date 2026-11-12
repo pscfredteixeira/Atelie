@@ -342,13 +342,13 @@ function render(){
   $("#badge-"+n).textContent=completed?"Concluído":"Disponível";$("#badge-"+n).classList.toggle("done",completed);
  }
  const count=done.size;$("#progress-label").textContent=count+" de 7 momentos";
- $(".progress-segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
+ $$(".progress-segments span").forEach((el,i)=>el.classList.toggle("done",done.has(i+1)));
  $("#progressbar").setAttribute("aria-valuenow",String(count));
  $("#progress-next").textContent=count===7?"Percurso completo. Volte aos trechos que quiser rever.":"A seguir: "+labels[Array.from({length:7},(_,i)=>i+1).find(n=>!done.has(n))-1]+".";
 
  $("#explore-status").textContent=expanded.size+" de 3 dimensões exploradas";
  $("#stage2-quiz").hidden=expanded.size<3;
- $$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
+ $$$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
  for(const key of Object.keys(questions)){
   const id=Number(key.slice(1)),block=$("#quiz-"+id);if(!block)continue;
   const selected=answers[key];
@@ -385,7 +385,7 @@ window.onYouTubeIframeAPIReady=()=>{
 const ytScript=document.createElement("script");
 ytScript.src="https://www.youtube.com/iframe_api";ytScript.async=true;
 document.head.appendChild(ytScript);
-$(".accordion").forEach(item=>{
+$$(".accordion").forEach(item=>{
  const summary=$("summary",item);
  summary.addEventListener("click",()=>{
   const wasOpen=item.open;
@@ -394,7 +394,7 @@ $(".accordion").forEach(item=>{
   // nem sempre reposiciona a página corretamente em dispositivos iOS.
   requestAnimationFrame(()=>{
    if(!item.open)return;
-   $(".accordion").forEach(other=>{if(other!==item&&other.open)other.open=false});
+   $$(".accordion").forEach(other=>{if(other!==item&&other.open)other.open=false});
    const firstVisit=!expanded.has(item.dataset.explore);
    expanded.add(item.dataset.explore);
    render();
