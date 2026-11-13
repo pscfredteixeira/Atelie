@@ -114,6 +114,37 @@ try{
  await mobileLesson.waitForFunction(fitted,null,{timeout:15000});
  console.log('OK — Iframe ajusta altura ao rodapé também no tamanho de iPhone, sem sobra vazia.');
 
+
+ // Quarta aula: regressão contra querySelector(...).forEach e erro ao abrir sanfonas.
+ const fourth=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const fourthErrors=[];
+ fourth.on('pageerror',err=>fourthErrors.push(err.message));
+ await fourth.route('https://www.gstatic.com/firebasejs/**',r=>r.abort());
+ await fourth.route('https://www.youtube-nocookie.com/**',r=>r.fulfill({status:200,body:'',contentType:'text/html'}));
+ await fourth.route('https://www.youtube.com/iframe_api',r=>r.fulfill({status:200,body:'',contentType:'application/javascript'}));
+ await fourth.goto(base+'#/aula/freud-obra-e-fundador',{waitUntil:'domcontentloaded'});
+ await fourth.locator('[data-profile-login]').waitFor();
+ await fourth.evaluate(()=>{
+  const uid='teste-quarta-aula';
+  window.AtelieCloud={user:{uid,displayName:'Aluno Quarta Aula'},ready:true,
+    save:async()=>true,loadLessonProgress:async()=>({done:[1],explored:[],answers:{},version:1}),
+    saveLessonProgress:async()=>true,logout:async()=>true};
+  dispatchEvent(new CustomEvent('atelie-cloud-auth',{detail:{uid}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-loaded',{detail:{uid,exists:false,state:null}}));
+  dispatchEvent(new CustomEvent('atelie-cloud-ready',{detail:{uid}}));
+ });
+ const fourthLesson=fourth.frameLocator('#freudLessonFrame');
+ await fourthLesson.locator('#step-1').waitFor({state:'visible'});
+ await fourthLesson.locator('#step-2').waitFor({state:'visible'});
+ assert.equal(await fourthLesson.locator('.progress-segments span').count(),7);
+ await fourthLesson.locator('.accordion').first().locator('summary').click();
+ await fourth.waitForFunction(()=>{
+   const frame=document.querySelector('#freudLessonFrame');
+   return frame?.contentDocument?.querySelector('#explore-status')?.textContent?.includes('1 de 3');
+ });
+ assert.deepEqual(fourthErrors,[],'A quarta aula não deve lançar erros JS');
+ console.log('OK — Quarta aula inicia e abre sanfona sem TypeError.');
+
  console.log('OK — Terceira aula abre dentro do Ateliê, com vídeo e desbloqueio progressivo.');
  console.log('OK — Navegação em duas áreas, sem duplicação de submenus.');
 }finally{await browser.close()}
