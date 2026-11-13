@@ -562,3 +562,56 @@ body.is-lesson-page .topbar .search-form{display:none!important}
  .study-area-chevron{width:36px;height:36px;flex-basis:36px}
  .study-area-accordion>.course-drawer-lessons{padding:8px 7px 12px}
 }
+
+
+/* Biblioteca Freud — estante editorial, responsiva, alinhada à identidade do Ateliê. */
+.freud-library-hero{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:6px 0 29px;padding:clamp(24px,3.6vw,43px);border:1px solid #e4d6e6;border-radius:22px;background:radial-gradient(circle at 97% 0%,#e0cdeaa8,transparent 42%),linear-gradient(125deg,#fffaf6,#f4eaf3);box-shadow:0 10px 28px #54375f08}
+.freud-library-hero>div:first-child{min-width:0;max-width:720px}
+.freud-library-overline{display:block;color:#74517d;letter-spacing:.14em;font-size:10px;line-height:1.5;font-weight:800}
+.freud-library-hero h2{font:500 clamp(28px,3.3vw,45px)/1.18 'Fraunces',Georgia,serif;color:#35263c;letter-spacing:-.035em;margin:15px 0 14px}
+.freud-library-hero h2 i{font-weight:400;color:#815c91}
+.freud-library-hero p{font-size:14px;line-height:1.8;color:#68596e;margin:0;max-width:630px}
+.freud-library-total{flex:0 0 130px;min-height:145px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;border-left:1px solid #d9c4dd;text-align:center;color:#684676}
+.freud-library-total strong{font:500 58px/1 'Fraunces',Georgia,serif}
+.freud-library-total span{font-size:10px;line-height:1.5;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+.freud-library-toolbar{margin:0 0 19px}
+.freud-library-toolbar label{display:block;font-size:12px;font-weight:800;color:#5b4365;margin:0 0 9px}
+.freud-library-search-row{position:relative;display:flex;gap:12px;align-items:center}
+.freud-library-search-symbol{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#856d8e;font-size:27px;pointer-events:none}
+.freud-library-search-row input{height:53px;min-width:0;flex:1;border:1px solid #daccdf;border-radius:12px;background:#fffdfb;padding:12px 14px 12px 46px;color:#362d3b;font-size:16px;outline:0;box-shadow:0 4px 16px #47354f08}
+.freud-library-search-row input:focus-visible{border-color:#815c92;box-shadow:0 0 0 3px #cdb7d94d}
+.freud-library-results{font-size:12px;color:#715e77;font-weight:750;white-space:nowrap}
+.freud-library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:18px;align-items:stretch}
+.freud-library-card{display:flex;flex-direction:column;min-width:0;border:1px solid #e7dce6;background:#fffdfa;border-radius:17px;overflow:hidden;box-shadow:0 7px 19px #4c355b0a;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.freud-library-card:hover{transform:translateY(-3px);box-shadow:0 16px 31px #4c355b19;border-color:#ccb2d4}
+.freud-library-card[hidden],.freud-library-empty[hidden]{display:none!important}
+.freud-library-cover-link{display:flex;justify-content:center;align-items:center;min-height:223px;padding:19px 20px 17px;background:radial-gradient(circle at 75% 5%,#e1d3e799,transparent 55%),linear-gradient(150deg,#f5eef3,#f9f5f0);text-decoration:none}
+.freud-library-cover{position:relative;display:flex;flex-direction:column;justify-content:space-between;width:156px;height:200px;padding:15px 14px 12px 19px;box-shadow:inset 4px 0 #9071a7,5px 11px 17px #34233c25;border:1px solid #d1bfd9;border-radius:3px 9px 9px 3px;background:linear-gradient(110deg,#ebe0ee 0%,#fff7f0 26%,#fdf8f4 100%);color:#3b2e45;transition:transform .18s ease;overflow:hidden}
+.freud-library-cover:before{content:'';position:absolute;right:-27px;bottom:4px;width:98px;height:98px;border:1px solid #b7a0c433;border-radius:50%;box-shadow:0 0 0 24px #b7a0c417,0 0 0 45px #b7a0c411;pointer-events:none}
+.freud-library-card:hover .freud-library-cover{transform:rotate(-1.2deg) translateY(-2px)}
+.freud-library-card:nth-child(4n+2) .freud-library-cover{background:linear-gradient(110deg,#e4dae9,#fff6f3 30%,#f9f5f0);box-shadow:inset 4px 0 #ac8da8,5px 11px 17px #34233c25}
+.freud-library-card:nth-child(4n+3) .freud-library-cover{background:linear-gradient(110deg,#ebe4f1,#f8f5fc 30%,#f8f0f6);box-shadow:inset 4px 0 #806aa5,5px 11px 17px #34233c25}
+.freud-library-card:nth-child(4n+4) .freud-library-cover{background:linear-gradient(110deg,#eee6ee,#fff9f1 30%,#f7eee6);box-shadow:inset 4px 0 #8c758d,5px 11px 17px #34233c25}
+.freud-library-cover-top{font-size:7.5px;letter-spacing:.15em;font-weight:800;line-height:1.5;max-width:115px}
+.freud-library-cover-number{font:500 60px/1.05 'Fraunces',Georgia,serif;letter-spacing:-.06em;color:#6b4b7a;z-index:1;margin:8px 0 0}
+.freud-library-cover-rule{height:2px;width:40px;background:#ca9cbe}
+.freud-library-cover-author{font:500 16px/1.1 'Fraunces',Georgia,serif;letter-spacing:.02em;z-index:1}
+.freud-library-cover-bottom{font-size:6.7px;letter-spacing:.15em;font-weight:850;color:#866c88;z-index:1}
+.freud-library-card-info{display:flex;flex:1;flex-direction:column;padding:20px 20px 19px}
+.freud-library-card-meta{color:#805b8d;font-size:10px;line-height:1.6;font-weight:850;letter-spacing:.09em}
+.freud-library-card-meta span{margin:0 2px}
+.freud-library-card h3{font:500 21px/1.3 'Fraunces',Georgia,serif;color:#302538;margin:10px 0 10px;overflow-wrap:anywhere;hyphens:auto}
+.freud-library-card-info>p{font-size:12px;color:#807184;line-height:1.6;margin:0 0 19px}
+.freud-library-actions{display:flex;gap:9px;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid #eee4ec}
+.freud-library-actions a{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;min-height:40px;border-radius:9px;text-decoration:none}
+.freud-library-read{padding:9px 11px;background:#5b3d68;color:white}
+.freud-library-read:hover{background:#755184;color:#fff}
+.freud-library-download{padding:8px 7px;color:#694976}
+.freud-library-download:hover{color:#37263e;text-decoration:underline}
+.freud-library-cover-link:focus-visible,.freud-library-actions a:focus-visible{outline:3px solid #996aaa;outline-offset:3px}
+.freud-library-empty{border:1px dashed #c7b5cc;border-radius:13px;background:#fcf8fa;text-align:center;padding:30px 16px;color:#624f67;line-height:1.7}
+.freud-library-note{font-size:12px;line-height:1.75;color:#7c6d7c;margin:24px 0 10px}
+@media(max-width:840px){.freud-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.freud-library-hero{padding:25px;gap:17px}.freud-library-total{flex-basis:100px}.freud-library-total strong{font-size:48px}}
+@media(max-width:590px){.freud-library-hero{padding:24px 19px;display:block}.freud-library-hero h2{font-size:32px}.freud-library-hero p{font-size:13px}.freud-library-total{border-left:0;border-top:1px solid #d9c4dd;min-height:0;margin-top:20px;padding-top:13px;flex-direction:row;gap:13px;justify-content:flex-start}.freud-library-total strong{font-size:36px}.freud-library-total span{text-align:left}.freud-library-search-row{flex-wrap:wrap;gap:7px}.freud-library-search-row input{flex-basis:100%}.freud-library-results{margin-left:4px}.freud-library-grid{grid-template-columns:1fr}.freud-library-card{flex-direction:row;align-items:stretch;min-height:194px}.freud-library-cover-link{flex:0 0 124px;min-height:0;padding:13px 9px}.freud-library-cover{width:102px;height:149px;padding:11px 8px 10px 12px}.freud-library-cover-top{font-size:5.6px}.freud-library-cover-number{font-size:42px}.freud-library-cover-author{font-size:12px}.freud-library-cover-bottom{font-size:5.1px}.freud-library-card-info{padding:16px 13px 13px 11px}.freud-library-card h3{font-size:18px;margin:7px 0}.freud-library-card-meta{font-size:9px}.freud-library-card-info>p{font-size:11px;margin-bottom:9px}.freud-library-actions{gap:3px;padding-top:7px}.freud-library-actions a{font-size:11px;min-height:33px}.freud-library-read{padding:7px}.freud-library-download{padding:5px}.freud-library-note{font-size:11px}}
+@media(max-width:370px){.freud-library-cover-link{flex-basis:107px;padding:10px 6px}.freud-library-cover{width:91px;height:140px}.freud-library-card-info{padding:12px 10px 10px}.freud-library-card h3{font-size:16px}.freud-library-download{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.freud-library-card,.freud-library-cover{transition:none}}
