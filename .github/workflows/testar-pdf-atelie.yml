@@ -1,0 +1,23 @@
+name: Testar importação de PDFs do Ateliê
+on:
+  push:
+    paths:
+      - '.github/workflows/testar-pdf-atelie.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  teste:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar e validar PDF
+        env:
+          PDF_URL: https://at.adobe.com/crxIRRGB4y8Ebwxe
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --connect-timeout 20 --max-time 120 "$PDF_URL" -o /tmp/freud13.pdf
+          file /tmp/freud13.pdf
+          wc -c /tmp/freud13.pdf
+          head -c 5 /tmp/freud13.pdf | xxd -g 1
+          test "$(head -c 5 /tmp/freud13.pdf)" = "%PDF-"
