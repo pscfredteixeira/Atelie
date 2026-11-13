@@ -22,30 +22,30 @@ jobs:
             test "$(wc -c < "$arquivo")" -gt 100000 || { echo "Arquivo muito pequeno: $arquivo"; exit 1; }
             echo "${volume}: $(wc -c < "$arquivo") bytes"
           done <<'LISTA'
-I https://at.adobe.com/QHd3eeltnzs1jVcA
-II https://at.adobe.com/FIdxpXiT9DQGfXNd
-III https://at.adobe.com/kK62ehad9RAN71Wa
-IV https://at.adobe.com/ixPHxIiZtLnALwSz
-V https://at.adobe.com/RWS4MuPW4l49ysi0
-VI https://at.adobe.com/vnkb3WuSplXjkDVE
-VII https://at.adobe.com/ZCOf2DUPWk35AOUy
-VIII https://at.adobe.com/EZAU3FO6QUavj8it
-IX https://at.adobe.com/2dDPBwaaUMXp4qL4
-X https://at.adobe.com/JfoQB1N1wNEE8syC
-XI https://at.adobe.com/8VIKHenFwRZqpUqC
-XII https://at.adobe.com/JzR2lNGKB23mGZIx
-XIII https://at.adobe.com/toJEtd5dwdHXs6Bp
-XIV https://at.adobe.com/F07AppFFmIYvvvO6
-XV https://at.adobe.com/tkzje1JXx08ia4Oc
-XVI https://at.adobe.com/i1wbwvr8pBRx9tru
-XVII https://at.adobe.com/88VJ3tro30TPcZjs
-XVIII https://at.adobe.com/KJWjfDSH2yG7Mtvi
-XIX https://at.adobe.com/DQ5H8Pwklo9qcUwJ
-XX https://at.adobe.com/aWK72OG3farKYRvA
-XXI https://at.adobe.com/Zzq9ipqJP1I4D8mu
-XXII https://at.adobe.com/MQcHmbOUeJfYcBNb
-XXIII https://at.adobe.com/yeO7PLb0iqr8SS29
-LISTA
+          I https://at.adobe.com/QHd3eeltnzs1jVcA
+          II https://at.adobe.com/FIdxpXiT9DQGfXNd
+          III https://at.adobe.com/kK62ehad9RAN71Wa
+          IV https://at.adobe.com/ixPHxIiZtLnALwSz
+          V https://at.adobe.com/RWS4MuPW4l49ysi0
+          VI https://at.adobe.com/vnkb3WuSplXjkDVE
+          VII https://at.adobe.com/ZCOf2DUPWk35AOUy
+          VIII https://at.adobe.com/EZAU3FO6QUavj8it
+          IX https://at.adobe.com/2dDPBwaaUMXp4qL4
+          X https://at.adobe.com/JfoQB1N1wNEE8syC
+          XI https://at.adobe.com/8VIKHenFwRZqpUqC
+          XII https://at.adobe.com/JzR2lNGKB23mGZIx
+          XIII https://at.adobe.com/toJEtd5dwdHXs6Bp
+          XIV https://at.adobe.com/F07AppFFmIYvvvO6
+          XV https://at.adobe.com/tkzje1JXx08ia4Oc
+          XVI https://at.adobe.com/i1wbwvr8pBRx9tru
+          XVII https://at.adobe.com/88VJ3tro30TPcZjs
+          XVIII https://at.adobe.com/KJWjfDSH2yG7Mtvi
+          XIX https://at.adobe.com/DQ5H8Pwklo9qcUwJ
+          XX https://at.adobe.com/aWK72OG3farKYRvA
+          XXI https://at.adobe.com/Zzq9ipqJP1I4D8mu
+          XXII https://at.adobe.com/MQcHmbOUeJfYcBNb
+          XXIII https://at.adobe.com/yeO7PLb0iqr8SS29
+          LISTA
       - name: Publicar PDFs no repositório
         shell: bash
         run: |
