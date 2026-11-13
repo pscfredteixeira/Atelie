@@ -389,7 +389,71 @@ function profileView(){
 }
 function savedView(){const cs=PUBLISHED_COURSES().filter(c=>state.saved.includes(c.slug));return heading('MEU ESTUDO','Cursos salvos','Se você entrar com Google e o Firestore estiver configurado, seus favoritos poderão ser sincronizados entre dispositivos.')+(cs.length?'<div class="course-grid">'+cs.map(courseCard).join('')+'</div>':'<div class="empty"><h2>Você ainda não salvou cursos.</h2><p>Abra um curso e selecione “Salvar curso”.</p><a class="btn btn-primary" href="#/cursos">Explorar cursos</a></div>')}
 function trails(){return heading('PERCURSOS','Trilhas de estudo','Percursos disponíveis para estudo.')+'<div class="intro-grid">'+PUBLISHED_COURSES().map((c,i)=>'<article class="info-card"><span class="eyebrow">TRILHA 0'+(i+1)+'</span><h2>'+esc(c.title)+'</h2><p>'+esc(c.subtitle)+'</p><a class="section-link" href="#/aula/'+c.lesson+'">Experimentar aula '+icon('arrow')+'</a></article>').join('')+'</div>'}
-function library(){return heading('BIBLIOTECA','Espaço de referências','A biblioteca será planejada posteriormente. Esta tela é uma estrutura funcional para futura organização de textos, links e leituras.')+'<div class="highlight-panel"><span class="eyebrow">EM DESENVOLVIMENTO</span><h2>As referências virão depois.</h2><p>Por enquanto, vamos testar a navegação, as aulas, os quizzes e o progresso.</p></div>'}
+/* Biblioteca editorial: cada entrada corresponde a um PDF real, hospedado no próprio Ateliê. */
+const FREUD_LIBRARY = [["I","Publicações Pré-Psicanalíticas e Esboços Inéditos","1886–1899"],
+ ["II","Estudos sobre a Histeria","1893–1895"],
+ ["III","Primeiras Publicações Psicanalíticas","1893–1899"],
+ ["IV","A Interpretação dos Sonhos — Parte I","1900"],
+ ["V","A Interpretação dos Sonhos — Parte II e Sobre os Sonhos","1900–1901"],
+ ["VI","Sobre a Psicopatologia da Vida Cotidiana","1901"],
+ ["VII","Um Caso de Histeria, Três Ensaios sobre a Sexualidade e Outros Trabalhos","1901–1905"],
+ ["VIII","Os Chistes e sua Relação com o Inconsciente","1905"],
+ ["IX","Gradiva de Jensen e Outros Trabalhos","1906–1908"],
+ ["X","Duas Histórias Clínicas: Pequeno Hans e Homem dos Ratos","1909"],
+ ["XI","Cinco Lições de Psicanálise, Leonardo da Vinci e Outros Trabalhos","1910"],
+ ["XII","O Caso Schreber, Artigos sobre Técnica e Outros Trabalhos","1911–1913"],
+ ["XIII","Totem e Tabu e Outros Trabalhos","1913–1914"],
+ ["XIV","História do Movimento Psicanalítico e Metapsicologia","1914–1916"],
+ ["XV","Conferências Introdutórias sobre Psicanálise — Partes I e II","1915–1916"],
+ ["XVI","Conferências Introdutórias sobre Psicanálise — Parte III","1916–1917"],
+ ["XVII","História de uma Neurose Infantil e Outros Trabalhos","1917–1919"],
+ ["XVIII","Além do Princípio do Prazer, Psicologia de Grupo e Outros Trabalhos","1920–1922"],
+ ["XIX","O Ego e o Id e Outros Trabalhos","1923–1925"],
+ ["XX","Um Estudo Autobiográfico, Inibições, Sintomas e Ansiedade","1925–1926"],
+ ["XXI","O Futuro de uma Ilusão e O Mal-Estar na Civilização","1927–1931"],
+ ["XXII","Novas Conferências Introdutórias sobre Psicanálise","1932–1936"],
+ ["XXIII","Moisés e o Monoteísmo, Esboço de Psicanálise e Outros Trabalhos","1937–1939"]];
+const libraryFold = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+function library(){
+ const intro = heading('BIBLIOTECA · COLEÇÃO FREUD','Uma biblioteca para <em>ler com tempo.</em>',
+  'Os 23 volumes das obras de Sigmund Freud, em edições diagramadas para uma leitura mais confortável no celular, tablet ou computador.');
+ const banner = '<section class="freud-library-hero"><div><span class="freud-library-overline">ACERVO DIGITAL · ATELIÊ DE PSICANÁLISE</span>'+
+  '<h2>As obras de Freud, <i>em uma só estante.</i></h2>'+
+  '<p>Textos em português organizados por volume. Abra para ler no navegador ou guarde o PDF no seu dispositivo.</p></div>'+
+  '<div class="freud-library-total"><strong>23</strong><span>volumes<br>disponíveis</span></div></section>';
+ const toolbar = '<div class="freud-library-toolbar"><label for="librarySearch">Encontre uma obra na coleção</label>'+
+  '<div class="freud-library-search-row"><span class="freud-library-search-symbol" aria-hidden="true">⌕</span>'+
+  '<input id="librarySearch" type="search" autocomplete="off" placeholder="Buscar por título, ano ou volume…" aria-controls="libraryGrid">'+
+  '<span id="libraryResults" class="freud-library-results" aria-live="polite">23 volumes</span></div></div>';
+ const grid = '<div id="libraryGrid" class="freud-library-grid">'+FREUD_LIBRARY.map(([volume,title,period],i)=>{
+  const url='biblioteca/pdfs/Freud_Volume_'+volume+'_Atelie_Leitura_Celular.pdf';
+  return '<article class="freud-library-card" data-search="'+esc(libraryFold('Freud volume '+volume+' '+(i+1)+' '+title+' '+period))+'">'+
+   '<a class="freud-library-cover-link" href="'+url+'" target="_blank" rel="noopener noreferrer" aria-label="Ler volume '+volume+': '+esc(title)+'">'+
+    '<div class="freud-library-cover" aria-hidden="true"><span class="freud-library-cover-top">ATELIÊ DE PSICANÁLISE</span>'+
+    '<span class="freud-library-cover-number">'+volume+'</span><span class="freud-library-cover-rule"></span>'+
+    '<span class="freud-library-cover-author">SIGMUND<br>FREUD</span><span class="freud-library-cover-bottom">OBRAS COMPLETAS</span></div></a>'+
+   '<div class="freud-library-card-info"><span class="freud-library-card-meta">VOLUME '+volume+' <span aria-hidden="true">·</span> '+esc(period)+'</span>'+
+   '<h3>'+esc(title)+'</h3><p>Edição Ateliê · Leitura para celular</p>'+
+   '<div class="freud-library-actions"><a href="'+url+'" target="_blank" rel="noopener noreferrer" class="freud-library-read">Ler PDF <span aria-hidden="true">↗</span></a>'+
+   '<a href="'+url+'" download class="freud-library-download" aria-label="Baixar '+esc(title)+' em PDF">Baixar <span aria-hidden="true">↓</span></a></div></div></article>';
+ }).join('')+'</div>'+
+ '<div id="libraryEmpty" class="freud-library-empty" hidden>Nenhuma obra encontrada. Experimente buscar outro título ou período.</div>';
+ return intro+banner+toolbar+grid+'<p class="freud-library-note">Todos os arquivos desta coleção são PDFs de leitura, com texto pesquisável. A nomenclatura editorial é da Edição Standard Brasileira.</p>';
+}
+document.addEventListener('input',function(event){
+ if(event.target?.id!=='librarySearch')return;
+ const q=libraryFold(event.target.value.trim());
+ let count=0;
+ document.querySelectorAll('#libraryGrid .freud-library-card').forEach(card=>{
+  const match=card.dataset.search.includes(q);
+  card.hidden=!match;
+  if(match)count++;
+ });
+ const label=document.getElementById('libraryResults');
+ if(label)label.textContent=count+(count===1?' volume':' volumes');
+ const empty=document.getElementById('libraryEmpty');
+ if(empty)empty.hidden=count!==0;
+});
 function studioView(){return heading('ESTÚDIO · DEMONSTRAÇÃO','Editar uma aula de exemplo','Este editor modifica apenas uma cópia local no seu navegador. Não publica conteúdo nem modifica o banco ou o GitHub.')+'<div class="notice">A edição local é aberta para testar a interface; não é um painel administrativo autenticado. A publicação protegida será implementada em outro sprint.</div><div class="intro-grid">'+COURSES.filter(c=>c.slug!=='formacao-freudiana').map(c=>{const l=lesson(c.lesson);return '<article class="info-card"><span class="eyebrow">'+esc(c.title)+'</span><h2>'+esc(l.title)+'</h2><p>Edite o título, a introdução e o texto da aula fictícia.</p><a class="section-link" href="#/estudio/'+c.lesson+'">Abrir editor '+icon('arrow')+'</a></article>'}).join('')+'</div>'}
 function studioEditor(id){if(id===FREUD_FIRST_ID||id===FREUD_SECOND_ID)return heading('ESTÚDIO','Aula interativa publicada','Esta aula foi integrada ao curso e não é editável pelo Estúdio de exemplos.');if(!Object.hasOwn(LESSONS,id))return notFound();const l=lesson(id),c=COURSES[l.course];return '<div class="reading"><a class="back-link" href="#/estudio">← Voltar ao Estúdio</a>'+heading('EDITOR LOCAL',l.title,c.title)+'<form id="editorForm" data-edit="'+id+'" class="reading-panel editor"><label class="form-label" for="editTitle">Título</label><input id="editTitle" name="title" maxlength="120" required value="'+esc(l.title)+'"><label class="form-label" for="editIntro">Introdução</label><textarea id="editIntro" name="intro" rows="7" required maxlength="4000">'+esc(l.intro)+'</textarea><label class="form-label" for="editText">Texto principal</label><textarea id="editText" name="text" rows="7" required maxlength="5000">'+esc(l.text)+'</textarea><div class="lesson-controls"><button type="submit" class="btn btn-primary">Salvar rascunho local</button><button type="button" class="btn btn-outline" data-reset="'+id+'">Restaurar exemplo</button></div><p class="muted-note" id="editorStatus">Nada aqui será publicado.</p></form></div>'}
 function about(){return heading('SOBRE O PROJETO','O Ateliê está em construção','Estamos validando uma interface de estudos antes de produzir as aulas definitivas.')+'<div class="highlight-panel"><span class="eyebrow">BETA DE FUNCIONALIDADES</span><h2>Conteúdo de exemplo, ferramentas reais.</h2><p>Os textos fictícios são independentes do repositório anterior. Nesta etapa estamos testando catálogo, aulas, atividades, progresso, favoritos, anotações e edição local. Autenticação Google e sincronização Firestore dependem da ativação dos serviços e das regras de segurança no projeto Firebase.</p></div>'}
