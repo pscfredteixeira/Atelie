@@ -415,7 +415,7 @@ const FREUD_LIBRARY = [["I","Publicações Pré-Psicanalíticas e Esboços Inéd
  ["XXIII","Moisés e o Monoteísmo, Esboço de Psicanálise e Outros Trabalhos","1937–1939"]];
 const libraryFold = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
 function library(){
- const intro = heading('BIBLIOTECA · COLEÇÃO FREUD','Uma biblioteca para <em>ler com tempo.</em>',
+ const intro = heading('BIBLIOTECA · COLEÇÃO FREUD','Uma biblioteca para ler com tempo.',
   'Os 23 volumes das obras de Sigmund Freud, em edições diagramadas para uma leitura mais confortável no celular, tablet ou computador.');
  const banner = '<section class="freud-library-hero"><div><span class="freud-library-overline">ACERVO DIGITAL · ATELIÊ DE PSICANÁLISE</span>'+
   '<h2>As obras de Freud, <i>em uma só estante.</i></h2>'+
