@@ -1,0 +1,61 @@
+name: Verificar biblioteca Freud no celular e desktop
+on:
+  push:
+    paths: ['.github/workflows/verificar-biblioteca-freud.yml']
+permissions:
+  contents: read
+jobs:
+  biblioteca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar PDFs e JavaScript
+        run: |
+          set -euo pipefail
+          node --check app.js
+          total=0
+          for arquivo in biblioteca/pdfs/*.pdf; do
+            test "$(head -c 5 "$arquivo")" = "%PDF-"
+            test "$(wc -c < "$arquivo")" -gt 100000
+            total=$((total+1))
+          done
+          test "$total" -eq 23
+          echo "Validado: $total PDFs"
+      - name: Preparar teste de navegador
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Validar a interface em desktop e celular
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/atelier-biblioteca.log 2>&1 &
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch();
+            try{
+              for(const width of [1280,390]){
+                const page=await browser.newPage({viewport:{width,height:820}});
+                await page.goto('http://127.0.0.1:4173/#/biblioteca',{waitUntil:'domcontentloaded'});
+                await page.waitForSelector('.freud-library-card');
+                const count=await page.locator('.freud-library-card').count();
+                if(count!==23)throw Error('Quantidade de cards errada: '+count+' / largura '+width);
+                const link=await page.locator('.freud-library-read').first().getAttribute('href');
+                const response=await page.request.get('http://127.0.0.1:4173/'+link);
+                if(response.status()!==200)throw Error('PDF inacessível: '+link);
+                const bytes=await response.body();
+                if(!bytes.subarray(0,5).equals(Buffer.from('%PDF-')))throw Error('Link não aponta para PDF');
+                await page.locator('#librarySearch').fill('Schreber');
+                const visible=await page.locator('.freud-library-card:visible').count();
+                if(visible!==1)throw Error('Busca falhou: '+visible+' em '+width);
+                const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
+                if(overflow)throw Error('Estouro horizontal em '+width+'px');
+                console.log('OK '+width+'px; 23 cards, busca e PDF');
+                await page.close();
+              }
+            }finally{await browser.close()}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
