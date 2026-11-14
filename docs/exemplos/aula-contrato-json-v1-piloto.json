@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-exemplo-contrato-json-v1",
+  "courseId": "curso-formacao-freudiana",
+  "moduleId": "modulo-formacao-freudiana-01",
+  "slug": "exemplo-contrato-json-v1",
+  "revision": 1,
+  "status": "draft",
+  "title": "Exemplo técnico — Escuta e interpretação",
+  "summary": "Aula fictícia para demonstrar o contrato JSON v1. Não está publicada no catálogo.",
+  "estimatedMinutes": 12,
+  "objectives": [
+    "Distinguir descrição de interpretação",
+    "Exercitar perguntas abertas em uma situação fictícia"
+  ],
+  "blocks": [
+    {
+      "id": "exemplo-secao",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "A escuta como investigação"
+      },
+      "settings": {}
+    },
+    {
+      "id": "exemplo-texto",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Antes de formular uma hipótese",
+        "paragraphs": [
+          "A escuta começa pelo relato e pelo contexto, sem transformar uma observação isolada em diagnóstico.",
+          "Este conteúdo é ilustrativo e serve apenas para testar a estrutura técnica de aulas."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "exemplo-conceito",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Hipótese",
+        "definition": "Uma interpretação possível que precisa permanecer aberta à investigação.",
+        "example": "Perguntar como a pessoa compreende uma situação antes de concluir por ela."
+      },
+      "settings": {}
+    },
+    {
+      "id": "exemplo-quiz",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Qual atitude ajuda a preservar uma investigação aberta?",
+        "options": [
+          {
+            "id": "opcao-investigar",
+            "text": "Perguntar pelo contexto antes de interpretar."
+          },
+          {
+            "id": "opcao-concluir",
+            "text": "Tratar uma repetição como prova diagnóstica."
+          }
+        ],
+        "correctOptionId": "opcao-investigar",
+        "feedbackCorrect": "A pergunta pelo contexto evita conclusões precipitadas.",
+        "feedbackIncorrect": "Uma observação isolada não sustenta uma conclusão clínica automática."
+      },
+      "settings": {}
+    },
+    {
+      "id": "exemplo-laboratorio",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Que pergunta fazer?",
+        "description": "Situação inteiramente inventada, usada apenas para estudo.",
+        "prompt": "Uma personagem relata que se sente insegura ao conversar em público. Como começar?",
+        "choices": [
+          {
+            "id": "acolher",
+            "label": "Perguntar quando isso acontece",
+            "feedback": "Essa pergunta ajuda a conhecer melhor as circunstâncias do relato."
+          },
+          {
+            "id": "rotular",
+            "label": "Atribuir uma causa sem investigar",
+            "feedback": "Uma hipótese antecipada pode encerrar prematuramente a escuta."
+          }
+        ],
+        "alternative": "Formule duas perguntas abertas, sem oferecer diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "exemplo-bibliografia",
+      "type": "references",
+      "version": 1,
+      "data": {
+        "referenceIds": [
+          "referencia-exemplo"
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [
+    {
+      "id": "referencia-exemplo",
+      "author": "Equipe Ateliê",
+      "title": "Referência fictícia de demonstração — substituir antes de publicar",
+      "note": "Apenas um teste estrutural; não representa uma fonte acadêmica."
+    }
+  ],
+  "metadata": {
+    "demo": true,
+    "usage": "technical-example-only"
+  }
+}
