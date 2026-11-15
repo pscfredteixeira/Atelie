@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ateliê — teste de editor JSON v1</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#302637;background:#faf6f4}
+body{max-width:860px;margin:auto;padding:32px 18px;line-height:1.7}
+h1{font-family:Georgia,serif;font-size:clamp(28px,4vw,42px)}
+button{background:#5c3765;color:white;border:0;border-radius:9px;padding:13px 19px;cursor:pointer;font:inherit;font-weight:700}
+button:disabled{opacity:.5}
+pre{background:#fff;border:1px solid #e0d5dd;border-radius:12px;padding:18px;white-space:pre-wrap;overflow-wrap:anywhere}
+a{color:#663d75}
+.note{border-left:4px solid #d06c36;background:#fff3e8;padding:14px 17px;border-radius:6px}
+</style>
+</head>
+<body>
+<h1>Teste do Estúdio Visual JSON</h1>
+<p>Executa verificações no navegador usando os próprios validadores, formulários e rascunhos do Ateliê. Não altera aulas públicas nem dados do Firebase.</p>
+<p class="note">O teste cria <strong>um rascunho temporário com ID aleatório</strong> no IndexedDB, verifica sua recuperação e tenta apagá-lo ao final. Não execute com conteúdo sensível aberto em outra aba.</p>
+<p><button id="run">Executar testes</button></p>
+<pre id="output" role="status" aria-live="polite">Nenhum teste executado.</pre>
+<p><a href="../#/laboratorio/editor">Abrir o Estúdio JSON</a></p>
+<script type="module">
+import {readPilotCourse} from "../json-pilot.js";
+import {parseStudioSelection} from "../json-studio.js";
+import {createLesson,blockTemplate,updateLesson,BLOCK_TYPES} from "../src/features/authoring/lesson-editor.js";
+import {renderBlockFields,readBlockFields} from "../src/features/authoring/block-fields.js";
+import {getDraft,saveDraft,deleteDraft} from "../src/repositories/draft-repository.js";
+import {validateLesson} from "../src/repositories/validators.js";
+import {renderLessonBlocks} from "../src/lesson-engine/engine.js";
+const button=document.getElementById("run"),output=document.getElementById("output");
+const assert=(condition,message)=>{if(!condition)throw Error(message)};
+const log=(value)=>{output.textContent+=value+"\n"};
+button.addEventListener("click",async()=>{
+ button.disabled=true;output.textContent="";
+ let temp=null;
+ const courseId="curso-piloto-json-02";
+ try{
+  assert(parseStudioSelection("#/laboratorio/editor").mode==="dashboard","O dashboard não foi reconhecido.");
+  const {course}=await readPilotCourse(courseId);
+  log("OK — catálogo e manifesto de teste carregados.");
+  const made=createLesson({...course,status:"draft"},course.modules[0].id,"Teste temporário do Estúdio");
+  temp=made.lesson;
+  validateLesson(temp);
+  assert(temp.status==="draft","Uma aula nova jamais deve nascer publicada.");
+  log("OK — nova aula válida criada em memória.");
+  let edited=temp;
+  for(const [type] of BLOCK_TYPES){
+   const block=blockTemplate(type);
+   const form=document.createElement("form");
+   form.innerHTML=renderBlockFields(block,edited);
+   assert(form.querySelector("input, textarea, fieldset"),"Campos ausentes para "+type);
+  }
+  log("OK — formulários dos "+BLOCK_TYPES.length+" tipos de blocos.");
+  const added=blockTemplate("rich_text");
+  const form=document.createElement("form");
+  form.innerHTML=renderBlockFields(added,edited);
+  form.querySelector('[name="title"]').value="Explicação modificada";
+  form.querySelector('[name="paragraphs"]').value="Primeiro parágrafo.\n\nSegundo parágrafo.";
+  const result=readBlockFields(added,form);
+  assert(result.paragraphs.length===2,"Os parágrafos não foram convertidos.");
+  edited=updateLesson(edited,"add-block",{type:"rich_text"});
+  const id=edited.blocks[edited.blocks.length-1].id;
+  edited=updateLesson(edited,"edit-block",{blockId:id,data:result});
+  assert(renderLessonBlocks(edited).includes("Explicação modificada"),"A prévia não refletiu a mudança.");
+  log("OK — formulário, alteração e prévia do motor real.");
+  await saveDraft(courseId,edited);
+  const stored=await getDraft(courseId,edited.id);
+  assert(stored?.lesson?.blocks.length===edited.blocks.length,"O IndexedDB não recuperou o rascunho.");
+  assert(stored.lesson.status==="draft","O rascunho foi salvo com status incorreto.");
+  log("OK — rascunho salvo e recuperado do IndexedDB.");
+  await deleteDraft(courseId,edited.id);temp=null;
+  assert(!await getDraft(courseId,edited.id),"O teste temporário não foi removido.");
+  log("OK — rascunho temporário removido.");
+  log("RESULTADO: TODOS OS TESTES PASSARAM.");
+ }catch(error){
+  log("FALHA: "+String(error?.message||error));
+ }finally{
+  if(temp)try{await deleteDraft(courseId,temp.id)}catch(error){log("Atenção: não foi possível limpar o rascunho temporário "+temp.id+". "+error.message)}
+  button.disabled=false;
+ }
+});
+</script>
+</body>
+</html>
