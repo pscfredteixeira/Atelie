@@ -78,7 +78,8 @@ export function parsePilotSelection(hash){
  if(keys.some(k=>k!=="curso"&&k!=="aula")||params.getAll("curso").length>1||params.getAll("aula").length>1)
    return {error:"Parâmetros desconhecidos ou duplicados."};
  const courseId=params.get("curso"),lessonId=params.get("aula");
- if(!courseId&&!lessonId)return {mode:"catalog"};
+ if(!keys.length)return {mode:"catalog"};
+ if(!courseId||!lessonId)return {error:"Informe curso e aula para abrir um conteúdo."};
  if(!validId(courseId)||!validId(lessonId))return {error:"Selecione um curso e uma aula válidos."};
  return {mode:"lesson",courseId,lessonId};
 }
