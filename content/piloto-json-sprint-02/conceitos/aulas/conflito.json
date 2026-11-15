@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-conflito-piloto",
+  "courseId": "curso-piloto-json-conceitos",
+  "moduleId": "modulo-conceitos-piloto",
+  "slug": "conflito-psiquico-piloto",
+  "revision": 1,
+  "status": "published",
+  "title": "Conflito psíquico: uma introdução",
+  "summary": "Uma aula curta sobre tensões e hipóteses de conflito para testar um segundo curso JSON.",
+  "estimatedMinutes": 10,
+  "objectives": [
+    "Diferenciar uma tensão cotidiana de uma interpretação psicanalítica.",
+    "Compreender o caráter provisório de hipóteses teóricas."
+  ],
+  "blocks": [
+    {
+      "id": "abertura",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Duas vontades diferentes podem coexistir?",
+        "hint": "A coexistência de desejos ou preocupações não determina, por si só, um diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "secao-um",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "1. Uma tensão possível"
+      },
+      "settings": {}
+    },
+    {
+      "id": "texto-teoria",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O que a ideia de conflito ajuda a investigar?",
+        "paragraphs": [
+          "Na história da teoria psicanalítica, o conflito psíquico é uma noção importante para pensar forças, desejos e defesas que não se deixam reduzir a uma decisão consciente simples.",
+          "Isso não significa que toda indecisão comum deva receber uma explicação clínica. A relação entre uma experiência e uma hipótese teórica depende da investigação e do contexto."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "vinheta",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "Duas possibilidades",
+        "narrative": "Uma personagem inventada deseja aceitar uma proposta de trabalho, mas também se preocupa com uma possível mudança de cidade.",
+        "reflection": "Quais perguntas poderiam ampliar a compreensão dos desejos em jogo?",
+        "disclaimer": "Exemplo inteiramente inventado e sem intenção diagnóstica."
+      },
+      "settings": {}
+    },
+    {
+      "id": "quiz",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "O que é mais adequado concluir a partir da vinheta?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Uma tensão é suficiente para diagnosticar um mecanismo psíquico."
+          },
+          {
+            "id": "b",
+            "text": "O relato permite formular perguntas, mas não determinar uma explicação única."
+          }
+        ],
+        "correctOptionId": "b",
+        "feedbackCorrect": "Correto: o exercício convida a investigar, não a rotular.",
+        "feedbackIncorrect": "O exemplo isolado não permite atribuir um diagnóstico ou uma causa única."
+      },
+      "settings": {}
+    },
+    {
+      "id": "sintese",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Síntese",
+        "paragraphs": [
+          "Conceitos ajudam a formular problemas, mas não substituem a investigação da experiência singular.",
+          "Esta segunda formação existe apenas para comprovar que o motor consegue carregar outros cursos por JSON."
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [],
+  "metadata": {
+    "demo": true,
+    "pilot": true,
+    "source": "Demonstração original; personagens fictícias."
+  }
+}
