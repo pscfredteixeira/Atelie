@@ -374,7 +374,8 @@ export async function mountJSONStudio(root,hash=location.hash){
 window.AtelieJSONStudio={
  canNavigate(nextHash){
   const state=activeStudio;
-  if(!state?.root.isConnected||nextHash===state.hash)return true;
+  if(!state?.root.isConnected)return true;
+  if(nextHash===state.hash)return !(state.dirty||state.formDirty);
   if(!state.dirty&&!state.formDirty){activeStudio=null;return true}
   if(window.confirm("Há alterações não salvas no Estúdio JSON. Sair e descartá-las?")){
    activeStudio=null;return true;
