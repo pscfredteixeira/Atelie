@@ -1,0 +1,72 @@
+/* Ateliê — Sprint JSON 2. Estilos estritamente isolados do site atual. */
+.json-pilot{color:var(--ink,#241d29);max-width:1160px;margin:0 auto}
+.json-pilot *{box-sizing:border-box}
+.json-pilot a.back-link{display:inline-flex;margin:18px 0 16px}
+.json-pilot-hero{padding:30px clamp(22px,4vw,42px);background:linear-gradient(130deg,#f6eeea,#efe2f0);border-radius:18px;border:1px solid #e7d8e1}
+.json-pilot-hero h1{font:500 clamp(34px,4vw,55px)/1.12 var(--serif,Georgia,serif);letter-spacing:-.04em;max-width:820px;margin:12px 0}
+.json-pilot-hero p{max-width:770px;color:#625664;font-size:15px;line-height:1.75}
+.json-pilot-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:21px}
+.json-pilot-tags span{font-size:11px;font-weight:700;color:#593e61;border:1px solid #d7bfd8;background:#fff9fc;border-radius:25px;padding:7px 11px}
+.json-pilot-notice{margin:14px 0 26px;border-left:4px solid #dd672d;background:#fff5eb;padding:16px 18px;border-radius:6px;color:#493f45;font-size:13px;line-height:1.75}
+.json-pilot-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px;align-items:start}
+.json-pilot-reading{min-width:0}
+.json-pilot-goals{border-radius:15px;background:#fffefa;border:1px solid #eadfe5;padding:22px 26px;margin-bottom:22px}
+.json-pilot-goals h2{font:600 24px/1.2 var(--serif,Georgia,serif);margin:0 0 10px}
+.json-pilot-goals ul{margin:0;padding-left:22px;line-height:1.8;font-size:14px;color:#504753}
+.json-pilot-sidebar{position:sticky;top:24px;border:1px solid #e8dfe6;background:#fffefa;border-radius:14px;padding:17px}
+.json-pilot-sidebar h2{margin:0 0 11px;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#725576}
+.json-pilot-sidebar ol{margin:0;list-style:none;padding:0;display:grid;gap:3px}
+.json-pilot-sidebar button{border:0;background:transparent;text-align:left;width:100%;border-radius:8px;padding:9px 7px;color:#544354;line-height:1.45;font-size:12px;display:flex;gap:9px}
+.json-pilot-sidebar button span{color:#9b738f;font-weight:800;font-size:10px;min-width:20px}
+.json-pilot-sidebar button:hover,.json-pilot-sidebar button:focus-visible{background:#f1e7f1}
+.json-pilot .lesson-block{background:#fffefa;border:1px solid #ebe1e6;border-radius:16px;margin-bottom:20px;padding:clamp(20px,3vw,32px);scroll-margin-top:24px;overflow:hidden}
+.json-pilot .lesson-block h3{font:600 24px/1.25 var(--serif,Georgia,serif);margin:0 0 14px;color:#302431}
+.json-pilot .lesson-block p{font-size:14.5px;line-height:1.9;color:#4b414a;margin:11px 0}
+.json-pilot .block-kicker{display:inline-block;color:#895879;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:.14em;margin-bottom:14px}
+.json-pilot .block-kicker-section{color:#bf602e}
+.json-pilot .reader-prompt{background:#f7eff8;padding:20px;border-radius:12px;border-left:4px solid #9163a0}
+.json-pilot .reader-prompt h3{font-size:21px}
+.json-pilot .reader-prompt small{display:block;margin-top:12px;font-size:11px;color:#6b5c6c;line-height:1.6}
+.json-pilot .lesson-concept{padding:18px;background:#f2e9f3;border-radius:12px}
+.json-pilot .lesson-concept summary,.json-pilot .lesson-media summary{color:#633e6d;font-weight:700;cursor:pointer;font-size:13px;padding:6px 0}
+.json-pilot .lesson-concept-body{padding-top:8px}
+.json-pilot .comparison-scroll{overflow-x:auto;max-width:100%}
+.json-pilot .lesson-comparison table{width:100%;border-collapse:collapse;min-width:540px;font-size:12px;line-height:1.65}
+.json-pilot .lesson-comparison caption{text-align:left;color:#716476;padding-bottom:12px}
+.json-pilot .lesson-comparison th,.json-pilot .lesson-comparison td{padding:13px;text-align:left;border:1px solid #e8dee7;vertical-align:top}
+.json-pilot .lesson-comparison thead th{background:#eee1ef;color:#402e47}
+.json-pilot .lesson-comparison tbody th{font-weight:700;background:#f9f4f7}
+.json-pilot .lesson-lab{border-left:4px solid #d76b30;padding:0 0 0 16px}
+.json-pilot .lesson-lab fieldset,.json-pilot .learning-quiz fieldset{border:0;padding:0;margin:12px 0 0;min-width:0}
+.json-pilot .lesson-lab legend,.json-pilot .learning-quiz legend{font-size:15px;font-weight:700;line-height:1.5;margin:0 0 12px}
+.json-pilot .learning-path{display:block;width:100%;text-align:left;border:1px solid #ddc7df;background:#fff;border-radius:10px;color:#46364b;padding:13px 15px;margin:9px 0;line-height:1.6;font-size:13px}
+.json-pilot .learning-path:hover,.json-pilot .learning-path.is-chosen{background:#f0e3f0;border-color:#8b6292}
+.json-pilot .learning-feedback{background:#ecf4eb;border-left:3px solid #5b8e65;padding:13px 16px;border-radius:7px;line-height:1.7}
+.json-pilot .learning-feedback[data-result="review"]{background:#fff2e7;border-left-color:#d97833}
+.json-pilot .learning-feedback[hidden]{display:none}
+.json-pilot .lesson-lab details{margin-top:18px;font-size:13px;color:#68576c}
+.json-pilot .learning-option{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #e7d8e6;padding:12px;border-radius:10px;margin:10px 0;font-size:13px;line-height:1.55;cursor:pointer}
+.json-pilot .learning-option.is-chosen,.json-pilot .learning-option:has(input:checked){background:#f0e4f1;border-color:#90689b}
+.json-pilot .learning-option input{flex:0 0 auto;accent-color:#65406c}
+.json-pilot .lesson-block button.button{border:1px solid #74517a;border-radius:9px;padding:11px 16px;background:#fff;color:#5c3867;font-weight:700;font-size:12px;min-height:42px}
+.json-pilot .lesson-block button.button.action{background:#56305e;color:#fff}
+.json-pilot .lesson-block button[hidden]{display:none}
+.json-pilot .lesson-references{padding-left:23px;line-height:1.75;font-size:13px;color:#554a56}
+.json-pilot .lesson-references li{margin-bottom:12px}
+.json-pilot .lesson-quiz-composite{background:#f8f0f6}
+.json-pilot .quiz-carousel-viewport{overflow:hidden}
+.json-pilot .quiz-carousel-track{display:flex;will-change:transform;transition:transform .32s ease}
+.json-pilot .quiz-carousel-slide{flex:0 0 100%;min-width:0;padding:10px 1px}
+.json-pilot .quiz-carousel-question-no{font-size:11px;font-weight:800;color:#a36b82;margin-bottom:12px}
+.json-pilot .quiz-carousel-status{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#6c596d;margin-bottom:10px}
+.json-pilot .quiz-carousel-progress{height:7px;border-radius:100px;background:#e5d7e6;overflow:hidden}
+.json-pilot [data-quiz-progress-fill]{display:block;height:100%;background:#764b7f;transition:width .25s}
+.json-pilot .quiz-carousel-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.json-pilot .quiz-carousel-finish{text-align:center;padding:24px 4px}
+.json-pilot .quiz-carousel-finish-mark{font-size:32px;color:#dd672d}
+.json-pilot .quiz-carousel-finish-note{font-size:12px}
+.json-pilot .json-pilot-last-note{font-size:12px;color:#716774;text-align:center;line-height:1.7}
+.json-pilot-loading,.json-pilot-error{background:#fffefa;border:1px solid #e9dfe8;border-radius:14px;padding:32px;line-height:1.7}
+@media(max-width:900px){.json-pilot-grid{grid-template-columns:1fr}.json-pilot-sidebar{position:static;order:-1}.json-pilot-sidebar ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.json-pilot-hero{padding:23px}.json-pilot-hero h1{font-size:34px}.json-pilot-sidebar ol{grid-template-columns:1fr}.json-pilot .lesson-block{padding:20px 16px}.json-pilot .lesson-comparison table{min-width:440px}}
+@media(prefers-reduced-motion:reduce){.json-pilot .quiz-carousel-track{transition:none!important}}
