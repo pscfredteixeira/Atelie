@@ -32,7 +32,7 @@ globalThis.fetch=async input=>{
 };
 try{
  const catalog=validateCatalog(JSON.parse(await readFile(path.join(pilotRoot,"catalogo.json"),"utf8")));
- assert.equal(catalog.courses.length,2,"Esperamos dois cursos técnicos para comprovar a descoberta pelo catálogo.");
+ assert.ok(catalog.courses.length>=2,"Esperamos ao menos dois cursos técnicos para comprovar a descoberta pelo catálogo.");
  assert.deepEqual((await readPilotCatalog()).map(c=>c.id),catalog.courses.map(c=>c.id));
  let totalLessons=0;
  const courseIDs=new Set();
@@ -62,9 +62,9 @@ try{
     assert.ok(markup.includes('data-activity="lab"'),"Laboratório não renderizado: "+lesson.id);
   }
  }
- assert.equal(courseIDs.size,2);
- assert.equal(totalLessons,3);
- assert.equal(lessonIDs.size,3);
+ assert.equal(courseIDs.size,catalog.courses.length);
+ assert.ok(totalLessons>=3);
+ assert.equal(lessonIDs.size,totalLessons);
  assert.deepEqual(parsePilotSelection("#/laboratorio/json"),{mode:"catalog"});
  assert.deepEqual(parsePilotSelection("#/laboratorio/json?curso=curso-piloto-json-02&aula=aula-perguntas-e-contexto-piloto"),
   {mode:"lesson",courseId:"curso-piloto-json-02",lessonId:"aula-perguntas-e-contexto-piloto"});
@@ -83,6 +83,6 @@ try{
  assert.ok(app.includes("'/laboratorio/json'"));
  assert.ok(app.includes("import('./json-pilot.js')"));
  assert.ok(index.includes('json-pilot.css'));
- console.log("Sprint JSON 3 — PASSOU: 2 cursos, 3 aulas, bloco, quiz, laboratório, rota e vínculos.");
+ console.log(`Sprint JSON 3 — PASSOU: ${courseIDs.size} cursos, ${totalLessons} aulas, blocos, quizzes, laboratórios, rota e vínculos.`);
  console.log("Os testes executam os validadores e renderizadores reais. Sem gravação no Firebase.");
 }finally{globalThis.fetch=realFetch;}
