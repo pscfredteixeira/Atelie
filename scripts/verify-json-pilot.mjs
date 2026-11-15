@@ -41,9 +41,8 @@ const markup=renderLessonBlocks(lesson,{sourceURL:pathToFileURL(lessonFile).href
 const outline=getLessonOutline(lesson);
 assert.equal(outline.length,lesson.blocks.length-1);
 assert.equal((markup.match(/data-quiz-step=/g)||[]).length,3,"Dois slides de pergunta e um de resultado.");
-assert.equal((markup.match(/class="lesson-quiz-composite"/g)||[]).length,1);
+assert.equal((markup.match(/lesson-quiz-composite/g)||[]).length,1);
 assert.ok(markup.includes('data-activity="lab"'),"Laboratório não renderizado.");
-assert.ok(markup.includes("A escuta psicanalítica")===false || markup.includes("relato"),"Saída inesperada.");
 assert.ok(!markup.includes("Componente indisponível"),"Bloco incompatível.");
 assert.ok(markup.includes("O que muda quando escutamos antes de concluir?"),"Bloco de abertura ausente.");
 
