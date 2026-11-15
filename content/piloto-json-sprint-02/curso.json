@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "course",
+  "id": "curso-piloto-json-02",
+  "slug": "laboratorio-json-sprint-02",
+  "revision": 1,
+  "status": "published",
+  "title": "Laboratório JSON — Sprint 2",
+  "subtitle": "Teste de renderização de blocos educacionais",
+  "description": "Manifesto técnico separado do catálogo público do Ateliê; não altera nenhum curso existente.",
+  "modules": [
+    {
+      "id": "modulo-piloto-json-02",
+      "title": "Aula de teste do motor",
+      "position": 1,
+      "lessons": [
+        {
+          "id": "aula-escuta-e-hipoteses-piloto",
+          "path": "./aulas/escuta-e-hipoteses.json",
+          "position": 1,
+          "title": "A escuta psicanalítica: relato e hipótese",
+          "summary": "Demonstração pedagógica com conceitos, comparação, vinheta fictícia, laboratório e quiz.",
+          "estimatedMinutes": 18,
+          "status": "published"
+        }
+      ]
+    }
+  ]
+}
