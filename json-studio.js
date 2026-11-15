@@ -371,6 +371,8 @@ export async function mountJSONStudio(root,hash=location.hash){
  }
 }
 // O app principal consulta este guardião antes de trocar de rota.
+// Em testes Node, a ausência de window não deve causar efeitos colaterais.
+if(typeof window!=="undefined"){
 window.AtelieJSONStudio={
  canNavigate(nextHash){
   const state=activeStudio;
@@ -389,3 +391,4 @@ window.addEventListener("beforeunload",event=>{
   event.preventDefault();event.returnValue="";
  }
 });
+}
