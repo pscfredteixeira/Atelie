@@ -132,15 +132,31 @@ async function renderCatalog(root){
   catch(error){return {entry,error:error?.message||"Manifesto indisponível."}}
  }));
  if(!root.isConnected)return;
- root.innerHTML=renderCatalogHeader("Explore aulas criadas com JSON","O mesmo motor monta diferentes cursos e aulas a partir do catálogo e dos manifests. Este espaço é exclusivamente um laboratório técnico.")+
-  '<div class="json-pilot-notice" role="note">Estes exemplos não fazem parte da formação publicada. Não há matrícula, gravação de respostas ou certificação no laboratório.</div>'+
-  (loaded.length?'<div class="json-pilot-course-grid">'+loaded.map(row=>
-   '<section class="json-pilot-course-card"><span class="eyebrow">CURSO DE TESTE</span><h2>'+escapeHTML(row.entry.title)+'</h2>'+
+ const cards=loaded.map(row=>{
+  let listHTML="";
+  if(row.error){
+   listHTML='<p role="alert" class="json-pilot-error-inline">'+escapeHTML(row.error)+'</p>';
+  }else{
+   const links=row.lessons.map((item,i)=>
+    '<li><a href="'+escapeHTML(laboratoryURL(row.course.id,item.id))+'"><span>'+
+    String(i+1).padStart(2,"0")+'</span><strong>'+escapeHTML(item.title)+
+    '</strong><small>'+escapeHTML(item.estimatedMinutes||"")+' min</small></a></li>'
+   ).join("");
+   listHTML='<ol>'+links+'</ol>';
+  }
+  return '<section class="json-pilot-course-card"><span class="eyebrow">CURSO DE TESTE</span>'+
+   '<h2>'+escapeHTML(row.entry.title)+'</h2>'+
    '<p>'+escapeHTML(row.entry.summary||"Uma seleção de aulas de demonstração.")+'</p>'+
-   (row.error?'<p role="alert" class="json-pilot-error-inline">'+escapeHTML(row.error)+'</p>':
-    '<ol>'+row.lessons.map((item,i)=>'<li><a href="'+escapeHTML(laboratoryURL(row.course.id,item.id))+'"><span>'+String(i+1).padStart(2,"0")+'</span><strong>'+escapeHTML(item.title)+'</strong><small>'+escapeHTML(item.estimatedMinutes||"")+" min</small></a></li>').join("")+'</ol>')+
-   '</section>').join("")+'</div>':'<p>Nenhum curso de demonstração disponível.</p>');
+   listHTML+'</section>';
+ }).join("");
+ root.innerHTML=renderCatalogHeader(
+  "Explore aulas criadas com JSON",
+  "O mesmo motor monta diferentes cursos e aulas a partir do catálogo e dos manifests. Este espaço é exclusivamente um laboratório técnico."
+ )+
+ '<div class="json-pilot-notice" role="note">Estes exemplos não fazem parte da formação publicada. Não há matrícula, gravação de respostas ou certificação no laboratório.</div>'+
+ (cards?'<div class="json-pilot-course-grid">'+cards+'</div>':'<p>Nenhum curso de demonstração disponível.</p>');
 }
+
 async function renderSelectedLesson(root,courseId,lessonId){
  const {course,lesson,lessonURL,lessons}=await readPilotLesson(courseId,lessonId);
  if(!root.isConnected)return;
