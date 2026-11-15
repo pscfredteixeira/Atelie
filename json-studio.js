@@ -128,7 +128,7 @@ function draw(state){
   (state.dirty||state.formDirty?"Alterações não salvas":state.savedAt?"Rascunho salvo neste navegador":"Cópia de trabalho não salva")+'</span>'+
   '<div class="json-studio-inline-actions">'+
   '<button type="button" class="btn btn-primary" data-json-studio-action="save">Salvar rascunho</button>'+
-  '<button type="button" class="btn btn-outline" data-json-studio-action="export">Exportar JSON</button>'+
+  '<button type="button" class="btn btn-outline" data-json-studio-action="export">Exportar JSON</button>'+  '<label class="btn btn-outline json-studio-import-label" for="js-import-file">Importar JSON'+  '<input id="js-import-file" type="file" accept=".json,application/json" data-json-studio-import hidden></label>'+
   '<button type="button" class="btn btn-outline" data-json-studio-action="discard">Descartar rascunho</button></div></div>'+
   '<p data-json-studio-message class="json-studio-message" role="status">'+escapeHTML(state.message||"")+'</p>'+
   '<div class="json-studio-grid"><aside class="json-studio-list" aria-label="Estrutura da aula">'+
@@ -235,13 +235,9 @@ function wireEditor(state){
    }else{
     commitForm(state);
     const type=String(new FormData(form).get("type")||"");
+    const previousIds=new Set(state.lesson.blocks.map(b=>b.id));
     state.lesson=updateLesson(state.lesson,"add-block",{type,afterId:state.panel==="block"?state.selectedId:null});
-    state.selectedId=state.lesson.blocks.find((b,i)=>i===state.lesson.blocks.length-1)?.id||null;
-    const previous=state.lesson.blocks;
-    if(state.selectedId&&state.panel==="block"&&previous.length>=2){
-     const index=previous.findIndex(b=>b.id===state.selectedId);
-     if(index!==previous.length-1)state.selectedId=previous[index+1].id;
-    }
+    state.selectedId=state.lesson.blocks.find(b=>!previousIds.has(b.id))?.id||null;
     state.panel="block";state.dirty=true;state.formDirty=false;draw(state);
     alertMessage(state,"Novo bloco criado. Edite seu conteúdo e salve o rascunho.");
    }
