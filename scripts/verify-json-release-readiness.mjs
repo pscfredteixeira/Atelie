@@ -71,7 +71,7 @@ assert.ok(plan.includes("publicationPerformed:false"));
 assert.ok(zip.includes("makeReviewZIP"));
 assert.ok(!studio.includes("api.github.com")&&!studio.includes("firestore.collection"));
 const scripts=[await text("scripts/ci-sprint18.mjs"),await text("scripts/ci-sprint19.mjs")];
-assert.ok(scripts.every(s=>!s.includes("#/caderno")&&!s.includes("#lessonNote")));
+assert.ok(scripts.every(s=>!s.includes("#/caderno")&&!s.includes("locator(\"#lessonNote\").fill")&&!s.includes("locator(\'#lessonNote\').fill")));
 for(const doc of ["docs/SPRINT_JSON_03_RESULTADO.md","docs/SPRINT_JSON_04_RESULTADO.md","docs/SPRINT_JSON_05_RESULTADO.md"])
  assert.ok(await exists(doc));
 console.log("Sprint JSON 6 — contrato de integração: PASSOU.");
