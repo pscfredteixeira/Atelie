@@ -35,6 +35,8 @@ jobs:
         run: node --experimental-default-type=module scripts/verify-json-studio.mjs
       - name: Testar pacote de revisão
         run: node --experimental-default-type=module scripts/verify-json-publication.mjs
+      - name: Conferir integração sem publicar aulas oficiais
+        run: node --experimental-default-type=module scripts/verify-json-release-readiness.mjs
 
   validate-json-browser:
     name: Editor e ZIP no Chromium
