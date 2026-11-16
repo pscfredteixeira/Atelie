@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-escuta-e-hipoteses-piloto",
+  "courseId": "curso-piloto-json-02",
+  "moduleId": "modulo-piloto-json-02",
+  "slug": "escuta-e-hipoteses",
+  "revision": 1,
+  "status": "published",
+  "title": "A escuta psicanalítica: relato e hipótese",
+  "summary": "Uma aula de demonstração sobre como formular perguntas e sustentar hipóteses sem antecipar conclusões. Conteúdo didático fictício, não clínico.",
+  "estimatedMinutes": 18,
+  "objectives": [
+    "Distinguir o relato de uma hipótese interpretativa.",
+    "Reconhecer limites de inferências feitas a partir de uma observação isolada.",
+    "Experimentar a formulação de perguntas abertas em situações fictícias."
+  ],
+  "blocks": [
+    {
+      "id": "abertura-pergunta",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "O que muda quando escutamos antes de concluir?",
+        "hint": "Pense na diferença entre ouvir um relato e determinar o seu significado."
+      },
+      "settings": {}
+    },
+    {
+      "id": "secao-um",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "1. Do relato à pergunta"
+      },
+      "settings": {}
+    },
+    {
+      "id": "introducao-relato",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Escutar não é adivinhar",
+        "paragraphs": [
+          "Na escuta psicanalítica, as palavras de uma pessoa não são tratadas como pistas que autorizam respostas imediatas. O que é dito ganha sentido em uma história singular e no próprio trabalho de elaboração.",
+          "Uma hipótese pode orientar a investigação, mas não equivale a uma certeza: precisa ser considerada em seu contexto, confrontada com o material que emerge e reformulada quando necessário.",
+          "Esta aula demonstra ferramentas didáticas do Ateliê. As situações a seguir são inteiramente inventadas e não servem como orientação diagnóstica."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "conceito-hipotese",
+      "type": "concept",
+      "version": 1,
+      "data": {
+        "term": "Hipótese de trabalho",
+        "definition": "Formulação provisória usada para orientar perguntas e interpretações, sem transformar uma ideia inicial em diagnóstico.",
+        "example": "Em vez de concluir que determinado atraso revela resistência, investigar como a própria pessoa descreve a situação."
+      },
+      "settings": {}
+    },
+    {
+      "id": "comparacao-relato",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Dois modos de abordar uma fala",
+        "caption": "Distinções didáticas: perguntas possíveis, não uma regra automática de atendimento.",
+        "columns": [
+          "Fechar o sentido",
+          "Abrir a investigação"
+        ],
+        "rows": [
+          {
+            "criterion": "Diante de uma repetição",
+            "values": [
+              "Atribuir imediatamente uma causa única.",
+              "Perguntar em quais situações ela ocorre e o que a pessoa percebe."
+            ]
+          },
+          {
+            "criterion": "Diante de um silêncio",
+            "values": [
+              "Tratá-lo como sinal inequívoco de um mecanismo.",
+              "Considerar o momento, a relação e os sentidos que possam surgir."
+            ]
+          },
+          {
+            "criterion": "Diante de um conflito",
+            "values": [
+              "Escolher qual desejo é o verdadeiro.",
+              "Explorar como desejos e impasses são narrados."
+            ]
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "secao-dois",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "2. Uma situação fictícia"
+      },
+      "settings": {}
+    },
+    {
+      "id": "vinheta-inventada",
+      "type": "clinical_vignette",
+      "version": 1,
+      "data": {
+        "title": "O compromisso adiado",
+        "narrative": "Uma personagem inventada relata que costuma adiar decisões profissionais. Diz que deseja mudar de trabalho, mas interrompe as tentativas quando recebe convites para entrevistas. Ela própria não sabe explicar esse movimento.",
+        "reflection": "Que perguntas ajudariam a conhecer melhor a situação sem transformá-la imediatamente em um sintoma?",
+        "disclaimer": "Vinheta integralmente fictícia, apenas para fins pedagógicos. Não descreve paciente real nem constitui diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "laboratorio-perguntas",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Laboratório: abrir ou fechar uma pergunta",
+        "description": "Escolha uma forma de responder à personagem e leia a devolutiva. Não há avaliação clínica.",
+        "prompt": "Qual pergunta poderia abrir a investigação?",
+        "choices": [
+          {
+            "id": "pergunta-contexto",
+            "label": "O que você percebe quando surge um convite para entrevista?",
+            "feedback": "A pergunta convida a pessoa a situar a experiência e formular suas próprias associações."
+          },
+          {
+            "id": "conclusao-apressada",
+            "label": "Você adia porque tem medo do sucesso, certo?",
+            "feedback": "Atribuir uma causa pronta pode encerrar prematuramente a investigação. O significado não é dedutível de um único comportamento."
+          },
+          {
+            "id": "pergunta-historia",
+            "label": "Há situações anteriores que você relaciona a esse momento?",
+            "feedback": "A pergunta pode abrir associações, desde que não imponha um roteiro nem pressuponha uma causa."
+          }
+        ],
+        "alternative": "Sem escolher uma alternativa, escreva duas perguntas abertas que considerem a singularidade da personagem."
+      },
+      "settings": {}
+    },
+    {
+      "id": "secao-tres",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "3. Revisão e continuidade"
+      },
+      "settings": {}
+    },
+    {
+      "id": "fechamento",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Uma hipótese permanece revisável",
+        "paragraphs": [
+          "Escutar não significa deixar de formular hipóteses. Significa também reconhecer que elas não se confirmam apenas porque parecem convincentes.",
+          "Na formação psicanalítica, a leitura dos textos de Freud, a discussão crítica e a atenção à singularidade da experiência ajudam a separar conceitos teóricos de rótulos simplificadores."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "quiz-relato",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Qual alternativa melhor distingue relato e hipótese?",
+        "options": [
+          {
+            "id": "relato-a",
+            "text": "Um relato, por si só, sempre comprova a interpretação mais provável."
+          },
+          {
+            "id": "relato-b",
+            "text": "Uma hipótese é provisória e precisa ser pensada em relação ao contexto do relato."
+          },
+          {
+            "id": "relato-c",
+            "text": "Toda repetição indica necessariamente o mesmo mecanismo psíquico."
+          }
+        ],
+        "correctOptionId": "relato-b",
+        "feedbackCorrect": "Correto: a hipótese não substitui a escuta e não se torna certeza por repetição.",
+        "feedbackIncorrect": "Releia a comparação: observações isoladas não demonstram automaticamente um mecanismo."
+      },
+      "settings": {}
+    },
+    {
+      "id": "quiz-vinheta",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Na vinheta fictícia, qual é a conduta intelectualmente mais cuidadosa?",
+        "options": [
+          {
+            "id": "vinheta-a",
+            "text": "Perguntar pela experiência da personagem e manter alternativas abertas."
+          },
+          {
+            "id": "vinheta-b",
+            "text": "Inferir um diagnóstico do adiamento de entrevistas."
+          },
+          {
+            "id": "vinheta-c",
+            "text": "Usar a hipótese preferida como explicação definitiva."
+          }
+        ],
+        "correctOptionId": "vinheta-a",
+        "feedbackCorrect": "Correto: perguntas abertas preservam a singularidade da experiência narrada.",
+        "feedbackIncorrect": "O exemplo não fornece elementos para concluir por uma causa única ou por um diagnóstico."
+      },
+      "settings": {}
+    },
+    {
+      "id": "bibliografia",
+      "type": "references",
+      "version": 1,
+      "data": {
+        "referenceIds": [
+          "freud-dinamica-1912",
+          "freud-recordar-1914"
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [
+    {
+      "id": "freud-dinamica-1912",
+      "author": "Sigmund Freud",
+      "title": "A dinâmica da transferência",
+      "year": 1912,
+      "note": "Texto histórico para contextualização da técnica e do conceito de transferência."
+    },
+    {
+      "id": "freud-recordar-1914",
+      "author": "Sigmund Freud",
+      "title": "Recordar, repetir e elaborar (novas recomendações sobre a técnica da psicanálise II)",
+      "year": 1914,
+      "note": "Texto histórico para leitura sobre repetição e elaboração; a aula não constitui interpretação desse texto."
+    }
+  ],
+  "metadata": {
+    "demo": true,
+    "pilot": true,
+    "source": "Conteúdo didático original de demonstração, sem dados reais de pacientes."
+  }
+}

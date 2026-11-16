@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "kind": "catalog",
+  "courses": [
+    {
+      "id": "curso-piloto-json-02",
+      "title": "Laboratório JSON — Sprint 2",
+      "slug": "laboratorio-json-sprint-02",
+      "manifest": "./curso.json",
+      "status": "published",
+      "summary": "Curso técnico isolado para testar o motor de aulas sem modificar o catálogo principal.",
+      "demo": true
+    }
+  ]
+}
