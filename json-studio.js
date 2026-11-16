@@ -288,7 +288,7 @@ function wireEditor(state){
     const previousIds=new Set(state.lesson.blocks.map(b=>b.id));
     state.lesson=updateLesson(state.lesson,"add-block",{type,afterId:state.panel==="block"?state.selectedId:null});
     state.selectedId=state.lesson.blocks.find(b=>!previousIds.has(b.id))?.id||null;
-    state.panel="block";state.dirty=true;state.formDirty=false;draw(state);
+    state.panel="block";state.dirty=true;state.formDirty=false;state.reviewPlan=null;state.reviewChecks=new Set();draw(state);
     alertMessage(state,"Novo bloco criado. Edite seu conteúdo e salve o rascunho.");
    }
   }catch(error){alertMessage(state,error?.message||"Não foi possível aplicar alterações.",true)}
@@ -304,6 +304,16 @@ function wireEditor(state){
     const cmd=action.dataset.jsonStudioAction;
     if(cmd==="save"){await save(state);return}
     if(cmd==="export"){exportDraft(state);return}
+    if(cmd==="analyse"){await analysePublication(state);return}
+    if(cmd==="download-review"){
+     const plan=state.reviewPlan;
+     if(!plan||!plan.report.requiredReview.every(item=>state.reviewChecks.has(item.id)))
+      throw Error("Confirme todos os itens de revisão antes de baixar.");
+     const filename="atelie-revisao-"+safeFile(state.lesson.id)+".zip";
+     const info=downloadReviewZIP(plan.files,filename);
+     alertMessage(state,"Pacote "+info.filename+" preparado ("+Math.ceil(info.bytes/1024)+" KB). Nada foi publicado.");
+     return;
+    }
     if(cmd==="discard"){
      if(!confirm("Descartar o rascunho deste navegador? A cópia publicada, se existir, não será alterada."))return;
      await deleteDraft(state.lesson.courseId,state.lesson.id);
@@ -333,12 +343,25 @@ function wireEditor(state){
     }else if(kind==="move-up"||kind==="move-down"){
      state.lesson=updateLesson(state.lesson,"move-block",{blockId:id,direction:kind==="move-up"?-1:1});
     }else return;
-    state.dirty=true;
+    state.dirty=true;state.reviewPlan=null;state.reviewChecks=new Set();
    }
    draw(state);
   }catch(error){alertMessage(state,error?.message||"Operação não concluída.",true)}
  });
  root.addEventListener("change",async event=>{
+  const checkbox=event.target.closest("input[data-json-studio-review]");
+  if(checkbox&&state.reviewPlan){
+   const id=checkbox.dataset.jsonStudioReview;
+   const review=state.reviewPlan.report.requiredReview;
+   if(!review.some(item=>item.id===id))return;
+   if(checkbox.checked)state.reviewChecks.add(id);
+   else state.reviewChecks.delete(id);
+   const btn=root.querySelector('[data-json-studio-action="download-review"]');
+   if(btn)btn.disabled=!review.every(item=>state.reviewChecks.has(item.id));
+   const counter=root.querySelector("[data-json-studio-review-count]");
+   if(counter)counter.textContent=state.reviewChecks.size+" de "+review.length+" itens confirmados";
+   return;
+  }
   if(!event.target.matches("input[data-json-studio-import]"))return;
   const input=event.target,file=input.files?.[0];
   if(!file)return;
@@ -353,6 +376,7 @@ function wireEditor(state){
       imported.moduleId!==state.lesson.moduleId)throw Error("O arquivo não pertence a esta aula. IDs e vínculo com o módulo devem coincidir.");
    state.lesson={...clone(imported),status:"draft"};
    state.panel="details";state.selectedId=null;state.dirty=true;state.formDirty=false;
+   state.reviewPlan=null;state.reviewChecks=new Set();
    state.message="JSON importado para a cópia local. Confira e salve antes de sair.";
    draw(state);
   }catch(error){alertMessage(state,error?.message||"Não foi possível importar este JSON.",true)}
