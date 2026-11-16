@@ -17,12 +17,12 @@ const exists=async p=>{await access(path.join(root,p));return true};
 
 const publicCatalog=validateCatalog(await json("content/catalogo.json"));
 assert.equal(publicCatalog.courses.length,1,"O catálogo principal não deve publicar cursos experimentais.");
-assert.equal(publicCatalog.courses[0].id,"formacao-freudiana");
+assert.equal(publicCatalog.courses[0].id,"curso-formacao-freudiana");
 assert.equal(publicCatalog.courses[0].status,"published");
 assert.ok(!publicCatalog.courses.some(c=>/piloto|laboratorio/i.test(c.id+" "+c.manifest)));
 
 const course=validateCourse(await json("content/courses/formacao-freudiana/curso.json"));
-assert.equal(course.id,"formacao-freudiana");
+assert.equal(course.id,"curso-formacao-freudiana");
 const mainApp=await text("app.js");
 const expected=[
  {id:"escuta-que-mudou-a-clinica",file:"escuta-que-mudou-a-clinica.html"},
