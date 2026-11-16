@@ -348,7 +348,7 @@ function render(){
 
  $("#explore-status").textContent=expanded.size+" de 3 dimensões exploradas";
  $("#stage2-quiz").hidden=expanded.size<3;
- $$$(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
+ $(".accordion").forEach(d=>d.classList.toggle("visited",expanded.has(d.dataset.explore)));
  for(const key of Object.keys(questions)){
   const id=Number(key.slice(1)),block=$("#quiz-"+id);if(!block)continue;
   const selected=answers[key];
