@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "course",
+  "id": "curso-piloto-json-conceitos",
+  "slug": "laboratorio-json-conceitos",
+  "revision": 1,
+  "status": "published",
+  "title": "Conceitos em movimento",
+  "subtitle": "Segundo curso de teste para navegação dinâmica",
+  "description": "Curso de demonstração destinado a testar seleção de diferentes manifestos e aulas por ID.",
+  "modules": [
+    {
+      "id": "modulo-conceitos-piloto",
+      "title": "Exercícios conceituais",
+      "position": 1,
+      "lessons": [
+        {
+          "id": "aula-conflito-piloto",
+          "path": "./aulas/conflito.json",
+          "position": 1,
+          "title": "Conflito psíquico: uma introdução",
+          "summary": "Pequeno exercício de leitura e revisão para testar o motor JSON genérico.",
+          "estimatedMinutes": 10,
+          "status": "published"
+        }
+      ]
+    }
+  ]
+}

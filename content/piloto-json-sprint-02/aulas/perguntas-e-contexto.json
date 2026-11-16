@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "aula-perguntas-e-contexto-piloto",
+  "courseId": "curso-piloto-json-02",
+  "moduleId": "modulo-piloto-json-02",
+  "slug": "perguntas-e-contexto",
+  "revision": 1,
+  "status": "published",
+  "title": "Perguntas abertas e contexto",
+  "summary": "Segunda aula-piloto para verificar navegação automática e reúso de componentes JSON.",
+  "estimatedMinutes": 12,
+  "objectives": [
+    "Reconhecer a diferença entre pergunta aberta e pergunta que impõe resposta.",
+    "Construir perguntas que considerem o contexto de uma situação narrada."
+  ],
+  "blocks": [
+    {
+      "id": "pergunta-abertura",
+      "type": "question",
+      "version": 1,
+      "data": {
+        "prompt": "Uma boa pergunta deixa espaço para a resposta?",
+        "hint": "Observe o que ela pressupõe antes de fazê-la."
+      },
+      "settings": {}
+    },
+    {
+      "id": "secao-um",
+      "type": "heading",
+      "version": 1,
+      "data": {
+        "text": "1. Perguntas que investigam"
+      },
+      "settings": {}
+    },
+    {
+      "id": "texto-contexto",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "O contexto não é um detalhe",
+        "paragraphs": [
+          "Uma pergunta pode servir para abrir um relato ou antecipar uma interpretação. A diferença não está apenas nas palavras: depende também da situação e da relação em que aparece.",
+          "Perguntas abertas são ferramentas didáticas úteis para imaginar diferentes possibilidades de escuta. Na clínica, sua pertinência exige considerar o processo e a singularidade de cada pessoa."
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "comparacao-perguntas",
+      "type": "comparison",
+      "version": 1,
+      "data": {
+        "title": "Perguntas que fecham e perguntas que abrem",
+        "columns": [
+          "Pressupõe uma explicação",
+          "Investiga sem impor a explicação"
+        ],
+        "rows": [
+          {
+            "criterion": "Diante de um adiamento",
+            "values": [
+              "Você adia porque tem medo de fracassar?",
+              "O que costuma acontecer antes de você adiar?"
+            ]
+          },
+          {
+            "criterion": "Diante de uma mudança",
+            "values": [
+              "Você fez isso para agradar sua família?",
+              "O que essa mudança representa para você?"
+            ]
+          }
+        ]
+      },
+      "settings": {}
+    },
+    {
+      "id": "laboratorio-escolhas",
+      "type": "interactive_lab",
+      "version": 1,
+      "data": {
+        "engineId": "choice-reflection-v1",
+        "title": "Qual pergunta escolher?",
+        "description": "Exercício didático com situação inventada.",
+        "prompt": "Uma personagem diz que desistiu de uma viagem planejada. Por onde começar?",
+        "choices": [
+          {
+            "id": "pergunta-1",
+            "label": "O que mudou entre o planejamento e a decisão?",
+            "feedback": "A pergunta permite investigar o percurso da decisão sem pressupor causa."
+          },
+          {
+            "id": "pergunta-2",
+            "label": "Foi porque você não suporta ficar só?",
+            "feedback": "A pergunta antecipa uma interpretação que o relato ainda não sustenta."
+          }
+        ],
+        "alternative": "Escreva uma pergunta que investigue o acontecimento sem impor uma causa."
+      },
+      "settings": {}
+    },
+    {
+      "id": "quiz-contexto",
+      "type": "multiple_choice",
+      "version": 1,
+      "data": {
+        "prompt": "Qual opção apresenta uma pergunta mais aberta?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Você já percebeu que age assim por insegurança?"
+          },
+          {
+            "id": "b",
+            "text": "Como você descreve o momento em que tomou essa decisão?"
+          }
+        ],
+        "correctOptionId": "b",
+        "feedbackCorrect": "A formulação permite que a personagem descreva sua própria experiência.",
+        "feedbackIncorrect": "Evite perguntas que já contêm uma causa sugerida como resposta."
+      },
+      "settings": {}
+    },
+    {
+      "id": "texto-fechamento",
+      "type": "rich_text",
+      "version": 1,
+      "data": {
+        "title": "Para continuar",
+        "paragraphs": [
+          "Não existe uma fórmula universal de pergunta correta. O exercício busca explicitar o quanto uma pergunta carrega pressupostos.",
+          "Esta é uma aula de teste técnico, com exemplos inteiramente fictícios."
+        ]
+      },
+      "settings": {}
+    }
+  ],
+  "references": [],
+  "metadata": {
+    "demo": true,
+    "pilot": true,
+    "source": "Exercício pedagógico original; sem relatos de pacientes."
+  }
+}

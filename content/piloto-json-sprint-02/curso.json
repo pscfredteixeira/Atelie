@@ -3,7 +3,7 @@
   "kind": "course",
   "id": "curso-piloto-json-02",
   "slug": "laboratorio-json-sprint-02",
-  "revision": 1,
+  "revision": 2,
   "status": "published",
   "title": "Laboratório JSON — Sprint 2",
   "subtitle": "Teste de renderização de blocos educacionais",
@@ -21,6 +21,15 @@
           "title": "A escuta psicanalítica: relato e hipótese",
           "summary": "Demonstração pedagógica com conceitos, comparação, vinheta fictícia, laboratório e quiz.",
           "estimatedMinutes": 18,
+          "status": "published"
+        },
+        {
+          "id": "aula-perguntas-e-contexto-piloto",
+          "path": "./aulas/perguntas-e-contexto.json",
+          "position": 2,
+          "title": "Perguntas abertas e contexto",
+          "summary": "Nova aula para testar navegação por JSON sem adicionar HTML específico.",
+          "estimatedMinutes": 12,
           "status": "published"
         }
       ]
