@@ -153,7 +153,7 @@ async function renderCatalog(root){
   "Explore aulas criadas com JSON",
   "O mesmo motor monta diferentes cursos e aulas a partir do catálogo e dos manifests. Este espaço é exclusivamente um laboratório técnico."
  )+
- '<div class="json-pilot-notice" role="note">Estes exemplos não fazem parte da formação publicada. Não há matrícula, gravação de respostas ou certificação no laboratório.</div>'+
+ '<div class="json-pilot-notice" role="note">Estes exemplos não fazem parte da formação publicada. Não há matrícula, gravação de respostas ou certificação no laboratório.</div>'+  '<p><a class="btn btn-primary" href="#/laboratorio/editor">Abrir Editor Visual de Aulas JSON →</a></p>'+
  (cards?'<div class="json-pilot-course-grid">'+cards+'</div>':'<p>Nenhum curso de demonstração disponível.</p>');
 }
 
@@ -172,7 +172,7 @@ async function renderSelectedLesson(root,courseId,lessonId){
   '<header class="json-pilot-hero"><span class="eyebrow">ATELIÊ · '+escapeHTML(course.title)+'</span>'+
   '<h1>'+escapeHTML(lesson.title)+'</h1><p>'+escapeHTML(lesson.summary)+'</p>'+
   '<div class="json-pilot-tags"><span>JSON v1</span><span>'+escapeHTML(lesson.estimatedMinutes)+' minutos estimados</span><span>'+lesson.blocks.length+' blocos</span></div></header>'+
-  '<div class="json-pilot-notice" role="note">Esta aula demonstra o motor JSON. As respostas não são armazenadas e nenhum progresso é enviado ao Firebase. <strong>Aulas oficiais permanecem intactas.</strong></div>'+
+  '<div class="json-pilot-notice" role="note">Esta aula demonstra o motor JSON. As respostas não são armazenadas e nenhum progresso é enviado ao Firebase. <strong>Aulas oficiais permanecem intactas.</strong></div>'+  '<p><a class="btn btn-outline" href="#/laboratorio/editor?curso='+encodeURIComponent(course.id)+'&aula='+encodeURIComponent(lesson.id)+'">Editar cópia desta aula →</a></p>'+
   '<div class="json-pilot-grid"><article class="json-pilot-reading">'+
   '<section class="json-pilot-goals"><h2>Objetivos de aprendizagem</h2><ul>'+
   (lesson.objectives||[]).map(item=>'<li>'+escapeHTML(item)+'</li>').join("")+'</ul></section>'+
