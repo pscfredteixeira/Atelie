@@ -24,6 +24,10 @@ assert.ok(!publicCatalog.courses.some(c=>/piloto|laboratorio/i.test(c.id+" "+c.m
 const course=validateCourse(await json("content/courses/formacao-freudiana/curso.json"));
 assert.equal(course.id,"curso-formacao-freudiana");
 const mainApp=await text("app.js");
+const fourth=await text("content/courses/formacao-freudiana/aulas/freud-obra-e-fundador.html");
+assert.match(fourth,/\$\$\("\.accordion"\)\.forEach/,"A quarta aula deve usar consulta de lista para suas sanfonas.");
+assert.doesNotMatch(fourth,/^\s*\$\("\.accordion"\)\.forEach/m,"A consulta de um único elemento não suporta forEach.");
+
 const expected=[
  {id:"escuta-que-mudou-a-clinica",file:"escuta-que-mudou-a-clinica.html"},
  {id:"primeira-topica-freud",file:"primeira-topica.html"},
