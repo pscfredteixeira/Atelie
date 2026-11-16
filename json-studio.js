@@ -10,6 +10,8 @@ import {getDraft,saveDraft,deleteDraft,listDrafts,downloadJSON} from "./src/repo
 import {renderLessonBlocks,getLessonOutline} from "./src/lesson-engine/engine.js";
 import {checkQuiz,exploreLab} from "./src/features/learning/activities.js";
 import {confirmQuizStep,advanceQuiz,retryQuizStep,restartQuiz} from "./src/features/learning/quiz-flow.js";
+import {planJSONPublication} from "./src/features/authoring/publication-plan.js";
+import {downloadReviewZIP} from "./src/features/authoring/review-zip.js";
 
 const escapeHTML=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ID=/^[a-zA-Z0-9_-]+$/;
@@ -77,6 +79,52 @@ function formNew(course,module){
  '<button type="submit" class="btn btn-primary">Criar rascunho</button></form>'+
  '<p class="json-studio-message" data-json-studio-new-message role="status"></p></section>';
 }
+
+function reviewPanelContent(state){
+ const plan=state.reviewPlan;
+ if(!plan)return '<section class="json-studio-review"><h2>Revisão e publicação</h2>'+
+ '<p>Valide a estrutura da aula e prepare os arquivos para revisão humana. O pacote ZIP não publica nada no GitHub.</p>'+
+ '<button class="btn btn-primary" type="button" data-json-studio-action="analyse">Analisar arquivos</button></section>';
+ const report=plan.report,checks=state.reviewChecks;
+ const items=report.requiredReview.map(item=>'<label class="json-studio-review-check">'+
+ '<input type="checkbox" data-json-studio-review="'+escapeHTML(item.id)+'"'+
+ (checks.has(item.id)?' checked':'')+'><span>'+escapeHTML(item.label)+'</span></label>').join("");
+ const ready=report.requiredReview.every(item=>checks.has(item.id));
+ return '<section class="json-studio-review"><h2>Pacote para revisão humana</h2>'+
+ '<p>Os arquivos passaram na validação estrutural. Confira os itens editoriais antes de exportar.</p>'+
+ '<dl><div><dt>Operação</dt><dd>'+(report.mode==="create"?"Nova aula":"Atualização")+'</dd></div>'+
+ '<div><dt>JSON da aula</dt><dd><code>'+escapeHTML(report.lessonPath)+'</code></dd></div>'+
+ '<div><dt>Manifesto</dt><dd><code>'+escapeHTML(report.manifestPath)+'</code></dd></div>'+
+ '<div><dt>Revisão do manifesto</dt><dd>'+report.baseCourseRevision+' → '+report.nextCourseRevision+'</dd></div></dl>'+
+ (report.warnings.length?'<h3>Pontos de atenção</h3><ul>'+report.warnings.map(w=>'<li>'+escapeHTML(w)+'</li>').join("")+'</ul>':'')+
+ '<fieldset class="json-studio-review-checklist"><legend>Conferência humana</legend>'+items+'</fieldset>'+
+ '<p data-json-studio-review-count>'+checks.size+' de '+report.requiredReview.length+' itens confirmados</p>'+
+ '<div class="json-studio-inline-actions">'+
+ '<button type="button" class="btn btn-primary" data-json-studio-action="download-review"'+(ready?'':' disabled')+'>Baixar ZIP para revisão</button>'+
+ '<button type="button" class="btn btn-outline" data-json-studio-action="analyse">Verificar novamente</button></div>'+
+ '<p class="json-studio-review-disclaimer">O ZIP contém arquivos candidatos com status published, mas não modifica o GitHub, o site público ou o progresso dos alunos. '+
+ 'É necessária uma pull request revisada e testada antes de integrar.</p></section>';
+}
+function laboratoryManifestPath(courseURL){
+ const marker="/content/piloto-json-sprint-02/";
+ const index=courseURL.pathname.lastIndexOf(marker);
+ if(index<0)throw Error("O manifesto está fora do laboratório.");
+ return courseURL.pathname.slice(index+1);
+}
+async function analysePublication(state){
+ commitForm(state);
+ const latest=await readPilotCourse(state.course.id);
+ const exists=latest.course.modules.some(m=>m.lessons.some(l=>l.id===state.lesson.id));
+ const previous=exists?(await readPilotLesson(state.course.id,state.lesson.id)).lesson:null;
+ const plan=planJSONPublication({
+  course:latest.course,draft:state.lesson,publishedLesson:previous,
+  manifestPath:laboratoryManifestPath(latest.courseURL)
+ });
+ state.reviewPlan=plan;state.reviewChecks=new Set();state.panel="review";
+ state.message="Validação técnica concluída. A conferência humana ainda é necessária.";
+ draw(state);
+}
+
 function panelContent(state){
  const lesson=state.lesson;
  if(state.panel==="preview"){
@@ -87,6 +135,7 @@ function panelContent(state){
    '<p class="json-studio-outline">'+outline.map(item=>escapeHTML(item.label)).join(" · ")+'</p>'+
    html+'</div>';
  }
+ if(state.panel==="review")return reviewPanelContent(state);
  if(state.panel==="details")return '<form data-json-studio-edit="details" class="json-studio-form">'+
   '<h2>Informações da aula</h2>'+
   '<label for="js-title" class="json-studio-label">Título</label><input class="json-studio-field" id="js-title" name="title" required maxlength="160" value="'+escapeHTML(lesson.title)+'">'+
@@ -133,7 +182,7 @@ function draw(state){
   '<p data-json-studio-message class="json-studio-message" role="status">'+escapeHTML(state.message||"")+'</p>'+
   '<div class="json-studio-grid"><aside class="json-studio-list" aria-label="Estrutura da aula">'+
   '<nav class="json-studio-tabs" aria-label="Editar aula">'+
-  [['details',"Dados"],['references',"Bibliografia"],['preview',"Prévia"]].map(([id,label])=>
+  [['details',"Dados"],['references',"Bibliografia"],['preview',"Prévia"],['review',"Revisão"]].map(([id,label])=>
    '<button type="button" class="'+(state.panel===id?'is-active':'')+'" data-json-studio-panel="'+id+'">'+label+'</button>').join("")+
   '</nav><h2>Blocos da aula <small>('+lesson.blocks.length+')</small></h2>'+
   '<ol>'+rows+'</ol>'+
@@ -176,6 +225,7 @@ function commitForm(state){
   });
  }else return false;
  state.lesson=next;
+ state.reviewPlan=null;state.reviewChecks=new Set();
  state.formDirty=false;state.dirty=true;
  return true;
 }
@@ -238,7 +288,7 @@ function wireEditor(state){
     const previousIds=new Set(state.lesson.blocks.map(b=>b.id));
     state.lesson=updateLesson(state.lesson,"add-block",{type,afterId:state.panel==="block"?state.selectedId:null});
     state.selectedId=state.lesson.blocks.find(b=>!previousIds.has(b.id))?.id||null;
-    state.panel="block";state.dirty=true;state.formDirty=false;draw(state);
+    state.panel="block";state.dirty=true;state.formDirty=false;state.reviewPlan=null;state.reviewChecks=new Set();draw(state);
     alertMessage(state,"Novo bloco criado. Edite seu conteúdo e salve o rascunho.");
    }
   }catch(error){alertMessage(state,error?.message||"Não foi possível aplicar alterações.",true)}
@@ -254,6 +304,16 @@ function wireEditor(state){
     const cmd=action.dataset.jsonStudioAction;
     if(cmd==="save"){await save(state);return}
     if(cmd==="export"){exportDraft(state);return}
+    if(cmd==="analyse"){await analysePublication(state);return}
+    if(cmd==="download-review"){
+     const plan=state.reviewPlan;
+     if(!plan||!plan.report.requiredReview.every(item=>state.reviewChecks.has(item.id)))
+      throw Error("Confirme todos os itens de revisão antes de baixar.");
+     const filename="atelie-revisao-"+safeFile(state.lesson.id)+".zip";
+     const info=downloadReviewZIP(plan.files,filename);
+     alertMessage(state,"Pacote "+info.filename+" preparado ("+Math.ceil(info.bytes/1024)+" KB). Nada foi publicado.");
+     return;
+    }
     if(cmd==="discard"){
      if(!confirm("Descartar o rascunho deste navegador? A cópia publicada, se existir, não será alterada."))return;
      await deleteDraft(state.lesson.courseId,state.lesson.id);
@@ -283,12 +343,25 @@ function wireEditor(state){
     }else if(kind==="move-up"||kind==="move-down"){
      state.lesson=updateLesson(state.lesson,"move-block",{blockId:id,direction:kind==="move-up"?-1:1});
     }else return;
-    state.dirty=true;
+    state.dirty=true;state.reviewPlan=null;state.reviewChecks=new Set();
    }
    draw(state);
   }catch(error){alertMessage(state,error?.message||"Operação não concluída.",true)}
  });
  root.addEventListener("change",async event=>{
+  const checkbox=event.target.closest("input[data-json-studio-review]");
+  if(checkbox&&state.reviewPlan){
+   const id=checkbox.dataset.jsonStudioReview;
+   const review=state.reviewPlan.report.requiredReview;
+   if(!review.some(item=>item.id===id))return;
+   if(checkbox.checked)state.reviewChecks.add(id);
+   else state.reviewChecks.delete(id);
+   const btn=root.querySelector('[data-json-studio-action="download-review"]');
+   if(btn)btn.disabled=!review.every(item=>state.reviewChecks.has(item.id));
+   const counter=root.querySelector("[data-json-studio-review-count]");
+   if(counter)counter.textContent=state.reviewChecks.size+" de "+review.length+" itens confirmados";
+   return;
+  }
   if(!event.target.matches("input[data-json-studio-import]"))return;
   const input=event.target,file=input.files?.[0];
   if(!file)return;
@@ -303,6 +376,7 @@ function wireEditor(state){
       imported.moduleId!==state.lesson.moduleId)throw Error("O arquivo não pertence a esta aula. IDs e vínculo com o módulo devem coincidir.");
    state.lesson={...clone(imported),status:"draft"};
    state.panel="details";state.selectedId=null;state.dirty=true;state.formDirty=false;
+   state.reviewPlan=null;state.reviewChecks=new Set();
    state.message="JSON importado para a cópia local. Confira e salve antes de sair.";
    draw(state);
   }catch(error){alertMessage(state,error?.message||"Não foi possível importar este JSON.",true)}
@@ -349,7 +423,8 @@ async function showEdit(root,courseId,lessonId){
  const safeSlug=/^[a-z0-9_-]+$/i.test(lesson.slug)?lesson.slug:"aula-temporaria";
  const sourceURL=published?.lessonURL.href||new URL("./aulas/"+safeSlug+".json",courseURL).href;
  const state={root,course,lesson,published:published?.lesson||null,sourceURL,savedAt:stored?.savedAt||null,
-  panel:"details",selectedId:null,dirty:false,formDirty:false,message:storageError,hash:location.hash};
+  panel:"details",selectedId:null,dirty:false,formDirty:false,message:storageError,hash:location.hash,
+  reviewPlan:null,reviewChecks:new Set()};
  activeStudio=state;
  draw(state);wireEditor(state);
 }

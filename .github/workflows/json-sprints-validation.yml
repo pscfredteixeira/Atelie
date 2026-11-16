@@ -1,0 +1,58 @@
+name: Validar aulas e publicação JSON
+
+on:
+  pull_request:
+    paths:
+      - 'content/piloto-json-sprint-02/**'
+      - 'json-pilot.js'
+      - 'json-studio.js'
+      - 'src/features/authoring/**'
+      - 'src/repositories/validators.js'
+      - 'src/lesson-engine/**'
+      - 'scripts/verify-json-*.mjs'
+      - 'scripts/ci-json-review-browser.mjs'
+      - '.github/workflows/json-sprints-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-json:
+    name: Contrato, motor, editor e pacote
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Obter o repositório
+        uses: actions/checkout@v4
+      - name: Preparar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar motor e navegação
+        run: node --experimental-default-type=module scripts/verify-json-pilot.mjs
+      - name: Testar editor visual
+        run: node --experimental-default-type=module scripts/verify-json-studio.mjs
+      - name: Testar pacote de revisão
+        run: node --experimental-default-type=module scripts/verify-json-publication.mjs
+
+  validate-json-browser:
+    name: Editor e ZIP no Chromium
+    needs: validate-json
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Obter o repositório
+        uses: actions/checkout@v4
+      - name: Preparar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Testar revisão e ZIP em navegador real
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/atelie-json-server.log 2>&1 &
+          node --experimental-default-type=module scripts/ci-json-review-browser.mjs
