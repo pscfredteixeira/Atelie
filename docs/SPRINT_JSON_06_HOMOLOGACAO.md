@@ -15,7 +15,7 @@ A suíte antiga do GitHub Actions estava desatualizada **também na branch `main
 - `scripts/ci-sprint19.mjs` esperava **três** aulas, rota `#/caderno` e visualização de notas antigas. Agora verifica as **quatro aulas** e a separação do progresso e dos cursos salvos entre contas A e B, com Firestore simulado.
 - `scripts/ci-course-menu.mjs` utilizava `.locator('a').isVisible()` em um elemento contendo **três links**; o Playwright mais novo rejeitava a seleção ambígua. O teste agora verifica o primeiro link explicitamente.
 
-São alterações **de teste**, não de currículo, conteúdo ou regras de acesso.
+Os testes foram atualizados sem mudar os conteúdos didáticos. A execução mais profunda identificou também **um defeito de JavaScript na quarta aula**, corrigido separadamente na própria branch (uma chamada com um caractere extra que interrompia a restauração do progresso).
 
 ## Integridade dos conteúdos oficiais
 
@@ -28,11 +28,11 @@ Comparação via GitHub dos hashes de conteúdo `main` versus a branch da Sprint
 | `escuta-que-mudou-a-clinica.html` | Idêntico |
 | `primeira-topica.html` | Idêntico |
 | `freud-antes-de-ser-freud.html` | Idêntico |
-| `freud-obra-e-fundador.html` | Idêntico |
+| `freud-obra-e-fundador.html` | Correção pontual de JavaScript para restaurar abertura e progresso; textos preservados |
 | `firebase.js` | Idêntico |
 | `firestore.rules` | Idêntico |
 
-Os nomes HTML da tabela correspondem à pasta `content/courses/formacao-freudiana/aulas/`. A checagem de igualdade é pontual; deve ser repetida se `main` receber novos commits.
+Os nomes HTML da tabela correspondem à pasta `content/courses/formacao-freudiana/aulas/`. A checagem de igualdade é pontual; deve ser repetida se `main` receber novos commits. A quarta aula é a única exceção deliberada; revisar seu diff e seus testes antes de qualquer integração.
 
 ## Novo teste de isolamento
 
