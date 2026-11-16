@@ -29,11 +29,19 @@ export function planJSONPublication({draft,course,publishedLesson=null,manifestP
  if(!ID.test(draft.id)||!ID.test(draft.moduleId)||!SLUG.test(draft.slug)||draft.slug.length>90)
   fail("identificador, módulo ou slug inválido para um arquivo seguro.");
  if(!draft.blocks.length)fail("a aula precisa conter pelo menos um componente.");
+ if(draft.metadata?.interactivePage)
+  fail("aulas HTML especiais não podem ser publicadas pelo pacote de blocos JSON.");
  for(const block of draft.blocks){
   if(block.version!==1||!known.has(block.type))
    fail("componente sem suporte para publicação: "+block.type+" v"+block.version+".");
   if(block.type==="interactive_lab"&&block.data.engineId!=="choice-reflection-v1")
    fail("o laboratório utiliza um motor ainda não disponível: "+block.data.engineId+".");
+  if(["image","audio","video"].includes(block.type)){
+   for(const value of [block.data.src,...(block.type==="video"&&block.data.captions?[block.data.captions]:[])]){
+    if(typeof value!=="string"||!/^\.\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_.-]+$/.test(value)||value.includes(".."))
+     fail("mídia ou legenda com caminho relativo inadequado no bloco "+block.id+".");
+   }
+  }
  }
  const original=clone(course);
  const next=clone(course);
@@ -59,8 +67,8 @@ export function planJSONPublication({draft,course,publishedLesson=null,manifestP
 
  const lessonPath=updating?existing.path:"./aulas/"+draft.slug+".json";
  if(!PATH.test(lessonPath))fail("o caminho de destino não é seguro.");
- if(!updating && next.modules.some(m=>m.lessons.some(l=>l.path===lessonPath)))
-  fail("já existe uma aula usando o nome de arquivo "+lessonPath+". Escolha outro slug.");
+ if(next.modules.some(m=>m.lessons.some(l=>l.id!==draft.id&&l.path===lessonPath)))
+  fail("já existe outra aula usando o nome de arquivo "+lessonPath+". Escolha outro slug.");
  const target=pathFor(manifestPath,lessonPath);
  const lesson=clone(draft);
  lesson.status="published";
