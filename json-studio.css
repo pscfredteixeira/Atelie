@@ -68,3 +68,24 @@
 @media(max-width:1000px){.json-studio-grid{grid-template-columns:300px minmax(0,1fr)}}
 @media(max-width:800px){.json-studio-dashboard{grid-template-columns:1fr}.json-studio-grid{grid-template-columns:1fr}.json-studio-list{position:static}.json-studio-toolbar{align-items:flex-start;flex-direction:column}}
 @media(max-width:540px){.json-studio-course,.json-studio-form-card{padding:18px}.json-studio-dashboard-list li{align-items:flex-start;flex-direction:column}.json-studio .btn{font-size:12px}.json-studio-form{padding:17px}.json-studio-form h2{font-size:24px}.json-studio-block-actions button{width:37px;height:35px}.json-studio .json-pilot-hero h1{font-size:35px}}
+
+/* Sprint JSON 5 — revisão supervisionada do conteúdo. */
+.json-studio-review{background:#fffdfb;border:1px solid #e6dbe3;border-radius:16px;padding:clamp(20px,3vw,32px);min-width:0}
+.json-studio-review h2{font:600 27px/1.25 var(--serif,Georgia,serif);margin:0 0 12px}
+.json-studio-review h3{font:600 20px/1.25 var(--serif,Georgia,serif);margin:22px 0 8px}
+.json-studio-review p,.json-studio-review li{font-size:13px;line-height:1.75;color:#5e5061}
+.json-studio-review ul{padding-left:23px}
+.json-studio-review dl{display:grid;gap:0;margin:18px 0;border:1px solid #eadce7;border-radius:12px;overflow:hidden}
+.json-studio-review dl>div{padding:13px;border-bottom:1px solid #ecdfeb}
+.json-studio-review dl>div:last-child{border-bottom:0}
+.json-studio-review dt{font-size:11px;font-weight:800;color:#795b7c;margin-bottom:5px}
+.json-studio-review dd{margin:0;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.json-studio-review code{font-size:11px;color:#52375b;white-space:normal;overflow-wrap:anywhere}
+.json-studio-review-checklist{padding:14px;border:1px solid #e6d8e5;border-radius:12px;margin:20px 0}
+.json-studio-review-checklist legend{font-size:13px;font-weight:800;color:#55385e;padding:0 7px}
+.json-studio-review-check{display:flex;align-items:flex-start;gap:10px;padding:11px 6px;font-size:13px;line-height:1.6;border-bottom:1px solid #eee4ee;color:#4c4250}
+.json-studio-review-check:last-child{border:0}
+.json-studio-review-check input{flex:0 0 auto;margin-top:4px;width:17px;height:17px;accent-color:#684070}
+.json-studio-review [data-json-studio-action="download-review"]:disabled{opacity:.45;cursor:not-allowed}
+.json-studio-review-disclaimer{margin-top:21px;border-left:4px solid #d76b33;padding:13px 16px;border-radius:5px;background:#fff5ec}
+@media(max-width:540px){.json-studio-review{padding:17px}.json-studio-review .btn{width:100%}}
