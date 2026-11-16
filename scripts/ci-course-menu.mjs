@@ -15,7 +15,7 @@ try{
  assert.equal((await mobile.locator('.study-area-copy strong').allInnerTexts()).join(' | '),'Início da Psicanálise | Formação Freudiana');
  assert.equal(await mobile.locator('.study-area-accordion[open]').count(),0,'As sanfonas devem começar fechadas');
  assert.equal(await mobile.locator('.course-drawer-module').count(),0,'Sem submenu repetindo título de cada aula');
- assert.equal(await mobile.locator('.study-area-accordion').first().locator('a').isVisible(),false,'Aulas ficam escondidas até abrir');
+ assert.equal(await mobile.locator('.study-area-accordion').first().locator('a').first().isVisible(),false,'Aulas ficam escondidas até abrir');
  await mobile.locator('.study-area-accordion').first().locator('summary').click();
  assert.equal(await mobile.locator('.study-area-accordion').first().evaluate(e=>e.open),true);
  assert.equal(await mobile.locator('.study-area-accordion').first().locator('.course-drawer-lesson').count(),3);
