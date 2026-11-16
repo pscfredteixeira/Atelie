@@ -15,7 +15,7 @@ try{
  assert.equal((await mobile.locator('.study-area-copy strong').allInnerTexts()).join(' | '),'Início da Psicanálise | Formação Freudiana');
  assert.equal(await mobile.locator('.study-area-accordion[open]').count(),0,'As sanfonas devem começar fechadas');
  assert.equal(await mobile.locator('.course-drawer-module').count(),0,'Sem submenu repetindo título de cada aula');
- assert.equal(await mobile.locator('.study-area-accordion').first().locator('a').isVisible(),false,'Aulas ficam escondidas até abrir');
+ assert.equal(await mobile.locator('.study-area-accordion').first().locator('a').first().isVisible(),false,'Aulas ficam escondidas até abrir');
  await mobile.locator('.study-area-accordion').first().locator('summary').click();
  assert.equal(await mobile.locator('.study-area-accordion').first().evaluate(e=>e.open),true);
  assert.equal(await mobile.locator('.study-area-accordion').first().locator('.course-drawer-lesson').count(),3);
@@ -127,7 +127,7 @@ try{
  await fourth.evaluate(()=>{
   const uid='teste-quarta-aula';
   window.AtelieCloud={user:{uid,displayName:'Aluno Quarta Aula'},ready:true,
-    save:async()=>true,loadLessonProgress:async()=>({done:[1],explored:[],answers:{},version:1}),
+    save:async()=>true,loadLessonProgress:async (...args)=>{window.__fourthLoadCalls=(window.__fourthLoadCalls||0)+1;return {done:[1],explored:[],answers:{},version:1}},
     saveLessonProgress:async()=>true,logout:async()=>true};
   dispatchEvent(new CustomEvent('atelie-cloud-auth',{detail:{uid}}));
   dispatchEvent(new CustomEvent('atelie-cloud-loaded',{detail:{uid,exists:false,state:null}}));
@@ -135,7 +135,22 @@ try{
  });
  const fourthLesson=fourth.frameLocator('#freudLessonFrame');
  await fourthLesson.locator('#step-1').waitFor({state:'visible'});
- await fourthLesson.locator('#step-2').waitFor({state:'visible'});
+ try{
+  await fourthLesson.locator('#step-2').waitFor({state:'visible',timeout:10000});
+ }catch(error){
+  const debug=await fourth.evaluate(()=>{
+   const iframe=document.querySelector('#freudLessonFrame');
+   const d=iframe?.contentDocument;
+   return {auth:window.AtelieCloud?.user?.uid,
+    loadCalls:window.__fourthLoadCalls||0,
+    source:iframe?.getAttribute('src'),
+    label:d?.querySelector('#progress-label')?.textContent,
+    cloud:d?.querySelector('#cloud-status')?.textContent,
+    step2Hidden:d?.querySelector('#step-2')?.hidden};
+  });
+  console.error('Quarta aula — diagnóstico de retomada:',debug,'Erros JS:',fourthErrors);
+  throw error;
+ }
  assert.equal(await fourthLesson.locator('.progress-segments span').count(),7);
  await fourthLesson.locator('.accordion').first().locator('summary').click();
  await fourth.waitForFunction(()=>{
